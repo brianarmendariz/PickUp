@@ -290,7 +290,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                     eventMaxNumPplStr, eventMinUserRatingStr);
 
 
-            //Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
             try {
                 Geocoder geocoder = new Geocoder(this, Locale.getDefault());
                 List<Address> addresses;
@@ -299,7 +299,6 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                 if (addresses.size() > 0) {
                     double latitude = addresses.get(0).getLatitude();
                     double longtitude = addresses.get(0).getLongitude();
-                    Toast.makeText(this, longtitude + " " + latitude, Toast.LENGTH_LONG).show();
                     Intent returnIntent = new Intent();
                     returnIntent.putExtra("result", latitude + " " + longtitude);
                     setResult(MapsActivity.RESULT_OK,returnIntent);
