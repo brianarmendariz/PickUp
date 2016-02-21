@@ -5,7 +5,10 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
+
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
@@ -20,15 +23,16 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by Brain on 2/16/2016.
- */
+
+
 public class CreateEventActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "brainsMessages";
@@ -139,8 +143,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         Log.i(TAG, "onRestoreInstanceState");
     }
 
-    private void initSpinners()
-    {
+    private void initSpinners() {
         int idSportSpinner = R.id.sport_spinner;
         int idSportArray = R.array.sport_array;
         int idGenderSpinner = R.id.gender_spinner;
@@ -163,8 +166,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         initNumSpinner(idMinUserRatingSpinner, -10, 20);
     }
 
-    private void initSpinner(int spinnerId, int arrayId)
-    {
+    private void initSpinner(int spinnerId, int arrayId) {
         // load values from resources to populate Gender spinner
         Spinner spinner = (Spinner) findViewById(spinnerId);
         // Create an ArrayAdapter with provided resources and layout
@@ -176,13 +178,12 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         spinner.setAdapter(spinnnerAdapter);
     }
 
-    private void initNumSpinner(int spinnerId, int begin, int end)
-    {
-        List<String> list=new ArrayList<String>();
-        for(int i = begin; i < end; i++) {
+    private void initNumSpinner(int spinnerId, int begin, int end) {
+        List<String> list = new ArrayList<String>();
+        for (int i = begin; i < end; i++) {
             list.add(i + "");
         }
-        final Spinner sp=(Spinner) findViewById(spinnerId);
+        final Spinner sp = (Spinner) findViewById(spinnerId);
         ArrayAdapter<String> adp = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, list);
         adp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -213,7 +214,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                 createDateEditText.setText(dateFormatter.format(newDate.getTime()));
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
     private void setTimeField() {
@@ -228,64 +229,58 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                 createDateEditText.setText(dateFormatter.format(newDate.getTime()));
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
-    private void setUpCreateEventButton()
-    {
+    private void setUpCreateEventButton() {
         createEventButton.setOnClickListener(this);
     }
 
-    private void setUpCancelButton()
-    {
+    private void setUpCancelButton() {
         cancelEventButton.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View view) {
-        if(view == createDateEditText) {
+        if (view == createDateEditText) {
             fromDatePickerDialog.show();
-        }
-        else if(view == cancelEventButton)
-        {
+        } else if (view == cancelEventButton) {
             Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
             startActivityForResult(myIntent, 0);
-        }
-        else if(view == createEventButton)
-        {
+        } else if (view == createEventButton) {
 
             // get text from the edit text box
-            EditText editTextBox1 = (EditText)findViewById(R.id.event_name);
+            EditText editTextBox1 = (EditText) findViewById(R.id.event_name);
             String eventNameStr = editTextBox1.getText().toString();
 
-            EditText editTextBox2 = (EditText)findViewById(R.id.event_creator);
+            EditText editTextBox2 = (EditText) findViewById(R.id.event_creator);
             String eventCreatorStr = editTextBox2.getText().toString();
 
-            Spinner sportSpinner = (Spinner)findViewById(R.id.sport_spinner);
+            Spinner sportSpinner = (Spinner) findViewById(R.id.sport_spinner);
             String eventSportStr = sportSpinner.getSelectedItem().toString();
 
-            EditText editTextBox4 = (EditText)findViewById(R.id.event_location);
+            EditText editTextBox4 = (EditText) findViewById(R.id.event_location);
             String eventLocationStr = editTextBox4.getText().toString();
 
             EditText editTextBox5 = (EditText) findViewById(R.id.event_date);
             String eventDateStr = editTextBox5.getText().toString();
 
-            Spinner genderSpinner = (Spinner)findViewById(R.id.gender_spinner);
+            Spinner genderSpinner = (Spinner) findViewById(R.id.gender_spinner);
             String eventGenderStr = genderSpinner.getSelectedItem().toString();
 
-            Spinner ageGroupMinSpinner = (Spinner)findViewById(R.id.age_min_spinner);
+            Spinner ageGroupMinSpinner = (Spinner) findViewById(R.id.age_min_spinner);
             String eventAgeGroupMinStr = ageGroupMinSpinner.getSelectedItem().toString();
 
-            Spinner ageGroupMaxSpinner = (Spinner)findViewById(R.id.age_max_spinner);
+            Spinner ageGroupMaxSpinner = (Spinner) findViewById(R.id.age_max_spinner);
             String eventAgeGroupMaxStr = ageGroupMaxSpinner.getSelectedItem().toString();
 
             String eventAgeGroupStr = eventAgeGroupMinStr + " " + eventAgeGroupMaxStr;
 
-            Spinner maxNumPplSpinner = (Spinner)findViewById(R.id.max_num_ppl_spinner);
+            Spinner maxNumPplSpinner = (Spinner) findViewById(R.id.max_num_ppl_spinner);
             String eventMaxNumPplStr = maxNumPplSpinner.getSelectedItem().toString();
 
-            Spinner minUserRatingSpinner = (Spinner)findViewById(R.id.min_user_rating_spinner);
+            Spinner minUserRatingSpinner = (Spinner) findViewById(R.id.min_user_rating_spinner);
             String eventMinUserRatingStr = minUserRatingSpinner.getSelectedItem().toString();
 
             String text = String.format("1: %s \n2: %s \n3: %s " +
@@ -294,7 +289,30 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                     eventSportStr, eventLocationStr, eventDateStr, eventGenderStr, eventAgeGroupStr,
                     eventMaxNumPplStr, eventMinUserRatingStr);
 
-            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+
+            //Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+            try {
+                Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+                List<Address> addresses;
+                addresses = geocoder.getFromLocationName(eventLocationStr, 1);
+
+                if (addresses.size() > 0) {
+                    double latitude = addresses.get(0).getLatitude();
+                    double longtitude = addresses.get(0).getLongitude();
+                    Toast.makeText(this, longtitude + " " + latitude, Toast.LENGTH_LONG).show();
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("result", latitude + " " + longtitude);
+                    setResult(MapsActivity.RESULT_OK,returnIntent);
+                    finish();
+                }
+                else {
+                    Intent returnIntent = new Intent();
+                    setResult(MapsActivity.RESULT_CANCELED, returnIntent);
+                    finish();
+                }
+            } catch (IOException e) {
+                Log.e(TAG, "Unable connect to Geocoder", e);
+            }
             // create an event when clicked
             // Event event = new Event();
 
@@ -306,7 +324,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             //Intent myIntent = new Intent(view.getContext(), CreateEventActivity.class);
             //startActivityForResult(myIntent, 0);
 
+
         }
     }
-
 }

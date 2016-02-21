@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+
+
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -15,6 +18,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,8 +28,11 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.vision.barcode.Barcode.GeoPoint;
 
-public class MapsActivity extends FragmentActivity {
+import java.util.Scanner;
+
+public class MapsActivity extends FragmentActivity implements android.location.LocationListener {
 
     private GoogleMap map; // Might be null if Google Play services APK is not available.
     private ImageButton button;
@@ -35,6 +43,23 @@ public class MapsActivity extends FragmentActivity {
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         // Enabling MyLocation Layer of Google Map
         map.setMyLocationEnabled(true);
+
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String bestProvider = locationManager.getBestProvider(criteria, true);
+        if (locationManager != null) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                   || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            }
+        }
+        Location location = locationManager.getLastKnownLocation(bestProvider);
+        if (location != null) {
+            onLocationChanged(location);
+        }
+        locationManager.requestLocationUpdates(bestProvider, 20000, 0, this);
+
+
         map.setOnMapClickListener(new OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
@@ -72,7 +97,66 @@ public class MapsActivity extends FragmentActivity {
 
     public void onClick_ImageButton(View v) {
         Intent myIntent = new Intent(v.getContext(), CreateEventActivity.class);
-        startActivityForResult(myIntent, 0 );
+        startActivityForResult(myIntent, 1);
     }
+
+
+    public void onLocationChanged(Location location) {
+
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        LatLng latLng = new LatLng(latitude, longitude);
+       // map.addMarker(new MarkerOptions().position(latLng)); // add marker
+     //   map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+     //   map.animateCamera(CameraUpdateFactory.zoomTo(15));
+        Log.d(String.valueOf(longitude), "longtitude");
+        Log.d(String.valueOf(latitude), "latitude");
+
+    }
+
+    public void onProviderDisabled(String provider) {
+        // TODO Auto-generated method stub
+    }
+
+
+    public void onProviderEnabled(String provider) {
+        // TODO Auto-generated method stub
+    }
+
+
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        // TODO Auto-generated method stub
+    }
+
+    private boolean isGooglePlayServicesAvailable() {
+        int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (ConnectionResult.SUCCESS == status) {
+            return true;
+        } else {
+            GooglePlayServicesUtil.getErrorDialog(status, this, 0).show();
+            return false;
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == MapsActivity.RESULT_OK){
+                String result=data.getStringExtra("result");
+                Scanner read = new Scanner(result);
+                double lat = 0;
+                double lon = 0;
+                lat = read.nextDouble();
+                lon = read.nextDouble();
+                LatLng latLng = new LatLng(lat, lon);
+                map.addMarker(new MarkerOptions().position(latLng));
+                map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                map.animateCamera(CameraUpdateFactory.zoomTo(15));
+            }
+            if (resultCode == MapsActivity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }//onActivityResult
 
 }
