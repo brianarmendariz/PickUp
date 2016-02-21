@@ -17,6 +17,7 @@ create Table PickupEvents(
    AgeMin int,
    MinUserRating int,
    PlayerNumber int,
-   IsPrivate boolean
+   IsPrivate boolean,
+   Gender varchar(10)
    
 );

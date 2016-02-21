@@ -29,9 +29,10 @@ $resultData = "";
 	$resultData .= ',AgeMax::' . $row["AgeMax"];
 	$resultData .= ',AgeMin::' . $row["AgeMin"];
 	$resultData .= ',MinUserRating::' . $row["MinUserRating"];
-	$resultData .= ',PlayerNumber::' . $row["PlayerNumber"];	$resultData .= 'PlayerNumber:' . $row["PlayerNumber"];
+	$resultData .= ',PlayerNumber::' . $row["PlayerNumber"];
+	$resultData .= ',PlayerNumber:' . $row["PlayerNumber"];
 	$resultData .= ',IsPrivate::' . $row["IsPrivate"];
-
+	$resultData .= ',Gender::' . $row["Gender"];
 	
 		}
 	}

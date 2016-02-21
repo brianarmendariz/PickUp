@@ -29,8 +29,9 @@ if( $_SERVER["REQUEST_METHOD"] == "POST")
     $MinUserRating = $_POST["MinUserRating"];
     $PlayerNumber = $_POST['PlayerAmount'];
     $IsPrivate = $_POST['IsPrivate'];
+	$Gender = $_POST['Gender'];
 
-	$sql = 'INSERT INTO PickupEvents (Author, EventName, Sport, Location, DateTimeCreated, EventDateTime, Latitude, Longitude, AgeMax, AgeMin, MinUserRating, PlayerNumber, IsPrivate)
+	$sql = 'INSERT INTO PickupEvents (Author, EventName, Sport, Location, DateTimeCreated, EventDateTime, Latitude, Longitude, AgeMax, AgeMin, MinUserRating, PlayerNumber, IsPrivate, Gender)
     VALUES("'.$Author.'",
 	"'.$EventName.'", 
 	"'.$Sport.'", 
@@ -43,8 +44,10 @@ if( $_SERVER["REQUEST_METHOD"] == "POST")
 	"'.$AgeMin.'",
 	"'.$MinUserRating.'",
 	"'.$PlayerNumber.'",
-	"'.$IsPrivate.'")';
-    SQLQuery($sql);
+	"'.$IsPrivate.'",
+	"'.$Gender.'");';
+    
+	SQLQuery($sql);
 	
 	return true;
 }
