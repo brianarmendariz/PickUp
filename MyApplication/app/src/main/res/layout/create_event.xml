@@ -109,14 +109,13 @@
                     android:id="@+id/eventTextView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/event_time_text"
+                    android:text="@string/event_date_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <EditText
                     android:id="@+id/event_date"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".5"
                     android:hint="@string/event_date_text" />
             </TableRow>
             <TableRow
@@ -129,13 +128,14 @@
                     android:id="@+id/eventTextView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/event_gender_text"
+                    android:text="@string/event_time_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                <Spinner
-                    android:id="@+id/gender_spinner"
+                <EditText
+                    android:id="@+id/event_time"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:hint="@string/event_time_text" />
             </TableRow>
             <TableRow
                 android:id="@+id/eventTableRow7"
@@ -145,6 +145,24 @@
 
                 <TextView
                     android:id="@+id/eventTextView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/event_gender_text"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <Spinner
+                    android:id="@+id/gender_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/eventTableRow8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp" >
+
+                <TextView
+                    android:id="@+id/eventTextView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/event_age_group_text"
@@ -172,13 +190,13 @@
 
             </TableRow>
             <TableRow
-                android:id="@+id/eventTableRow8"
+                android:id="@+id/eventTableRow9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp" >
 
                 <TextView
-                    android:id="@+id/eventTextView8"
+                    android:id="@+id/eventTextView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/event_max_num_ppl_text"
@@ -191,13 +209,13 @@
 
             </TableRow>
             <TableRow
-                android:id="@+id/eventTableRow9"
+                android:id="@+id/eventTableRow10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp" >
 
                 <TextView
-                    android:id="@+id/eventTextView9"
+                    android:id="@+id/eventTextView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/event_min_user_rating_text"

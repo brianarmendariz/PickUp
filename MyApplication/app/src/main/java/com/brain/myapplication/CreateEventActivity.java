@@ -20,11 +20,17 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+//Wimport org.apache.commons.httpclient.*;
+//import org.apache.commons.httpclient.methods.PostMethod;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by Brain on 2/16/2016.
@@ -36,11 +42,18 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     private Button cancelEventButton;
     private Button createEventButton;
 
-    private EditText createDateEditText;
+    Calendar newDate = Calendar.getInstance(); // local object to couple date and time
 
-    private DatePickerDialog fromDatePickerDialog;
+    private EditText createDateEditText;
+    private EditText createTimeEditText;
+
+    private DatePickerDialog datePickerDialog;
+    private TimePickerDialog timePickerDialog;
 
     private SimpleDateFormat dateFormatter;
+
+    private int hour;
+    private int minute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,14 +62,15 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
         Log.i(TAG, "onCreate");
 
+        //dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+
         // setup spinners when page is created
         initSpinners();
-
-        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 
         findViewsById();
 
         setDateField();
+        setTimeField();
         setUpCancelButton();
         setUpCreateEventButton();
     }
@@ -199,17 +213,22 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         createDateEditText = (EditText) findViewById(R.id.event_date);
         createDateEditText.setInputType(InputType.TYPE_NULL);
         createDateEditText.requestFocus();
+
+        createTimeEditText = (EditText) findViewById(R.id.event_time);
+        createTimeEditText.setInputType(InputType.TYPE_NULL);
+        createTimeEditText.requestFocus();
     }
 
     private void setDateField() {
         createDateEditText.setOnClickListener(this);
 
         Calendar newCalendar = Calendar.getInstance();
-        fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
+                newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
+                dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
                 createDateEditText.setText(dateFormatter.format(newDate.getTime()));
             }
 
@@ -217,18 +236,23 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void setTimeField() {
-        createDateEditText.setOnClickListener(this);
+        createTimeEditText.setOnClickListener(this);
 
-        Calendar newCalendar = Calendar.getInstance();
-        fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+//        Calendar newCalendar = Calendar.getInstance();
 
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                createDateEditText.setText(dateFormatter.format(newDate.getTime()));
-            }
-
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        timePickerDialog =
+                new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+                    public void onTimeSet(TimePicker view, int selectedHour,
+                                          int selectedMinute) {
+                        hour = selectedHour;
+                        minute = selectedMinute;
+                        newDate.set(Calendar.HOUR, hour);
+                        newDate.set(Calendar.MINUTE, minute);
+                        newDate.set(Calendar.SECOND, 0);
+                        dateFormatter = new SimpleDateFormat("h:mm a", Locale.US);
+                        createTimeEditText.setText(dateFormatter.format(newDate.getTime()));
+                    }
+                }, hour, minute, false);
     }
 
     private void setUpCreateEventButton()
@@ -244,8 +268,13 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View view) {
-        if(view == createDateEditText) {
-            fromDatePickerDialog.show();
+        if(view == createDateEditText)
+        {
+            datePickerDialog.show();
+        }
+        else if(view == createTimeEditText)
+        {
+            timePickerDialog.show();
         }
         else if(view == cancelEventButton)
         {
@@ -254,47 +283,22 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         }
         else if(view == createEventButton)
         {
+            Map<String, String> formMap = formToMap();
 
-            // get text from the edit text box
-            EditText editTextBox1 = (EditText)findViewById(R.id.event_name);
-            String eventNameStr = editTextBox1.getText().toString();
+            String author = formMap.get("author");
+            String name = formMap.get("event name");
+            String sport = formMap.get("sport");
+            String location = formMap.get("location");
+            String date = formMap.get("date");
+            String time = formMap.get("time");
+            String dateTime = date + " " + time;
+            String gender = formMap.get("gender");
+            String ageMin = formMap.get("age min");
+            String ageMax = formMap.get("age max");
+            String playerAmount = formMap.get("max num ppl");
+            String minUserRating = formMap.get("min rating");
 
-            EditText editTextBox2 = (EditText)findViewById(R.id.event_creator);
-            String eventCreatorStr = editTextBox2.getText().toString();
 
-            Spinner sportSpinner = (Spinner)findViewById(R.id.sport_spinner);
-            String eventSportStr = sportSpinner.getSelectedItem().toString();
-
-            EditText editTextBox4 = (EditText)findViewById(R.id.event_location);
-            String eventLocationStr = editTextBox4.getText().toString();
-
-            EditText editTextBox5 = (EditText) findViewById(R.id.event_date);
-            String eventDateStr = editTextBox5.getText().toString();
-
-            Spinner genderSpinner = (Spinner)findViewById(R.id.gender_spinner);
-            String eventGenderStr = genderSpinner.getSelectedItem().toString();
-
-            Spinner ageGroupMinSpinner = (Spinner)findViewById(R.id.age_min_spinner);
-            String eventAgeGroupMinStr = ageGroupMinSpinner.getSelectedItem().toString();
-
-            Spinner ageGroupMaxSpinner = (Spinner)findViewById(R.id.age_max_spinner);
-            String eventAgeGroupMaxStr = ageGroupMaxSpinner.getSelectedItem().toString();
-
-            String eventAgeGroupStr = eventAgeGroupMinStr + " " + eventAgeGroupMaxStr;
-
-            Spinner maxNumPplSpinner = (Spinner)findViewById(R.id.max_num_ppl_spinner);
-            String eventMaxNumPplStr = maxNumPplSpinner.getSelectedItem().toString();
-
-            Spinner minUserRatingSpinner = (Spinner)findViewById(R.id.min_user_rating_spinner);
-            String eventMinUserRatingStr = minUserRatingSpinner.getSelectedItem().toString();
-
-            String text = String.format("1: %s \n2: %s \n3: %s " +
-                            "\n4: %s \n5: %s \n6: %s \n7: %s \n8: %s" +
-                            "\n9: %s", eventNameStr, eventCreatorStr,
-                    eventSportStr, eventLocationStr, eventDateStr, eventGenderStr, eventAgeGroupStr,
-                    eventMaxNumPplStr, eventMinUserRatingStr);
-
-            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
             // create an event when clicked
             // Event event = new Event();
 
@@ -307,6 +311,78 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             //startActivityForResult(myIntent, 0);
 
         }
+    }
+
+    public void sendCreateEvent(Map<String, String> formMap)
+    {
+
+     //   HttpClient client = new HttpClient();
+
+    }
+
+    public Map<String, String> formToMap()
+    {
+        Map<String, String> formMap = new HashMap<String, String>();
+
+        // get text from the edit text box
+        EditText editTextBox1 = (EditText)findViewById(R.id.event_name);
+        String eventNameStr = editTextBox1.getText().toString();
+        formMap.put("event name", eventNameStr);
+
+        EditText editTextBox2 = (EditText)findViewById(R.id.event_creator);
+        String eventCreatorStr = editTextBox2.getText().toString();
+        formMap.put("author", eventCreatorStr);
+
+        Spinner sportSpinner = (Spinner)findViewById(R.id.sport_spinner);
+        String eventSportStr = sportSpinner.getSelectedItem().toString();
+        formMap.put("sport", eventSportStr);
+
+        EditText editTextBox4 = (EditText)findViewById(R.id.event_location);
+        String eventLocationStr = editTextBox4.getText().toString();
+        formMap.put("location", eventLocationStr);
+
+        EditText editTextBox5 = (EditText) findViewById(R.id.event_date);
+        String eventDateStr = editTextBox5.getText().toString();
+        formMap.put("date", eventDateStr);
+
+        EditText editTextBox6 = (EditText) findViewById(R.id.event_time);
+        String eventTimeStr = editTextBox6.getText().toString();
+        formMap.put("time", eventTimeStr);
+
+        Spinner genderSpinner = (Spinner)findViewById(R.id.gender_spinner);
+        String eventGenderStr = genderSpinner.getSelectedItem().toString();
+        formMap.put("gender", eventGenderStr);
+
+        Spinner ageGroupMinSpinner = (Spinner)findViewById(R.id.age_min_spinner);
+        String eventAgeGroupMinStr = ageGroupMinSpinner.getSelectedItem().toString();
+        formMap.put("age min", eventAgeGroupMinStr);
+
+        Spinner ageGroupMaxSpinner = (Spinner)findViewById(R.id.age_max_spinner);
+        String eventAgeGroupMaxStr = ageGroupMaxSpinner.getSelectedItem().toString();
+        formMap.put("age max", eventAgeGroupMaxStr);
+
+        String eventAgeGroupStr = eventAgeGroupMinStr + " " + eventAgeGroupMaxStr;
+
+        Spinner maxNumPplSpinner = (Spinner)findViewById(R.id.max_num_ppl_spinner);
+        String eventMaxNumPplStr = maxNumPplSpinner.getSelectedItem().toString();
+        formMap.put("max num ppl", eventMaxNumPplStr);
+
+        Spinner minUserRatingSpinner = (Spinner)findViewById(R.id.min_user_rating_spinner);
+        String eventMinUserRatingStr = minUserRatingSpinner.getSelectedItem().toString();
+        formMap.put("min rating", eventMinUserRatingStr);
+
+        String text = String.format("1: %s \n2: %s \n3: %s " +
+                        "\n4: %s \n5: %s \n6: %s \n7: %s \n8: %s" +
+                        "\n9: %s \n10: %s", eventNameStr, eventCreatorStr, eventSportStr,
+                eventLocationStr, eventDateStr, eventTimeStr, eventGenderStr, eventAgeGroupStr,
+                eventMaxNumPplStr, eventMinUserRatingStr);
+
+        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+
+        // Log to show that the vars are correct
+        Log.i(TAG, text);
+
+        return formMap;
     }
 
 }
