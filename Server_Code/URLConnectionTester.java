@@ -5,17 +5,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-//import javax.net.HttpURLConnection;
 
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.httpclient.*;
 public class URLConnectionTester {
 
 	private final String USER_AGENT = "Mozilla/5.0";
@@ -58,7 +54,7 @@ public class URLConnectionTester {
 	  
 		private void sendCreateEvent( String author, String eventName, String sport,
 				String location, String latitude, String longitude, String eventDateTime, String ageMax, String ageMin,
-				String minUserRating, String playerAmount, String isPrivate, String gender) throws HttpException, IOException {
+				String minUserRating, String playerAmount, String isPrivate, String gender) throws IOException  {
 
 			System.out.println("CreateEvent");
 			
@@ -104,7 +100,7 @@ public class URLConnectionTester {
 			//print result
 			System.out.println("Response:"+response.toString());
 		}
-		private void sendDeleteEvent( int eventID) throws HttpException, IOException {
+		private void sendDeleteEvent( int eventID) throws IOException  {
 
 			System.out.println("deleteEvent");
 			
@@ -149,7 +145,7 @@ public class URLConnectionTester {
 			//print result
 			System.out.println("Response:"+response.toString());
 		}
-		private ArrayList<Event> sendGetEvents() throws HttpException, IOException {
+		private ArrayList<Event> sendGetEvents() throws IOException  {
 
 			System.out.println("GetEvents");
 			
