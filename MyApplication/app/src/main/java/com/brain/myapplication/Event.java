@@ -1,89 +1,92 @@
 package com.brain.myapplication;
 
-import android.location.Location;
 
-/**
- * Created by Brain on 2/16/2016.
- */
 public class Event
 {
+    private String _name;
+    private String _description;
     private String _creator;
-    private Sport _sport;
-    private Location _location;
-    private char _gender;
-    private int[] _ageGroup;
-    private int _maxNumberPpl;
+    private String _sport;
+    //private Location _location;
+    private double _longitude;
+    private double _latitude;
+    private String _address;
+    private String  _gender;
+    private String _ageMax;
+    private String _ageMin;
+    private String _minUserRating;
+    private String _maxNumberPpl;
+    private String _dateCreated;
+    private String _eventDate;
+    private String _isPrivate;
+
 
     public Event()
     {
+        _name = null;
+        _description = null;
+        _longitude = 0;
+        _latitude = 0;
+        _address = null;
+        _ageMax = null;
+        _ageMin = null;
         _creator = null;
         _sport = null;
-        _location = null;
-        _gender = 'a';
-        _ageGroup = null;
-        _maxNumberPpl = 0;
+        _gender = null;
+        _maxNumberPpl = null;
+        _minUserRating = null;
+        _dateCreated = null;
+        _eventDate = null;
+        _isPrivate = null;
     }
-    public Event(String creator, Sport sport, Location location)
+
+    public Event(String name, String description, double longitude, double latitude, String address, String ageMax,
+                 String ageMin, String creator, String sport, String gender, String maxNumberPpl,String minUserRating,
+                 String dateCreated, String eventDate, String isPrivate)
     {
+        _name = name;
+        _description = description;
+        _longitude = longitude;
+        _latitude = latitude;
+        _address = address;
+        _ageMax = ageMax;
+        _ageMin = ageMin;
         _creator = creator;
         _sport = sport;
-        _location = location;
-        _gender = 'a';
-        _ageGroup = null;
-        _maxNumberPpl = 20;
-    }
-    public Event(String creator, Sport sport, Location location, char gender)
-    {
-        _creator = creator;
-        _sport = sport;
-        _location = location;
         _gender = gender;
-        _ageGroup = null;
-        _maxNumberPpl = 20;
-    }
-    public Event(String creator, Sport sport, Location location, int maxNumberPpl)
-    {
-        _creator = creator;
-        _sport = sport;
-        _location = location;
-        _gender = 'a';
-        _ageGroup = null;
         _maxNumberPpl = maxNumberPpl;
-    }
-    public Event(String creator, Sport sport, Location location, char gender, int[] ageGroup, int maxNumberPpl)
-    {
-        _creator = creator;
-        _sport = sport;
-        _location = location;
-        _gender = gender;
-        setAgeGroup(ageGroup);
-        _maxNumberPpl = maxNumberPpl;
+        _minUserRating = minUserRating;
+        _dateCreated = dateCreated;
+        _eventDate = eventDate;
+        _isPrivate = isPrivate;
     }
 
     /*
     Getter Methods
      */
+    public double getLongitude()
+    {
+        return _longitude;
+    }
+    public double getLatitude()
+    {
+        return _latitude;
+    }
     public String getCreator()
     {
         return _creator;
     }
-    public Sport getSport()
+    public String getSport()
     {
         return _sport;
     }
-    public Location getLocation()
-    {
-        return _location;
-    }
-    public char getGender()
+
+    public String getGender()
     {
         return _gender;
     }
-    public int[] getAgeGroup()
-    {
-        return _ageGroup;
-    }
-    public int getMaxNumberPpl()
+
+    public String getMaxNumberPpl()
     {
         return _maxNumberPpl;
     }
@@ -93,28 +96,19 @@ public class Event
      */
     public void setCreator(String creator)
     {
-         _creator = creator;
+        _creator = creator;
     }
-    public void setSport(Sport sport)
+    public void setSport(String sport)
     {
         _sport = sport;
     }
-    public void setLocation(Location location)
-    {
-        _location = location;
-    }
-    public void setGender(char gender)
+
+    public void setGender(String gender)
     {
         _gender = gender;
     }
-    public void setAgeGroup(int[] ageGroup)
-    {
-        for(int i = 0; i < ageGroup.length; i++)
-        {
-            _ageGroup[i] = ageGroup[i];
-        }
-    }
-    public void setMaxNumberPpl(int maxNumberPpl)
+
+    public void setMaxNumberPpl(String maxNumberPpl)
     {
         _maxNumberPpl = maxNumberPpl;
     }

@@ -1,4 +1,5 @@
-package com.brain.myapplication;
+package csulb.edu.pickup;
+
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -282,7 +283,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         }
         else if(view == cancelEventButton)
         {
-            Intent myIntent = new Intent(view.getContext(), MainActivity.class);
+            Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
             startActivityForResult(myIntent, 0);
         }
         else if(view == createEventButton) {
@@ -304,15 +305,15 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                 String playerAmount = formMap.get("max num ppl");
                 String minUserRating = formMap.get("min rating");
 
-                ServerConnection http = new ServerConnection();
-
-                http.sendCreateEvent(author, name, sport, location, " ", " ",
-                        dateTime, ageMax, ageMin, minUserRating, playerAmount, "false", gender);
-
-            } catch (IOException e)
-            {
-                e.printStackTrace();
-                Log.i(TAG, "HTTP ERROR");
+//                ServerConnection http = new ServerConnection();
+//
+//                http.sendCreateEvent(author, name, sport, location, " ", " ",
+//                        dateTime, ageMax, ageMin, minUserRating, playerAmount, "false", gender);
+//
+//            } catch (IOException e)
+//            {
+//                e.printStackTrace();
+//                Log.i(TAG, "HTTP ERROR");
             } catch(Exception e)
             {
                 Log.i(TAG, "HashMap ERROR");
@@ -322,14 +323,14 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
 
 
-           // int eventID = 1;
+            // int eventID = 1;
 	        /*
 	         * uncomment any of the requests below to use them
 	         */
 
-           // http.sendDeleteEvent(eventID);
+            // http.sendDeleteEvent(eventID);
 
-           // http.sendGetEvents();
+            // http.sendGetEvents();
 
             // create an event when clicked
             // Event event = new Event();
@@ -339,8 +340,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             // Let user know if successful or not
 
 
-            //Intent myIntent = new Intent(view.getContext(), CreateEventActivity.class);
-            //startActivityForResult(myIntent, 0);
+            Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
+            startActivityForResult(myIntent, 0);
 
         }
     }
@@ -348,7 +349,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     public void sendCreateEvent(Map<String, String> formMap)
     {
 
-     //   HttpClient client = new HttpClient();
+        //   HttpClient client = new HttpClient();
 
     }
 
@@ -409,7 +410,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                 eventLocationStr, eventDateStr, eventTimeStr, eventGenderStr, eventAgeGroupStr,
                 eventMaxNumPplStr, eventMinUserRatingStr);
 
-    //    Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+        //    Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
 
         // Log to show that the vars are correct
         Log.i(TAG, text);

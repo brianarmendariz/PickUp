@@ -21,6 +21,28 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "onCreate");
 
         final Button createEventButton = (Button) findViewById(R.id.eventBtn);
+        final Button viewEventButton = (Button) findViewById(R.id.viewEventBtn);
+        final Button editEventButton = (Button) findViewById(R.id.editEventBtn);
+
+
+        viewEventButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View view)
+            {
+                Intent myIntent = new Intent(view.getContext(), ViewEventActivity.class);
+                startActivityForResult(myIntent, 0 );
+            }
+        });
+
+        editEventButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View view)
+            {
+                Intent myIntent = new Intent(view.getContext(), CreateEventActivity.class);
+                startActivityForResult(myIntent, 0 );
+            }
+        });
+
         createEventButton.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View view)

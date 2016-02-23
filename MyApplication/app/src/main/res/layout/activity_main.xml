@@ -13,7 +13,29 @@
         android:layout_height="wrap_content"
         android:text="Create Event"
         android:id="@+id/eventBtn"
-        android:layout_centerVertical="true"
+        android:clickable="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:clickable="true" />
+        android:layout_marginTop="70dp" />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Event"
+        android:id="@+id/viewEventBtn"
+        android:clickable="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="110dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Event"
+        android:id="@+id/editEventBtn"
+        android:clickable="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150dp" />
 </RelativeLayout>
