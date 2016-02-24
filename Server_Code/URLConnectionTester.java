@@ -19,9 +19,6 @@ public class URLConnectionTester {
 	 public static void main(String[] args) throws Exception {
 	       
 			URLConnectionTester http = new URLConnectionTester();
-
-		 
-		 
 			   
 	        /*test parameter values*/
 	        String author = "sarah2"; 
@@ -39,6 +36,7 @@ public class URLConnectionTester {
 	        String gender = "both";
 	        int eventID =8;
 	        int eventID2 = 7;
+	       
 	        /*
 	         * uncomment any of the requests below to use them
 	         */
@@ -57,12 +55,28 @@ public class URLConnectionTester {
 
 	      
 	    }
-	  
+	  /**
+	   * Sends event data to the server.
+	   * 
+	   * @param author
+	   * @param eventName
+	   * @param sport
+	   * @param location
+	   * @param latitude
+	   * @param longitude
+	   * @param eventDateTime
+	   * @param ageMax
+	   * @param ageMin
+	   * @param minUserRating
+	   * @param playerAmount
+	   * @param isPrivate
+	   * @param gender
+	   * @return "true" if inserted to database, "false" if not.
+	   * @throws IOException
+	   */
 		public String sendCreateEvent( String author, String eventName, String sport,
 				String location, String latitude, String longitude, String eventDateTime, String ageMax, String ageMin,
 				String minUserRating, String playerAmount, String isPrivate, String gender) throws IOException  {
-
-			System.out.println("CreateEvent");
 			
 			/*url of route being requested*/
 			String url = "http://www.csulbpickup.com/createEvent.php";
@@ -87,12 +101,12 @@ public class URLConnectionTester {
 			wr.writeBytes(urlParameters);
 			wr.flush();
 			wr.close();
-
+			/*
 			int responseCode = con.getResponseCode();
 			System.out.println("\nSending 'POST' request to URL : " + url);
 			System.out.println("Post parameters : " + urlParameters);
 			System.out.println("Response Code : " + responseCode);
-
+			 */
 			BufferedReader in = new BufferedReader(
 			        new InputStreamReader(con.getInputStream()));
 			String inputLine;
@@ -107,9 +121,14 @@ public class URLConnectionTester {
 			System.out.println("Response:"+response.toString());
 			return response.toString();
 		}
+		
+		/**
+		 * Deletes an event  from the server database
+		 * @param eventID
+		 * @return "true" if deleted, "false" if not
+		 * @throws IOException
+		 */
 		public String sendDeleteEvent( int eventID) throws IOException  {
-
-			System.out.println("deleteEvent");
 			
 			/*url of route being requested*/
 			String url = "http://www.csulbpickup.com/deleteEvent.php";
@@ -132,12 +151,12 @@ public class URLConnectionTester {
 			wr.writeBytes(urlParameters);
 			wr.flush();
 			wr.close();
-
+			/*
 			int responseCode = con.getResponseCode();
 			System.out.println("\nSending 'POST' request to URL : " + url);
 			System.out.println("Post parameters : " + urlParameters);
 			System.out.println("Response Code : " + responseCode);
-
+			 */
 			BufferedReader in = new BufferedReader(
 			        new InputStreamReader(con.getInputStream()));
 			String inputLine;
@@ -152,11 +171,28 @@ public class URLConnectionTester {
 			System.out.println("Response:"+response.toString());
 			return response.toString();
 		}
+		/**
+		 * Edits an event by changing values to the values passed in. Any empty values should be set to "".
+		 * @param eventID
+		 * @param author
+		 * @param eventName
+		 * @param sport
+		 * @param location
+		 * @param latitude
+		 * @param longitude
+		 * @param eventDateTime
+		 * @param ageMax
+		 * @param ageMin
+		 * @param minUserRating
+		 * @param playerAmount
+		 * @param isPrivate
+		 * @param gender
+		 * @return "true" if successful, "false" if not.
+		 * @throws IOException
+		 */
 		public String sendEditEvent( int eventID, String author, String eventName, String sport,
 				String location, String latitude, String longitude, String eventDateTime, String ageMax, String ageMin,
 				String minUserRating, String playerAmount, String isPrivate, String gender) throws IOException  {
-
-			System.out.println("editEvent");
 			
 			/*url of route being requested*/
 			String url = "http://www.csulbpickup.com/editEvent.php";
@@ -201,6 +237,11 @@ public class URLConnectionTester {
 			System.out.println("Response:"+response.toString());
 			return response.toString();
 		}
+		/**
+		 * gets a list of all events in database on server
+		 * @return
+		 * @throws IOException
+		 */
 		public ArrayList<Event> sendGetEvents() throws IOException  {
 
 			System.out.println("GetEvents");
@@ -214,7 +255,7 @@ public class URLConnectionTester {
 			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
 			//add reuqest header
-			con.setRequestMethod("POST");
+			con.setRequestMethod("GET");
 			con.setRequestProperty("User-Agent", USER_AGENT);
 			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 			
@@ -222,11 +263,11 @@ public class URLConnectionTester {
 			
 			// Send post request
 			con.setDoOutput(true);
-			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+			/*DataOutputStream wr = new DataOutputStream(con.getOutputStream());
 			wr.writeBytes(urlParameters);
 			wr.flush();
 			wr.close();
-
+*/
 			int responseCode = con.getResponseCode();
 			System.out.println("\nSending 'POST' request to URL : " + url);
 			System.out.println("Post parameters : " + urlParameters);
