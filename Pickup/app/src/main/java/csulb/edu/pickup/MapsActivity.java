@@ -62,12 +62,13 @@ public class MapsActivity extends FragmentActivity implements android.location.L
         Location location = locationManager.getLastKnownLocation(bestProvider);
         if (location != null) {
             onLocationChanged(location);
+            //get current location and zoom in
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            map.animateCamera(CameraUpdateFactory.zoomTo(10));
         }
 
-        //get current location and zoom in
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        map.animateCamera(CameraUpdateFactory.zoomTo(10));
+
 
         //Get Location updates from server
         //locationManager.requestLocationUpdates(bestProvider, 20000, 0, this);
