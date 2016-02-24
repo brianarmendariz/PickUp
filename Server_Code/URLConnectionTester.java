@@ -101,12 +101,7 @@ public class URLConnectionTester {
 			wr.writeBytes(urlParameters);
 			wr.flush();
 			wr.close();
-			/*
-			int responseCode = con.getResponseCode();
-			System.out.println("\nSending 'POST' request to URL : " + url);
-			System.out.println("Post parameters : " + urlParameters);
-			System.out.println("Response Code : " + responseCode);
-			 */
+
 			BufferedReader in = new BufferedReader(
 			        new InputStreamReader(con.getInputStream()));
 			String inputLine;
@@ -151,12 +146,7 @@ public class URLConnectionTester {
 			wr.writeBytes(urlParameters);
 			wr.flush();
 			wr.close();
-			/*
-			int responseCode = con.getResponseCode();
-			System.out.println("\nSending 'POST' request to URL : " + url);
-			System.out.println("Post parameters : " + urlParameters);
-			System.out.println("Response Code : " + responseCode);
-			 */
+
 			BufferedReader in = new BufferedReader(
 			        new InputStreamReader(con.getInputStream()));
 			String inputLine;
@@ -237,9 +227,10 @@ public class URLConnectionTester {
 			System.out.println("Response:"+response.toString());
 			return response.toString();
 		}
+		
 		/**
-		 * gets a list of all events in database on server
-		 * @return
+		 * gets a list of all events in database on server.
+		 * @return ArrayList<Event> - an event object for each event in server
 		 * @throws IOException
 		 */
 		public ArrayList<Event> sendGetEvents() throws IOException  {
@@ -267,12 +258,13 @@ public class URLConnectionTester {
 			wr.writeBytes(urlParameters);
 			wr.flush();
 			wr.close();
-*/
+			*/
+			/*
 			int responseCode = con.getResponseCode();
 			System.out.println("\nSending 'POST' request to URL : " + url);
 			System.out.println("Post parameters : " + urlParameters);
 			System.out.println("Response Code : " + responseCode);
-
+			*/
 			BufferedReader in = new BufferedReader(
 			        new InputStreamReader(con.getInputStream()));
 			String inputLine;
@@ -292,6 +284,13 @@ public class URLConnectionTester {
 
 	        return list;
 		}
+		
+		/**
+		 * Gets a single event from server for the given EventID
+		 * @param eventID
+		 * @return Event - an Event object for the retrieved Event on server.
+		 * @throws IOException
+		 */
 		public Event sendGetEvent(int eventID) throws IOException  {
 
 			System.out.println("GetEvent");
@@ -340,6 +339,13 @@ public class URLConnectionTester {
 	        Event returnedEvent = list.get(0);
 	        return returnedEvent;
 		}
+		
+		/**
+		 * Used for parsing the string response from the server.
+		 * Converts a string to a map, and then converts the map to an Event object for each Event.
+		 * @param str
+		 * @return ArrayList<Event> - one Event for each Event entry in the database.
+		 */
 	    public ArrayList<Event> convert(String str) {
 	    	String[] lines=str.split("#");
 	    	//System.out.println(Arrays.toString(lines));
