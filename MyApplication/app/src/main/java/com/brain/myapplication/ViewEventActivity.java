@@ -1,5 +1,6 @@
 package com.brain.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
@@ -7,7 +8,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +22,8 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
 
     private final String TAG = "brainsMessages";
 
-
+    private Button editEventButton;
+    private Button deleteEventButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,11 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.view_event);
 
         Log.i(TAG, "onCreate");
+
+        findViewsById();
+
+        setupEditEventButton();
+        setupDeleteEventButton();
 
         // little sloppy
         putEventDetailsToForm(getEventDetails());
@@ -57,58 +66,58 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
 
     public Map<String, String> getEventDetails()
     {
-        Map<String, String> formMap = new HashMap<String, String>();
+        Map<String, String> eventDetailMap = new HashMap<String, String>();
 
         // reality we will get these values from the db
         String author = "Brain";
-        formMap.put("author", author);
+        eventDetailMap.put("author", author);
 
         String name = "Basketball at the Park";
-        formMap.put("event name", name);
+        eventDetailMap.put("event name", name);
 
         String sport = "Basketball";
-        formMap.put("sport", sport);
+        eventDetailMap.put("sport", sport);
 
         String location = "csulb";
-        formMap.put("location", location);
+        eventDetailMap.put("location", location);
 
         String date = "2/23/16";
-        formMap.put("date", date);
+        eventDetailMap.put("date", date);
 
         String time = "6:15 pm";
-        formMap.put("time", time);
+        eventDetailMap.put("time", time);
 
         String gender = "any";
-        formMap.put("gender", gender);
+        eventDetailMap.put("gender", gender);
 
         String ageMin = "16";
-        formMap.put("age min", ageMin);
+        eventDetailMap.put("age min", ageMin);
 
         String ageMax = "35";
-        formMap.put("age max", ageMax);
+        eventDetailMap.put("age max", ageMax);
 
         String maxNumPpl = "12";
-        formMap.put("max num ppl", maxNumPpl);
+        eventDetailMap.put("max num ppl", maxNumPpl);
 
         String minRating = "0";
-        formMap.put("min rating", minRating);
+        eventDetailMap.put("min rating", minRating);
 
-        return formMap;
+        return eventDetailMap;
     }
 
-    public void putEventDetailsToForm(Map<String, String> formMap)
+    public void putEventDetailsToForm(Map<String, String> eventDetailsMap)
     {
-        String author = formMap.get("author");
-        String name = formMap.get("event name");
-        String sport = formMap.get("sport");
-        String location = formMap.get("location");
-        String date = formMap.get("date");
-        String time = formMap.get("time");
-        String gender = formMap.get("gender");
-        String ageMin = formMap.get("age min");
-        String ageMax = formMap.get("age max");
-        String maxNumPpl = formMap.get("max num ppl");
-        String minUserRating = formMap.get("min rating");
+        String author = eventDetailsMap.get("author");
+        String name = eventDetailsMap.get("event name");
+        String sport = eventDetailsMap.get("sport");
+        String location = eventDetailsMap.get("location");
+        String date = eventDetailsMap.get("date");
+        String time = eventDetailsMap.get("time");
+        String gender = eventDetailsMap.get("gender");
+        String ageMin = eventDetailsMap.get("age min");
+        String ageMax = eventDetailsMap.get("age max");
+        String maxNumPpl = eventDetailsMap.get("max num ppl");
+        String minUserRating = eventDetailsMap.get("min rating");
 
         TextView eventViewName = (TextView) findViewById(R.id.event_view_name);
         if(name.length() > 10)
@@ -143,8 +152,35 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
         eventViewMinUserRating.setText(minUserRating);
     }
 
-    @Override
-    public void onClick(View v) {
+    public void findViewsById()
+    {
+        editEventButton = (Button) findViewById(R.id.event_edit_btn);
+        editEventButton.requestFocus();
 
+        deleteEventButton = (Button) findViewById(R.id.event_delete_btn);
+        deleteEventButton.requestFocus();
+    }
+
+    public void setupEditEventButton()
+    {
+        editEventButton.setOnClickListener(this);
+    }
+
+    public void setupDeleteEventButton()
+    {
+        deleteEventButton.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view == editEventButton)
+        {
+            Intent myIntent = new Intent(view.getContext(), EditEventActivity.class);
+            startActivityForResult(myIntent, 0);
+        }
+        else if(view == deleteEventButton)
+        {
+            Toast.makeText(getApplicationContext(), "delete", Toast.LENGTH_SHORT).show();
+        }
     }
 }

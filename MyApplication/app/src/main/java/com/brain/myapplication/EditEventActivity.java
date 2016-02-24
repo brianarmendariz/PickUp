@@ -39,12 +39,12 @@ import java.util.Map;
 /**
  * Created by Brain on 2/16/2016.
  */
-public class CreateEventActivity extends AppCompatActivity implements View.OnClickListener {
+public class EditEventActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "brainsMessages";
 
     private Button cancelEventButton;
-    private Button createEventButton;
+    private Button saveChangesButton;
 
     Calendar newDate = Calendar.getInstance(); // local object to couple date and time
 
@@ -62,7 +62,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_event);
+        setContentView(R.layout.edit_event);
 
 //        Log.i(TAG, "onCreate");
 
@@ -75,7 +75,9 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         setDateField();
         setTimeField();
         setUpCancelButton();
-        setUpCreateEventButton();
+        setUpSaveChangesEventButton();
+
+        populateForm(getEventDetails());
     }
 
 
@@ -158,14 +160,14 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
     private void initSpinners()
     {
-        int idSportSpinner = R.id.sport_spinner;
+        int idSportSpinner = R.id.edit_sport_spinner;
         int idSportArray = R.array.sport_array;
-        int idGenderSpinner = R.id.gender_spinner;
+        int idGenderSpinner = R.id.edit_gender_spinner;
         int idGenderArray = R.array.gender_array;
-        int idAgeMinSpinner = R.id.age_min_spinner;
-        int idAgeMaxSpinner = R.id.age_max_spinner;
-        int idMaxNumPplSpinner = R.id.max_num_ppl_spinner;
-        int idMinUserRatingSpinner = R.id.min_user_rating_spinner;
+        int idAgeMinSpinner = R.id.edit_age_min_spinner;
+        int idAgeMaxSpinner = R.id.edit_age_max_spinner;
+        int idMaxNumPplSpinner = R.id.edit_max_num_ppl_spinner;
+        int idMinUserRatingSpinner = R.id.edit_min_user_rating_spinner;
 
         // attach values to sport spinner
         initSpinner(idSportSpinner, idSportArray);
@@ -207,17 +209,17 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void findViewsById() {
-        cancelEventButton = (Button) findViewById(R.id.event_cancel_btn);
+        cancelEventButton = (Button) findViewById(R.id.edit_event_cancel_btn);
         cancelEventButton.requestFocus();
 
-        createEventButton = (Button) findViewById(R.id.event_create_btn);
-        createEventButton.requestFocus();
+        saveChangesButton = (Button) findViewById(R.id.edit_save_changes_btn);
+        saveChangesButton.requestFocus();
 
-        createDateEditText = (EditText) findViewById(R.id.event_date);
+        createDateEditText = (EditText) findViewById(R.id.edit_event_date);
         createDateEditText.setInputType(InputType.TYPE_NULL);
         createDateEditText.requestFocus();
 
-        createTimeEditText = (EditText) findViewById(R.id.event_time);
+        createTimeEditText = (EditText) findViewById(R.id.edit_event_time);
         createTimeEditText.setInputType(InputType.TYPE_NULL);
         createTimeEditText.requestFocus();
     }
@@ -258,17 +260,16 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                 }, hour, minute, false);
     }
 
-    private void setUpCreateEventButton()
+    private void setUpSaveChangesEventButton()
     {
-        createEventButton.setOnClickListener(this);
+        saveChangesButton.setOnClickListener(this);
     }
 
     private void setUpCancelButton()
     {
         cancelEventButton.setOnClickListener(this);
     }
-
-
+    
     @Override
     public void onClick(View view) {
         if(view == createDateEditText)
@@ -281,140 +282,155 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         }
         else if(view == cancelEventButton)
         {
-            Intent myIntent = new Intent(view.getContext(), MainActivity.class);
+            Intent myIntent = new Intent(view.getContext(), MainActivity.class); //change to map
             startActivityForResult(myIntent, 0);
         }
-        else if(view == createEventButton) {
-            Map<String, String> formMap = formToMap();
-
-            System.out.println(formMap);
-
-            try {
-                String author = formMap.get("author");
-                String name = formMap.get("event name");
-                String sport = formMap.get("sport");
-                String location = formMap.get("location");
-                String date = formMap.get("date");
-                String time = formMap.get("time");
-                String dateTime = date + " " + time;
-                String gender = formMap.get("gender");
-                String ageMin = formMap.get("age min");
-                String ageMax = formMap.get("age max");
-                String playerAmount = formMap.get("max num ppl");
-                String minUserRating = formMap.get("min rating");
-
-                ServerConnection http = new ServerConnection();
-
-                http.sendCreateEvent(author, name, sport, location, " ", " ",
-                        dateTime, ageMax, ageMin, minUserRating, playerAmount, "false", gender);
-
-            } catch (IOException e)
-            {
-                e.printStackTrace();
-                Log.i(TAG, "HTTP ERROR");
-            } catch(Exception e)
-            {
-                Log.i(TAG, "HashMap ERROR");
-            }
-
-//            Toast.makeText(getApplicationContext(), formMap.toString(), Toast.LENGTH_LONG).show();
-
-
-
-           // int eventID = 1;
-	        /*
-	         * uncomment any of the requests below to use them
-	         */
-
-           // http.sendDeleteEvent(eventID);
-
-           // http.sendGetEvents();
-
-            // create an event when clicked
-            // Event event = new Event();
-
-            // POST it to the server
-
-            // Let user know if successful or not
-
-
-            //Intent myIntent = new Intent(view.getContext(), CreateEventActivity.class);
-            //startActivityForResult(myIntent, 0);
-
+        else if(view == saveChangesButton) {
+            Intent myIntent = new Intent(view.getContext(), MainActivity.class); //change to map
+            startActivityForResult(myIntent, 0);
         }
     }
 
     public void sendCreateEvent(Map<String, String> formMap)
     {
 
-     //   HttpClient client = new HttpClient();
+        //   HttpClient client = new HttpClient();
 
     }
 
-    public Map<String, String> formToMap()
+    public void populateForm(Map<String, String> eventDetailsMap)
     {
-        Map<String, String> formMap = new HashMap<String, String>();
+        String author = eventDetailsMap.get("author");
+        String name = eventDetailsMap.get("event name");
+        String sport = eventDetailsMap.get("sport");
+        String location = eventDetailsMap.get("location");
+        String date = eventDetailsMap.get("date");
+        String time = eventDetailsMap.get("time");
+        String gender = eventDetailsMap.get("gender");
+        String ageMin = eventDetailsMap.get("age min");
+        String ageMax = eventDetailsMap.get("age max");
+        String maxNumPpl = eventDetailsMap.get("max num ppl");
+        String minUserRating = eventDetailsMap.get("min rating");
 
         // get text from the edit text box
-        EditText editTextBox1 = (EditText)findViewById(R.id.event_name);
-        String eventNameStr = editTextBox1.getText().toString();
-        formMap.put("event name", eventNameStr);
+        EditText editTextBox1 = (EditText)findViewById(R.id.edit_event_name);
+        editTextBox1.setText(name);
 
-        EditText editTextBox2 = (EditText)findViewById(R.id.event_creator);
-        String eventCreatorStr = editTextBox2.getText().toString();
-        formMap.put("author", eventCreatorStr);
+        EditText editTextBox2 = (EditText)findViewById(R.id.edit_event_creator);
+        editTextBox2.setText(author);
 
-        Spinner sportSpinner = (Spinner)findViewById(R.id.sport_spinner);
-        String eventSportStr = sportSpinner.getSelectedItem().toString();
-        formMap.put("sport", eventSportStr);
+        Spinner sportSpinner = (Spinner)findViewById(R.id.edit_sport_spinner);
+        String[] sportArray = getResources().getStringArray(R.array.sport_array);
+        for(int i = 0; i < sportArray.length; i++)
+        {
+            if(sport.equalsIgnoreCase(sportArray[i]))
+            {
+                sportSpinner.setSelection(i);
+            }
+        }
 
-        EditText editTextBox4 = (EditText)findViewById(R.id.event_location);
-        String eventLocationStr = editTextBox4.getText().toString();
-        formMap.put("location", eventLocationStr);
+        EditText editTextBox4 = (EditText)findViewById(R.id.edit_event_location);
+        editTextBox4.setText(location);
 
-        EditText editTextBox5 = (EditText) findViewById(R.id.event_date);
-        String eventDateStr = editTextBox5.getText().toString();
-        formMap.put("date", eventDateStr);
+        EditText editTextBox5 = (EditText) findViewById(R.id.edit_event_date);
+        editTextBox5.setText(date);
 
-        EditText editTextBox6 = (EditText) findViewById(R.id.event_time);
-        String eventTimeStr = editTextBox6.getText().toString();
-        formMap.put("time", eventTimeStr);
+        EditText editTextBox6 = (EditText) findViewById(R.id.edit_event_time);
+        editTextBox6.setText(time);
 
-        Spinner genderSpinner = (Spinner)findViewById(R.id.gender_spinner);
-        String eventGenderStr = genderSpinner.getSelectedItem().toString();
-        formMap.put("gender", eventGenderStr);
+        Spinner genderSpinner = (Spinner)findViewById(R.id.edit_gender_spinner);
+        String[] genderArray = getResources().getStringArray(R.array.gender_array);
+        for(int i = 0; i < genderArray.length; i++)
+        {
+            if(gender.equalsIgnoreCase(genderArray[i]))
+            {
+                genderSpinner.setSelection(i);
+            }
+        }
 
-        Spinner ageGroupMinSpinner = (Spinner)findViewById(R.id.age_min_spinner);
-        String eventAgeGroupMinStr = ageGroupMinSpinner.getSelectedItem().toString();
-        formMap.put("age min", eventAgeGroupMinStr);
+        int ageGroupMin = 5;
+        int ageGroupMax = 100;
+        Spinner ageGroupMinSpinner = (Spinner)findViewById(R.id.edit_age_min_spinner);
+        for(int i = ageGroupMin; i < ageGroupMax; i++)
+        {
+            if(Integer.parseInt(ageMin) == i)
+            {
+                ageGroupMinSpinner.setSelection(i - ageGroupMin);
+            }
+        }
 
-        Spinner ageGroupMaxSpinner = (Spinner)findViewById(R.id.age_max_spinner);
-        String eventAgeGroupMaxStr = ageGroupMaxSpinner.getSelectedItem().toString();
-        formMap.put("age max", eventAgeGroupMaxStr);
+        Spinner ageGroupMaxSpinner = (Spinner)findViewById(R.id.edit_age_max_spinner);
+        for(int i = ageGroupMin; i < ageGroupMax; i++)
+        {
+            if(Integer.parseInt(ageMax) == i)
+            {
+                ageGroupMaxSpinner.setSelection(i - ageGroupMin);
+            }
+        }
 
-        String eventAgeGroupStr = eventAgeGroupMinStr + " " + eventAgeGroupMaxStr;
+        int maxNumMin = 2;
+        int maxNumMax = 30;
+        Spinner maxNumPplSpinner = (Spinner)findViewById(R.id.edit_max_num_ppl_spinner);
+        for(int i = maxNumMin; i < maxNumMax; i++)
+        {
+            if(Integer.parseInt(maxNumPpl) == i)
+            {
+                maxNumPplSpinner.setSelection(i - maxNumMin);
+            }
+        }
 
-        Spinner maxNumPplSpinner = (Spinner)findViewById(R.id.max_num_ppl_spinner);
-        String eventMaxNumPplStr = maxNumPplSpinner.getSelectedItem().toString();
-        formMap.put("max num ppl", eventMaxNumPplStr);
-
-        Spinner minUserRatingSpinner = (Spinner)findViewById(R.id.min_user_rating_spinner);
-        String eventMinUserRatingStr = minUserRatingSpinner.getSelectedItem().toString();
-        formMap.put("min rating", eventMinUserRatingStr);
-
-        String text = String.format("1: %s \n2: %s \n3: %s " +
-                        "\n4: %s \n5: %s \n6: %s \n7: %s \n8: %s" +
-                        "\n9: %s \n10: %s", eventNameStr, eventCreatorStr, eventSportStr,
-                eventLocationStr, eventDateStr, eventTimeStr, eventGenderStr, eventAgeGroupStr,
-                eventMaxNumPplStr, eventMinUserRatingStr);
-
-    //    Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
-
-        // Log to show that the vars are correct
-        Log.i(TAG, text);
-
-        return formMap;
+        int minUserRatingMin = -10;
+        int minUserRatingMax = 20;
+        Spinner minUserRatingSpinner = (Spinner)findViewById(R.id.edit_min_user_rating_spinner);
+        for(int i = minUserRatingMin; i < minUserRatingMax; i++)
+        {
+            if(Integer.parseInt(minUserRating) == i)
+            {
+                minUserRatingSpinner.setSelection(i - minUserRatingMin);
+            }
+        }
     }
 
+    public Map<String, String> getEventDetails()
+    {
+        Map<String, String> eventDetailMap = new HashMap<String,
+                String>();
+
+        // reality we will get these values from the db
+        String author = "Brain";
+        eventDetailMap.put("author", author);
+
+        String name = "Basketball at the Park";
+        eventDetailMap.put("event name", name);
+
+        String sport = "Basketball";
+        eventDetailMap.put("sport", sport);
+
+        String location = "csulb";
+        eventDetailMap.put("location", location);
+
+        String date = "2/23/16";
+        eventDetailMap.put("date", date);
+
+        String time = "6:15 pm";
+        eventDetailMap.put("time", time);
+
+        String gender = "any";
+        eventDetailMap.put("gender", gender);
+
+        String ageMin = "16";
+        eventDetailMap.put("age min", ageMin);
+
+        String ageMax = "35";
+        eventDetailMap.put("age max", ageMax);
+
+        String maxNumPpl = "12";
+        eventDetailMap.put("max num ppl", maxNumPpl);
+
+        String minRating = "0";
+        eventDetailMap.put("min rating", minRating);
+
+        return eventDetailMap;
+    }
 
 }

@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +25,14 @@ public class MainActivity extends AppCompatActivity {
         final Button viewEventButton = (Button) findViewById(R.id.viewEventBtn);
         final Button editEventButton = (Button) findViewById(R.id.editEventBtn);
 
+        editEventButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View view)
+            {
+                Intent myIntent = new Intent(view.getContext(), EditEventActivity.class);
+                startActivityForResult(myIntent, 0 );
+            }
+        });
 
         viewEventButton.setOnClickListener(new View.OnClickListener()
         {
@@ -34,14 +43,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        editEventButton.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View view)
-            {
-                Intent myIntent = new Intent(view.getContext(), CreateEventActivity.class);
-                startActivityForResult(myIntent, 0 );
-            }
-        });
 
         createEventButton.setOnClickListener(new View.OnClickListener()
         {
