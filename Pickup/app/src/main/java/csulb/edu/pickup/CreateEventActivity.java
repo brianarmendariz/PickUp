@@ -5,10 +5,12 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
@@ -28,9 +30,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
+import java.util.Map;
 
 
 public class CreateEventActivity extends AppCompatActivity implements View.OnClickListener {
@@ -40,18 +43,27 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     private Button cancelEventButton;
     private Button createEventButton;
 
-    private EditText createDateEditText;
+    Calendar newDate = Calendar.getInstance(); // local object to couple date and time
 
-    private DatePickerDialog fromDatePickerDialog;
+    private EditText createDateEditText;
+    private EditText createTimeEditText;
+
+    private DatePickerDialog datePickerDialog;
+    private TimePickerDialog timePickerDialog;
 
     private SimpleDateFormat dateFormatter;
+
+    private int hour;
+    private int minute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.create_event);
 
-        Log.i(TAG, "onCreate");
 
         // setup spinners when page is created
         initSpinners();
@@ -59,11 +71,12 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 
         findViewsById();
-
+        setTimeField();
         setDateField();
         setUpCancelButton();
         setUpCreateEventButton();
     }
+
 
 
     @Override
@@ -91,59 +104,54 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i(TAG, "onStart");
     }
-
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i(TAG, "onResume");
-    }
 
+    }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.i(TAG, "onPause");
-    }
 
+    }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.i(TAG, "onStop");
-    }
 
+    }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.i(TAG, "onRestart");
-    }
 
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "onDestroy");
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "onSaveInstanceState");
+
     }
 
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        Log.i(TAG, "onRestoreInstanceState");
+
     }
 
-    private void initSpinners() {
+
+
+    private void initSpinners()
+    {
         int idSportSpinner = R.id.sport_spinner;
         int idSportArray = R.array.sport_array;
         int idGenderSpinner = R.id.gender_spinner;
@@ -166,7 +174,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         initNumSpinner(idMinUserRatingSpinner, -10, 20);
     }
 
-    private void initSpinner(int spinnerId, int arrayId) {
+    private void initSpinner(int spinnerId, int arrayId)
+    {
         // load values from resources to populate Gender spinner
         Spinner spinner = (Spinner) findViewById(spinnerId);
         // Create an ArrayAdapter with provided resources and layout
@@ -178,12 +187,14 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         spinner.setAdapter(spinnnerAdapter);
     }
 
-    private void initNumSpinner(int spinnerId, int begin, int end) {
-        List<String> list = new ArrayList<String>();
-        for (int i = begin; i < end; i++) {
+
+    private void initNumSpinner(int spinnerId, int begin, int end)
+    {
+        List<String> list=new ArrayList<String>();
+        for(int i = begin; i < end; i++) {
             list.add(i + "");
         }
-        final Spinner sp = (Spinner) findViewById(spinnerId);
+        final Spinner sp=(Spinner) findViewById(spinnerId);
         ArrayAdapter<String> adp = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, list);
         adp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -200,37 +211,49 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         createDateEditText = (EditText) findViewById(R.id.event_date);
         createDateEditText.setInputType(InputType.TYPE_NULL);
         createDateEditText.requestFocus();
+
+        createTimeEditText = (EditText) findViewById(R.id.event_time);
+        createTimeEditText.setInputType(InputType.TYPE_NULL);
+        createTimeEditText.requestFocus();
     }
+
 
     private void setDateField() {
         createDateEditText.setOnClickListener(this);
 
         Calendar newCalendar = Calendar.getInstance();
-        fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
+                newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
+                dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
                 createDateEditText.setText(dateFormatter.format(newDate.getTime()));
             }
 
-        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
     private void setTimeField() {
-        createDateEditText.setOnClickListener(this);
+        createTimeEditText.setOnClickListener(this);
 
-        Calendar newCalendar = Calendar.getInstance();
-        fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+//        Calendar newCalendar = Calendar.getInstance();
 
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                createDateEditText.setText(dateFormatter.format(newDate.getTime()));
-            }
-
-        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        timePickerDialog =
+                new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+                    public void onTimeSet(TimePicker view, int selectedHour,
+                                          int selectedMinute) {
+                        hour = selectedHour;
+                        minute = selectedMinute;
+                        newDate.set(Calendar.HOUR, hour);
+                        newDate.set(Calendar.MINUTE, minute);
+                        newDate.set(Calendar.SECOND, 0);
+                        dateFormatter = new SimpleDateFormat("hh:mm a", Locale.US);
+                        createTimeEditText.setText(dateFormatter.format(newDate.getTime()));
+                    }
+                }, hour, minute, false);
     }
+
 
     private void setUpCreateEventButton() {
         createEventButton.setOnClickListener(this);
@@ -244,64 +267,66 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
         if (view == createDateEditText) {
-            fromDatePickerDialog.show();
-        } else if (view == cancelEventButton) {
+            datePickerDialog.show();
+        }
+        else if(view == createTimeEditText)
+        {
+            timePickerDialog.show();
+        }
+        else if (view == cancelEventButton) {
             Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
             startActivityForResult(myIntent, 0);
         } else if (view == createEventButton) {
 
-            // get text from the edit text box
-            EditText editTextBox1 = (EditText) findViewById(R.id.event_name);
-            String eventNameStr = editTextBox1.getText().toString();
-
-            EditText editTextBox2 = (EditText) findViewById(R.id.event_creator);
-            String eventCreatorStr = editTextBox2.getText().toString();
-
-            Spinner sportSpinner = (Spinner) findViewById(R.id.sport_spinner);
-            String eventSportStr = sportSpinner.getSelectedItem().toString();
-
-            EditText editTextBox4 = (EditText) findViewById(R.id.event_location);
-            String eventLocationStr = editTextBox4.getText().toString();
-
-            EditText editTextBox5 = (EditText) findViewById(R.id.event_date);
-            String eventDateStr = editTextBox5.getText().toString();
-
-            Spinner genderSpinner = (Spinner) findViewById(R.id.gender_spinner);
-            String eventGenderStr = genderSpinner.getSelectedItem().toString();
-
-            Spinner ageGroupMinSpinner = (Spinner) findViewById(R.id.age_min_spinner);
-            String eventAgeGroupMinStr = ageGroupMinSpinner.getSelectedItem().toString();
-
-            Spinner ageGroupMaxSpinner = (Spinner) findViewById(R.id.age_max_spinner);
-            String eventAgeGroupMaxStr = ageGroupMaxSpinner.getSelectedItem().toString();
-
-            String eventAgeGroupStr = eventAgeGroupMinStr + " " + eventAgeGroupMaxStr;
-
-            Spinner maxNumPplSpinner = (Spinner) findViewById(R.id.max_num_ppl_spinner);
-            String eventMaxNumPplStr = maxNumPplSpinner.getSelectedItem().toString();
-
-            Spinner minUserRatingSpinner = (Spinner) findViewById(R.id.min_user_rating_spinner);
-            String eventMinUserRatingStr = minUserRatingSpinner.getSelectedItem().toString();
-
-            String text = String.format("1: %s \n2: %s \n3: %s " +
-                            "\n4: %s \n5: %s \n6: %s \n7: %s \n8: %s" +
-                            "\n9: %s", eventNameStr, eventCreatorStr,
-                    eventSportStr, eventLocationStr, eventDateStr, eventGenderStr, eventAgeGroupStr,
-                    eventMaxNumPplStr, eventMinUserRatingStr);
-
-
-            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
             try {
+                Map<String, String> formMap = formToMap();
+
+                System.out.println(formMap);
+                String author = formMap.get("author");
+                String name = formMap.get("event name");
+                String sport = formMap.get("sport");
+                String location = formMap.get("location");
+                String date = formMap.get("date");
+                String time = formMap.get("time");
+
+
+                //date yyyy-mm-dd  and the time hh:min:ss
+                String dateTime = (convertDate(date) + " " + convertTime(time));
+
+                Log.d("DATE/TIME" , dateTime);
+                String gender = formMap.get("gender");
+                String ageMin = formMap.get("age min");
+                String ageMax = formMap.get("age max");
+                String playerAmount = formMap.get("max num ppl");
+                String minUserRating = formMap.get("min rating");
                 Geocoder geocoder = new Geocoder(this, Locale.getDefault());
                 List<Address> addresses;
-                addresses = geocoder.getFromLocationName(eventLocationStr, 1);
+                addresses = geocoder.getFromLocationName(location, 1);
 
                 if (addresses.size() > 0) {
                     double latitude = addresses.get(0).getLatitude();
-                    double longtitude = addresses.get(0).getLongitude();
+                    double longitude = addresses.get(0).getLongitude();
+
+                    //open connection
+                    URLConnection http = new URLConnection();
+
+                    /*http.sendCreateEvent(author, name, sport, location,
+                            String.valueOf(latitude), String.valueOf(longitude), dateTime,
+                            ageMax, ageMin, minUserRating,
+                            playerAmount, "P/NP", gender
+                    );*/
+
+                    //Retrieve data from server
+                    http.sendGetEvents();
+
+                    //Delete event from server
+                    //http.sendDeleteEvent(1);
+
+
+                    //Return to the MainActivity
                     Intent returnIntent = new Intent();
-                    returnIntent.putExtra("result", latitude + " " + longtitude);
-                    setResult(MapsActivity.RESULT_OK,returnIntent);
+                    returnIntent.putExtra("result", latitude + " " + longitude);
+                    setResult(MapsActivity.RESULT_OK, returnIntent);
                     finish();
                 }
                 else {
@@ -309,9 +334,15 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                     setResult(MapsActivity.RESULT_CANCELED, returnIntent);
                     finish();
                 }
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 Log.e(TAG, "Unable connect to Geocoder", e);
             }
+            catch(Exception e)
+            {
+                Log.i(TAG, "HashMap ERROR");
+            }
+
             // create an event when clicked
             // Event event = new Event();
 
@@ -325,5 +356,101 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
 
         }
+    }
+
+
+    public Map<String, String> formToMap()
+    {
+        Map<String, String> formMap = new HashMap<>();
+
+        // get text from the edit text box
+        EditText editTextBox1 = (EditText)findViewById(R.id.event_name);
+        String eventNameStr = editTextBox1.getText().toString();
+        formMap.put("event name", eventNameStr);
+
+        EditText editTextBox2 = (EditText)findViewById(R.id.event_creator);
+        String eventCreatorStr = editTextBox2.getText().toString();
+        formMap.put("author", eventCreatorStr);
+
+        Spinner sportSpinner = (Spinner)findViewById(R.id.sport_spinner);
+        String eventSportStr = sportSpinner.getSelectedItem().toString();
+        formMap.put("sport", eventSportStr);
+
+        EditText editTextBox4 = (EditText)findViewById(R.id.event_location);
+        String eventLocationStr = editTextBox4.getText().toString();
+        formMap.put("location", eventLocationStr);
+
+        EditText editTextBox5 = (EditText) findViewById(R.id.event_date);
+        String eventDateStr = editTextBox5.getText().toString();
+        formMap.put("date", eventDateStr);
+
+        EditText editTextBox6 = (EditText) findViewById(R.id.event_time);
+        String eventTimeStr = editTextBox6.getText().toString();
+        formMap.put("time", eventTimeStr);
+
+        Spinner genderSpinner = (Spinner)findViewById(R.id.gender_spinner);
+        String eventGenderStr = genderSpinner.getSelectedItem().toString();
+        formMap.put("gender", eventGenderStr);
+
+        Spinner ageGroupMinSpinner = (Spinner)findViewById(R.id.age_min_spinner);
+        String eventAgeGroupMinStr = ageGroupMinSpinner.getSelectedItem().toString();
+        formMap.put("age min", eventAgeGroupMinStr);
+
+        Spinner ageGroupMaxSpinner = (Spinner)findViewById(R.id.age_max_spinner);
+        String eventAgeGroupMaxStr = ageGroupMaxSpinner.getSelectedItem().toString();
+        formMap.put("age max", eventAgeGroupMaxStr);
+
+        String eventAgeGroupStr = eventAgeGroupMinStr + " " + eventAgeGroupMaxStr;
+
+        Spinner maxNumPplSpinner = (Spinner)findViewById(R.id.max_num_ppl_spinner);
+        String eventMaxNumPplStr = maxNumPplSpinner.getSelectedItem().toString();
+        formMap.put("max num ppl", eventMaxNumPplStr);
+
+        Spinner minUserRatingSpinner = (Spinner)findViewById(R.id.min_user_rating_spinner);
+        String eventMinUserRatingStr = minUserRatingSpinner.getSelectedItem().toString();
+        formMap.put("min rating", eventMinUserRatingStr);
+
+        String text = String.format("1: %s \n2: %s \n3: %s " +
+                        "\n4: %s \n5: %s \n6: %s \n7: %s \n8: %s" +
+                        "\n9: %s \n10: %s", eventNameStr, eventCreatorStr, eventSportStr,
+                eventLocationStr, eventDateStr, eventTimeStr, eventGenderStr, eventAgeGroupStr,
+                eventMaxNumPplStr, eventMinUserRatingStr);
+
+
+        // Log to show that the vars are correct
+        Log.i(TAG, text);
+
+        return formMap;
+    }
+
+
+    //Convert date to yyyy-mm-dd format
+    private String convertDate(String date) {
+        String convertedStr = "";
+        String y, m, d;
+
+        d = date.substring(0, date.indexOf("-"));
+        m = date.substring(3,5);
+        y = date.substring(date.length() - 4);
+        convertedStr = y + "-" + m + "-" + d;
+        return convertedStr;
+    }
+
+    //Convert the time to format hh:min:00
+    private String convertTime(String time) {
+        String convertedTime = "";
+        //h and m for hour and min
+
+        String h = time.substring(0, time.indexOf(":"));
+        String m = time.substring(3, 5);
+        int hour = 0;
+        String timeAMPM = time.substring(time.length()-2);
+        if (timeAMPM.equals("PM")) {
+            hour = Integer.parseInt(h);
+            hour += 12;
+            h = String.valueOf(hour);
+        }
+        convertedTime = h + ":" + m + ":00";
+        return convertedTime;
     }
 }

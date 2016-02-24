@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationManager;
 
 
+import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -30,15 +31,20 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.vision.barcode.Barcode.GeoPoint;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MapsActivity extends FragmentActivity implements android.location.LocationListener {
 
+    private static final String ETag = "Error Message";
     private GoogleMap map; // Might be null if Google Play services APK is not available.
     private ImageButton button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.activity_maps);
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         // Enabling MyLocation Layer of Google Map
@@ -57,23 +63,45 @@ public class MapsActivity extends FragmentActivity implements android.location.L
         if (location != null) {
             onLocationChanged(location);
         }
-        locationManager.requestLocationUpdates(bestProvider, 20000, 0, this);
 
+        //get current location and zoom in
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        map.animateCamera(CameraUpdateFactory.zoomTo(10));
+
+        //Get Location updates from server
+        //locationManager.requestLocationUpdates(bestProvider, 20000, 0, this);
+        getPositionsFromServer();
 
         map.setOnMapClickListener(new OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
                 // Drawing marker on the map
                 drawMarker(point);
-
-                Log.d(String.valueOf(point.longitude), "this is longtitude");
-                Log.d(String.valueOf(point.latitude), "this is latitude");
                 Toast.makeText(getBaseContext(), "Longtitude: " + String.valueOf(point.longitude) + "\n" +
                         "Latitude: " + String.valueOf(point.latitude), Toast.LENGTH_LONG).show();
             }
         });
     }
 
+    //Get addresses from the database
+    private void getPositionsFromServer() {
+        try {
+            URLConnection http = new URLConnection();
+            ArrayList<Event> list = http.sendGetEvents();
+
+            for (int i = 0; i < list.size(); i++) {
+                //add marker to each position
+                LatLng latLng = new LatLng(list.get(i).getLatitude(), list.get(i).getLongitude());
+                map.addMarker(new MarkerOptions().position(latLng));
+            }
+
+
+        }
+        catch (IOException e) {
+            Log.e(ETag, "Unable connect to server", e);
+        }
+    }
 
     private void drawMarker(LatLng point){
         // Creating an instance of MarkerOptions
@@ -103,14 +131,14 @@ public class MapsActivity extends FragmentActivity implements android.location.L
 
     public void onLocationChanged(Location location) {
 
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
-        LatLng latLng = new LatLng(latitude, longitude);
+    //    double latitude = location.getLatitude();
+    //    double longitude = location.getLongitude();
+    //    LatLng latLng = new LatLng(latitude, longitude);
        // map.addMarker(new MarkerOptions().position(latLng)); // add marker
      //   map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
      //   map.animateCamera(CameraUpdateFactory.zoomTo(15));
-        Log.d(String.valueOf(longitude), "longtitude");
-        Log.d(String.valueOf(latitude), "latitude");
+     //   Log.d(String.valueOf(longitude), "longtitude");
+     //   Log.d(String.valueOf(latitude), "latitude");
 
     }
 
@@ -151,7 +179,7 @@ public class MapsActivity extends FragmentActivity implements android.location.L
                 LatLng latLng = new LatLng(lat, lon);
                 map.addMarker(new MarkerOptions().position(latLng));
                 map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                map.animateCamera(CameraUpdateFactory.zoomTo(15));
+                map.animateCamera(CameraUpdateFactory.zoomTo(10));
             }
             if (resultCode == MapsActivity.RESULT_CANCELED) {
                 //Write your code if there's no result
