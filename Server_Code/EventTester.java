@@ -3,10 +3,7 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-<<<<<<< HEAD
 import java.util.Arrays;
-=======
->>>>>>> c885af28032002f4f251a6486e93d91e53633a32
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,34 +22,21 @@ public class EventTester {
 	        String eventName = "event1"; 
 	        String sport = "soccer";
 	        String location = "some address"; 
-<<<<<<< HEAD
 	        String latitude = "33.7830608";
 	        String longitude = "-118.11489089999998";
-=======
-	        String latitude = "3.11111";
-	        String longitude = "43.3333";
->>>>>>> c885af28032002f4f251a6486e93d91e53633a32
 	        String eventDateTime = ""; 
 	        String ageMax = "100"; 
 	        String ageMin = "0";
 	        String minUserRating = "0"; 
 	        String playerAmount = "20"; 
 	        String isPrivate = "false";
-<<<<<<< HEAD
 	        String gender = "both";
-=======
->>>>>>> c885af28032002f4f251a6486e93d91e53633a32
 	        /*
 	         * uncomment any of the requests below to use them
 	         */
 	       
-<<<<<<< HEAD
 	       // http.sendCreateEvent(client, author, eventName, sport,location, latitude,longitude,
 	        //		eventDateTime, ageMax, ageMin, minUserRating, playerAmount, isPrivate, gender);
-=======
-	        http.sendCreateEvent(client, author, eventName, sport,location, latitude,longitude,
-	        		eventDateTime, ageMax, ageMin, minUserRating, playerAmount, isPrivate);
->>>>>>> c885af28032002f4f251a6486e93d91e53633a32
 	        http.sendGetEvents(client);
 	        
 	      
@@ -60,11 +44,7 @@ public class EventTester {
 	  
 		private void sendCreateEvent(HttpClient client, String author, String eventName, String sport,
 				String location, String latitude, String longitude, String eventDateTime, String ageMax, String ageMin,
-<<<<<<< HEAD
 				String minUserRating, String playerAmount, String isPrivate, String gender) throws HttpException, IOException {
-=======
-				String minUserRating, String playerAmount, String isPrivate) throws HttpException, IOException {
->>>>>>> c885af28032002f4f251a6486e93d91e53633a32
 
 			System.out.println("CreateEvent");
 			
@@ -86,11 +66,8 @@ public class EventTester {
 	        post.addParameter("PlayerAmount", playerAmount);
 	        post.addParameter("MinUserRating", minUserRating);
 	        post.addParameter("IsPrivate", isPrivate);
-<<<<<<< HEAD
 	        post.addParameter("Gender", gender);
 	        
-=======
->>>>>>> c885af28032002f4f251a6486e93d91e53633a32
 
 	        /*status of request - 200 if successful*/
 	        int status = client.executeMethod(post); 
@@ -106,11 +83,7 @@ public class EventTester {
 	            System.out.println("cookie = " + c.getName() + "=" + c.getValue());
 	        }
 		}
-<<<<<<< HEAD
 		private ArrayList<Event> sendGetEvents(HttpClient client) throws HttpException, IOException {
-=======
-		private void sendGetEvents(HttpClient client) throws HttpException, IOException {
->>>>>>> c885af28032002f4f251a6486e93d91e53633a32
 
 			System.out.println("GetEvents");
 			
@@ -128,7 +101,6 @@ public class EventTester {
 	        
 	        /*String response from server*/
 	        String response = post.getResponseBodyAsString();
-<<<<<<< HEAD
 	        //System.out.println("Response: "+response);
 	        ArrayList<Event> list = convert(response);
 	        Event firstEvent = list.get(0);
@@ -166,30 +138,6 @@ public class EventTester {
 	    	}
 	    	
 	    	return list;
-=======
-	       // System.out.println("Response: "+response);
-	        convert(response);
-	        /*HttpState keeps track of available cookies*/
-	        HttpState state = client.getState();
-	        for(Cookie c : state.getCookies()) {
-	            //System.out.println("cookie = " + c.getName() + "=" + c.getValue());
-	        }
-		}
-	    public void convert(String str) {
-	    	String[] lines=str.split("#");
-	        ArrayList<Map<String, String>> list = new ArrayList<Map<String, String>>();
-	    	for(String line : lines){
-		        String[] tokens = line.split(",|::");
-		        Map<String, String> map = new HashMap<>();
-		        for (int i=0; i<tokens.length-1; ){
-		        		map.put(tokens[i++], tokens[i++]);
-		        }
-		        list.add(map);
-		        	System.out.println(map);
-		    	
-	    	}
-	    	//System.out.println(list);
->>>>>>> c885af28032002f4f251a6486e93d91e53633a32
 	    }
 
 }

@@ -27,7 +27,7 @@ public class URLConnectionTester {
 	        String location = "some address"; 
 	        String latitude = "33.7830608";
 	        String longitude = "-118.11489089999998";
-	        String eventDateTime = ""; 
+	        String eventDateTime = "2012-11-22 12:45:34"; 
 	        String ageMax = "100"; 
 	        String ageMin = "0";
 	        String minUserRating = "0"; 
@@ -44,14 +44,14 @@ public class URLConnectionTester {
 	        http.sendCreateEvent(author, eventName, sport,location, latitude,longitude,
 	         	eventDateTime, ageMax, ageMin, minUserRating, playerAmount, isPrivate, gender);
 	        
-	        http.sendDeleteEvent(eventID2);
+	        /*http.sendDeleteEvent(eventID2);
 	        
 	        http.sendEditEvent(eventID, author, eventName, sport,location, latitude,longitude,
 		        	eventDateTime, ageMax, ageMin, minUserRating, playerAmount, isPrivate, gender);
-	        
+	        */
 	        http.sendGetEvents();
 	        
-	        http.sendGetEvent(eventID);
+	        //http.sendGetEvent(eventID);
 
 	      
 	    }
@@ -279,8 +279,9 @@ public class URLConnectionTester {
 			String stringResponse = response.toString();
 	        System.out.println("Response: "+response);
 	        ArrayList<Event> list = convert(stringResponse);
-	        Event firstEvent = list.get(0);
-
+	        for(Event event: list){
+	        	  System.out.println("EventID:"+event.getEventID()+", Name:"+event.getName()+", Longitude:"+event.getLongitude()+", Latitude:"+event.getLatitude());
+	        	}
 
 	        return list;
 		}
@@ -347,30 +348,44 @@ public class URLConnectionTester {
 		 * @return ArrayList<Event> - one Event for each Event entry in the database.
 		 */
 	    public ArrayList<Event> convert(String str) {
+	    	
+	    	/*Divide string up into lines */
 	    	String[] lines=str.split("#");
+	    	
 	    	//System.out.println(Arrays.toString(lines));
 	        ArrayList<Event> list = new ArrayList<Event>();
-
+	        
+	        /*for each line parse key-value pairs */
 	    	for(String line : lines){
 	    		if(!line.isEmpty()){
 			        Map<String, String> map = new HashMap<>();
-	
 		    		for(String pair: line.split(",")){
 			    		String[] tokens = pair.split("::");
 				        for (int i=0; i<tokens.length-1; ){
 				        		map.put(tokens[i++], tokens[i++]);
-				        
 				        }
 		    		}
+		    		/*if map has valid data */
 		    		if(map.containsKey("Longitude")){
+		    			
+		    			/*Below line used for testing */
 	    				//System.out.println("map:"+map);
 
-			    		Event newEvent = new Event(map.get("eventName"),"",
+			    		Event newEvent = new Event(map.get("EventName"),"",
 			    				Double.parseDouble(map.get("Longitude")),
 			    				Double.parseDouble(map.get("Latitude")),
-			    				map.get("Location"), map.get("AgeMax"),
-			    				map.get("AgeMin"), map.get("Author"), map.get("Sport"), map.get("Gender"), map.get("PlayerNumber"), map.get("MinUserRating"),
-			    				map.get("DateTimeCreated"), map.get("EventDateTime"), map.get("isPrivate"));
+			    				map.get("Location"),
+			    				map.get("AgeMax"),
+			    				map.get("AgeMin"), 
+			    				map.get("Author"),
+			    				map.get("Sport"), 
+			    				map.get("Gender"),
+			    				map.get("PlayerNumber"), 
+			    				map.get("MinUserRating"),
+			    				map.get("DateTimeCreated"), 
+			    				map.get("EventDateTime"),
+			    				map.get("IsPrivate"),
+			    				map.get("EventID"));
 				        list.add(newEvent);
 			    	}
 		    	}

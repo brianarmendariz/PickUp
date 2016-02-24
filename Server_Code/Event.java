@@ -22,10 +22,12 @@ public class Event
     private String _dateCreated;
     private String _eventDate;
     private String _isPrivate;
+    private String _eventID;
     
 
     public Event()
     {
+    	_eventID = null;
     	_name = null;
     	_description = null;
     	_longitude = 0;
@@ -45,7 +47,7 @@ public class Event
 
     public Event(String name, String description, double longitude, double latitude, String address, String ageMax,
     		String ageMin, String creator, String sport, String gender, String maxNumberPpl,String minUserRating,
-    		String dateCreated, String eventDate, String isPrivate)
+    		String dateCreated, String eventDate, String isPrivate, String eventID)
     {
     	_name = name;
     	_description = description;
@@ -62,11 +64,20 @@ public class Event
         _dateCreated = dateCreated;
         _eventDate = eventDate;
         _isPrivate = isPrivate;
+        _eventID = eventID;
     }
 
     /*
     Getter Methods
      */
+    public String getName()
+    {
+    	return _name;
+    }
+    public String getDescription()
+    {
+    	return _description;
+    }
     public double getLongitude()
     {
     	return _longitude;
@@ -74,6 +85,18 @@ public class Event
     public double getLatitude()
     {
     	return _latitude;
+    }
+    public String getAddress()
+    {
+    	return _address;
+    }
+    public String getAgeMax()
+    {
+    	return _ageMax;
+    }
+    public String getAgeMin()
+    {
+    	return _ageMin;
     }
     public String getCreator()
     {
@@ -93,7 +116,26 @@ public class Event
     {
         return _maxNumberPpl;
     }
-
+    public String getMinUserRating()
+    {
+    	return _minUserRating;
+    }
+    public String getDateCreated()
+    {
+    	return _dateCreated;
+    }
+    public String getEventDate()
+    {
+    	return _eventDate;
+    }
+    public String getIsPrivate()
+    {
+    	return _isPrivate;
+    }
+    public String getEventID()
+    {
+    	return _eventID;
+    }
     /*
     Setter Methods
      */
