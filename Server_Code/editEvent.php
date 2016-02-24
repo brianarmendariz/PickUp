@@ -1,7 +1,7 @@
 
 <?php
 // --------------------------------------------------------------------
-// createEvent.php:  Page for inserting Event data into database.
+// editEvent.php:  Page for editing Event data in database.
 //
 // Created: 2/15/2016 SS
 // --------------------------------------------------------------------
@@ -16,6 +16,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST")
 {
 
     /*set default values for these fields incase the user switches to advanced form */
+   	$EventID = $_POST["EventID"];
     $Author = $_POST["Author"];
     $EventName = $_POST['EventName'];
     $Sport = $_POST['Sport'];
@@ -31,25 +32,28 @@ if( $_SERVER["REQUEST_METHOD"] == "POST")
     $IsPrivate = $_POST['IsPrivate'];
 	$Gender = $_POST['Gender'];
 
-	$sql = 'INSERT INTO PickupEvents (Author, EventName, Sport, Location, DateTimeCreated, EventDateTime, Latitude, Longitude, AgeMax, AgeMin, MinUserRating, PlayerNumber, IsPrivate, Gender)
-    VALUES("'.$Author.'",
-	"'.$EventName.'", 
-	"'.$Sport.'", 
-	"'.$Location.'",
-	"'.$DateTimeCreated.'",
-	"'.$EventDateTime.'",
-	"'.$Latitude.'",
-	"'.$Longitude.'",
-	"'.$AgeMax.'",
-	"'.$AgeMin.'",
-	"'.$MinUserRating.'",
-	"'.$PlayerNumber.'",
-	"'.$IsPrivate.'",
-	"'.$Gender.'");';
-    
-	SQLQuery($sql);
-	print('true');
-}
 
+	$sql = 'SELECT * FROM PickupEvents WHERE EventID = "' . $EventID . '";';
+	$result = SQLQuery($sql);
+	if ($result->num_rows > 0) {
+		$sql = 'UPDATE PickupEvents SET Author="' . $Author . '", EventName="' . $EventName . 
+		'", Sport="' . $Sport . '", Location="' . $Location . '", EventDateTime="' . $EventDateTime .
+		 '", Latitude="' .  $Latitude . '", Longitude="' . $Longitude . '", AgeMax="' . $AgeMax . 
+		 '", AgeMin="' .  $AgeMin . '", MinUserRating="' . $MinUserRating . '", PlayerNumber="' . $PlayerNumber .
+		    '", IsPrivate="' . $IsPrivate . '", Gender="' . $Gender . '" 
+	    WHERE EventID = ' . $EventID . ';';
+	    
+		if(SQLQuery($sql)=== TRUE){
+			print('true');
+		}
+		else{
+			print('false2');
+		}
+
+	}
+	else{
+		print('false1');
+	}
+}
 
 ?>

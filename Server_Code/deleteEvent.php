@@ -21,18 +21,17 @@ if( $_SERVER["REQUEST_METHOD"] == "POST")
 	$sql = 'SELECT * FROM PickupEvents WHERE EventID = "' . $EventID . '";';
 	$result = SQLQuery($sql);
 	if ($result->num_rows > 0) {
-		$SQL = 'DELETE FROM PickupEvents WHERE EventID = ' . $EventID . ';';
+		$sql = 'DELETE FROM PickupEvents WHERE EventID = ' . $EventID . ';';
 		if(SQLQuery($sql)=== TRUE){
-			return 'true';
+			print ("true");
 		}
 		else{
-			return 'false';
+			print("false");
 		}
 	}
-	print ("it worked");
-	return 'false';
+	print ("false");
+
 }
- 	print ("it worked");
 
 
 ?>
