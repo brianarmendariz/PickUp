@@ -27,7 +27,7 @@ public class URLConnectionTester {
 	        String location = "some address"; 
 	        String latitude = "33.7830608";
 	        String longitude = "-118.11489089999998";
-	        String eventDateTime = "2012-11-22 12:45:34"; 
+	        String eventDateTime = "2012-11-22 14:45:34"; 
 	        String ageMax = "100"; 
 	        String ageMin = "0";
 	        String minUserRating = "0"; 
@@ -37,6 +37,9 @@ public class URLConnectionTester {
 	        int eventID =8;
 	        int eventID2 = 7;
 	       
+	        System.out.println(http.serverToClientTime(eventDateTime));
+	        System.out.println(http.serverToClientDate(eventDateTime));
+
 	        /*
 	         * uncomment any of the requests below to use them
 	         */
@@ -400,10 +403,10 @@ public class URLConnectionTester {
 	     * @return
 	     */
 	    public String serverToClientDate(String dateTime){
-	    	String year = dateTime.substring(0,3);
-	    	String month = dateTime.substring(5,6);
-	    	String day = dateTime.substring(8,9);
-	    	return month+"-"+day+"-"+year;
+	    	String year = dateTime.substring(0,4);
+	    	String month = dateTime.substring(5,7);
+	    	String day = dateTime.substring(8,10);
+	    	return day+"-"+month+"-"+year;
 	    }
 	    /**
 	     * function for converting Server datetime format to client time
@@ -411,8 +414,8 @@ public class URLConnectionTester {
 	     * @return String Time
 	     */
 	    public String serverToClientTime(String dateTime){
-	    	String hour = dateTime.substring(11, 12);
-	    	String minute = dateTime.substring(14, 15);
+	    	String hour = dateTime.substring(11, 13);
+	    	String minute = dateTime.substring(14, 16);
 	    	int hourInt = Integer.parseInt(hour);
 	    	if(hourInt>12){
 	    		return hourInt-12+":"+minute+" PM";
