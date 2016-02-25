@@ -2,6 +2,7 @@ package com.brain.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,12 +24,15 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
 
     private final String TAG = "brainsMessages";
 
-    private Button editEventButton;
-    private Button deleteEventButton;
+    private Button _editEventButton;
+    private Button _deleteEventButton;
+    private Button _cancelEventButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.view_event);
 
         Log.i(TAG, "onCreate");
@@ -36,9 +41,12 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
 
         setupEditEventButton();
         setupDeleteEventButton();
+        setupCancelEventButton();
 
         // little sloppy
-        putEventDetailsToForm(getEventDetails());
+        Event event = getEventDetails(1);
+        //Toast.makeText(getApplicationContext(), event.getAddress(), Toast.LENGTH_SHORT).show();
+        putEventDetailsToForm(event);
     }
 
 
@@ -64,65 +72,41 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
         return super.onOptionsItemSelected(item);
     }
 
-    public Map<String, String> getEventDetails()
+    public Event getEventDetails(int eventID)
     {
         Map<String, String> eventDetailMap = new HashMap<String, String>();
 
-        // reality we will get these values from the db
-        String author = "Brain";
-        eventDetailMap.put("author", author);
-
-        String name = "Basketball at the Park";
-        eventDetailMap.put("event name", name);
-
-        String sport = "Basketball";
-        eventDetailMap.put("sport", sport);
-
-        String location = "csulb";
-        eventDetailMap.put("location", location);
-
-        String date = "2/23/16";
-        eventDetailMap.put("date", date);
-
-        String time = "6:15 pm";
-        eventDetailMap.put("time", time);
-
-        String gender = "any";
-        eventDetailMap.put("gender", gender);
-
-        String ageMin = "16";
-        eventDetailMap.put("age min", ageMin);
-
-        String ageMax = "35";
-        eventDetailMap.put("age max", ageMax);
-
-        String maxNumPpl = "12";
-        eventDetailMap.put("max num ppl", maxNumPpl);
-
-        String minRating = "0";
-        eventDetailMap.put("min rating", minRating);
-
-        return eventDetailMap;
+        URLConnection http = new URLConnection();
+        Event event = null;
+        try {
+            event = http.sendGetEvent(eventID);
+        } catch(IOException e)
+        {
+            Toast.makeText(getApplicationContext(), "404: Event Not Found",
+                    Toast.LENGTH_LONG).show();
+        }
+        return event;
     }
 
-    public void putEventDetailsToForm(Map<String, String> eventDetailsMap)
+    public void putEventDetailsToForm(Event event)
     {
-        String author = eventDetailsMap.get("author");
-        String name = eventDetailsMap.get("event name");
-        String sport = eventDetailsMap.get("sport");
-        String location = eventDetailsMap.get("location");
-        String date = eventDetailsMap.get("date");
-        String time = eventDetailsMap.get("time");
-        String gender = eventDetailsMap.get("gender");
-        String ageMin = eventDetailsMap.get("age min");
-        String ageMax = eventDetailsMap.get("age max");
-        String maxNumPpl = eventDetailsMap.get("max num ppl");
-        String minUserRating = eventDetailsMap.get("min rating");
+        String author = event.getCreator();
+        String name = event.getName();
+        String sport = event.getSport();
+        String address = event.getAddress();
+        String date = event.getEventDate();
+        String time = event.getEventTime();
+        String gender = event.getGender();
+        String ageMin = event.getAgeMin();
+        String ageMax = event.getAgeMax();
+        String maxNumPpl = event.getMaxNumberPpl();
+        String minUserRating = event.getMinUserRating();
 
         TextView eventViewName = (TextView) findViewById(R.id.event_view_name);
         if(name.length() > 10)
             eventViewName.setMovementMethod(new ScrollingMovementMethod());
         eventViewName.setText(name);
+        Toast.makeText(getApplicationContext(), name, Toast.LENGTH_SHORT).show();
 
         TextView eventViewCreator = (TextView) findViewById(R.id.event_view_creator);
         eventViewCreator.setText(author);
@@ -131,7 +115,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
         eventViewSport.setText(sport);
 
         TextView eventViewLocation = (TextView) findViewById(R.id.event_view_location);
-        eventViewLocation.setText(location);
+        eventViewLocation.setText(address);
 
         TextView eventViewDate = (TextView) findViewById(R.id.event_view_date);
         eventViewDate.setText(date);
@@ -150,37 +134,51 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
 
         TextView eventViewMinUserRating = (TextView) findViewById(R.id.event_view_min_user_rating);
         eventViewMinUserRating.setText(minUserRating);
+
     }
 
     public void findViewsById()
     {
-        editEventButton = (Button) findViewById(R.id.event_edit_btn);
-        editEventButton.requestFocus();
+        _editEventButton = (Button) findViewById(R.id.event_edit_btn);
+        _editEventButton.requestFocus();
 
-        deleteEventButton = (Button) findViewById(R.id.event_delete_btn);
-        deleteEventButton.requestFocus();
+        _deleteEventButton = (Button) findViewById(R.id.event_delete_btn);
+        _deleteEventButton.requestFocus();
+
+        _cancelEventButton = (Button) findViewById(R.id.event_delete_btn);
+        _cancelEventButton.requestFocus();
     }
 
     public void setupEditEventButton()
     {
-        editEventButton.setOnClickListener(this);
+        _editEventButton.setOnClickListener(this);
     }
 
     public void setupDeleteEventButton()
     {
-        deleteEventButton.setOnClickListener(this);
+        _deleteEventButton.setOnClickListener(this);
+    }
+
+    public void setupCancelEventButton()
+    {
+        _cancelEventButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        if(view == editEventButton)
+        if(view == _editEventButton)
         {
             Intent myIntent = new Intent(view.getContext(), EditEventActivity.class);
             startActivityForResult(myIntent, 0);
         }
-        else if(view == deleteEventButton)
+        else if(view == _deleteEventButton)
         {
             Toast.makeText(getApplicationContext(), "delete", Toast.LENGTH_SHORT).show();
+        }
+        else if(view == _cancelEventButton)
+        {
+            Intent myIntent = new Intent(view.getContext(), MainActivity.class); // change to map
+            startActivityForResult(myIntent, 0);
         }
     }
 }

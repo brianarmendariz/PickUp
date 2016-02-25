@@ -77,7 +77,7 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
         setUpCancelButton();
         setUpSaveChangesEventButton();
 
-        populateForm(getEventDetails());
+        populateForm(getEventDetails(1));
     }
 
 
@@ -269,7 +269,7 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
     {
         cancelEventButton.setOnClickListener(this);
     }
-    
+
     @Override
     public void onClick(View view) {
         if(view == createDateEditText)
@@ -286,6 +286,9 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
             startActivityForResult(myIntent, 0);
         }
         else if(view == saveChangesButton) {
+            URLConnection http = new URLConnection();
+
+            
             Intent myIntent = new Intent(view.getContext(), MainActivity.class); //change to map
             startActivityForResult(myIntent, 0);
         }
@@ -296,6 +299,99 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
 
         //   HttpClient client = new HttpClient();
 
+    }
+
+    public void populateForm(Event event)
+    {
+        String author = event.getCreator();
+        String name = event.getName();
+        String sport = event.getSport();
+        String address = event.getAddress();
+        String date = event.getEventDate();
+        String time = event.getEventTime();
+        String gender = event.getGender();
+        String ageMin = event.getAgeMin();
+        String ageMax = event.getAgeMax();
+        String maxNumPpl = event.getMaxNumberPpl();
+        String minUserRating = event.getMinUserRating();
+
+        // get text from the edit text box
+        EditText editTextBox1 = (EditText)findViewById(R.id.edit_event_name);
+        editTextBox1.setText(name);
+
+        EditText editTextBox2 = (EditText)findViewById(R.id.edit_event_creator);
+        editTextBox2.setText(author);
+
+        Spinner sportSpinner = (Spinner)findViewById(R.id.edit_sport_spinner);
+        String[] sportArray = getResources().getStringArray(R.array.sport_array);
+        for(int i = 0; i < sportArray.length; i++)
+        {
+            if(sport.equalsIgnoreCase(sportArray[i]))
+            {
+                sportSpinner.setSelection(i);
+            }
+        }
+
+        EditText editTextBox4 = (EditText)findViewById(R.id.edit_event_location);
+        editTextBox4.setText(address);
+
+        EditText editTextBox5 = (EditText) findViewById(R.id.edit_event_date);
+        editTextBox5.setText(date);
+
+        EditText editTextBox6 = (EditText) findViewById(R.id.edit_event_time);
+        editTextBox6.setText(time);
+
+        Spinner genderSpinner = (Spinner)findViewById(R.id.edit_gender_spinner);
+        String[] genderArray = getResources().getStringArray(R.array.gender_array);
+        for(int i = 0; i < genderArray.length; i++)
+        {
+            if(gender.equalsIgnoreCase(genderArray[i]))
+            {
+                genderSpinner.setSelection(i);
+            }
+        }
+
+        int ageGroupMin = 5;
+        int ageGroupMax = 100;
+        Spinner ageGroupMinSpinner = (Spinner)findViewById(R.id.edit_age_min_spinner);
+        for(int i = ageGroupMin; i < ageGroupMax; i++)
+        {
+            if(Integer.parseInt(ageMin) == i)
+            {
+                ageGroupMinSpinner.setSelection(i - ageGroupMin);
+            }
+        }
+
+        Spinner ageGroupMaxSpinner = (Spinner)findViewById(R.id.edit_age_max_spinner);
+        for(int i = ageGroupMin; i < ageGroupMax; i++)
+        {
+            if(Integer.parseInt(ageMax) == i)
+            {
+                ageGroupMaxSpinner.setSelection(i - ageGroupMin);
+            }
+        }
+
+        int maxNumMin = 2;
+        int maxNumMax = 30;
+        Spinner maxNumPplSpinner = (Spinner)findViewById(R.id.edit_max_num_ppl_spinner);
+        for(int i = maxNumMin; i < maxNumMax; i++)
+        {
+            if(Integer.parseInt(maxNumPpl) == i)
+            {
+                maxNumPplSpinner.setSelection(i - maxNumMin);
+            }
+        }
+
+        int minUserRatingMin = -10;
+        int minUserRatingMax = 20;
+        Spinner minUserRatingSpinner = (Spinner)findViewById(R.id.edit_min_user_rating_spinner);
+        for(int i = minUserRatingMin; i < minUserRatingMax; i++)
+        {
+            if(Integer.parseInt(minUserRating) == i)
+            {
+                minUserRatingSpinner.setSelection(i - minUserRatingMin);
+            }
+        }
     }
 
     public void populateForm(Map<String, String> eventDetailsMap)
@@ -389,6 +485,21 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
                 minUserRatingSpinner.setSelection(i - minUserRatingMin);
             }
         }
+    }
+
+    public Event getEventDetails(int eventID)
+    {
+        URLConnection http = new URLConnection();
+        Event event = null;
+        try {
+            event = http.sendGetEvent(eventID);
+        } catch(IOException e)
+        {
+            Toast.makeText(getApplicationContext(), "404: Event Not Found",
+                    Toast.LENGTH_LONG).show();
+        }
+
+        return event;
     }
 
     public Map<String, String> getEventDetails()

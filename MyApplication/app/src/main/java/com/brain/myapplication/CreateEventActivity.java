@@ -287,35 +287,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         else if(view == createEventButton) {
             Map<String, String> formMap = formToMap();
 
-            System.out.println(formMap);
 
-            try {
-                String author = formMap.get("author");
-                String name = formMap.get("event name");
-                String sport = formMap.get("sport");
-                String location = formMap.get("location");
-                String date = formMap.get("date");
-                String time = formMap.get("time");
-                String dateTime = date + " " + time;
-                String gender = formMap.get("gender");
-                String ageMin = formMap.get("age min");
-                String ageMax = formMap.get("age max");
-                String playerAmount = formMap.get("max num ppl");
-                String minUserRating = formMap.get("min rating");
-
-                ServerConnection http = new ServerConnection();
-
-                http.sendCreateEvent(author, name, sport, location, " ", " ",
-                        dateTime, ageMax, ageMin, minUserRating, playerAmount, "false", gender);
-
-            } catch (IOException e)
-            {
-                e.printStackTrace();
-                Log.i(TAG, "HTTP ERROR");
-            } catch(Exception e)
-            {
-                Log.i(TAG, "HashMap ERROR");
-            }
 
 //            Toast.makeText(getApplicationContext(), formMap.toString(), Toast.LENGTH_LONG).show();
 
