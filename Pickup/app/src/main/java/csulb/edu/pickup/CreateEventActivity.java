@@ -292,8 +292,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
                 //date yyyy-mm-dd  and the time hh:min:ss
                 String dateTime = (convertDate(date) + " " + convertTime(time));
-
-                Log.d("DATE/TIME" , dateTime);
+                
                 String gender = formMap.get("gender");
                 String ageMin = formMap.get("age min");
                 String ageMax = formMap.get("age max");
@@ -310,11 +309,11 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                     //open connection
                     URLConnection http = new URLConnection();
 
-                    /*http.sendCreateEvent(author, name, sport, location,
+                    http.sendCreateEvent(author, name, sport, location,
                             String.valueOf(latitude), String.valueOf(longitude), dateTime,
                             ageMax, ageMin, minUserRating,
                             playerAmount, "P/NP", gender
-                    );*/
+                    );
 
                     //Retrieve data from server
                     http.sendGetEvents();
@@ -325,7 +324,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
                     //Return to the MainActivity
                     Intent returnIntent = new Intent();
-                    returnIntent.putExtra("result", latitude + " " + longitude);
+                    returnIntent.putExtra("result", latitude + " " + longitude + " " + name + " " + author);
+
                     setResult(MapsActivity.RESULT_OK, returnIntent);
                     finish();
                 }
@@ -336,6 +336,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                 }
             }
             catch (IOException e) {
+                Toast.makeText(getBaseContext(), "Unable to connect to the location service. Please try again later" ,
+                        Toast.LENGTH_LONG).show();
                 Log.e(TAG, "Unable connect to Geocoder", e);
             }
             catch(Exception e)
