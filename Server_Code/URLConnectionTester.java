@@ -383,7 +383,8 @@ public class URLConnectionTester {
 			    				map.get("PlayerNumber"), 
 			    				map.get("MinUserRating"),
 			    				map.get("DateTimeCreated"), 
-			    				map.get("EventDateTime"),
+			    				serverToClientDate(map.get("EventDateTime")),
+			    				serverToClientTime(map.get("EventDateTime")),
 			    				map.get("IsPrivate"),
 			    				map.get("EventID"));
 				        list.add(newEvent);
@@ -393,5 +394,31 @@ public class URLConnectionTester {
 	    	
 	    	return list;
 	    }
+	    /**
+	     * function for converting
+	     * @param dateTime
+	     * @return
+	     */
+	    public String serverToClientDate(String dateTime){
+	    	String year = dateTime.substring(0,3);
+	    	String month = dateTime.substring(5,6);
+	    	String day = dateTime.substring(8,9);
+	    	return month+"-"+day+"-"+year;
+	    }
+	    /**
+	     * function for converting Server datetime format to client time
+	     * @param dateTime
+	     * @return String Time
+	     */
+	    public String serverToClientTime(String dateTime){
+	    	String hour = dateTime.substring(11, 12);
+	    	String minute = dateTime.substring(14, 15);
+	    	int hourInt = Integer.parseInt(hour);
+	    	if(hourInt>12){
+	    		return hourInt-12+":"+minute+" PM";
+	    	}
+    		return hourInt+":"+minute+" AM";
+	    }
+
 
 }

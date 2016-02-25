@@ -21,6 +21,7 @@ public class Event
     private String _maxNumberPpl;
     private String _dateCreated;
     private String _eventDate;
+    private String _eventTime;
     private String _isPrivate;
     private String _eventID;
     
@@ -42,12 +43,13 @@ public class Event
         _minUserRating = null;
         _dateCreated = null;
         _eventDate = null;
+        _eventTime = null;
         _isPrivate = null;
     }
 
     public Event(String name, String description, double longitude, double latitude, String address, String ageMax,
     		String ageMin, String creator, String sport, String gender, String maxNumberPpl,String minUserRating,
-    		String dateCreated, String eventDate, String isPrivate, String eventID)
+    		String dateCreated, String eventDate, String eventTime, String isPrivate, String eventID)
     {
     	_name = name;
     	_description = description;
@@ -63,8 +65,10 @@ public class Event
         _minUserRating = minUserRating;
         _dateCreated = dateCreated;
         _eventDate = eventDate;
+        _eventTime = eventTime;
         _isPrivate = isPrivate;
         _eventID = eventID;
+        
     }
 
     /*
@@ -127,6 +131,10 @@ public class Event
     public String getEventDate()
     {
     	return _eventDate;
+    }
+    public String getEventTime()
+    {
+    	return _eventTime;
     }
     public String getIsPrivate()
     {
