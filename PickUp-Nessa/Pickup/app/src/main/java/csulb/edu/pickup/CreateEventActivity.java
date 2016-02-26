@@ -1,12 +1,16 @@
 package csulb.edu.pickup;
 
-
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
+
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
@@ -21,25 +25,17 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-/**
- * Created by Brain on 2/16/2016.
- */
+
 public class CreateEventActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "brainsMessages";
@@ -63,22 +59,24 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.create_event);
 
-        Log.i(TAG, "onCreate");
-
-        //dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 
         // setup spinners when page is created
         initSpinners();
 
-        findViewsById();
+        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 
-        setDateField();
+        findViewsById();
         setTimeField();
+        setDateField();
         setUpCancelButton();
         setUpCreateEventButton();
     }
+
 
 
     @Override
@@ -106,57 +104,51 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i(TAG, "onStart");
     }
-
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i(TAG, "onResume");
-    }
 
+    }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.i(TAG, "onPause");
-    }
 
+    }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.i(TAG, "onStop");
-    }
 
+    }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.i(TAG, "onRestart");
-    }
 
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "onDestroy");
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "onSaveInstanceState");
+
     }
 
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        Log.i(TAG, "onRestoreInstanceState");
+
     }
+
+
 
     private void initSpinners()
     {
@@ -195,6 +187,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         spinner.setAdapter(spinnnerAdapter);
     }
 
+
     private void initNumSpinner(int spinnerId, int begin, int end)
     {
         List<String> list=new ArrayList<String>();
@@ -223,6 +216,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         createTimeEditText.setInputType(InputType.TYPE_NULL);
         createTimeEditText.requestFocus();
     }
+
 
     private void setDateField() {
         createDateEditText.setOnClickListener(this);
@@ -254,83 +248,102 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                         newDate.set(Calendar.HOUR, hour);
                         newDate.set(Calendar.MINUTE, minute);
                         newDate.set(Calendar.SECOND, 0);
-                        dateFormatter = new SimpleDateFormat("h:mm a", Locale.US);
+                        dateFormatter = new SimpleDateFormat("hh:mm a", Locale.US);
                         createTimeEditText.setText(dateFormatter.format(newDate.getTime()));
                     }
                 }, hour, minute, false);
     }
 
-    private void setUpCreateEventButton()
-    {
+
+    private void setUpCreateEventButton() {
         createEventButton.setOnClickListener(this);
     }
 
-    private void setUpCancelButton()
-    {
+    private void setUpCancelButton() {
         cancelEventButton.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View view) {
-        if(view == createDateEditText)
-        {
+        if (view == createDateEditText) {
             datePickerDialog.show();
         }
         else if(view == createTimeEditText)
         {
             timePickerDialog.show();
         }
-        else if(view == cancelEventButton)
-        {
+        else if (view == cancelEventButton) {
             Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
             startActivityForResult(myIntent, 0);
-        }
-        else if(view == createEventButton) {
-            Map<String, String> formMap = formToMap();
-
-            System.out.println(formMap);
+        } else if (view == createEventButton) {
 
             try {
+                Map<String, String> formMap = formToMap();
+
+                System.out.println(formMap);
                 String author = formMap.get("author");
                 String name = formMap.get("event name");
                 String sport = formMap.get("sport");
                 String location = formMap.get("location");
                 String date = formMap.get("date");
                 String time = formMap.get("time");
-                String dateTime = date + " " + time;
+
+
+                //date yyyy-mm-dd  and the time hh:min:ss
+                String dateTime = (convertDate(date) + " " + convertTime(time));
+                
                 String gender = formMap.get("gender");
                 String ageMin = formMap.get("age min");
                 String ageMax = formMap.get("age max");
                 String playerAmount = formMap.get("max num ppl");
                 String minUserRating = formMap.get("min rating");
+                Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+                List<Address> addresses;
+                addresses = geocoder.getFromLocationName(location, 1);
 
-//                ServerConnection http = new ServerConnection();
-//
-//                http.sendCreateEvent(author, name, sport, location, " ", " ",
-//                        dateTime, ageMax, ageMin, minUserRating, playerAmount, "false", gender);
-//
-//            } catch (IOException e)
-//            {
-//                e.printStackTrace();
-//                Log.i(TAG, "HTTP ERROR");
-            } catch(Exception e)
+                if (addresses.size() > 0) {
+                    double latitude = addresses.get(0).getLatitude();
+                    double longitude = addresses.get(0).getLongitude();
+
+                    //open connection
+                    URLConnection http = new URLConnection();
+
+                    http.sendCreateEvent(author, name, sport, location,
+                            String.valueOf(latitude), String.valueOf(longitude), dateTime,
+                            ageMax, ageMin, minUserRating,
+                            playerAmount, "P/NP", gender
+                    );
+
+                    //Retrieve data from server
+                    http.sendGetEvents();
+
+                    //Delete event from server
+                    //http.sendDeleteEvent(1);
+
+
+                    //Return to the MainActivity
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("result", latitude + " " + longitude + " " + name + " " + author);
+
+                    setResult(MapsActivity.RESULT_OK, returnIntent);
+                    finish();
+                }
+                else {
+                    Intent returnIntent = new Intent();
+                    setResult(MapsActivity.RESULT_CANCELED, returnIntent);
+                    finish();
+                }
+            }
+            catch (IOException e) {
+                Toast.makeText(getBaseContext(), "Unable to connect to the location service. Please try again later" ,
+                        Toast.LENGTH_LONG).show();
+                Log.e(TAG, "Unable connect to Geocoder", e);
+            }
+            catch(Exception e)
             {
                 Log.i(TAG, "HashMap ERROR");
             }
-
-//            Toast.makeText(getApplicationContext(), formMap.toString(), Toast.LENGTH_LONG).show();
-
-
-
-            // int eventID = 1;
-	        /*
-	         * uncomment any of the requests below to use them
-	         */
-
-            // http.sendDeleteEvent(eventID);
-
-            // http.sendGetEvents();
 
             // create an event when clicked
             // Event event = new Event();
@@ -340,22 +353,17 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             // Let user know if successful or not
 
 
-            Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
-            startActivityForResult(myIntent, 0);
+            //Intent myIntent = new Intent(view.getContext(), CreateEventActivity.class);
+            //startActivityForResult(myIntent, 0);
+
 
         }
     }
 
-    public void sendCreateEvent(Map<String, String> formMap)
-    {
-
-        //   HttpClient client = new HttpClient();
-
-    }
 
     public Map<String, String> formToMap()
     {
-        Map<String, String> formMap = new HashMap<String, String>();
+        Map<String, String> formMap = new HashMap<>();
 
         // get text from the edit text box
         EditText editTextBox1 = (EditText)findViewById(R.id.event_name);
@@ -410,7 +418,6 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                 eventLocationStr, eventDateStr, eventTimeStr, eventGenderStr, eventAgeGroupStr,
                 eventMaxNumPplStr, eventMinUserRatingStr);
 
-        //    Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
 
         // Log to show that the vars are correct
         Log.i(TAG, text);
@@ -419,4 +426,33 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     }
 
 
+    //Convert date to yyyy-mm-dd format
+    private String convertDate(String date) {
+        String convertedStr = "";
+        String y, m, d;
+
+        d = date.substring(0, date.indexOf("-"));
+        m = date.substring(3,5);
+        y = date.substring(date.length() - 4);
+        convertedStr = y + "-" + m + "-" + d;
+        return convertedStr;
+    }
+
+    //Convert the time to format hh:min:00
+    private String convertTime(String time) {
+        String convertedTime = "";
+        //h and m for hour and min
+
+        String h = time.substring(0, time.indexOf(":"));
+        String m = time.substring(3, 5);
+        int hour = 0;
+        String timeAMPM = time.substring(time.length()-2);
+        if (timeAMPM.equals("PM")) {
+            hour = Integer.parseInt(h);
+            hour += 12;
+            h = String.valueOf(hour);
+        }
+        convertedTime = h + ":" + m + ":00";
+        return convertedTime;
+    }
 }

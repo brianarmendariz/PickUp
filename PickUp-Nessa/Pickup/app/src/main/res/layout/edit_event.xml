@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/eventLinearLayout1"
+    android:id="@+id/editLinearLayout1"
 
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,20 +15,20 @@
             android:layout_height="wrap_content" >
 
             <TableRow
-                android:id="@+id/eventTableRow1"
+                android:id="@+id/editTableRow1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp" >
 
                 <TextView
-                    android:id="@+id/eventTextView1"
+                    android:id="@+id/editTextView1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/event_name_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <EditText
-                    android:id="@+id/event_name"
+                    android:id="@+id/edit_event_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -38,20 +38,20 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/eventTableRow2"
+                android:id="@+id/editTableRow2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp" >
 
                 <TextView
-                    android:id="@+id/eventTextView2"
+                    android:id="@+id/editTextView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/event_creator_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <EditText
-                    android:id="@+id/event_creator"
+                    android:id="@+id/edit_event_creator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -60,38 +60,38 @@
                 </EditText>
             </TableRow>
             <TableRow
-                android:id="@+id/eventTableRow3"
+                android:id="@+id/editTableRow3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp" >
 
                 <TextView
-                    android:id="@+id/eventTextView3"
+                    android:id="@+id/editTextView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/event_sport_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <Spinner
-                    android:id="@+id/sport_spinner"
+                    android:id="@+id/edit_sport_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </TableRow>
             <TableRow
-                android:id="@+id/eventTableRow4"
+                android:id="@+id/editTableRow4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp" >
 
                 <TextView
-                    android:id="@+id/eventTextView4"
+                    android:id="@+id/editTextView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/event_location_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <EditText
-                    android:id="@+id/event_location"
+                    android:id="@+id/edit_event_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -100,89 +100,89 @@
                 </EditText>
             </TableRow>
             <TableRow
-                android:id="@+id/eventTableRow5"
+                android:id="@+id/editTableRow5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp" >
 
                 <TextView
-                    android:id="@+id/eventTextView5"
+                    android:id="@+id/editTextView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/event_date_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <EditText
-                    android:id="@+id/event_date"
+                    android:id="@+id/edit_event_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="@string/event_date_text" />
             </TableRow>
             <TableRow
-                android:id="@+id/eventTableRow6"
+                android:id="@+id/editTableRow6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp" >
 
                 <TextView
-                    android:id="@+id/eventTextView6"
+                    android:id="@+id/editTextView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/event_time_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <EditText
-                    android:id="@+id/event_time"
+                    android:id="@+id/edit_event_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="@string/event_time_text" />
             </TableRow>
             <TableRow
-                android:id="@+id/eventTableRow7"
+                android:id="@+id/editTableRow7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp" >
 
                 <TextView
-                    android:id="@+id/eventTextView7"
+                    android:id="@+id/editTextView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/event_gender_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <Spinner
-                    android:id="@+id/gender_spinner"
+                    android:id="@+id/edit_gender_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </TableRow>
             <TableRow
-                android:id="@+id/eventTableRow8"
+                android:id="@+id/editTableRow8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp" >
 
                 <TextView
-                    android:id="@+id/eventTextView8"
+                    android:id="@+id/editTextView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/event_age_group_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                            xmlns:tools="http://schemas.android.com/tools"
-                            android:id="@+id/GridLayout1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:columnCount="2"
-                            android:rowCount="1"
-                            android:orientation="horizontal" >
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/EditGridLayout1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:columnCount="2"
+                    android:rowCount="1"
+                    android:orientation="horizontal" >
 
                     <Spinner
-                        android:id="@+id/age_min_spinner"
+                        android:id="@+id/edit_age_min_spinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <Spinner
-                        android:id="@+id/age_max_spinner"
+                        android:id="@+id/edit_age_max_spinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
@@ -190,45 +190,44 @@
 
             </TableRow>
             <TableRow
-                android:id="@+id/eventTableRow9"
+                android:id="@+id/editTableRow9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp" >
 
                 <TextView
-                    android:id="@+id/eventTextView9"
+                    android:id="@+id/editTextView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/event_max_num_ppl_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <Spinner
-                    android:id="@+id/max_num_ppl_spinner"
+                    android:id="@+id/edit_max_num_ppl_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
             </TableRow>
             <TableRow
-                android:id="@+id/eventTableRow10"
+                android:id="@+id/editTableRow10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp" >
 
                 <TextView
-                    android:id="@+id/eventTextView10"
+                    android:id="@+id/editTextView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/event_min_user_rating_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <Spinner
-                    android:id="@+id/min_user_rating_spinner"
+                    android:id="@+id/edit_min_user_rating_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
             </TableRow>
         </TableLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -236,15 +235,15 @@
             android:orientation="vertical" >
 
             <Button
-                android:id="@+id/event_create_btn"
+                android:id="@+id/edit_save_changes_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/create_event_btn_txt"
+                android:text="@string/save_changes_event_btn_txt"
                 android:gravity="center"
                 android:layout_gravity="center_horizontal" />
 
             <Button
-                android:id="@+id/event_cancel_btn"
+                android:id="@+id/edit_event_cancel_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cancel"
