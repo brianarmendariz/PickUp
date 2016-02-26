@@ -21,6 +21,7 @@
     <string name="create_event_btn_txt">Create Event</string>
     <string name="edit_event_btn_txt">Edit Event</string>
     <string name="delete_event_btn_txt">Delete Event</string>
+    <string name="save_changes_event_btn_txt">Save Changes</string>
 
     <string-array name="gender_array">
         <item>Any</item>

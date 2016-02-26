@@ -292,7 +292,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
                 //date yyyy-mm-dd  and the time hh:min:ss
                 String dateTime = (convertDate(date) + " " + convertTime(time));
-                
+
                 String gender = formMap.get("gender");
                 String ageMin = formMap.get("age min");
                 String ageMax = formMap.get("age max");
@@ -450,6 +450,10 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         if (timeAMPM.equals("PM")) {
             hour = Integer.parseInt(h);
             hour += 12;
+            if (hour == 24) {
+                convertedTime = "00" + ":" + m + ":00";
+                return convertedTime;
+            }
             h = String.valueOf(hour);
         }
         convertedTime = h + ":" + m + ":00";

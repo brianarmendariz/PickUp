@@ -1,7 +1,5 @@
 package csulb.edu.pickup;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 
 public class Event
 {

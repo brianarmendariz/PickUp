@@ -12,21 +12,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.v7.app.AppCompatActivity;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Brain on 2/23/2016.
@@ -38,6 +28,8 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
     private Button _editEventButton;
     private Button _deleteEventButton;
     private Button _cancelEventButton;
+
+    private Event _event;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +49,9 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
         String extra = intent.getStringExtra("EventID");
         Log.d("VIEW EVENT ID", extra);
         // little sloppy
-        Event event = getEventDetails(Integer.parseInt(extra));
+        _event = getEventDetails(Integer.parseInt(extra));
         //Toast.makeText(getApplicationContext(), event.getAddress(), Toast.LENGTH_SHORT).show();
-        putEventDetailsToForm(event);
+        putEventDetailsToForm(_event);
     }
 
 
@@ -158,7 +150,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
         _deleteEventButton = (Button) findViewById(R.id.event_delete_btn);
         _deleteEventButton.requestFocus();
 
-        _cancelEventButton = (Button) findViewById(R.id.event_delete_btn);
+        _cancelEventButton = (Button) findViewById(R.id.view_cancel_btn);
         _cancelEventButton.requestFocus();
     }
 
@@ -181,16 +173,31 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         if(view == _editEventButton)
         {
-            Intent myIntent = new Intent(view.getContext(), EditEventActivity.class);
-            startActivityForResult(myIntent, 0);
+            Intent myIntent = new Intent(getBaseContext(), EditEventActivity.class);
+            myIntent.putExtra("EventID", _event.getEventID());
+            startActivity(myIntent);
+            //Intent myIntent = new Intent(view.getContext(), EditEventActivity.class);
+            //startActivityForResult(myIntent, 0);
         }
         else if(view == _deleteEventButton)
         {
-            Toast.makeText(getApplicationContext(), "delete", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), "delete", Toast.LENGTH_SHORT).show();
+
+            try {
+                URLConnection http = new URLConnection();
+                http.sendDeleteEvent(Integer.parseInt(_event.getEventID()));
+            } catch(IOException e)
+            {
+                e.printStackTrace();
+            } finally
+            {
+                Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
+                startActivityForResult(myIntent, 0);
+            }
         }
         else if(view == _cancelEventButton)
         {
-            Intent myIntent = new Intent(view.getContext(), MapsActivity.class); // change to map
+            Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
             startActivityForResult(myIntent, 0);
         }
     }

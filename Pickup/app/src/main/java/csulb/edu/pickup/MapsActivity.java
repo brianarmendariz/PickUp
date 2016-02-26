@@ -58,7 +58,7 @@ public class MapsActivity extends FragmentActivity implements android.location.L
         String bestProvider = locationManager.getBestProvider(criteria, true);
         if (locationManager != null) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                   || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
             }
         }
@@ -142,14 +142,14 @@ public class MapsActivity extends FragmentActivity implements android.location.L
 
     public void onLocationChanged(Location location) {
 
-    //    double latitude = location.getLatitude();
-    //    double longitude = location.getLongitude();
-    //    LatLng latLng = new LatLng(latitude, longitude);
-       // map.addMarker(new MarkerOptions().position(latLng)); // add marker
-     //   map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-     //   map.animateCamera(CameraUpdateFactory.zoomTo(15));
-     //   Log.d(String.valueOf(longitude), "longtitude");
-     //   Log.d(String.valueOf(latitude), "latitude");
+        //    double latitude = location.getLatitude();
+        //    double longitude = location.getLongitude();
+        //    LatLng latLng = new LatLng(latitude, longitude);
+        // map.addMarker(new MarkerOptions().position(latLng)); // add marker
+        //   map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        //   map.animateCamera(CameraUpdateFactory.zoomTo(15));
+        //   Log.d(String.valueOf(longitude), "longtitude");
+        //   Log.d(String.valueOf(latitude), "latitude");
 
     }
 
@@ -188,24 +188,24 @@ public class MapsActivity extends FragmentActivity implements android.location.L
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
-       // if (marker.equals(myMarker))
+        // if (marker.equals(myMarker))
         //{
-            //handle click here
-       // }
+        //handle click here
+        // }
         try {
             String s = marker.getTitle();
             URLConnection http = new URLConnection();
             ArrayList<Event> list = http.sendGetEvents();
             for (int i = 0; i < list.size(); i++) {
-               if (list.get(i).getName().equals(marker.getTitle())) {
-                   //Event e = list.get(i);
-                   Intent intent = new Intent(getBaseContext(), ViewEventActivity.class);
-                   intent.putExtra("EventID", list.get(i).getEventID());
-                   startActivity(intent);
+                if (list.get(i).getName().equals(marker.getTitle())) {
+                    //Event e = list.get(i);
+                    Intent intent = new Intent(getBaseContext(), ViewEventActivity.class);
+                    intent.putExtra("EventID", list.get(i).getEventID());
+                    startActivity(intent);
 
-                   Log.d("TO GET EVENT", list.get(i).getName());
-                   return true;
-               }
+                    Log.d("TO GET EVENT", list.get(i).getName());
+                    return true;
+                }
             }
             Log.d("EVENT" , s);
 
