@@ -48,7 +48,19 @@ if( $_SERVER["REQUEST_METHOD"] == "POST")
 	"'.$Gender.'");';
     
 	SQLQuery($sql);
-	print('true');
+	
+	$sql = 'SELECT EventID FROM PickupEvents WHERE EventName="' . $EventName . '" AND Author = "' . $Author .
+		'" AND DateTimeCreated="' . $DateTimeCreated . '";';
+	$result = SQLQuery($sql);
+	if ($result->num_rows > 0) {
+		$row = $result->fetch_assoc();
+		$eventID = $row["EventID"];
+		print($eventID);
+	}
+	else{
+		print('false');
+	}
+//);
 }
 
 
