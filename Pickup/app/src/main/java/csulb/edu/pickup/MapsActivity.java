@@ -41,6 +41,9 @@ import java.util.Scanner;
 public class MapsActivity extends FragmentActivity implements android.location.LocationListener, OnMarkerClickListener {
 
     private static final String ETag = "Error Message";
+    private static final int CREATE_MAP_EVENT = 1;
+    private static final int VIEW_MAP_EVENT = 2;
+
     private GoogleMap map; // Might be null if Google Play services APK is not available.
     private ImageButton button;
     @Override
@@ -185,13 +188,11 @@ public class MapsActivity extends FragmentActivity implements android.location.L
 
 
 
+    //Click on the marker to view an event
+
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
-        // if (marker.equals(myMarker))
-        //{
-        //handle click here
-        // }
         try {
             String s = marker.getTitle();
             URLConnection http = new URLConnection();
@@ -201,7 +202,7 @@ public class MapsActivity extends FragmentActivity implements android.location.L
                     //Event e = list.get(i);
                     Intent intent = new Intent(getBaseContext(), ViewEventActivity.class);
                     intent.putExtra("EventID", list.get(i).getEventID());
-                    startActivity(intent);
+                    startActivityForResult(intent,VIEW_MAP_EVENT);
 
                     Log.d("TO GET EVENT", list.get(i).getName());
                     return true;
@@ -213,6 +214,9 @@ public class MapsActivity extends FragmentActivity implements android.location.L
         catch (IOException e) {
             Log.e(ETag, "Unable connect to server", e);
         }
+        catch (Exception e) {
+            Log.e(ETag, "Unable to connect to internet",e);
+        }
         return true;
     }
 
@@ -223,7 +227,7 @@ public class MapsActivity extends FragmentActivity implements android.location.L
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == 1) {
+        if (requestCode == CREATE_MAP_EVENT) {
             if(resultCode == MapsActivity.RESULT_OK){
                 String result=data.getStringExtra("result");
                 Scanner read = new Scanner(result);
@@ -243,6 +247,30 @@ public class MapsActivity extends FragmentActivity implements android.location.L
                 //Write your code if there's no result
             }
         }
+
+        if (requestCode == VIEW_MAP_EVENT) {
+            if (resultCode == ViewEventActivity.RESULT_OK) {
+                String result = data.getStringExtra("result");
+                //if the result is edit do nothing
+                if (result.equals("edit")) {
+                    finish();
+                    startActivity(getIntent());
+                }
+
+                //if the result is delete, delete the mark
+                else if (result.equals("delete")) {
+                    finish();
+                    startActivity(getIntent());
+
+                }
+            }
+
+            if (resultCode == MapsActivity.RESULT_CANCELED) {
+                //Do nothing
+            }
+        }
+
+
     }//onActivityResult
 
 

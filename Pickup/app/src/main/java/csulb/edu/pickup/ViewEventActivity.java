@@ -24,7 +24,8 @@ import java.io.IOException;
 public class ViewEventActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final String TAG = "brainsMessages";
-
+    private static final int EDIT_MAP_EVENT = 3;
+    private static final int DELETE_MAP_EVENT = 4;
     private Button _editEventButton;
     private Button _deleteEventButton;
     private Button _cancelEventButton;
@@ -173,11 +174,12 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         if(view == _editEventButton)
         {
-            Intent myIntent = new Intent(getBaseContext(), EditEventActivity.class);
-            myIntent.putExtra("EventID", _event.getEventID());
-            startActivity(myIntent);
-            //Intent myIntent = new Intent(view.getContext(), EditEventActivity.class);
-            //startActivityForResult(myIntent, 0);
+            //Go to edit activity
+            Intent startIntent = new Intent(getBaseContext(),EditEventActivity.class);
+            startIntent.putExtra("EventID", _event.getEventID());
+            startActivity(startIntent);
+            finish();
+
         }
         else if(view == _deleteEventButton)
         {
@@ -191,14 +193,20 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
                 e.printStackTrace();
             } finally
             {
-                Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
-                startActivityForResult(myIntent, 0);
+                Intent returnIntent = new Intent(view.getContext(), MapsActivity.class);
+                returnIntent.putExtra("result", "delete");
+                setResult(MapsActivity.RESULT_OK, returnIntent);
+                finish();
             }
         }
         else if(view == _cancelEventButton)
         {
-            Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
-            startActivityForResult(myIntent, 0);
+
+            Intent returnIntent = new Intent();
+            setResult(MapsActivity.RESULT_CANCELED, returnIntent);
+            finish();
+
         }
     }
+
 }

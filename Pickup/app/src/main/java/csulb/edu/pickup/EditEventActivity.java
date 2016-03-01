@@ -36,6 +36,7 @@ import java.util.Map;
 public class EditEventActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "brainsMessages";
+    private static final int EDIT_MAP_EVENT = 3;
 
     private Button cancelEventButton;
     private Button saveChangesButton;
@@ -281,8 +282,14 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
         }
         else if(view == cancelEventButton)
         {
-            Intent myIntent = new Intent(view.getContext(), MapsActivity.class); //change to map
-            startActivityForResult(myIntent, 0);
+            //Intent myIntent = new Intent(view.getContext(), MapsActivity.class); //change to map
+            //startActivityForResult(myIntent, EDIT_MAP_EVENT);
+
+            //return to ViewEventActivity
+            Intent returnIntent = new Intent(view.getContext(), ViewEventActivity.class);
+            returnIntent.putExtra("result", "cancel");
+            setResult(MapsActivity.RESULT_CANCELED, returnIntent);
+            finish();
         }
         else if(view == saveChangesButton) {
             try {
@@ -329,11 +336,7 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
                     //http.sendDeleteEvent(1);
 
                     //Return to the MainActivity
-//                    Intent returnIntent = new Intent();
-//                    returnIntent.putExtra("result", latitude + " " + longitude);
-//                    setResult(MapsActivity.RESULT_OK, returnIntent);
                     Intent intent = new Intent(getBaseContext(), MapsActivity.class);
-//                    intent.putExtra("EventID", list.get(i).getEventID());
                     startActivity(intent);
                     finish();
                 }
@@ -681,6 +684,10 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
         if (timeAMPM.equals("PM")) {
             hour = Integer.parseInt(h);
             hour += 12;
+            if (hour == 24) {
+                convertedTime = "00:" + m + ":00";
+                return convertedTime;
+            }
             h = String.valueOf(hour);
         }
         convertedTime = h + ":" + m + ":00";
