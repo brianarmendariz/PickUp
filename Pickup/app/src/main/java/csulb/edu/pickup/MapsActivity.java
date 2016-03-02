@@ -255,12 +255,14 @@ public class MapsActivity extends FragmentActivity implements android.location.L
                 if (result.equals("edit")) {
                     finish();
                     startActivity(getIntent());
+
                 }
 
                 //if the result is delete, delete the mark
                 else if (result.equals("delete")) {
                     finish();
                     startActivity(getIntent());
+
 
                 }
             }

@@ -36,7 +36,6 @@ import java.util.Map;
 public class EditEventActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "brainsMessages";
-    private static final int EDIT_MAP_EVENT = 3;
 
     private Button cancelEventButton;
     private Button saveChangesButton;
@@ -291,7 +290,7 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
             setResult(MapsActivity.RESULT_CANCELED, returnIntent);
             finish();
         }
-        else if(view == saveChangesButton) {
+        if(view == saveChangesButton) {
             try {
                 Map<String, String> formMap = formToMap();
 
@@ -305,8 +304,6 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
 
                 //date yyyy-mm-dd  and the time hh:min:ss
                 String dateTime = (convertDate(date) + " " + convertTime(time));
-
-                Log.d("DATE/TIME" , dateTime);
                 String gender = formMap.get("gender");
                 String ageMin = formMap.get("age min");
                 String ageMax = formMap.get("age max");
@@ -336,23 +333,23 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
                     //http.sendDeleteEvent(1);
 
                     //Return to the MainActivity
-                    Intent intent = new Intent(getBaseContext(), MapsActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
                     startActivity(intent);
-                    finish();
+                    //finish();
                 }
-                else {
+                /*else {
                     Intent returnIntent = new Intent();
                     setResult(MapsActivity.RESULT_CANCELED, returnIntent);
                     finish();
-                }
+                }*/
             }
             catch (IOException e) {
                 Log.e(TAG, "Unable connect to Geocoder", e);
             }
-            catch(Exception e)
-            {
-                Log.i(TAG, "HashMap ERROR");
-            }
+            //catch(Exception e)
+            //{
+            //    Log.i(TAG, "HashMap ERROR");
+            //}
         }
     }
 
@@ -675,21 +672,30 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
     //Convert the time to format hh:min:00
     private String convertTime(String time) {
         String convertedTime = "";
+
+        String holder = time;
         //h and m for hour and min
 
-        String h = time.substring(0, time.indexOf(":"));
-        String m = time.substring(3, 5);
+        String h = holder.substring(0, holder.indexOf(":"));
+        holder = holder.substring(holder.indexOf(":")+1);
+        String m = holder.substring(0, holder.indexOf(" "));
         int hour = 0;
+        int minute = 0;
         String timeAMPM = time.substring(time.length()-2);
-        if (timeAMPM.equals("PM")) {
+        minute = Integer.parseInt(m);
+        if (timeAMPM.equals("AM") && h.equals("12")) {
             hour = Integer.parseInt(h);
             hour += 12;
+            if ( minute <= 9) {
+                m = "0"  + String.valueOf(minute);
+            }
             if (hour == 24) {
                 convertedTime = "00:" + m + ":00";
                 return convertedTime;
             }
             h = String.valueOf(hour);
         }
+
         convertedTime = h + ":" + m + ":00";
         return convertedTime;
     }

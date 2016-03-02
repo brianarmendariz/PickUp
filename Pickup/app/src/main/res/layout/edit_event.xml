@@ -240,7 +240,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/save_changes_event_btn_txt"
                 android:gravity="center"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                />
 
             <Button
                 android:id="@+id/edit_event_cancel_btn"
