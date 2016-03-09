@@ -15,7 +15,6 @@ import android.widget.Button;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "brainsMessages";
 
     private Button loginButton;
     private Button createAccountButton;
@@ -27,10 +26,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        setContentView(R.layout.login_event);
+        setContentView(R.layout.login);
 
+
+        findViewsById();
         setUpLoginButton();
-        setUpLoginWithFBButton();
+        setUpCreateAccountButton();
 
     }
 
@@ -84,44 +85,43 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     private void setUpLoginButton() {
-        //loginButton.setOnClickListener(this);
-
+        loginButton.setOnClickListener(this);
     }
 
-    private void setUpLoginWithFBButton() {
-       // createAccountButton.setOnClickListener(this);
+    private void setUpCreateAccountButton() {createAccountButton.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View view) {
-/*
+
         if (view == loginButton) {
             EditText username = (EditText) findViewById(R.id.username);
             EditText password = (EditText) findViewById(R.id.password);
+            Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
+            startActivityForResult(myIntent, 0);
+            /*
             if (username.getText().toString().equals("admin") && password.getText().toString().equals("admin")) {
-
-                Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
-                startActivityForResult(myIntent, 0);
             } else {
                 //wrong password
             }
+            */
         }
         else if (view == createAccountButton) {
-            Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
+            Intent myIntent = new Intent(view.getContext(), CreateAccountActivity.class);
             startActivityForResult(myIntent, 0);
 
         }
-        */
+
 
     }
     private void findViewsById() {
-       /* loginButton = (Button) findViewById(R.id.login_btn);
+        loginButton = (Button) findViewById(R.id.login_btn);
         loginButton.requestFocus();
 
         createAccountButton = (Button) findViewById(R.id.create_account_btn);
         createAccountButton.requestFocus();
-        */
+
     }
 
 }
