@@ -11,19 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
-import org.json.simple.JSONObject;
-
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class URLConnection {
 	
@@ -31,9 +19,10 @@ public class URLConnection {
 	{
 		URLConnection http = new URLConnection();
 		try {
-			http.sendCreateUser("BrianUser", "b", "Brian", "A", "June 18, 1991", "Male", "10", "www/brain/");
+			http.sendCreateUser("BrianUser", "b", "Brian", "A", "1991 6 18", "Male", "10", "www/brain/");
 			http.sendLogin("BrianUser", "b");
-			http.sendEditUser("BrianUser", "c", "Brian", "A", "June 18, 1991", "Male", "10", "www/brain/");
+			http.sendGetUser("BrianUser");
+			http.sendEditUser("BrianUser", "c", "Brian", "A", "1991 6 18", "Male", "10", "www/brain/");
 			http.sendDeleteUser("BrianUser");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -57,7 +46,7 @@ public class URLConnection {
      * @return String 
      * @throws IOException
      */
-    @SuppressWarnings("unchecked")
+  //  @SuppressWarnings("unchecked")
 	public String sendCreateUser(String username, String password, String firstName, 
     							 String lastName, String birthday, String gender, 
     							 String userRating, String picturePath) 
@@ -74,11 +63,12 @@ public class URLConnection {
         con.setRequestMethod("POST");
         con.setRequestProperty("User-Agent", USER_AGENT);
         con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-       // con.setRequestProperty("Content-Type", "application/json");
+//        con.setRequestProperty("Content-Type", "application/json");
 
 
-        String urlParameters = "Username="+username+"&Password="+password+"&FirstName="+firstName+"&LastName="+lastName+"&Birthday="+birthday+
-                "&Gender="+gender+"&UserRating="+userRating+"&PicturePath="+picturePath;
+        String urlParameters = "Username="+username+"&Password="+password+"&FirstName="+firstName+
+        		"&LastName="+lastName+"&Birthday="+birthday+"&Gender="+gender+
+        		"&UserRating="+userRating+"&PicturePath="+picturePath;
         
 
 
@@ -147,17 +137,23 @@ public class URLConnection {
         in.close();
 
         //print result
-        System.out.println("Response: " + response.toString());
+        System.out.println("Response: Login : " + response.toString());
         return response.toString();
     }   
     
-	/**
-	 * 
-	 * @param username
-	 * @param password
-	 * @return
-	 * @throws IOException
-	 */
+    /**
+     * 
+     * @param username
+     * @param password
+     * @param firstName
+     * @param lastName
+     * @param birthday
+     * @param gender
+     * @param userRating
+     * @param picturePath
+     * @return
+     * @throws IOException
+     */
     public String sendEditUser(String username, String password, String firstName, 
 			 				   String lastName, String birthday, String gender, 
 			 				   String userRating, String picturePath) 
@@ -196,14 +192,60 @@ public class URLConnection {
         in.close();
 
         //print result
-        System.out.println("Response: " + response.toString());
+        System.out.println("Response: Edit : " + response.toString());
         return response.toString();
     }   
     
     
+	/**
+	 * 
+	 * @param username
+	 * @return
+	 * @throws IOException
+	 */
+    public String sendGetUser(String username) 
+			 				   throws IOException  {
+
+			/*url of route being requested*/
+        String url = "http://www.csulbpickup.com/getUser.php";
+
+
+        java.net.URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        //add reuqest header
+        con.setRequestMethod("POST");
+        con.setRequestProperty("User-Agent", USER_AGENT);
+        con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+        String urlParameters = "Username="+username;
+
+        // Send post request
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(urlParameters);
+        wr.flush();
+        wr.close();
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        System.out.println("Response: Get : " + response.toString());
+        return response.toString();
+    } 
+    
+    
     /**
      * Deletes an event  from the server database
-     * @param eventID
+     * @param username
      * @return "true" if deleted, "false" if not
      * @throws IOException
      */
@@ -242,7 +284,7 @@ public class URLConnection {
         in.close();
 
         //print result
-        System.out.println("Response: " + response.toString());
+        System.out.println("Response: Delete : " + response.toString());
         return response.toString();
     }
     
