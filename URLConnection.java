@@ -22,7 +22,8 @@ public class URLConnection {
 			http.sendCreateUser("BrianUser", "b", "Brian", "A", "1991 6 18", "Male", "10", "www/brain/");
 			http.sendLogin("BrianUser", "b");
 			http.sendGetUser("BrianUser");
-			http.sendEditUser("BrianUser", "c", "Brian", "A", "1991 6 18", "Male", "10", "www/brain/");
+			http.sendEditUser("BrianUser", "b", "Brain", "A", "1991 6 18", "Male", "10", "www/brain/");
+			http.sendChangePassword("BrianUser", "b", "ccc");
 			http.sendDeleteUser("BrianUser");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -160,7 +161,7 @@ public class URLConnection {
 			 				   throws IOException  {
 
 			/*url of route being requested*/
-        String url = "http://www.csulbpickup.com/createUser.php";
+        String url = "http://www.csulbpickup.com/editUser.php";
 
 
         java.net.URL obj = new URL(url);
@@ -195,7 +196,52 @@ public class URLConnection {
         System.out.println("Response: Edit : " + response.toString());
         return response.toString();
     }   
+
     
+	/**
+	 * 
+	 * @param username
+	 * @return
+	 * @throws IOException
+	 */
+    public String sendChangePassword(String username, String password, String newPassword) 
+			 				   throws IOException  {
+
+			/*url of route being requested*/
+        String url = "http://www.csulbpickup.com/changePassword.php";
+
+
+        java.net.URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        //add reuqest header
+        con.setRequestMethod("POST");
+        con.setRequestProperty("User-Agent", USER_AGENT);
+        con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+        String urlParameters = "Username="+username+"&Password="+password+"&NewPassword="+newPassword;
+
+        // Send post request
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(urlParameters);
+        wr.flush();
+        wr.close();
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        System.out.println("Response: Change Password : " + response.toString());
+        return response.toString();
+    } 
     
 	/**
 	 * 
