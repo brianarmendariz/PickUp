@@ -75,7 +75,11 @@
                 <Spinner
                     android:id="@+id/sport_spinner"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:drawSelectorOnTop="true"
+                    android:prompt="@string/prompt"
+                    />
+
             </TableRow>
             <TableRow
                 android:id="@+id/eventTableRow4"

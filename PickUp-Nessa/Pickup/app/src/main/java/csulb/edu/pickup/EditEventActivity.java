@@ -2,6 +2,7 @@ package csulb.edu.pickup;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -9,14 +10,18 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -54,6 +59,10 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
     private int minute;
 
     private Event _event;
+
+    String[] sportStringArray = {"Badminton", "Baseball", "Basketball", "Football",
+            "Handball", "Ice Hockey", "Racquetball", "Roller Hockey",
+            "Softball", "Tennis", "Volleyball"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,13 +196,19 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
     {
         // load values from resources to populate Gender spinner
         Spinner spinner = (Spinner) findViewById(spinnerId);
-        // Create an ArrayAdapter with provided resources and layout
-        ArrayAdapter<CharSequence> spinnnerAdapter = ArrayAdapter.createFromResource(this,
-                arrayId, android.R.layout.simple_spinner_item);
-        // Specify the layout
-        spinnnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(spinnnerAdapter);
+
+        if(spinnerId == R.id.edit_sport_spinner){
+            spinner.setAdapter(new MyEAdapter(EditEventActivity.this, R.layout.row, sportStringArray));
+        }
+        else {
+            // Create an ArrayAdapter with provided resources and layout
+            ArrayAdapter<CharSequence> spinnnerAdapter = ArrayAdapter.createFromResource(this,
+                    arrayId, android.R.layout.simple_spinner_item);
+            // Specify the layout
+            spinnnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // Apply the adapter to the spinner
+            spinner.setAdapter(spinnnerAdapter);
+        }
     }
 
     private void initNumSpinner(int spinnerId, int begin, int end)
@@ -685,5 +700,44 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
         }
         convertedTime = h + ":" + m + ":00";
         return convertedTime;
+    }
+
+    public class MyEAdapter extends ArrayAdapter<String> {
+
+        int arr_images[] = {R.drawable.badminton_icon,
+                R.drawable.baseball_icon, R.drawable.basketball_icon, R.drawable.football_icon,
+                R.drawable.handball_icon, R.drawable.icehockey_icon, R.drawable.racquetball_icon,
+                R.drawable.rollerhockey_icon, R.drawable.softball_icon, R.drawable.tennis_icon,
+                R.drawable.volleyball_icon};
+
+        public MyEAdapter(Context context, int textViewResourceId, String[] objects) {
+            super(context, textViewResourceId, objects);
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            return getCustomView(position, convertView, parent);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return getCustomView(position, convertView, parent);
+        }
+
+        public View getCustomView(int position, View convertView, ViewGroup parent) {
+
+            LayoutInflater inflater = getLayoutInflater();
+            View row = inflater.inflate(R.layout.row, parent, false);
+            TextView label = (TextView) row.findViewById(R.id.company);
+            label.setText(sportStringArray[position]);
+
+//            TextView sub=(TextView)row.findViewById(R.id.sub);
+//            sub.setText(subs[position]        );
+
+            ImageView icon = (ImageView) row.findViewById(R.id.image);
+            icon.setImageResource(arr_images[position]);
+
+            return row;
+        }
     }
 }
