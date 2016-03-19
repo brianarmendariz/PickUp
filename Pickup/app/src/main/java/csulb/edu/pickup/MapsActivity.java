@@ -46,8 +46,14 @@ public class MapsActivity extends FragmentActivity implements android.location.L
 
     private GoogleMap map; // Might be null if Google Play services APK is not available.
     private ImageButton button;
+    private User thisUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //get User that was passed in
+        Bundle data = getIntent().getExtras();
+        thisUser = (User) data.getParcelable("USER");
+
         super.onCreate(savedInstanceState);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);

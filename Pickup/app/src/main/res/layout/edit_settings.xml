@@ -13,31 +13,31 @@
         android:background="#C0C0C0"
         >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="#008000"
-        android:gravity="center"
-
-        >
-        <TextView
-            android:id="@+id/eventTextView1"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/create_acct_label_text"
-            android:textColor="#000000"
-            android:shadowColor="#FFFFFF"
-            android:shadowDx="0.0"
-            android:shadowDy="0.0"
-            android:shadowRadius="2.0"
-            android:textSize="40dp"
-            android:layout_weight=".99"
-            android:textStyle="bold"
+            android:orientation="vertical"
+            android:background="#008000"
             android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    </LinearLayout>
+            >
+            <TextView
+                android:id="@+id/eventTextView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_label_text"
+                android:textColor="#000000"
+                android:shadowColor="#FFFFFF"
+                android:shadowDx="0.0"
+                android:shadowDy="0.0"
+                android:shadowRadius="2.0"
+                android:textSize="40dp"
+                android:layout_weight=".99"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        </LinearLayout>
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,34 +101,7 @@
                     <requestFocus />
                 </EditText>
             </TableRow>
-            <TableRow
-                android:id="@+id/createAccountTableRow3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp" >
 
-                <TextView
-                    android:id="@+id/createAccountTextView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/create_acct_username_text"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:layout_column="0" />
-
-                <EditText
-                    android:id="@+id/user_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:background="#FAEBD7"
-                    android:scrollHorizontally="true"
-                    android:fadeScrollbars="false"
-                    android:scrollbars="horizontal"
-                    android:inputType="text"
-                    android:layout_column="2">
-                    <requestFocus />
-                </EditText>
-            </TableRow>
             <TableRow
                 android:id="@+id/createAccountTableRow4"
                 android:layout_width="wrap_content"
@@ -244,64 +217,64 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
         </TableLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-    android:orientation="vertical" >
-        <Button
-            android:id="@+id/upload_photo_btn"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/upload_btn_txt"
-            android:background="#000033"
-            android:textSize="20dp"
-            android:textColor="#FFFFFF"
-            android:shadowColor="#000000"
-            android:shadowDx="0.0"
-            android:shadowDy="0.0"
-            android:shadowRadius="2.0"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"/>
-                <Button
-                    android:id="@+id/create_account_btn"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/create_acct_btn_txt"
-                    android:background="#008000"
-                    android:textSize="20dp"
-                    android:textColor="#FFFFFF"
-                    android:shadowColor="#000000"
-                    android:shadowDx="0.0"
-                    android:shadowDy="0.0"
-                    android:shadowRadius="2.0"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"/>
-                <Button
-                    android:id="@+id/cancel_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/cancel_btn_txt"
-                    android:background="#008000"
-                    android:textSize="20dp"
-                    android:textColor="#FFFFFF"
-                    android:shadowColor="#000000"
-                    android:shadowDx="0.0"
-                    android:shadowDy="0.0"
-                    android:shadowRadius="2.0"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+            android:orientation="vertical" >
+            <Button
+                android:id="@+id/upload_photo_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/upload_btn_txt"
+                android:background="#000033"
+                android:textSize="20dp"
+                android:textColor="#FFFFFF"
+                android:shadowColor="#000000"
+                android:shadowDx="0.0"
+                android:shadowDy="0.0"
+                android:shadowRadius="2.0"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"/>
+            <Button
+                android:id="@+id/create_account_btn"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/create_acct_btn_txt"
+                android:background="#008000"
+                android:textSize="20dp"
+                android:textColor="#FFFFFF"
+                android:shadowColor="#000000"
+                android:shadowDx="0.0"
+                android:shadowDy="0.0"
+                android:shadowRadius="2.0"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"/>
+            <Button
+                android:id="@+id/cancel_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel_btn_txt"
+                android:background="#008000"
+                android:textSize="20dp"
+                android:textColor="#FFFFFF"
+                android:shadowColor="#000000"
+                android:shadowDx="0.0"
+                android:shadowDy="0.0"
+                android:shadowRadius="2.0"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
 
-                    />
+                />
         </LinearLayout>
 
     </LinearLayout>

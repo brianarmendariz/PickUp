@@ -1,7 +1,7 @@
 package csulb.edu.pickup;
 
 /**
- * Created by Sarah on 3/9/2016.
+ * Created by Sarah on 3/17/2016.
  */
 
 import android.content.DialogInterface;
@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CreateAccountActivity extends AppCompatActivity implements View.OnClickListener{
+public class EditSettings extends AppCompatActivity implements View.OnClickListener{
 
     private Button cancelButton;
     private Button createAccountButton;
@@ -38,11 +38,13 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Bundle data = getIntent().getExtras();
+        User thisUser = (User) data.getParcelable("USER");
         super.onCreate(savedInstanceState);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        setContentView(R.layout.create_account);
+        setContentView(R.layout.edit_settings);
 
 
         // setup spinners when page is created
@@ -218,65 +220,65 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     public void onClick(View view) {
 
 
-         if (view == cancelButton) {
+        if (view == cancelButton) {
             Intent myIntent = new Intent(view.getContext(), LoginActivity.class);
             startActivityForResult(myIntent, 0);
         } else if (view == createAccountButton) {
 
-                Map<String, String> formMap = formToMap();
+            Map<String, String> formMap = formToMap();
 
-                System.out.println(formMap);
-                String firstName = formMap.get("firstName");
-                String lastName = formMap.get("lastName");
-                String username = formMap.get("username");
-                String password = formMap.get("password");
-                String passwordRetype = formMap.get("passwordRetype");
-                String gender = formMap.get("gender");
-                String bdayDay = formMap.get("bdayDay");
-                String bdayMonth = formMap.get("bdayMonth");
-                String bdayYear = formMap.get("bdayYear");
-                String bday = bdayYear+"-"+bdayMonth+"-"+bdayDay;
-             if(firstName.equals("")){
-                 createAlert("First Name Required", "Please Enter a First Name");
-             }
-             else if(lastName.equals("")){
-                 createAlert("Last Name Required", "Please Enter a Last Name" );
-             }
-             else if(username.equals("")){
-                 createAlert("Username Required", "Please Enter a Username");
-             }
-             else if(password.equals("")){
-                 createAlert("Password Required", "Please Enter a Password" );
-             }
-             else if(passwordRetype.equals("")){
-                 createAlert("Password Validation Required", "Please Enter Password Twice");
-             }
-             else if(gender.equals("")){
-                 createAlert("Gender Required", "Please select a gender" );
-             }
-             else if(password.equals(passwordRetype)) {
-                 URLConnection http = new URLConnection();
-                 try {
-                 String userResult = http.sendCreateUser(username, password, firstName, lastName, bday, gender, "", "");
-                 if(userResult.equals("false")){
-                     createAlert("Duplicate Username", "Username exists. Please try a different one.");
+            System.out.println(formMap);
+            String firstName = formMap.get("firstName");
+            String lastName = formMap.get("lastName");
+            String username = formMap.get("username");
+            String password = formMap.get("password");
+            String passwordRetype = formMap.get("passwordRetype");
+            String gender = formMap.get("gender");
+            String bdayDay = formMap.get("bdayDay");
+            String bdayMonth = formMap.get("bdayMonth");
+            String bdayYear = formMap.get("bdayYear");
+            String bday = bdayYear+"-"+bdayMonth+"-"+bdayDay;
+            if(firstName.equals("")){
+                createAlert("First Name Required", "Please Enter a First Name");
+            }
+            else if(lastName.equals("")){
+                createAlert("Last Name Required", "Please Enter a Last Name" );
+            }
+            else if(username.equals("")){
+                createAlert("Username Required", "Please Enter a Username");
+            }
+            else if(password.equals("")){
+                createAlert("Password Required", "Please Enter a Password" );
+            }
+            else if(passwordRetype.equals("")){
+                createAlert("Password Validation Required", "Please Enter Password Twice");
+            }
+            else if(gender.equals("")){
+                createAlert("Gender Required", "Please select a gender" );
+            }
+            else if(password.equals(passwordRetype)) {
+                URLConnection http = new URLConnection();
+                try {
+                    String userResult = http.sendCreateUser(username, password, firstName, lastName, bday, gender, "", "");
+                    if(userResult.equals("false")){
+                        createAlert("Duplicate Username", "Username exists. Please try a different one.");
 
-                 }
-                 else{
-                     User thisUser = new User(firstName, lastName, username,password, bday, gender, "0");
-                     Bundle b = new Bundle();
-                     b.putParcelable("USER", thisUser);
-                     Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
-                     myIntent.putExtras(b);
-                         startActivityForResult(myIntent, 0);
-                 }
-                 } catch(IOException e)
-                 {
+                    }
+                    else{
+                        User thisUser = new User(firstName, lastName, username,password, bday, gender, "0");
+                        Bundle b = new Bundle();
+                        b.putParcelable("USER", thisUser);
+                        Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
+                        myIntent.putExtras(b);
+                        startActivityForResult(myIntent, 0);
+                    }
+                } catch(IOException e)
+                {
 
-                 }
-             } else {
-                 createAlert("Invalid Password Entry","Passwords do not match - please try again." );
-                 }
+                }
+            } else {
+                createAlert("Invalid Password Entry","Passwords do not match - please try again." );
+            }
         }
     }
 
@@ -406,3 +408,5 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                 .show();
     }
 }
+
+

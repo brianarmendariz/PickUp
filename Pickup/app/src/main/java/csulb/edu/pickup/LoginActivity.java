@@ -1,7 +1,9 @@
 package csulb.edu.pickup;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.View;
@@ -12,6 +14,8 @@ import android.widget.EditText;
  * Created by Sarah on 3/3/2016.
  */
 import android.widget.Button;
+
+import java.io.IOException;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -27,6 +31,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.login);
+
 
 
         findViewsById();
@@ -96,16 +101,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
 
         if (view == loginButton) {
-            EditText username = (EditText) findViewById(R.id.username);
-            EditText password = (EditText) findViewById(R.id.password);
-            Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
-            startActivityForResult(myIntent, 0);
-            /*
-            if (username.getText().toString().equals("admin") && password.getText().toString().equals("admin")) {
-            } else {
-                //wrong password
-            }
-            */
+            EditText usernameBox = (EditText) findViewById(R.id.username);
+            String username = usernameBox.getText().toString();
+
+            EditText passwordBox = (EditText) findViewById(R.id.password);
+            String password = passwordBox.getText().toString();
+
+
+
+            URLConnection http = new URLConnection();
+            try {
+                String loginResult = http.sendLogin(username, password);
+                if (loginResult.equals("login failed")) {
+                    createAlert("Invalid Login", "Login Failed, Please try again");
+
+                }
+                else{
+                    String userData = http.sendGetUser(username);
+                    User thisUser = new User("","","","","","","");
+                    Bundle b = new Bundle();
+                    b.putParcelable("USER", thisUser);
+                    Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
+                    myIntent.putExtras(b);
+                    startActivityForResult(myIntent, 0);
+                }
+        } catch(IOException e)
+        {
+
+        }
+
         }
         else if (view == createAccountButton) {
             Intent myIntent = new Intent(view.getContext(), CreateAccountActivity.class);
@@ -122,6 +146,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         createAccountButton = (Button) findViewById(R.id.create_account_btn);
         createAccountButton.requestFocus();
 
+    }
+    public void createAlert(String title, String message){
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
 }

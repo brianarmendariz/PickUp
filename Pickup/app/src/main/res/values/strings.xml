@@ -28,10 +28,12 @@
         <item>Female</item>
         <item>Male</item>
     </string-array>
-    <string name="login_pickup_text">Pickup!</string>
+    <string name="login_pickup_text">PickUp</string>
     <string name="login_username_text">Username</string>
     <string name="login_password_text">Password</string>
     <string name="login_btn_txt">Login</string>
+
+    <string name="edit_label_text">Edit Settings</string>
 
     <string name="create_acct_label_text">Create Account</string>
     <string name="create_acct_first_name_text">First Name</string>
