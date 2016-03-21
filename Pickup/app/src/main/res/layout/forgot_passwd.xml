@@ -4,31 +4,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:background="#181818"
         android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#008000"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/eventTextView0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rest_passwd_label_txt"
+                android:textColor="#FFFFFF"
+                android:shadowColor="#FFFFFF"
+                android:textSize="40dp"
+                android:layout_weight=".99"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+        </LinearLayout>
+
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_margin="20dp"
             android:gravity="center"
-            android:background="#008000"
+            android:background="#181818"
             android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/eventTextView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/login_pickup_text"
-                android:textColor="#FFFF00"
-                android:textSize="70dp"
+                android:text="@string/rest_desc_text"
+                android:textColor="#FFFFFF"
+                android:textSize="25dp"
                 android:layout_weight=".99"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
-            </LinearLayout>
+        </LinearLayout>
 
 
         <TableLayout
@@ -65,7 +86,7 @@
                     android:id="@+id/username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ems="5"
+                    android:ems="8"
                     android:textSize="25dp"
                     android:background="#FAEBD7"
                     android:fadeScrollbars="false"
@@ -75,80 +96,7 @@
                     <requestFocus />
                 </EditText>
             </TableRow>
-            <TableRow
-                android:id="@+id/eventTableRow3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
 
-                <TextView
-                    android:id="@+id/eventTextView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/login_password_text"
-                    android:textStyle="bold"
-                    android:textSize="25dp"
-                    android:textColor="#FFFFFF"
-                    android:layout_weight=".99"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="5"
-                    android:textSize="25dp"
-                    android:background="#FAEBD7"
-                    android:fadeScrollbars="false"
-                    android:scrollbars="horizontal"
-                    android:inputType="textPassword">
-                    <requestFocus />
-                </EditText>
-            </TableRow>
-            <TableRow
-                android:id="@+id/eventTableRow4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
-
-                <Button
-                    android:id="@+id/forgot_passwd_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/forgot_passwd_btn_txt"
-                    android:background="#181818"
-                    android:textColor="#00FFFF"
-                    android:shadowColor="#000000"
-                    android:shadowDx="0.0"
-                    android:shadowDy="0.0"
-                    android:shadowRadius="2.0"
-                    android:textSize="15dp"
-                    android:textStyle="bold"
-                    android:layout_weight=".99"
-                    />
-            </TableRow>
-            <TableRow
-                android:id="@+id/eventTableRow5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
-
-                <Button
-                    android:id="@+id/login_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/login_btn_txt"
-                    android:background="#FFFF00"
-                    android:textColor="#000000"
-                    android:shadowColor="#000000"
-                    android:shadowDx="0.0"
-                    android:shadowDy="0.0"
-                    android:shadowRadius="2.0"
-                    android:textSize="25dp"
-                    android:textStyle="bold"
-                    android:layout_weight=".99"
-                    />
-            </TableRow>
             <TableRow
                 android:id="@+id/eventTableRow6"
                 android:layout_width="wrap_content"
@@ -156,10 +104,10 @@
                 android:layout_margin="20dp" >
 
                 <Button
-                    android:id="@+id/create_account_btn"
+                    android:id="@+id/send_email_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/create_acct_btn_txt"
+                    android:text="@string/send_email_btn_txt"
                     android:background="#FFFF00"
                     android:textSize="25dp"
                     android:textColor="#000000"
@@ -170,6 +118,26 @@
                     android:textStyle="bold"
                     android:layout_weight=".99" />
             </TableRow>
+            <Button
+                android:id="@+id/cancel_btn"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel_btn_txt"
+                android:background="#008000"
+                android:textSize="20dp"
+                android:textColor="#FFFFFF"
+                android:shadowColor="#000000"
+                android:shadowDx="0.0"
+                android:shadowDy="0.0"
+                android:shadowRadius="2.0"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+
+                />
         </TableLayout>
     </LinearLayout>
 </ScrollView>

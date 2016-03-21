@@ -29,16 +29,18 @@
         <item>Male</item>
     </string-array>
     <string name="login_pickup_text">PickUp</string>
-    <string name="login_username_text">Username</string>
+    <string name="login_email_text">Email</string>
     <string name="login_password_text">Password</string>
     <string name="login_btn_txt">Login</string>
 
     <string name="edit_label_text">Edit Settings</string>
+    <string name="save_settings_btn_txt">Save</string>
+    <string name="forgot_passwd_btn_txt"><u>Forgot Your Password?</u></string>
 
     <string name="create_acct_label_text">Create Account</string>
     <string name="create_acct_first_name_text">First Name</string>
     <string name="create_acct_last_name_text">Last Name</string>
-    <string name="create_acct_username_text">Username</string>
+    <string name="create_acct_email_text">Email</string>
     <string name="create_acct_password_text">Password</string>
     <string name="create_acct_retype_text">Retype Password </string>
     <string name="create_acct_gender_text">Gender</string>
@@ -53,8 +55,9 @@
     <string name="cancel_btn_txt">Cancel</string>
     <string name="upload_btn_txt">Upload Picture</string>
 
-
-
+    <string name="send_email_btn_txt">Send Email</string>
+    <string name="rest_desc_text">Please enter your email address and we will send you instructions for resetting your password:</string>
+    <string name="rest_passwd_label_txt">Reset Password</string>
     <string-array name="sport_array">
         <item>Badminton</item>
         <item>Baseball</item>

@@ -1,10 +1,14 @@
 package csulb.edu.pickup;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 
@@ -542,7 +546,7 @@ public class URLConnection {
 
         //print result
         String stringResponse = response.toString();
-        System.out.println("Response: "+response);
+        System.out.println("Response: " + response);
         ArrayList<Event> list = convert(stringResponse);
         for(Event event: list){
             System.out.println("EventID:"+event.getEventID()+", Name:"+event.getName()+", Longitude:"+event.getLongitude()+", Latitude:"+event.getLatitude());
@@ -606,12 +610,32 @@ public class URLConnection {
         return returnedEvent;
     }
 
+
     /**
-     * Used for parsing the string response from the server.
-     * Converts a string to a map, and then converts the map to an Event object for each Event.
-     * @param str
-     * @return ArrayList<Event> - one Event for each Event entry in the database.
+     * function for converting
+     * @param dateTime
+     * @return
      */
+    public String serverToClientDate(String dateTime){
+        String year = dateTime.substring(0, 4);
+        String month = dateTime.substring(5,7);
+        String day = dateTime.substring(8,10);
+        return day+"-"+month+"-"+year;
+    }
+    /**
+     * function for converting Server datetime format to client time
+     * @param dateTime
+     * @return String Time
+     */
+    public String serverToClientTime(String dateTime){
+        String hour = dateTime.substring(11, 13);
+        String minute = dateTime.substring(14, 16);
+        int hourInt = Integer.parseInt(hour);
+        if(hourInt>12){
+            return hourInt-12+":"+minute+" PM";
+        }
+        return hourInt+":"+minute+" AM";
+    }
     public ArrayList<Event> convert(String str) {
 
 	    	/*Divide string up into lines */
@@ -659,31 +683,162 @@ public class URLConnection {
 
         return list;
     }
-    /**
-     * function for converting
-     * @param dateTime
-     * @return
-     */
-    public String serverToClientDate(String dateTime){
-        String year = dateTime.substring(0,4);
-        String month = dateTime.substring(5,7);
-        String day = dateTime.substring(8,10);
-        return day+"-"+month+"-"+year;
-    }
-    /**
-     * function for converting Server datetime format to client time
-     * @param dateTime
-     * @return String Time
-     */
-    public String serverToClientTime(String dateTime){
-        String hour = dateTime.substring(11, 13);
-        String minute = dateTime.substring(14, 16);
-        int hourInt = Integer.parseInt(hour);
-        if(hourInt>12){
-            return hourInt-12+":"+minute+" PM";
-        }
-        return hourInt+":"+minute+" AM";
-    }
+    public String sendCreateUser(String sourceFileUri, String username, String password, String firstName,
+                                 String lastName, String birthday, String gender,
+                                 String userRating, String picturePath)throws IOException {
+        String fileName = sourceFileUri;
 
+        HttpURLConnection conn = null;
+        DataOutputStream dos = null;
+        String lineEnd = "\r\n";
+        String twoHyphens = "--";
+        String boundary = "*****";
+        int bytesRead, bytesAvailable, bufferSize;
+        byte[] buffer;
+        int maxBufferSize = 1 * 1024 * 1024;
+        File sourceFile = new File(sourceFileUri);
+
+        if (!sourceFile.isFile()) {
+            return "false";
+        } else {
+            try {
+                FileInputStream fileInputStream = new FileInputStream(sourceFile);
+                String urlString = "http://www.csulbpickup.com/getEvent.php";
+                URL url = new URL(urlString);
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setDoInput(true); // Allow Inputs
+                conn.setDoOutput(true); // Allow Outputs
+                conn.setUseCaches(false); // Don't use a Cached Copy
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Connection", "Keep-Alive");
+                //  conn.setRequestProperty("ENCTYPE", "multipart/form-data");
+                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+                conn.setRequestProperty("uploaded_file", fileName);
+
+
+                dos = new DataOutputStream(conn.getOutputStream());
+
+
+                dos.writeBytes(twoHyphens + boundary + lineEnd);
+
+
+                dos.writeBytes("Content-Disposition: form-data; name=\"Username\"" + lineEnd);
+                dos.writeBytes(lineEnd);
+                dos.writeBytes(username);
+                dos.writeBytes(lineEnd);
+
+
+                dos.writeBytes("Content-Disposition: form-data; name=\"FirstName\"" + lineEnd);
+                dos.writeBytes(lineEnd);
+                dos.writeBytes(firstName);
+                dos.writeBytes(lineEnd);
+
+                dos.writeBytes("Content-Disposition: form-data; name=\"LastName\"" + lineEnd);
+                dos.writeBytes(lineEnd);
+                dos.writeBytes(lastName);
+                dos.writeBytes(lineEnd);
+
+                dos.writeBytes("Content-Disposition: form-data; name=\"Password\"" + lineEnd);
+                dos.writeBytes(lineEnd);
+                dos.writeBytes(password);
+                dos.writeBytes(lineEnd);
+
+                dos.writeBytes("Content-Disposition: form-data; name=\"Gender\"" + lineEnd);
+                dos.writeBytes(lineEnd);
+                dos.writeBytes(gender);
+                dos.writeBytes(lineEnd);
+
+                dos.writeBytes("Content-Disposition: form-data; name=\"UserRating\"" + lineEnd);
+                dos.writeBytes(lineEnd);
+                dos.writeBytes(userRating);
+                dos.writeBytes(lineEnd);
+
+                dos.writeBytes("Content-Disposition: form-data; name=\"Birthday\"" + lineEnd);
+                dos.writeBytes(lineEnd);
+                dos.writeBytes(birthday);
+                dos.writeBytes(lineEnd);
+
+                dos.writeBytes("Content-Disposition: form-data; name=\"PicturePath\"" + lineEnd);
+                dos.writeBytes(lineEnd);
+                dos.writeBytes(urlString + "/var/www/html/uploads/" + username + "/" + fileName);
+                dos.writeBytes(lineEnd);
+
+
+                //Json_Encoder encode=new Json_Encoder();
+                //call to encode method and assigning response data to variable 'data'
+                //String data=encode.encod_to_json();
+                //response of encoded data
+                //System.out.println(data);
+
+
+//Adding Parameter media file(audio,video and image)
+
+                dos.writeBytes(twoHyphens + boundary + lineEnd);
+
+                dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\"" + fileName + "\"" + lineEnd);
+                dos.writeBytes(lineEnd);
+                // create a buffer of maximum size
+                bytesAvailable = fileInputStream.available();
+                bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                buffer = new byte[bufferSize];
+                // read file and write it into form...
+                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+                while (bytesRead > 0) {
+                    dos.write(buffer, 0, bufferSize);
+                    bytesAvailable = fileInputStream.available();
+                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+                }
+
+                // send multipart form data necesssary after file data...
+                dos.writeBytes(lineEnd);
+                dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+
+
+                int serverResponseCode = conn.getResponseCode();
+                String serverResponseMessage = conn.getResponseMessage();
+
+
+                Log.i("uploadFile", "HTTP Response is : " + serverResponseMessage + ": " + serverResponseCode);
+
+                if (serverResponseCode == 200) {
+                    Log.d("SARAH", "File Upload Complete");
+                }
+
+                // close the streams //
+                fileInputStream.close();
+                dos.flush();
+                dos.close();
+
+            } catch (MalformedURLException ex) {
+
+                ex.printStackTrace();
+
+                Log.d("SARAH", "error: " + ex.getMessage(), ex);
+            } catch (final Exception e) {
+                e.printStackTrace();
+
+                Log.d("SARAH",
+                        "Exception : " + e.getMessage(), e);
+            }
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            //print result
+            String stringResponse = response.toString();
+            System.out.println("Response: " + response);
+            ArrayList<Event> list = convert(stringResponse);
+            return stringResponse;
+
+        }
+    }
 
 }

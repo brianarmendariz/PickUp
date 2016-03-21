@@ -1,12 +1,28 @@
 package csulb.edu.pickup;
 
+/**
+ * Created by Sarah on 3/19/2016.
+ */
+
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.StrictMode;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+
+import java.io.IOException;
+
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.os.StrictMode;
 import android.widget.EditText;
@@ -18,12 +34,11 @@ import android.widget.Button;
 
 import java.io.IOException;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class ForgotPasswdActivity extends AppCompatActivity implements View.OnClickListener {
 
 
-    private Button loginButton;
-    private Button createAccountButton;
-    private Button forgotPasswdButton;
+    private Button cancelButton;
+    private Button sendEmailButton;
 
 
     @Override
@@ -32,14 +47,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        setContentView(R.layout.login);
+        setContentView(R.layout.forgot_passwd);
 
 
 
         findViewsById();
-        setUpLoginButton();
-        setUpCreateAccountButton();
-        setUpForgotPasswdButton();
+        setupSendEmailButton();
+        setupCancelButton();
 
     }
 
@@ -92,33 +106,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    private void setUpLoginButton() {loginButton.setOnClickListener(this);   }
+    private void setupCancelButton() {cancelButton.setOnClickListener(this);   }
 
-    private void setUpCreateAccountButton() {createAccountButton.setOnClickListener(this);}
+    private void setupSendEmailButton() {sendEmailButton.setOnClickListener(this);}
 
-    private void setUpForgotPasswdButton() {forgotPasswdButton.setOnClickListener(this);}
 
 
     @Override
     public void onClick(View view) {
 
-        if(view == forgotPasswdButton){
-            Log.d("SARAH", "forgot password");
-            Intent myIntent = new Intent(view.getContext(), ForgotPasswdActivity.class);
+        if(view == cancelButton){
+            Intent myIntent = new Intent(view.getContext(), LoginActivity.class);
             startActivityForResult(myIntent, 0);
         }
 
-        if (view == loginButton) {
-            EditText usernameBox = (EditText) findViewById(R.id.username);
-            String username = usernameBox.getText().toString();
-
-            EditText passwordBox = (EditText) findViewById(R.id.password);
-            String password = passwordBox.getText().toString();
-
-
+        if (view == sendEmailButton) {
 
             URLConnection http = new URLConnection();
+            /*
             try {
+
                 String loginResult = http.sendLogin(username, password);
                 if (loginResult.equals("login failed")) {
                     createAlert("Invalid Login", "Login Failed, Please try again");
@@ -133,30 +140,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     myIntent.putExtras(b);
                     startActivityForResult(myIntent, 0);
                 }
-        } catch(IOException e)
-        {
 
+
+            } catch(IOException e)
+            {
+
+            }
+*/
         }
-
-        }
-        else if (view == createAccountButton) {
-            Intent myIntent = new Intent(view.getContext(), CreateAccountActivity.class);
-            startActivityForResult(myIntent, 0);
-
-        }
-
 
     }
     private void findViewsById() {
-        loginButton = (Button) findViewById(R.id.login_btn);
-        loginButton.requestFocus();
+        cancelButton = (Button) findViewById(R.id.cancel_btn);
+        cancelButton.requestFocus();
 
-        createAccountButton = (Button) findViewById(R.id.create_account_btn);
-        createAccountButton.requestFocus();
-
-
-        forgotPasswdButton = (Button) findViewById(R.id.forgot_passwd_btn);
-        forgotPasswdButton.requestFocus();
+        sendEmailButton = (Button) findViewById(R.id.send_email_btn);
+        sendEmailButton.requestFocus();
 
     }
     public void createAlert(String title, String message){
@@ -176,5 +175,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
+
 
 }

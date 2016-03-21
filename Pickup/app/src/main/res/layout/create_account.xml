@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/create_acct_label_text"
-            android:textColor="#000000"
+            android:textColor="#FFFFFF"
             android:shadowColor="#FFFFFF"
             android:shadowDx="0.0"
             android:shadowDy="0.0"
@@ -63,7 +63,7 @@
                     android:id="@+id/first_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ems="10"
+                    android:ems="5"
                     android:background="#FAEBD7"
                     android:scrollHorizontally="true"
                     android:fadeScrollbars="false"
@@ -111,12 +111,12 @@
                     android:id="@+id/createAccountTextView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/create_acct_username_text"
+                    android:text="@string/create_acct_email_text"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:layout_column="0" />
 
                 <EditText
-                    android:id="@+id/user_name"
+                    android:id="@+id/email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -248,9 +248,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
     android:orientation="vertical" >
+        <ImageView
+            android:id="@+id/Imageprev"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+
         <Button
             android:id="@+id/upload_photo_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/upload_btn_txt"
             android:background="#000033"
@@ -284,12 +291,12 @@
                     android:layout_marginRight="10dp"/>
                 <Button
                     android:id="@+id/cancel_btn"
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/cancel_btn_txt"
-                    android:background="#008000"
+                    android:background="#FFFF00"
                     android:textSize="20dp"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#000000"
                     android:shadowColor="#000000"
                     android:shadowDx="0.0"
                     android:shadowDy="0.0"

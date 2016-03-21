@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/edit_label_text"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:shadowColor="#FFFFFF"
                 android:shadowDx="0.0"
                 android:shadowDy="0.0"
@@ -223,7 +223,7 @@
             android:orientation="vertical" >
             <Button
                 android:id="@+id/upload_photo_btn"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/upload_btn_txt"
                 android:background="#000033"
@@ -241,7 +241,7 @@
                 android:id="@+id/create_account_btn"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/create_acct_btn_txt"
+                android:text="@string/save_settings_btn_txt"
                 android:background="#008000"
                 android:textSize="20dp"
                 android:textColor="#FFFFFF"
@@ -257,7 +257,7 @@
                 android:layout_marginRight="10dp"/>
             <Button
                 android:id="@+id/cancel_btn"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/cancel_btn_txt"
                 android:background="#008000"

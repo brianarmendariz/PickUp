@@ -1,22 +1,13 @@
 package csulb.edu.pickup;
 
 /**
- * Created by Sarah on 3/9/2016.
+ * Created by Sarah on 3/19/2016.
  */
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-
-import android.os.Parcelable;
 import android.os.StrictMode;
-import android.provider.MediaStore;
-import android.provider.SyncStateContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -26,37 +17,33 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CreateAccountActivity extends AppCompatActivity implements View.OnClickListener{
-    Button btpic, btnup;
-    private Uri fileUri;
-    String picturePath;
-    Uri selectedImage;
-    Bitmap photo;
-    String ba1;
-    public static String URL = "Paste your URL here";
+
+
+public class EditSettingsActivity extends AppCompatActivity implements View.OnClickListener{
+
     private Button cancelButton;
     private Button createAccountButton;
     private Button uploadPhotoButton;
-
+    User thisUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Bundle data = getIntent().getExtras();
+        thisUser = (User) data.getParcelable("USER");
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.edit_settings);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        setContentView(R.layout.create_account);
+        setContentView(R.layout.edit_settings);
 
 
         // setup spinners when page is created
@@ -232,89 +219,65 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     public void onClick(View view) {
 
 
-         if (view == cancelButton) {
+        if (view == cancelButton) {
             Intent myIntent = new Intent(view.getContext(), LoginActivity.class);
             startActivityForResult(myIntent, 0);
-        }
-         else if(view == uploadPhotoButton){
-             // Check Camera
-             if (getApplicationContext().getPackageManager().hasSystemFeature(
-                     PackageManager.FEATURE_CAMERA)) {
-                 // Open default camera
-                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+        } else if (view == createAccountButton) {
 
-                 // start the image capture Intent
-                 startActivityForResult(intent, 100);
+            Map<String, String> formMap = formToMap();
 
-             } else {
-                 Toast.makeText(getApplication(), "Camera not supported", Toast.LENGTH_LONG).show();
-             }
+            System.out.println(formMap);
+            String firstName = formMap.get("firstName");
+            String lastName = formMap.get("lastName");
+            String username = formMap.get("username");
+            String password = formMap.get("password");
+            String passwordRetype = formMap.get("passwordRetype");
+            String gender = formMap.get("gender");
+            String bdayDay = formMap.get("bdayDay");
+            String bdayMonth = formMap.get("bdayMonth");
+            String bdayYear = formMap.get("bdayYear");
+            String bday = bdayYear+"-"+bdayMonth+"-"+bdayDay;
+            if(firstName.equals("")){
+                createAlert("First Name Required", "Please Enter a First Name");
+            }
+            else if(lastName.equals("")){
+                createAlert("Last Name Required", "Please Enter a Last Name" );
+            }
+            else if(username.equals("")){
+                createAlert("Username Required", "Please Enter a Username");
+            }
+            else if(password.equals("")){
+                createAlert("Password Required", "Please Enter a Password" );
+            }
+            else if(passwordRetype.equals("")){
+                createAlert("Password Validation Required", "Please Enter Password Twice");
+            }
+            else if(gender.equals("")){
+                createAlert("Gender Required", "Please select a gender" );
+            }
+            else if(password.equals(passwordRetype)) {
+                URLConnection http = new URLConnection();
+                try {
+                    String userResult = http.sendCreateUser(username, password, firstName, lastName, bday, gender, "", "");
+                    if(userResult.equals("false")){
+                        createAlert("Duplicate Username", "Username exists. Please try a different one.");
 
-         }
-         else if (view == createAccountButton) {
+                    }
+                    else{
+                        User thisUser = new User(firstName, lastName, username,password, bday, gender, "0");
+                        Bundle b = new Bundle();
+                        b.putParcelable("USER", thisUser);
+                        Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
+                        myIntent.putExtras(b);
+                        startActivityForResult(myIntent, 0);
+                    }
+                } catch(IOException e)
+                {
 
-
-             Bitmap bm = BitmapFactory.decodeFile(picturePath);
-             ByteArrayOutputStream bao = new ByteArrayOutputStream();
-             bm.compress(Bitmap.CompressFormat.JPEG, 90, bao);
-             byte[] ba = bao.toByteArray();
-             //ba1 = Base64.encodeBytes(ba);
-
-                Map<String, String> formMap = formToMap();
-
-                System.out.println(formMap);
-                String firstName = formMap.get("firstName");
-                String lastName = formMap.get("lastName");
-                String email = formMap.get("email");
-                String password = formMap.get("password");
-                String passwordRetype = formMap.get("passwordRetype");
-                String gender = formMap.get("gender");
-                String bdayDay = formMap.get("bdayDay");
-                String bdayMonth = formMap.get("bdayMonth");
-                String bdayYear = formMap.get("bdayYear");
-                String bday = bdayYear+"-"+bdayMonth+"-"+bdayDay;
-             if(firstName.equals("")){
-                 createAlert("First Name Required", "Please Enter a First Name");
-             }
-             else if(lastName.equals("")){
-                 createAlert("Last Name Required", "Please Enter a Last Name" );
-             }
-             else if(email.equals("")){
-                 createAlert("Email Required", "Please Enter an Email");
-             }
-             else if(password.equals("")){
-                 createAlert("Password Required", "Please Enter a Password" );
-             }
-             else if(passwordRetype.equals("")){
-                 createAlert("Password Validation Required", "Please Enter Password Twice");
-             }
-             else if(gender.equals("")){
-                 createAlert("Gender Required", "Please select a gender" );
-             }
-             else if(password.equals(passwordRetype)) {
-                 URLConnection http = new URLConnection();
-                 try {
-                 String userResult = http.sendCreateUser(email, password, firstName, lastName, bday, gender, "", "");
-                 if(userResult.equals("false")){
-                     createAlert("Duplicate Email", "User exists. Please try a different one.");
-
-                 }
-                 else{
-                     User thisUser = new User(firstName, lastName, email ,password, bday, gender, "0");
-                     Bundle b = new Bundle();
-                     b.putParcelable("USER", thisUser);
-                     Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
-                     myIntent.putExtras(b);
-                         startActivityForResult(myIntent, 0);
-                 }
-                 } catch(IOException e)
-                 {
-
-                 }
-             } else {
-                 createAlert("Invalid Password Entry","Passwords do not match - please try again." );
-                 }
+                }
+            } else {
+                createAlert("Invalid Password Entry","Passwords do not match - please try again." );
+            }
         }
     }
 
@@ -332,9 +295,6 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         String lastNameStr = editTextBox2.getText().toString();
         formMap.put("lastName", lastNameStr);
 
-        EditText editTextBox3 = (EditText)findViewById(R.id.email);
-        String emailStr = editTextBox3.getText().toString();
-        formMap.put("email", emailStr);
 
         EditText editTextBox4 = (EditText)findViewById(R.id.userPassword);
         String passwordStr = editTextBox4.getText().toString();
@@ -370,9 +330,8 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
 
         String text = String.format("first: %s \nlast: %s \nuser: %s " +
-                        "\npass: %s \npassRe: %s \ngend: %s \nday: %s \nmon: %s" +
-                        "\nyea: %s", firstNameStr, lastNameStr, emailStr,
-                passwordStr, passwordRetypeStr, genderStr, bdayDayStr, bdayMonthStr,
+                        "\npass: %s \npassRe: %s \ngend: %s \nday: %s \nmon: %s", firstNameStr, lastNameStr, passwordStr, passwordRetypeStr,
+                genderStr, bdayDayStr, bdayMonthStr,
                 bdayYearStr);
 
 
@@ -443,28 +402,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
-
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 100 && resultCode == RESULT_OK) {
-
-            selectedImage = data.getData();
-            photo = (Bitmap) data.getExtras().get("data");
-
-            // Cursor to get image uri to display
-
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            picturePath = cursor.getString(columnIndex);
-            cursor.close();
-
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            ImageView imageView = (ImageView) findViewById(R.id.Imageprev);
-            imageView.setImageBitmap(photo);
-        }
-    }
 }
+
+
+
