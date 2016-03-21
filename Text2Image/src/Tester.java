@@ -7,6 +7,8 @@ public class Tester {
     	Event _event = new Event("my event", "good times roll", 50.0, 50.0, "CSULB", "40", 
                 "15", "Brain", "Basketball", "M", "12", "2",
                 "2016 3 19", "2016 3 19", "6:00 PM", "false", "0");
-    	t2i.createImage(_event);
+
+//    	t2i.createImage(_event); // creates image with transparent bkg from text
+//    	t2i.createFlyer(_event); // adds text to image to create a flyer
     }
 }

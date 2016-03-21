@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -116,9 +117,9 @@ public class TextToImage {
 		return arr;
 	}
 	
-	public void createImage(Event _event)
+	public void createImage(Event event)
 	{
-        String[] _stringArray = makeEventArray(_event);
+        String[] stringArray = makeEventArray(event);
    
         /*
            Because font metrics is based on a graphics context, we need to create
@@ -130,8 +131,8 @@ public class TextToImage {
         Font font = new Font("Arial", Font.PLAIN, 32); //48
         g2d.setFont(font);
         FontMetrics fm = g2d.getFontMetrics();
-        int width = fm.stringWidth(_event.toString());
-        int height = fm.getHeight()*getLines(_event);
+        int width = fm.stringWidth(event.toString());
+        int height = fm.getHeight()*getLines(event);
         g2d.dispose();
 
         img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -146,29 +147,70 @@ public class TextToImage {
         g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
         g2d.setFont(font);
         fm = g2d.getFontMetrics();
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(Color.BLUE);
         
         // this is the text to image, it creates a graphic then saves it to a png
         int line = 1;
-        for(int i = 0; i < _stringArray.length; i++)
+        for(int i = 0; i < stringArray.length; i++)
         {
-        	if(!_stringArray[i].isEmpty() && _stringArray[i] != null)
+        	if(!stringArray[i].isEmpty() && stringArray[i] != null)
         	{
-        		g2d.drawString(_stringArray[i], 1, fm.getAscent()*line);
+        		g2d.drawString(stringArray[i], 1, fm.getAscent()*line);
         		++line;
         	}
         }
 
+    	String name = event.getName();
+    	if(name.contains(" "))
+    	{
+    		name = name.replaceAll("\\s", "");
+    	}
+    	
         g2d.dispose();
         try {
-        	String name = _event.getName();
-        	if(name.contains(" "))
-        	{
-        		name = name.replaceAll("\\s", "");
-        	}
             ImageIO.write(img, "png", new File(name+"_pevent.png"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+	}
+	
+	public void createFlyer(Event event)
+	{
+		BufferedImage image;
+		try {
+			image = ImageIO.read(new File("images/field.png"));
+			
+		    Graphics g = image.getGraphics();
+		    g.setFont(g.getFont().deriveFont(30f));
+		    
+		    int width = image.getWidth();
+		    
+		    String[] stringArray = makeEventArray(event);
+		    
+	        int line = 1;
+	        for(int i = 0; i < stringArray.length; i++)
+	        {
+	        	if(!stringArray[i].isEmpty() && stringArray[i] != null)
+	        	{
+	        		g.drawString(stringArray[i], (width/3), (line+3)*30);
+	        		++line;
+	        	}
+	        }
+		    
+		    g.dispose();
+		    
+	    	String name = event.getName();
+	    	if(name.contains(" "))
+	    	{
+	    		name = name.replaceAll("\\s", "");
+	    	}
+	 
+		    ImageIO.write(image, "png", new File(name+"_pevent_flyer.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
 	}
 }
