@@ -36,7 +36,7 @@
     <string name="edit_label_text">Edit Settings</string>
     <string name="save_settings_btn_txt">Save</string>
     <string name="forgot_passwd_btn_txt"><u>Forgot Your Password?</u></string>
-
+    <string name="reset_paswd_btn_txt">Reset Password</string>
     <string name="create_acct_label_text">Create Account</string>
     <string name="create_acct_first_name_text">First Name</string>
     <string name="create_acct_last_name_text">Last Name</string>
@@ -54,6 +54,11 @@
     <string name="create_acct_btn_txt">Create Account</string>
     <string name="cancel_btn_txt">Cancel</string>
     <string name="upload_btn_txt">Upload Picture</string>
+
+    <string name="password_rest_label">Reset Password</string>
+    <string name="old_text">Current</string>
+    <string name="new_text">New</string>
+    <string name="retype_text">Retype New</string>
 
     <string name="send_email_btn_txt">Send Email</string>
     <string name="rest_desc_text">Please enter your email address and we will send you instructions for resetting your password:</string>

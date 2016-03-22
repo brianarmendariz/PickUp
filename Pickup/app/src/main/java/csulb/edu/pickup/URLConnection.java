@@ -132,11 +132,47 @@ public class URLConnection {
         System.out.println("Response: Login : " + response.toString());
         return response.toString();
     }
+    public String sendResetEmail(String username) throws IOException  {
+
+			/*url of route being requested*/
+        String url = "http://www.csulbpickup.com/sendResetEmail.php";
+
+
+        java.net.URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        //add reuqest header
+        con.setRequestMethod("POST");
+        con.setRequestProperty("User-Agent", USER_AGENT);
+        con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+        String urlParameters = "Username="+username;
+
+        // Send post request
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(urlParameters);
+        wr.flush();
+        wr.close();
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        Log.d("SARAH", "Response: Email : " + response.toString());
+        return response.toString();
+    }
 
     /**
      *
      * @param username
-     * @param password
      * @param firstName
      * @param lastName
      * @param birthday
@@ -146,7 +182,7 @@ public class URLConnection {
      * @return
      * @throws IOException
      */
-    public String sendEditUser(String username, String password, String firstName,
+    public String sendEditUser(String username,  String firstName,
                                String lastName, String birthday, String gender,
                                String userRating, String picturePath)
             throws IOException  {
@@ -163,7 +199,7 @@ public class URLConnection {
         con.setRequestProperty("User-Agent", USER_AGENT);
         con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
-        String urlParameters = "Username="+username+"&Password="+password+"&FirstName="+firstName+"&LastName="+lastName+"&Birthday="+birthday+
+        String urlParameters = "Username="+username+"&FirstName="+firstName+"&LastName="+lastName+"&Birthday="+birthday+
                 "&Gender="+gender+"&UserRating="+userRating+"&PicturePath="+picturePath;
 
         // Send post request
@@ -240,7 +276,7 @@ public class URLConnection {
      * @return
      * @throws IOException
      */
-    public String sendGetUser(String username)
+    public User sendGetUser(String username)
             throws IOException  {
 
 			/*url of route being requested*/
@@ -276,7 +312,7 @@ public class URLConnection {
 
         //print result
         System.out.println("Response: Get : " + response.toString());
-        return response.toString();
+        return convertUser(response.toString());
     }
 
 
@@ -682,6 +718,31 @@ public class URLConnection {
         }
 
         return list;
+    }
+    public User convertUser(String str) {
+
+                Map<String, String> map = new HashMap<>();
+                for(String pair: str.split(",")){
+                    String[] tokens = pair.split("::");
+                    for (int i=0; i<tokens.length-1; ){
+                        map.put(tokens[i++], tokens[i++]);
+                    }
+                }
+
+		    			/*Below line used for testing */
+                    //System.out.println("map:"+map);
+
+                    User thisUser = new User(
+                            map.get("FirstName"),
+                            map.get("LastName"),
+                            map.get("Username"),
+                            "",
+                            map.get("Gender"),
+                            map.get("Birthday"),
+                            map.get("UserRating")
+                           );
+                    return thisUser;
+
     }
     public String sendCreateUser(String sourceFileUri, String username, String password, String firstName,
                                  String lastName, String birthday, String gender,

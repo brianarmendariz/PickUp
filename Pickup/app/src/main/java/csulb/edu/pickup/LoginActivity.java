@@ -125,8 +125,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 }
                 else{
-                    String userData = http.sendGetUser(username);
-                    User thisUser = new User("","","","","","","");
+                    User thisUser = http.sendGetUser(username);
+
                     Bundle b = new Bundle();
                     b.putParcelable("USER", thisUser);
                     Intent myIntent = new Intent(view.getContext(), MapsActivity.class);

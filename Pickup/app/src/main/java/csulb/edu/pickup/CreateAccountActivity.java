@@ -254,13 +254,13 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
          }
          else if (view == createAccountButton) {
 
-
+        /*
              Bitmap bm = BitmapFactory.decodeFile(picturePath);
              ByteArrayOutputStream bao = new ByteArrayOutputStream();
              bm.compress(Bitmap.CompressFormat.JPEG, 90, bao);
              byte[] ba = bao.toByteArray();
              //ba1 = Base64.encodeBytes(ba);
-
+        */
                 Map<String, String> formMap = formToMap();
 
                 System.out.println(formMap);

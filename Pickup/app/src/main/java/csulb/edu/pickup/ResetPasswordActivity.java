@@ -28,7 +28,7 @@ import java.util.Map;
 
 
 
-public class EditSettingsActivity extends AppCompatActivity implements View.OnClickListener{
+public class ResetPasswordActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button cancelButton;
     private Button saveButton;
@@ -37,13 +37,13 @@ public class EditSettingsActivity extends AppCompatActivity implements View.OnCl
     User thisUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*Bundle data = getIntent().getExtras();
+       /* Bundle data = getIntent().getExtras();
         thisUser = (User) data.getParcelable("USER");
         Log.d("SARAH","username"+thisUser.getEmail());
-*/
-        thisUser = new User("ln", "em", "pw", "female", "10-10-19", "female", "a");
+        */
+        thisUser = new User("ln", "em", "pw", "bday", "gend", "useRate", "a");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_settings);
+        setContentView(R.layout.reset_password);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -258,28 +258,28 @@ public class EditSettingsActivity extends AppCompatActivity implements View.OnCl
             else if(gender.equals("")){
                 createAlert("Gender Required", "Please select a gender" );
             }
-                URLConnection http = new URLConnection();
-                try {
-                    String userResult = http.sendEditUser(thisUser.getEmail(), firstName, lastName, bday, gender, "", "");
+            URLConnection http = new URLConnection();
+            try {
+                String userResult = http.sendEditUser(thisUser.getEmail(), firstName, lastName, bday, gender, "", "");
 
 
-                        thisUser.setBirthday(bday);
-                        thisUser.setFirstName(firstName);
-                        thisUser.setlastName(lastName);
-                        thisUser.setGender(gender);
-                        Bundle b = new Bundle();
-                        b.putParcelable("USER", thisUser);
-                        Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
-                        myIntent.putExtras(b);
-                        startActivityForResult(myIntent, 0);
+                thisUser.setBirthday(bday);
+                thisUser.setFirstName(firstName);
+                thisUser.setlastName(lastName);
+                thisUser.setGender(gender);
+                Bundle b = new Bundle();
+                b.putParcelable("USER", thisUser);
+                Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
+                myIntent.putExtras(b);
+                startActivityForResult(myIntent, 0);
 
-                } catch(IOException e)
-                {
+            } catch(IOException e)
+            {
 
-                }
-            } else {
-                createAlert("Invalid Password Entry","Passwords do not match - please try again." );
             }
+        } else {
+            createAlert("Invalid Password Entry","Passwords do not match - please try again." );
+        }
 
     }
 
@@ -395,7 +395,7 @@ public class EditSettingsActivity extends AppCompatActivity implements View.OnCl
         Integer.parseInt(bdayDay);
         String bdayMonth = parts[1];
         String bdayYear = parts[0];
-Log.d("SARAH", "YEar" +bdayYear);
+
         // get text from the edit text box
         EditText editTextBox1 = (EditText)findViewById(R.id.first_name);
         editTextBox1.setText(firstName);
@@ -413,7 +413,7 @@ Log.d("SARAH", "YEar" +bdayYear);
         Spinner yearSpinner = (Spinner)findViewById(R.id.bday_year_spinner);
         yearSpinner.setSelection(Integer.parseInt(bdayYear));
 
-         RadioButton femaleRadio = (RadioButton)findViewById(R.id.radio_female);
+        RadioButton femaleRadio = (RadioButton)findViewById(R.id.radio_female);
         RadioButton maleRadio = (RadioButton)findViewById(R.id.radio_male);
         if(gender.equals("female")){
             femaleRadio.setChecked(true);

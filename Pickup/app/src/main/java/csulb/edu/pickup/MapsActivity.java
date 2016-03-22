@@ -53,6 +53,8 @@ public class MapsActivity extends FragmentActivity implements android.location.L
         //get User that was passed in
         Bundle data = getIntent().getExtras();
         thisUser = (User) data.getParcelable("USER");
+        Log.d("SARAH","username from map"+thisUser.getEmail());
+
 
         super.onCreate(savedInstanceState);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();

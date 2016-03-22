@@ -4,12 +4,14 @@ package csulb.edu.pickup;
  * Created by Sarah on 3/19/2016.
  */
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -121,32 +123,35 @@ public class ForgotPasswdActivity extends AppCompatActivity implements View.OnCl
         }
 
         if (view == sendEmailButton) {
-
+            EditText emailTextBox = (EditText)findViewById(R.id.username);
+            String emailStr = emailTextBox.getText().toString();
+            Log.d("SARAH", "email button clicked");
             URLConnection http = new URLConnection();
-            /*
-            try {
+            try{
+                Log.d("SARAH", "sending email");
 
-                String loginResult = http.sendLogin(username, password);
-                if (loginResult.equals("login failed")) {
-                    createAlert("Invalid Login", "Login Failed, Please try again");
+                String emailResult = http.sendResetEmail(emailStr);
+                Log.d("SARAH", emailResult);
+                if (emailResult.equals("false")) {
+                    Log.d("SARAH", "result is false");
+
+                    createAlert("Invalid Email", "User does not exist.");
 
                 }
+
                 else{
-                    String userData = http.sendGetUser(username);
-                    User thisUser = new User("","","","","","","");
-                    Bundle b = new Bundle();
-                    b.putParcelable("USER", thisUser);
-                    Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
-                    myIntent.putExtras(b);
-                    startActivityForResult(myIntent, 0);
-                }
+                    Log.d("SARAH", "result successful");
 
+                    createAlert("Email Sent", "An Email has been sent to you containing a temporary" +
+                            " password. Please use this password to log on to our app and reset your" +
+                            " password in the 'Change Settings' page.");
+                }
 
             } catch(IOException e)
             {
 
             }
-*/
+
         }
 
     }
@@ -158,22 +163,20 @@ public class ForgotPasswdActivity extends AppCompatActivity implements View.OnCl
         sendEmailButton.requestFocus();
 
     }
-    public void createAlert(String title, String message){
+    public boolean createAlert(String title, String message){
         new AlertDialog.Builder(this)
                 .setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // continue with delete
+                        Intent myIntent = new Intent(ForgotPasswdActivity.this, LoginActivity.class);
+                        startActivityForResult(myIntent, 0);
                     }
                 })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
-                    }
-                })
+
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+        return true;
     }
 
 
