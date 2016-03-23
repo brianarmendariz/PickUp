@@ -3,7 +3,9 @@ package csulb.edu.pickup;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
@@ -11,7 +13,6 @@ import android.location.LocationManager;
 
 
 import android.os.StrictMode;
-import android.provider.SyncStateContract.Constants;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -20,6 +21,9 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdate;
@@ -32,7 +36,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.vision.barcode.Barcode.GeoPoint;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,20 +49,21 @@ public class MapsActivity extends FragmentActivity implements android.location.L
 
     private GoogleMap map; // Might be null if Google Play services APK is not available.
     private ImageButton button;
-    private User thisUser;
+
+    User thisUser;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        //get User that was passed in
         Bundle data = getIntent().getExtras();
         thisUser = (User) data.getParcelable("USER");
-        Log.d("SARAH","username from map"+thisUser.getEmail());
-
-
+        Log.d("SARAH", "username:"+thisUser.getEmail());
         super.onCreate(savedInstanceState);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
         setContentView(R.layout.activity_maps);
+        setupTopbar();
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         // Enabling MyLocation Layer of Google Map
         map.setMyLocationEnabled(true);
@@ -113,7 +117,7 @@ public class MapsActivity extends FragmentActivity implements android.location.L
                 //add marker to each position
                 latLng = new LatLng(list.get(i).getLatitude(), list.get(i).getLongitude());
                 eventName = list.get(i).getName();
-                creator = list.get(i).getCreator();
+                creator = list.get(i).getCreatorName();
 
                 map.addMarker(new MarkerOptions().position(latLng).title(eventName).snippet(creator)).setVisible(true);
             }
@@ -139,6 +143,8 @@ public class MapsActivity extends FragmentActivity implements android.location.L
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("SARAH", "username:" + thisUser.getEmail());
+
     }
 
     public void onClick_Filter(View v) {
@@ -146,7 +152,10 @@ public class MapsActivity extends FragmentActivity implements android.location.L
     }
 
     public void onClick_ImageButton(View v) {
+        Bundle b = new Bundle();
+        b.putParcelable("USER", thisUser);
         Intent myIntent = new Intent(v.getContext(), CreateEventActivity.class);
+        myIntent.putExtras(b);
         startActivityForResult(myIntent, 1);
     }
 
@@ -283,5 +292,26 @@ public class MapsActivity extends FragmentActivity implements android.location.L
 
     }//onActivityResult
 
+    //make topbar transparent
+    private void setupTopbar() {
+        //Drawable topTextBG = getResources().getDrawable(R.drawable.bluebg);
+        //set opacity
+        //topTextBG.setAlpha(10);
+
+        // setting the images on the ImageViews
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        // TODO Auto-generated method stub
+        super.onDestroy();
+        LoginManager.getInstance().logOut();
+
+
+
+    }
 
 }

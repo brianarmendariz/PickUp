@@ -18,7 +18,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST")
    $Username = $_POST['Username'];
    $Password = generateRandomString();
 	$sql = 'SELECT * FROM Users Where Username = "' . $Username . '";';
-    SQLQuery($sql);
+    $result = SQLQuery($sql);
     if($result->num_rows > 0) {
 
 		$row = $result->fetch_assoc();
@@ -31,14 +31,15 @@ if( $_SERVER["REQUEST_METHOD"] == "POST")
 		<title>Pickup Password Reset</title>
 		</head>
 		<body>
-		<H1>You requested a password reset for the Pickup App. Please use the generated password below to login and reset your password on the Change Settings page.</p>
+		<h1>Pickup Password Reset </h1>
+		<p>You requested a password reset for the Pickup App. Please use the generated password below to login and reset your password on the Change Settings page.</p>
 		<table>
 		<tr>
 		<th>User</th>
 		<th>New Password</th>
 		</tr>
 		<tr>
-		<td>" . $Username . "</td>
+		<td>" . $Username . "   </td>
 		<td>" . $Password . "</td>
 		</tr>
 		</table>
@@ -54,7 +55,11 @@ if( $_SERVER["REQUEST_METHOD"] == "POST")
 		$headers .= 'From: <webmaster@csulbpickup.com>' . "\r\n";
 
 		mail($to,$subject,$message,$headers);
-	
+		print('true');
+		$sql = 'UPDATE Users SET Password="' . $Password . '" WHERE Username = "' . $Username . '";'; 
+		    $result = SQLQuery($sql);
+
+	}
 	else{
 		print ('false');
 	}

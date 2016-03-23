@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:id="@+id/eventLinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -28,7 +29,7 @@
                 android:textStyle="bold"
                 android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
-            </LinearLayout>
+        </LinearLayout>
 
 
         <TableLayout
@@ -118,10 +119,6 @@
                     android:text="@string/forgot_passwd_btn_txt"
                     android:background="#181818"
                     android:textColor="#00FFFF"
-                    android:shadowColor="#000000"
-                    android:shadowDx="0.0"
-                    android:shadowDy="0.0"
-                    android:shadowRadius="2.0"
                     android:textSize="15dp"
                     android:textStyle="bold"
                     android:layout_weight=".99"
@@ -140,10 +137,6 @@
                     android:text="@string/login_btn_txt"
                     android:background="#FFFF00"
                     android:textColor="#000000"
-                    android:shadowColor="#000000"
-                    android:shadowDx="0.0"
-                    android:shadowDy="0.0"
-                    android:shadowRadius="2.0"
                     android:textSize="25dp"
                     android:textStyle="bold"
                     android:layout_weight=".99"
@@ -163,14 +156,38 @@
                     android:background="#FFFF00"
                     android:textSize="25dp"
                     android:textColor="#000000"
-                    android:shadowColor="#000000"
-                    android:shadowDx="0.0"
-                    android:shadowDy="0.0"
-                    android:shadowRadius="2.0"
                     android:textStyle="bold"
                     android:layout_weight=".99" />
+
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/eventTableRow7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp" >
+
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/facebook_login_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight=".99"
+                    />
+
             </TableRow>
         </TableLayout>
-    </LinearLayout>
-</ScrollView>
 
+
+        <TextView
+            android:id="@+id/text_details"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.20"
+            android:textColor="#fff000"/>
+
+</LinearLayout>
+    </ScrollView>

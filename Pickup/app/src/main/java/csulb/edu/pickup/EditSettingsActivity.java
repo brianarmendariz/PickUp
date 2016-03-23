@@ -37,11 +37,11 @@ public class EditSettingsActivity extends AppCompatActivity implements View.OnCl
     User thisUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*Bundle data = getIntent().getExtras();
+        Bundle data = getIntent().getExtras();
         thisUser = (User) data.getParcelable("USER");
         Log.d("SARAH","username"+thisUser.getEmail());
-*/
-        thisUser = new User("ln", "em", "pw", "female", "10-10-19", "female", "a");
+
+        //thisUser = new User("ln", "em", "pw", "female", "10-10-19", "female", "a");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_settings);
 
@@ -78,10 +78,10 @@ public class EditSettingsActivity extends AppCompatActivity implements View.OnCl
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             return true;
         }
-
+*/
         return super.onOptionsItemSelected(item);
     }
 
@@ -228,12 +228,18 @@ public class EditSettingsActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
 
         if (view == resetPasswordButton){
+            Bundle b = new Bundle();
+            b.putParcelable("USER", thisUser);
             Intent myIntent = new Intent(view.getContext(), ResetPasswordActivity.class);
+            myIntent.putExtras(b);
             startActivityForResult(myIntent, 0);
         }
 
         if (view == cancelButton) {
+            Bundle b = new Bundle();
+            b.putParcelable("USER", thisUser);
             Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
+            myIntent.putExtras(b);
             startActivityForResult(myIntent, 0);
         } else if (view == saveButton) {
 
@@ -258,28 +264,29 @@ public class EditSettingsActivity extends AppCompatActivity implements View.OnCl
             else if(gender.equals("")){
                 createAlert("Gender Required", "Please select a gender" );
             }
+            else{
                 URLConnection http = new URLConnection();
                 try {
                     String userResult = http.sendEditUser(thisUser.getEmail(), firstName, lastName, bday, gender, "", "");
 
 
-                        thisUser.setBirthday(bday);
-                        thisUser.setFirstName(firstName);
-                        thisUser.setlastName(lastName);
-                        thisUser.setGender(gender);
-                        Bundle b = new Bundle();
-                        b.putParcelable("USER", thisUser);
-                        Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
-                        myIntent.putExtras(b);
-                        startActivityForResult(myIntent, 0);
+                    thisUser.setBirthday(bday);
+                    thisUser.setFirstName(firstName);
+                    thisUser.setlastName(lastName);
+                    thisUser.setGender(gender);
+                    Bundle b = new Bundle();
+                    b.putParcelable("USER", thisUser);
+                    Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
+                    myIntent.putExtras(b);
+                    startActivityForResult(myIntent, 0);
 
                 } catch(IOException e)
                 {
 
                 }
-            } else {
-                createAlert("Invalid Password Entry","Passwords do not match - please try again." );
+
             }
+        }
 
     }
 
@@ -435,11 +442,7 @@ Log.d("SARAH", "YEar" +bdayYear);
                         // continue with delete
                     }
                 })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
-                    }
-                })
+
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }

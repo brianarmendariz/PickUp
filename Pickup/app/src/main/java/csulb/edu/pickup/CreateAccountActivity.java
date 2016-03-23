@@ -70,27 +70,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     protected void onStart() {
@@ -232,27 +212,27 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     public void onClick(View view) {
 
 
-         if (view == cancelButton) {
+        if (view == cancelButton) {
             Intent myIntent = new Intent(view.getContext(), LoginActivity.class);
             startActivityForResult(myIntent, 0);
         }
-         else if(view == uploadPhotoButton){
-             // Check Camera
-             if (getApplicationContext().getPackageManager().hasSystemFeature(
-                     PackageManager.FEATURE_CAMERA)) {
-                 // Open default camera
-                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+        else if(view == uploadPhotoButton){
+            // Check Camera
+            if (getApplicationContext().getPackageManager().hasSystemFeature(
+                    PackageManager.FEATURE_CAMERA)) {
+                // Open default camera
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
 
-                 // start the image capture Intent
-                 startActivityForResult(intent, 100);
+                // start the image capture Intent
+                startActivityForResult(intent, 100);
 
-             } else {
-                 Toast.makeText(getApplication(), "Camera not supported", Toast.LENGTH_LONG).show();
-             }
+            } else {
+                Toast.makeText(getApplication(), "Camera not supported", Toast.LENGTH_LONG).show();
+            }
 
-         }
-         else if (view == createAccountButton) {
+        }
+        else if (view == createAccountButton) {
 
         /*
              Bitmap bm = BitmapFactory.decodeFile(picturePath);
@@ -261,60 +241,60 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
              byte[] ba = bao.toByteArray();
              //ba1 = Base64.encodeBytes(ba);
         */
-                Map<String, String> formMap = formToMap();
+            Map<String, String> formMap = formToMap();
 
-                System.out.println(formMap);
-                String firstName = formMap.get("firstName");
-                String lastName = formMap.get("lastName");
-                String email = formMap.get("email");
-                String password = formMap.get("password");
-                String passwordRetype = formMap.get("passwordRetype");
-                String gender = formMap.get("gender");
-                String bdayDay = formMap.get("bdayDay");
-                String bdayMonth = formMap.get("bdayMonth");
-                String bdayYear = formMap.get("bdayYear");
-                String bday = bdayYear+"-"+bdayMonth+"-"+bdayDay;
-             if(firstName.equals("")){
-                 createAlert("First Name Required", "Please Enter a First Name");
-             }
-             else if(lastName.equals("")){
-                 createAlert("Last Name Required", "Please Enter a Last Name" );
-             }
-             else if(email.equals("")){
-                 createAlert("Email Required", "Please Enter an Email");
-             }
-             else if(password.equals("")){
-                 createAlert("Password Required", "Please Enter a Password" );
-             }
-             else if(passwordRetype.equals("")){
-                 createAlert("Password Validation Required", "Please Enter Password Twice");
-             }
-             else if(gender.equals("")){
-                 createAlert("Gender Required", "Please select a gender" );
-             }
-             else if(password.equals(passwordRetype)) {
-                 URLConnection http = new URLConnection();
-                 try {
-                 String userResult = http.sendCreateUser(email, password, firstName, lastName, bday, gender, "", "");
-                 if(userResult.equals("false")){
-                     createAlert("Duplicate Email", "User exists. Please try a different one.");
+            System.out.println(formMap);
+            String firstName = formMap.get("firstName");
+            String lastName = formMap.get("lastName");
+            String email = formMap.get("email");
+            String password = formMap.get("password");
+            String passwordRetype = formMap.get("passwordRetype");
+            String gender = formMap.get("gender");
+            String bdayDay = formMap.get("bdayDay");
+            String bdayMonth = formMap.get("bdayMonth");
+            String bdayYear = formMap.get("bdayYear");
+            String bday = bdayYear+"-"+bdayMonth+"-"+bdayDay;
+            if(firstName.equals("")){
+                createAlert("First Name Required", "Please Enter a First Name");
+            }
+            else if(lastName.equals("")){
+                createAlert("Last Name Required", "Please Enter a Last Name" );
+            }
+            else if(email.equals("")){
+                createAlert("Email Required", "Please Enter an Email");
+            }
+            else if(password.equals("")){
+                createAlert("Password Required", "Please Enter a Password" );
+            }
+            else if(passwordRetype.equals("")){
+                createAlert("Password Validation Required", "Please Enter Password Twice");
+            }
+            else if(gender.equals("")){
+                createAlert("Gender Required", "Please select a gender" );
+            }
+            else if(password.equals(passwordRetype)) {
+                URLConnection http = new URLConnection();
+                try {
+                    String userResult = http.sendCreateUser(email, password, firstName, lastName, bday, gender, "", "");
+                    if(userResult.equals("false")){
+                        createAlert("Duplicate Email", "User exists. Please try a different one.");
 
-                 }
-                 else{
-                     User thisUser = new User(firstName, lastName, email ,password, bday, gender, "0");
-                     Bundle b = new Bundle();
-                     b.putParcelable("USER", thisUser);
-                     Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
-                     myIntent.putExtras(b);
-                         startActivityForResult(myIntent, 0);
-                 }
-                 } catch(IOException e)
-                 {
+                    }
+                    else{
+                        User thisUser = new User(firstName, lastName, email ,password, bday, gender, "0");
+                        Bundle b = new Bundle();
+                        b.putParcelable("USER", thisUser);
+                        Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
+                        myIntent.putExtras(b);
+                        startActivityForResult(myIntent, 0);
+                    }
+                } catch(IOException e)
+                {
 
-                 }
-             } else {
-                 createAlert("Invalid Password Entry","Passwords do not match - please try again." );
-                 }
+                }
+            } else {
+                createAlert("Invalid Password Entry","Passwords do not match - please try again." );
+            }
         }
     }
 

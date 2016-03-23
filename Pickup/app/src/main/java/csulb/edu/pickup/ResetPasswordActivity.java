@@ -32,16 +32,15 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
 
     private Button cancelButton;
     private Button saveButton;
-    private Button resetPasswordButton;
-    private Button uploadPhotoButton;
+
     User thisUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-       /* Bundle data = getIntent().getExtras();
+        Bundle data = getIntent().getExtras();
         thisUser = (User) data.getParcelable("USER");
-        Log.d("SARAH","username"+thisUser.getEmail());
-        */
-        thisUser = new User("ln", "em", "pw", "bday", "gend", "useRate", "a");
+        Log.d("SARAH", "username" + thisUser.getEmail());
+
+        //thisUser = new User("ln", "em", "pw", "bday", "gend", "useRate", "a");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reset_password);
 
@@ -51,14 +50,10 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
 
 
         // setup spinners when page is created
-        initSpinners();
 
         findViewsById();
         setUpCancelButton();
-        setUpUploadPhotoButton();
         setUpSaveButton();
-        setUpResetPasswordButton();
-        populateForm(thisUser);
     }
 
 
@@ -78,10 +73,10 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             return true;
         }
-
+*/
         return super.onOptionsItemSelected(item);
     }
 
@@ -134,67 +129,9 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
 
 
 
-    private void initSpinners()
-    {
-        int idBdayYearSpinner = R.id.bday_year_spinner;
-        int idBdayDaySpinner = R.id.bday_day_spinner;
-        int idBdayMonthSpinner = R.id.bday_month_spinner;
-        int idBdayMonthArray = R.array.bday_month_array;
 
-
-        // attach values to month spinner
-        initSpinner(idBdayMonthSpinner, idBdayMonthArray);
-
-
-
-        // init date spinners
-        initReverseSpinner(idBdayYearSpinner, 2016, 1917);
-        initNumSpinner(idBdayDaySpinner, 1, 31);
-    }
-
-    private void initSpinner(int spinnerId, int arrayId)
-    {
-        // load values from resources to populate spinner
-        Spinner spinner = (Spinner) findViewById(spinnerId);
-        // Create an ArrayAdapter with provided resources and layout
-        ArrayAdapter<CharSequence> spinnnerAdapter = ArrayAdapter.createFromResource(this,
-                arrayId, android.R.layout.simple_spinner_item);
-        // Specify the layout
-        spinnnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(spinnnerAdapter);
-    }
-
-
-    private void initNumSpinner(int spinnerId, int begin, int end)
-    {
-        List<String> list=new ArrayList<String>();
-        for(int i = begin; i < end; i++) {
-            list.add(i + "");
-        }
-        final Spinner sp=(Spinner) findViewById(spinnerId);
-        ArrayAdapter<String> adp = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, list);
-        adp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sp.setAdapter(adp);
-    }
-    private void initReverseSpinner(int spinnerId, int begin, int end)
-    {
-        List<String> list=new ArrayList<String>();
-        for(int i = begin; i > end; i--) {
-            list.add(i + "");
-        }
-        final Spinner sp=(Spinner) findViewById(spinnerId);
-        ArrayAdapter<String> adp = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, list);
-        adp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sp.setAdapter(adp);
-    }
 
     private void findViewsById() {
-
-        resetPasswordButton = (Button) findViewById(R.id.reset_passwd_btn);
-        resetPasswordButton.requestFocus();
 
         cancelButton = (Button) findViewById(R.id.cancel_btn);
         cancelButton.requestFocus();
@@ -202,15 +139,10 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
         saveButton = (Button) findViewById(R.id.save_btn);
         saveButton.requestFocus();
 
-        uploadPhotoButton = (Button) findViewById(R.id.upload_photo_btn);
-        uploadPhotoButton.requestFocus();
 
 
     }
 
-    private void setUpResetPasswordButton(){
-        resetPasswordButton.setOnClickListener(this);
-    }
 
     private void setUpSaveButton() {
         saveButton.setOnClickListener(this);
@@ -219,212 +151,60 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
     private void setUpCancelButton() {
         cancelButton.setOnClickListener(this);
     }
-    private void setUpUploadPhotoButton() {
-        uploadPhotoButton.setOnClickListener(this);
-    }
 
 
     @Override
     public void onClick(View view) {
 
-        if (view == resetPasswordButton){
-            Intent myIntent = new Intent(view.getContext(), ResetPasswordActivity.class);
-            startActivityForResult(myIntent, 0);
-        }
-
         if (view == cancelButton) {
-            Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
+            Bundle b = new Bundle();
+            b.putParcelable("USER", thisUser);
+            Intent myIntent = new Intent(view.getContext(), EditSettingsActivity.class);
+            myIntent.putExtras(b);
             startActivityForResult(myIntent, 0);
         } else if (view == saveButton) {
+            EditText oldPasswdTextBox = (EditText) findViewById(R.id.old_passwd);
+            String oldPasswd = oldPasswdTextBox.getText().toString();
 
-            Map<String, String> formMap = formToMap();
+            EditText newPasswdTextBox = (EditText) findViewById(R.id.new_passwd);
+            String newPasswd = newPasswdTextBox.getText().toString();
 
-            System.out.println(formMap);
-            String firstName = formMap.get("firstName");
-            String lastName = formMap.get("lastName");
-            String gender = formMap.get("gender");
-            String bdayDay = formMap.get("bdayDay");
-            String bdayMonth = formMap.get("bdayMonth");
-            String bdayYear = formMap.get("bdayYear");
-            String bday = bdayYear+"-"+bdayMonth+"-"+bdayDay;
-            if(firstName.equals("")){
-                createAlert("First Name Required", "Please Enter a First Name");
+            EditText retypePasswdTextBox = (EditText) findViewById(R.id.retype_password);
+            String retypePasswd = retypePasswdTextBox.getText().toString();
+
+            if (oldPasswd.equals("")) {
+                createAlert("Old Password Required", "Please Enter Your Current Password");
+            } else if (newPasswd.equals("")) {
+                createAlert("New Password Required", "Please Enter a New Password");
+            } else if (retypePasswd.equals("")) {
+                createAlert("Retype Password Required", "Please Retype Your New Password");
+            } else if (newPasswd.equals(retypePasswd)) {
+                URLConnection http = new URLConnection();
+                try {
+                    String resetResult = http.sendPasswordReset(thisUser.getEmail(), oldPasswd, newPasswd);
+                    if (resetResult.equals("false")) {
+                        createAlert("Invalid Current Password", "Current Password Entered Incorrectly. Please Try Again.");
+
+                    } else {
+                        thisUser.setPassword(newPasswd);
+                        Bundle b = new Bundle();
+                        b.putParcelable("USER", thisUser);
+                        Intent myIntent = new Intent(view.getContext(), EditSettingsActivity.class);
+                        myIntent.putExtras(b);
+                        startActivityForResult(myIntent, 0);
+                    }
+                } catch (IOException e) {
+
+                }
+            } else {
+                createAlert("Invalid New Password Entry", "Passwords do not match - please try again.");
             }
-            else if(lastName.equals("")){
-                createAlert("Last Name Required", "Please Enter a Last Name" );
-            }
-
-
-            else if(gender.equals("")){
-                createAlert("Gender Required", "Please select a gender" );
-            }
-            URLConnection http = new URLConnection();
-            try {
-                String userResult = http.sendEditUser(thisUser.getEmail(), firstName, lastName, bday, gender, "", "");
-
-
-                thisUser.setBirthday(bday);
-                thisUser.setFirstName(firstName);
-                thisUser.setlastName(lastName);
-                thisUser.setGender(gender);
-                Bundle b = new Bundle();
-                b.putParcelable("USER", thisUser);
-                Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
-                myIntent.putExtras(b);
-                startActivityForResult(myIntent, 0);
-
-            } catch(IOException e)
-            {
-
-            }
-        } else {
-            createAlert("Invalid Password Entry","Passwords do not match - please try again." );
         }
 
     }
 
 
-    public Map<String, String> formToMap()
-    {
-        Map<String, String> formMap = new HashMap<>();
 
-        // get text from the edit text box
-        EditText editTextBox1 = (EditText)findViewById(R.id.first_name);
-        String firstNameStr = editTextBox1.getText().toString();
-        formMap.put("firstName", firstNameStr);
-
-        EditText editTextBox2 = (EditText)findViewById(R.id.last_name);
-        String lastNameStr = editTextBox2.getText().toString();
-        formMap.put("lastName", lastNameStr);
-
-
-
-        Spinner bdayDaySpinner = (Spinner)findViewById(R.id.bday_day_spinner);
-        String bdayDayStr = bdayDaySpinner.getSelectedItem().toString();
-        formMap.put("bdayDay", bdayDayStr);
-
-        Spinner bdayMonthSpinner = (Spinner)findViewById(R.id.bday_month_spinner);
-        String bdayMonthStr = bdayMonthSpinner.getSelectedItem().toString();
-        bdayMonthStr = stringMonthToNum(bdayMonthStr);
-        formMap.put("bdayMonth", bdayMonthStr);
-
-
-        Spinner bdayYearSpinner = (Spinner)findViewById(R.id.bday_year_spinner);
-        String bdayYearStr = bdayYearSpinner.getSelectedItem().toString();
-        formMap.put("bdayYear", bdayYearStr);
-
-        boolean maleChecked = ((RadioButton) findViewById(R.id.radio_male)).isChecked();
-        boolean femaleChecked = ((RadioButton) findViewById(R.id.radio_female)).isChecked();
-        String genderStr = "";
-        if(maleChecked)
-            genderStr = "male";
-        else if(femaleChecked)
-            genderStr = "female";
-
-        formMap.put("gender", genderStr);
-
-
-        String text = String.format("first: %s \nlast: %s \nuser: %s " +
-                        "\npass: %s \npassRe: %s \ngend: %s \nday: %s \nmon: %s", firstNameStr, lastNameStr,
-                genderStr, bdayDayStr, bdayMonthStr,
-                bdayYearStr);
-
-
-        // Log to show that the vars are correct
-        Log.i("SARAH", text);
-
-        return formMap;
-    }
-
-    public String stringMonthToNum(String sMonth){
-        String month = "00";
-        switch(sMonth){
-            case "Jan":
-                month = "01";
-                break;
-            case "Feb":
-                month = "02";
-                break;
-            case "Mar":
-                month = "03";
-                break;
-            case "Apr":
-                month = "04";
-                break;
-            case "May":
-                month = "05";
-                break;
-            case "Jun":
-                month = "06";
-                break;
-            case "Jul":
-                month = "07";
-                break;
-            case "Aug":
-                month = "08";
-                break;
-            case "Sept":
-                month = "09";
-                break;
-            case "Oct":
-                month = "10";
-                break;
-            case "Nov":
-                month = "11";
-                break;
-            case "Dec":
-                month = "12";
-                break;
-        }
-        return month;
-    }
-    public void populateForm(User user)
-    {
-        String firstName = user.getFirstName();
-        String lastName = user.getlastName();
-        String gender = user.getGender();
-        if(gender.equals("female")){
-
-        }
-        else if(gender.equals("male")){
-
-        }
-        String birthday = user.getBirthday();
-        String[] parts = birthday.split("-");
-        String bdayDay = parts[2];
-        Integer.parseInt(bdayDay);
-        String bdayMonth = parts[1];
-        String bdayYear = parts[0];
-
-        // get text from the edit text box
-        EditText editTextBox1 = (EditText)findViewById(R.id.first_name);
-        editTextBox1.setText(firstName);
-
-        EditText editTextBox2 = (EditText)findViewById(R.id.last_name);
-        editTextBox2.setText(lastName);
-
-
-        Spinner daySpinner = (Spinner)findViewById(R.id.bday_day_spinner);
-        daySpinner.setSelection(Integer.parseInt(bdayDay));
-
-        Spinner monthSpinner = (Spinner)findViewById(R.id.bday_month_spinner);
-        monthSpinner.setSelection(Integer.parseInt(bdayMonth));
-
-        Spinner yearSpinner = (Spinner)findViewById(R.id.bday_year_spinner);
-        yearSpinner.setSelection(Integer.parseInt(bdayYear));
-
-        RadioButton femaleRadio = (RadioButton)findViewById(R.id.radio_female);
-        RadioButton maleRadio = (RadioButton)findViewById(R.id.radio_male);
-        if(gender.equals("female")){
-            femaleRadio.setChecked(true);
-            maleRadio.setChecked(false);
-        }
-        else if(gender.equals("male")){
-            femaleRadio.setChecked(false);
-            maleRadio.setChecked(true);
-        }
-
-    }
 
     public void createAlert(String title, String message){
         new AlertDialog.Builder(this)
@@ -444,7 +224,10 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
                 .show();
     }
 
+
+
 }
+
 
 
 

@@ -43,8 +43,11 @@ public class ForgotPasswdActivity extends AppCompatActivity implements View.OnCl
     private Button sendEmailButton;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();

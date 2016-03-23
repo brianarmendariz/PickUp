@@ -170,6 +170,44 @@ public class URLConnection {
         return response.toString();
     }
 
+    public String sendPasswordReset(String username, String oldPassword, String newPassword) throws IOException  {
+
+			/*url of route being requested*/
+        String url = "http://www.csulbpickup.com/ChangePassword.php";
+
+
+        java.net.URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        //add reuqest header
+        con.setRequestMethod("POST");
+        con.setRequestProperty("User-Agent", USER_AGENT);
+        con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+        String urlParameters = "Username="+username+"&Password="+oldPassword+"&NewPassword="+newPassword;
+
+        // Send post request
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(urlParameters);
+        wr.flush();
+        wr.close();
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        Log.d("SARAH", "Response: Password : " + response.toString());
+        return response.toString();
+    }
+
     /**
      *
      * @param username
@@ -363,7 +401,8 @@ public class URLConnection {
     /**
      * Sends event data to the server.
      *
-     * @param author
+     * @param authorName
+     * @param authorEmail
      * @param eventName
      * @param sport
      * @param location
@@ -379,7 +418,7 @@ public class URLConnection {
      * @return "true" if inserted to database, "false" if not.
      * @throws IOException
      */
-    public String sendCreateEvent( String author, String eventName, String sport,
+    public String sendCreateEvent( String authorName,String authorEmail, String eventName, String sport,
                                    String location, String latitude, String longitude, String eventDateTime, String ageMax, String ageMin,
                                    String minUserRating, String playerAmount, String isPrivate, String gender) throws IOException  {
 
@@ -395,7 +434,7 @@ public class URLConnection {
         con.setRequestProperty("User-Agent", USER_AGENT);
         con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
-        String urlParameters = "Author="+author+"&EventName="+eventName+"&Sport="+sport+"&Location="+location+"&Latitude="+latitude+
+        String urlParameters = "Author="+authorName+"&Email="+authorEmail+"&EventName="+eventName+"&Sport="+sport+"&Location="+location+"&Latitude="+latitude+
                 "&Longitude="+longitude+"&EventDateTime="+eventDateTime+"&AgeMax="+ageMax+"&AgeMin="+ageMin+
                 "&PlayerAmount="+playerAmount+"&MinUserRating="+minUserRating+"&IsPrivate="+isPrivate+"&Gender="+gender;
 
@@ -469,7 +508,6 @@ public class URLConnection {
     /**
      * Edits an event by changing values to the values passed in. Any empty values should be set to "".
      * @param eventID
-     * @param author
      * @param eventName
      * @param sport
      * @param location
@@ -485,7 +523,7 @@ public class URLConnection {
      * @return "true" if successful, "false" if not.
      * @throws IOException
      */
-    public String sendEditEvent( int eventID, String author, String eventName, String sport,
+    public String sendEditEvent( int eventID, String eventName, String sport,
                                  String location, String latitude, String longitude, String eventDateTime, String ageMax, String ageMin,
                                  String minUserRating, String playerAmount, String isPrivate, String gender) throws IOException  {
 
@@ -501,7 +539,7 @@ public class URLConnection {
         con.setRequestProperty("User-Agent", USER_AGENT);
         con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
-        String urlParameters = "EventID="+eventID+"&Author="+author+"&EventName="+eventName+"&Sport="+sport+"&Location="+location+"&Latitude="+latitude+
+        String urlParameters = "EventID="+eventID+"&EventName="+eventName+"&Sport="+sport+"&Location="+location+"&Latitude="+latitude+
                 "&Longitude="+longitude+"&EventDateTime="+eventDateTime+"&AgeMax="+ageMax+"&AgeMin="+ageMin+
                 "&PlayerAmount="+playerAmount+"&MinUserRating="+minUserRating+"&IsPrivate="+isPrivate+"&Gender="+gender;;
 
@@ -702,7 +740,8 @@ public class URLConnection {
                             map.get("Location"),
                             map.get("AgeMax"),
                             map.get("AgeMin"),
-                            map.get("Author"),
+                            map.get("AuthorName"),
+                            map.get("Email"),
                             map.get("Sport"),
                             map.get("Gender"),
                             map.get("PlayerNumber"),
