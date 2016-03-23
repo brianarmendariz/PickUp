@@ -32,8 +32,14 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
 
     private Event _event;
 
+    User thisUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Bundle data = getIntent().getExtras();
+        thisUser = (User) data.getParcelable("USER");
+
         super.onCreate(savedInstanceState);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -71,10 +77,10 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             return true;
         }
-
+*/
         return super.onOptionsItemSelected(item);
     }
 
@@ -96,7 +102,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
 
     public void putEventDetailsToForm(Event event)
     {
-        String author = event.getCreator();
+        String author = event.getCreatorName();
         String name = event.getName();
         String sport = event.getSport();
         String address = event.getAddress();
@@ -175,7 +181,11 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
         if(view == _editEventButton)
         {
             //Go to edit activity
+
+            Bundle b = new Bundle();
+            b.putParcelable("USER", thisUser);
             Intent startIntent = new Intent(getBaseContext(),EditEventActivity.class);
+            startIntent.putExtras(b);
             startIntent.putExtra("EventID", _event.getEventID());
             startActivity(startIntent);
             finish();
@@ -193,7 +203,10 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
                 e.printStackTrace();
             } finally
             {
+                Bundle b = new Bundle();
+                b.putParcelable("USER", thisUser);
                 Intent returnIntent = new Intent(view.getContext(), MapsActivity.class);
+                returnIntent.putExtras(b);
                 returnIntent.putExtra("result", "delete");
                 setResult(MapsActivity.RESULT_OK, returnIntent);
                 finish();
@@ -201,8 +214,10 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
         }
         else if(view == _cancelEventButton)
         {
-
+            Bundle b = new Bundle();
+            b.putParcelable("USER", thisUser);
             Intent returnIntent = new Intent();
+            returnIntent.putExtras(b);
             setResult(MapsActivity.RESULT_CANCELED, returnIntent);
             finish();
 

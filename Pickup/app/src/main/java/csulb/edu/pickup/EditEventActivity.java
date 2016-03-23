@@ -2,6 +2,7 @@ package csulb.edu.pickup;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -9,16 +10,22 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.facebook.login.LoginManager;
 
 import java.io.IOException;
 
@@ -36,6 +43,8 @@ import java.util.Map;
 public class EditEventActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "brainsMessages";
+
+    User thisUser;
 
     private Button cancelEventButton;
     private Button saveChangesButton;
@@ -55,8 +64,14 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
 
     private Event _event;
 
+    String[] sportStringArray = {"Badminton", "Baseball", "Basketball", "Football",
+            "Handball", "Ice Hockey", "Racquetball", "Roller Hockey",
+            "Softball", "Tennis", "Volleyball"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Bundle data = getIntent().getExtras();
+        thisUser = (User) data.getParcelable("USER");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_event);
 
@@ -97,10 +112,20 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+
+        if (id == R.id.user_profile) {
+            Intent userProfileIntent = new Intent(getBaseContext(), UserProfileActivity.class);
+            startActivity(userProfileIntent);
+
         }
 
+        if (id == R.id.user_logout) {
+            LoginManager.getInstance().logOut();
+            Intent loginActivityIntent = new Intent(getBaseContext(), LoginActivity.class);
+            loginActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(loginActivityIntent);
+            finish();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -187,13 +212,19 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
     {
         // load values from resources to populate Gender spinner
         Spinner spinner = (Spinner) findViewById(spinnerId);
-        // Create an ArrayAdapter with provided resources and layout
-        ArrayAdapter<CharSequence> spinnnerAdapter = ArrayAdapter.createFromResource(this,
-                arrayId, android.R.layout.simple_spinner_item);
-        // Specify the layout
-        spinnnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(spinnnerAdapter);
+
+        if(spinnerId == R.id.edit_sport_spinner){
+            spinner.setAdapter(new MyEAdapter(EditEventActivity.this, R.layout.row, sportStringArray));
+        }
+        else {
+            // Create an ArrayAdapter with provided resources and layout
+            ArrayAdapter<CharSequence> spinnnerAdapter = ArrayAdapter.createFromResource(this,
+                    arrayId, android.R.layout.simple_spinner_item);
+            // Specify the layout
+            spinnnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // Apply the adapter to the spinner
+            spinner.setAdapter(spinnnerAdapter);
+        }
     }
 
     private void initNumSpinner(int spinnerId, int begin, int end)
@@ -281,16 +312,13 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
         }
         else if(view == cancelEventButton)
         {
-            //Intent myIntent = new Intent(view.getContext(), MapsActivity.class); //change to map
-            //startActivityForResult(myIntent, EDIT_MAP_EVENT);
-
-            //return to ViewEventActivity
-            Intent returnIntent = new Intent(view.getContext(), ViewEventActivity.class);
-            returnIntent.putExtra("result", "cancel");
-            setResult(MapsActivity.RESULT_CANCELED, returnIntent);
-            finish();
+            Bundle b = new Bundle();
+            b.putParcelable("USER", thisUser);
+            Intent myIntent = new Intent(view.getContext(), MapsActivity.class); //change to map
+            myIntent.putExtras(b);
+            startActivityForResult(myIntent, 0);
         }
-        if(view == saveChangesButton) {
+        else if(view == saveChangesButton) {
             try {
                 Map<String, String> formMap = formToMap();
 
@@ -304,6 +332,8 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
 
                 //date yyyy-mm-dd  and the time hh:min:ss
                 String dateTime = (convertDate(date) + " " + convertTime(time));
+
+                Log.d("DATE/TIME" , dateTime);
                 String gender = formMap.get("gender");
                 String ageMin = formMap.get("age min");
                 String ageMax = formMap.get("age max");
@@ -320,7 +350,7 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
                     //open connection
                     URLConnection http = new URLConnection();
 
-                    http.sendEditEvent(Integer.parseInt(_event.getEventID()), author, name, sport, location,
+                    http.sendEditEvent(Integer.parseInt(_event.getEventID()), name, sport, location,
                             String.valueOf(latitude), String.valueOf(longitude), dateTime,
                             ageMax, ageMin, minUserRating,
                             playerAmount, "P/NP", gender
@@ -333,23 +363,30 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
                     //http.sendDeleteEvent(1);
 
                     //Return to the MainActivity
-                    Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+//                    Intent returnIntent = new Intent();
+//                    returnIntent.putExtra("result", latitude + " " + longitude);
+//                    setResult(MapsActivity.RESULT_OK, returnIntent);
+                    Intent intent = new Intent(getBaseContext(), MapsActivity.class);
+//                    intent.putExtra("EventID", list.get(i).getEventID());
                     startActivity(intent);
-                    //finish();
+                    finish();
                 }
-                /*else {
+                else {
+                    Bundle b = new Bundle();
+                    b.putParcelable("USER", thisUser);
                     Intent returnIntent = new Intent();
+                    returnIntent.putExtras(b);
                     setResult(MapsActivity.RESULT_CANCELED, returnIntent);
                     finish();
-                }*/
+                }
             }
             catch (IOException e) {
                 Log.e(TAG, "Unable connect to Geocoder", e);
             }
-            //catch(Exception e)
-            //{
-            //    Log.i(TAG, "HashMap ERROR");
-            //}
+            catch(Exception e)
+            {
+                Log.i(TAG, "HashMap ERROR");
+            }
         }
     }
 
@@ -362,7 +399,7 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
 
     public void populateForm(Event event)
     {
-        String author = event.getCreator();
+        String author = event.getCreatorName();
         String name = event.getName();
         String sport = event.getSport();
         String address = event.getAddress();
@@ -378,8 +415,6 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
         EditText editTextBox1 = (EditText)findViewById(R.id.edit_event_name);
         editTextBox1.setText(name);
 
-        EditText editTextBox2 = (EditText)findViewById(R.id.edit_event_creator);
-        editTextBox2.setText(author);
 
         Spinner sportSpinner = (Spinner)findViewById(R.id.edit_sport_spinner);
         String[] sportArray = getResources().getStringArray(R.array.sport_array);
@@ -471,8 +506,6 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
         EditText editTextBox1 = (EditText)findViewById(R.id.edit_event_name);
         editTextBox1.setText(name);
 
-        EditText editTextBox2 = (EditText)findViewById(R.id.edit_event_creator);
-        editTextBox2.setText(author);
 
         Spinner sportSpinner = (Spinner)findViewById(R.id.edit_sport_spinner);
         String[] sportArray = getResources().getStringArray(R.array.sport_array);
@@ -612,10 +645,6 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
         String eventNameStr = editTextBox1.getText().toString();
         formMap.put("event name", eventNameStr);
 
-        EditText editTextBox2 = (EditText)findViewById(R.id.edit_event_creator);
-        String eventCreatorStr = editTextBox2.getText().toString();
-        formMap.put("author", eventCreatorStr);
-
         Spinner sportSpinner = (Spinner)findViewById(R.id.edit_sport_spinner);
         String eventSportStr = sportSpinner.getSelectedItem().toString();
         formMap.put("sport", eventSportStr);
@@ -672,31 +701,57 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
     //Convert the time to format hh:min:00
     private String convertTime(String time) {
         String convertedTime = "";
-
-        String holder = time;
         //h and m for hour and min
 
-        String h = holder.substring(0, holder.indexOf(":"));
-        holder = holder.substring(holder.indexOf(":")+1);
-        String m = holder.substring(0, holder.indexOf(" "));
+        String h = time.substring(0, time.indexOf(":"));
+        String m = time.substring(3, 5);
         int hour = 0;
-        int minute = 0;
         String timeAMPM = time.substring(time.length()-2);
-        minute = Integer.parseInt(m);
-        if (timeAMPM.equals("AM") && h.equals("12")) {
+        if (timeAMPM.equals("PM")) {
             hour = Integer.parseInt(h);
             hour += 12;
-            if ( minute <= 9) {
-                m = "0"  + String.valueOf(minute);
-            }
-            if (hour == 24) {
-                convertedTime = "00:" + m + ":00";
-                return convertedTime;
-            }
             h = String.valueOf(hour);
         }
-
         convertedTime = h + ":" + m + ":00";
         return convertedTime;
+    }
+
+    public class MyEAdapter extends ArrayAdapter<String> {
+
+        int arr_images[] = {R.drawable.badminton_icon,
+                R.drawable.baseball_icon, R.drawable.basketball_icon, R.drawable.football_icon,
+                R.drawable.handball_icon, R.drawable.icehockey_icon, R.drawable.racquetball_icon,
+                R.drawable.rollerhockey_icon, R.drawable.softball_icon, R.drawable.tennis_icon,
+                R.drawable.volleyball_icon};
+
+        public MyEAdapter(Context context, int textViewResourceId, String[] objects) {
+            super(context, textViewResourceId, objects);
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            return getCustomView(position, convertView, parent);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return getCustomView(position, convertView, parent);
+        }
+
+        public View getCustomView(int position, View convertView, ViewGroup parent) {
+
+            LayoutInflater inflater = getLayoutInflater();
+            View row = inflater.inflate(R.layout.row, parent, false);
+            TextView label = (TextView) row.findViewById(R.id.company);
+            label.setText(sportStringArray[position]);
+
+//            TextView sub=(TextView)row.findViewById(R.id.sub);
+//            sub.setText(subs[position]        );
+
+            ImageView icon = (ImageView) row.findViewById(R.id.image);
+            icon.setImageResource(arr_images[position]);
+
+            return row;
+        }
     }
 }

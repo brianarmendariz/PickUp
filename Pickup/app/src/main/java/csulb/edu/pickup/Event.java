@@ -5,7 +5,8 @@ public class Event
 {
     private String _name;
     private String _description;
-    private String _creator;
+    private String _creatorName;
+    private String _creatorEmail;
     private String _sport;
     //private Location _location;
     private double _longitude;
@@ -33,7 +34,8 @@ public class Event
         _address = null;
         _ageMax = null;
         _ageMin = null;
-        _creator = null;
+        _creatorName = null;
+        _creatorEmail = null;
         _sport = null;
         _gender = null;
         _maxNumberPpl = null;
@@ -45,7 +47,7 @@ public class Event
     }
 
     public Event(String name, String description, double longitude, double latitude, String address, String ageMax,
-                 String ageMin, String creator, String sport, String gender, String maxNumberPpl,String minUserRating,
+                 String ageMin, String creatorName, String creatorEmail, String sport, String gender, String maxNumberPpl,String minUserRating,
                  String dateCreated, String eventDate, String eventTime, String isPrivate, String eventID)
     {
         _name = name;
@@ -55,7 +57,8 @@ public class Event
         _address = address;
         _ageMax = ageMax;
         _ageMin = ageMin;
-        _creator = creator;
+        _creatorName = creatorName;
+        _creatorEmail = creatorEmail;
         _sport = sport;
         _gender = gender;
         _maxNumberPpl = maxNumberPpl;
@@ -99,10 +102,11 @@ public class Event
     {
         return _ageMin;
     }
-    public String getCreator()
+    public String getCreatorName()
     {
-        return _creator;
+        return _creatorName;
     }
+    public String getCreatorEmail(){return _creatorEmail;}
     public String getSport()
     {
         return _sport;
@@ -144,10 +148,11 @@ public class Event
     /*
     Setter Methods
      */
-    public void setCreator(String creator)
+    public void setCreatorName(String creatorName)
     {
-        _creator = creator;
+        _creatorName = creatorName;
     }
+    public void setCreatorEmail(String creatorEmail){_creatorEmail = creatorEmail;}
     public void setSport(String sport)
     {
         _sport = sport;

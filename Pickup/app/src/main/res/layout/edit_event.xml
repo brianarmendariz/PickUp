@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/editLinearLayout1"
+    android:id="@+id/editLinearLayout1"
 
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,28 +37,7 @@
                 </EditText>
             </TableRow>
 
-            <TableRow
-                android:id="@+id/editTableRow2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
 
-                <TextView
-                    android:id="@+id/editTextView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/event_creator_text"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                <EditText
-                    android:id="@+id/edit_event_creator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="text" >
-                    <requestFocus />
-                </EditText>
-            </TableRow>
             <TableRow
                 android:id="@+id/editTableRow3"
                 android:layout_width="wrap_content"
@@ -75,7 +54,10 @@
                 <Spinner
                     android:id="@+id/edit_sport_spinner"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:drawSelectorOnTop="true"
+                    android:prompt="@string/prompt"
+                    />
             </TableRow>
             <TableRow
                 android:id="@+id/editTableRow4"
@@ -169,13 +151,13 @@
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                            xmlns:tools="http://schemas.android.com/tools"
-                            android:id="@+id/EditGridLayout1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:columnCount="2"
-                            android:rowCount="1"
-                            android:orientation="horizontal" >
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/EditGridLayout1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:columnCount="2"
+                    android:rowCount="1"
+                    android:orientation="horizontal" >
 
                     <Spinner
                         android:id="@+id/edit_age_min_spinner"
@@ -240,8 +222,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/save_changes_event_btn_txt"
                 android:gravity="center"
-                android:layout_gravity="center_horizontal"
-                />
+                android:layout_gravity="center_horizontal" />
 
             <Button
                 android:id="@+id/edit_event_cancel_btn"
