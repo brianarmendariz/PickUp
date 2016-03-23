@@ -46,7 +46,6 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        setContentView(R.layout.edit_settings);
 
 
         // setup spinners when page is created
@@ -162,7 +161,9 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
             Intent myIntent = new Intent(view.getContext(), EditSettingsActivity.class);
             myIntent.putExtras(b);
             startActivityForResult(myIntent, 0);
+
         } else if (view == saveButton) {
+            Log.d("SARAH","save button clicked");
             EditText oldPasswdTextBox = (EditText) findViewById(R.id.old_passwd);
             String oldPasswd = oldPasswdTextBox.getText().toString();
 
@@ -181,11 +182,16 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
             } else if (newPasswd.equals(retypePasswd)) {
                 URLConnection http = new URLConnection();
                 try {
+                    Log.d("SARAH","sending http request");
+
                     String resetResult = http.sendPasswordReset(thisUser.getEmail(), oldPasswd, newPasswd);
+                    Log.d("SARAH","reset Result: "+resetResult);
+
                     if (resetResult.equals("false")) {
                         createAlert("Invalid Current Password", "Current Password Entered Incorrectly. Please Try Again.");
 
-                    } else {
+                    }
+                    else {
                         thisUser.setPassword(newPasswd);
                         Bundle b = new Bundle();
                         b.putParcelable("USER", thisUser);

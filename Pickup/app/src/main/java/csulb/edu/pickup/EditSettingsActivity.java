@@ -35,13 +35,15 @@ public class EditSettingsActivity extends AppCompatActivity implements View.OnCl
     private Button resetPasswordButton;
     private Button uploadPhotoButton;
     User thisUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle data = getIntent().getExtras();
         thisUser = (User) data.getParcelable("USER");
         Log.d("SARAH","username"+thisUser.getEmail());
+        Log.d("SARAH","birthday"+thisUser.getBirthday());
 
-        //thisUser = new User("ln", "em", "pw", "female", "10-10-19", "female", "a");
+       // thisUser = new User("ln", "em", "pw", "female", "2016-01-01", "female", "a");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_settings);
 
@@ -228,10 +230,13 @@ public class EditSettingsActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
 
         if (view == resetPasswordButton){
+            Log.d("SARAH", "reset passwd button clicked");
             Bundle b = new Bundle();
             b.putParcelable("USER", thisUser);
             Intent myIntent = new Intent(view.getContext(), ResetPasswordActivity.class);
             myIntent.putExtras(b);
+            Log.d("SARAH", "starting activity");
+
             startActivityForResult(myIntent, 0);
         }
 
@@ -331,8 +336,7 @@ public class EditSettingsActivity extends AppCompatActivity implements View.OnCl
         formMap.put("gender", genderStr);
 
 
-        String text = String.format("first: %s \nlast: %s \nuser: %s " +
-                        "\npass: %s \npassRe: %s \ngend: %s \nday: %s \nmon: %s", firstNameStr, lastNameStr,
+        String text = String.format("first: %s \nlast: %s \ngend: %s \nday: %s \nmon: %s \nday: %s", firstNameStr, lastNameStr,
                 genderStr, bdayDayStr, bdayMonthStr,
                 bdayYearStr);
 
@@ -412,13 +416,14 @@ Log.d("SARAH", "YEar" +bdayYear);
 
 
         Spinner daySpinner = (Spinner)findViewById(R.id.bday_day_spinner);
-        daySpinner.setSelection(Integer.parseInt(bdayDay));
+        daySpinner.setSelection(Integer.parseInt(bdayDay)-1);
 
         Spinner monthSpinner = (Spinner)findViewById(R.id.bday_month_spinner);
-        monthSpinner.setSelection(Integer.parseInt(bdayMonth));
+        monthSpinner.setSelection(Integer.parseInt(bdayMonth)-1);
 
         Spinner yearSpinner = (Spinner)findViewById(R.id.bday_year_spinner);
-        yearSpinner.setSelection(Integer.parseInt(bdayYear));
+        int bdayYearIndex = 2016-Integer.parseInt(bdayYear);
+        yearSpinner.setSelection(bdayYearIndex);
 
          RadioButton femaleRadio = (RadioButton)findViewById(R.id.radio_female);
         RadioButton maleRadio = (RadioButton)findViewById(R.id.radio_male);

@@ -58,6 +58,8 @@ public class MapsActivity extends FragmentActivity implements android.location.L
         Bundle data = getIntent().getExtras();
         thisUser = (User) data.getParcelable("USER");
         Log.d("SARAH", "username:"+thisUser.getEmail());
+        Log.d("SARAH", "username:"+thisUser.getBirthday());
+
         super.onCreate(savedInstanceState);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -217,9 +219,13 @@ public class MapsActivity extends FragmentActivity implements android.location.L
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).getName().equals(marker.getTitle())) {
                     //Event e = list.get(i);
+
+                    Bundle b = new Bundle();
+                    b.putParcelable("USER", thisUser);
                     Intent intent = new Intent(getBaseContext(), ViewEventActivity.class);
                     intent.putExtra("EventID", list.get(i).getEventID());
-                    startActivityForResult(intent,VIEW_MAP_EVENT);
+                    intent.putExtras(b);
+                    startActivityForResult(intent, VIEW_MAP_EVENT);
 
                     Log.d("TO GET EVENT", list.get(i).getName());
                     return true;

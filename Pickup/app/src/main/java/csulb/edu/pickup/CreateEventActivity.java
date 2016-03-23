@@ -84,9 +84,28 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         int id = item.getItemId();
 
         if (id == R.id.user_profile) {
+            Bundle b = new Bundle();
+            b.putParcelable("USER", thisUser);
             Intent userProfileIntent = new Intent(getBaseContext(), UserProfileActivity.class);
+            userProfileIntent.putExtras(b);
             startActivity(userProfileIntent);
 
+        }
+        if(id==R.id.map){
+            Bundle b = new Bundle();
+            b.putParcelable("USER", thisUser);
+            Intent mapIntent = new Intent(getBaseContext(), MapsActivity.class);
+            mapIntent.putExtras(b);
+            startActivity(mapIntent);
+
+    }
+
+        if(id==R.id.edit_settings){
+            Bundle b = new Bundle();
+            b.putParcelable("USER", thisUser);
+            Intent mapIntent = new Intent(getBaseContext(), EditSettingsActivity.class);
+            mapIntent.putExtras(b);
+            startActivity(mapIntent);
         }
 
         if (id == R.id.user_logout) {

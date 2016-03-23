@@ -173,8 +173,8 @@ public class URLConnection {
     public String sendPasswordReset(String username, String oldPassword, String newPassword) throws IOException  {
 
 			/*url of route being requested*/
-        String url = "http://www.csulbpickup.com/ChangePassword.php";
-
+        String url = "http://www.csulbpickup.com/changePassword.php";
+        Log.d("SARAH","Inside SendPasswordReset");
 
         java.net.URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -192,7 +192,7 @@ public class URLConnection {
         wr.writeBytes(urlParameters);
         wr.flush();
         wr.close();
-
+        Log.d("SARAH","just wrote");
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
         String inputLine;
@@ -201,6 +201,7 @@ public class URLConnection {
         while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
         }
+        Log.d("SARAH","got a response");
         in.close();
 
         //print result
@@ -271,7 +272,7 @@ public class URLConnection {
      */
     public String sendChangePassword(String username, String password, String newPassword)
             throws IOException  {
-
+            Log.d("SARAH", "Inside changePassword");
 			/*url of route being requested*/
         String url = "http://www.csulbpickup.com/changePassword.php";
 
@@ -292,15 +293,19 @@ public class URLConnection {
         wr.writeBytes(urlParameters);
         wr.flush();
         wr.close();
+        Log.d("SARAH", "just wrote");
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
         String inputLine;
         StringBuffer response = new StringBuffer();
 
+
         while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
         }
+        Log.d("SARAH", "got response");
+
         in.close();
 
         //print result
@@ -776,8 +781,8 @@ public class URLConnection {
                             map.get("LastName"),
                             map.get("Username"),
                             "",
-                            map.get("Gender"),
                             map.get("Birthday"),
+                            map.get("Gender"),
                             map.get("UserRating")
                            );
                     return thisUser;

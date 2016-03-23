@@ -107,6 +107,10 @@
         <activity android:name=".ResetPasswordActivity"></activity>
         <activity android:name=".EditSettingsActivity"></activity>
 
+
+        <activity android:name=".MainActivity"></activity>
+
+
     </application>
 
 </manifest>

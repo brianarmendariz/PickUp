@@ -15,7 +15,7 @@
     <TextView
         android:layout_width="165dp"
         android:layout_height="wrap_content"
-        android:text="Pick Up Sports"
+        android:text="PickUp"
         android:id="@+id/textView"
         android:textAlignment="center"
         android:textIsSelectable="false"
