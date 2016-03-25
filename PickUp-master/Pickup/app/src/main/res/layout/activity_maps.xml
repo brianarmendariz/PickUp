@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MapsActivity"
+    >
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/abc_action_bar_title_item"/>
+
+    <TextView
+        android:layout_width="165dp"
+        android:layout_height="wrap_content"
+        android:text="PickUp"
+        android:id="@+id/textView"
+        android:textAlignment="center"
+        android:textIsSelectable="false"
+        android:textSize="30dp"
+        android:textStyle="bold|italic"
+        android:paddingLeft="20dp"
+        android:clickable="false"
+        android:enabled="false"
+        android:background="@color/transparentWhite"
+        android:paddingTop="5dp"
+        android:textColor="#0047ff"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/btnFilter"
+        android:layout_alignEnd="@+id/btnFilter"
+        android:layout_alignBottom="@+id/imageButton"/>
+
+    <ImageButton
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/ic_action"
+        android:background="@drawable/circle"
+        android:id="@+id/imageButton"
+        android:layout_gravity="right"
+        android:onClick="onClick_ImageButton"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/btnFilter"
+        android:layout_alignBottom="@+id/btnFilter"/>
+
+    <Button
+        android:id="@+id/btnFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClick_Filter"
+        android:background="@drawable/roundedbutton"
+        android:text="Filter"
+        android:textColor="#fff813"
+        android:singleLine="false"
+        android:layout_gravity="right"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+
+</RelativeLayout>
