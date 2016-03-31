@@ -68,7 +68,7 @@
         android:layout_toStartOf="@+id/GenderEditText"
         android:layout_alignTop="@+id/GenderEditText"/>
 
-    <EditText
+    <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/GenderEditText"
@@ -85,7 +85,7 @@
         android:layout_marginTop="30dp"
         android:maxLength="1"/>
 
-    <EditText
+    <TextView
 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -102,9 +102,9 @@
         android:layout_toEndOf="@+id/AgeTextView"
         android:gravity="center_horizontal">
 
-    </EditText>
+    </TextView>
 
-    <EditText
+    <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/AgeEditText"

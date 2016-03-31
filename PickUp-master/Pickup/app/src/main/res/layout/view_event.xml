@@ -255,6 +255,13 @@
             android:orientation="vertical" >
 
             <Button
+                android:id="@+id/share_on_facebook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal" />
+
+            <Button
                 android:id="@+id/event_edit_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -1,5 +1,7 @@
 package csulb.edu.pickup;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
@@ -8,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +33,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
     private Button _editEventButton;
     private Button _deleteEventButton;
     private Button _cancelEventButton;
+    private Button _shareButton;
 
     private Event _event;
 
@@ -49,6 +54,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
 
         findViewsById();
 
+        setupShareButton();
         setupEditEventButton();
         setupDeleteEventButton();
         setupCancelEventButton();
@@ -82,6 +88,13 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
         }
 */
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setupShareButton()
+    {
+        _shareButton = (Button) findViewById(R.id.share_on_facebook);
+        _shareButton.setBackgroundResource(R.drawable.facebooksharebutton);
+        _shareButton.setOnClickListener(this);
     }
 
     public Event getEventDetails(int eventID)
@@ -166,6 +179,8 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
         _cancelEventButton.requestFocus();
     }
 
+
+
     public void setupEditEventButton()
     {
         _editEventButton.setOnClickListener(this);
@@ -226,6 +241,22 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
             setResult(MapsActivity.RESULT_CANCELED, returnIntent);
             finish();
 
+        }
+        else if(view == _shareButton)
+        {
+//            byte[] data = null;
+//
+//            Bitmap bi = BitmapFactory.decodeFile(photoToPost);
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//            bi.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+//            data = baos.toByteArray();
+//
+//            Bundle params = new Bundle();
+//            params.putString("method", "photos.upload");
+//            params.putByteArray("picture", data);
+//
+//            AsyncFacebookRunner mAsyncRunner = new AsyncFacebookRunner(facebook);
+//            mAsyncRunner.request(null, params, "POST", new SampleUploadListener(), null);
         }
     }
 
