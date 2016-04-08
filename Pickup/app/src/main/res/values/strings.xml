@@ -31,8 +31,8 @@
         <item>Female</item>
         <item>Male</item>
     </string-array>
-    <string name="hello">CustomSpinner Demo from CoderzHeaven!</string>
-    <string name="prompt">  Select your Favourite  </string>
+    <string name="hello"></string>
+    <string name="prompt">Choose a Sport</string>
     <drawable name="white">#ffffff</drawable>
     <drawable name="black">#000000</drawable>
     <drawable name="green">#347C2C</drawable>
@@ -89,7 +89,6 @@
         <item>Handball</item>
         <item>Ice Hockey</item>
         <item>Football</item>
-        <item>Other</item>
         <item>Racquetball</item>
         <item>Roller Hockey</item>
         <item>Softball</item>

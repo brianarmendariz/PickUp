@@ -24,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -48,8 +49,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     private static final String TAG = "brainsMessages";
 
     private Button cancelEventButton;
-    private Button createEventButton;
-
+    private ImageButton createEventButton;
     Calendar newDate = Calendar.getInstance(); // local object to couple date and time
 
     private EditText createDateEditText;
@@ -258,7 +258,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         cancelEventButton = (Button) findViewById(R.id.event_cancel_btn);
         cancelEventButton.requestFocus();
 
-        createEventButton = (Button) findViewById(R.id.event_create_btn);
+        createEventButton = (ImageButton) findViewById(R.id.event_create_btn);
         createEventButton.requestFocus();
 
         createDateEditText = (EditText) findViewById(R.id.event_date);
@@ -285,6 +285,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
     }
 
     private void setTimeField() {
@@ -416,7 +417,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             }
             catch(Exception e)
             {
-                Log.i(TAG, "HashMap ERROR");
+                Log.i(TAG, "ERROR");
             }
 
             // create an event when clicked

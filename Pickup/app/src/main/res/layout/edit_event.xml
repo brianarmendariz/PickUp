@@ -1,53 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/editLinearLayout1"
-
+    android:id="@+id/editScrollView1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
+        <ImageView
+            android:layout_width="@dimen/bkgnd_image_width"
+            android:layout_height="@dimen/bkgnd_image_height"
+            android:scaleType="fitXY"
+            android:layout_gravity="center"
+            android:id="@+id/create_event_image_view1"
+            android:src="@drawable/logo"/>
+
+        <TextView
+            android:id="@+id/editTextView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:text="@string/event_name_text"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+
+        <EditText
+            android:id="@+id/edit_event_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/event_table_margin"
+            android:ems="17"
+            android:hint="Event Name"
+            android:textColor="@color/orange"
+            android:inputType="text" >
+        <requestFocus />
+        </EditText>
+
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TableRow
-                android:id="@+id/editTableRow1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
-
-                <TextView
-                    android:id="@+id/editTextView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/event_name_text"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                <EditText
-                    android:id="@+id/edit_event_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="text" >
-                    <requestFocus />
-                </EditText>
-            </TableRow>
-
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/event_table_margin"
+            android:layout_marginBottom="@dimen/event_table_margin" >
 
             <TableRow
                 android:id="@+id/editTableRow3"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
+                android:layout_height="wrap_content" >
 
                 <TextView
                     android:id="@+id/editTextView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
                     android:text="@string/event_sport_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -56,41 +68,48 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawSelectorOnTop="true"
+                    android:textColor="@color/orange"
                     android:prompt="@string/prompt"
                     />
             </TableRow>
-            <TableRow
-                android:id="@+id/editTableRow4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
+            </TableLayout>
 
-                <TextView
-                    android:id="@+id/editTextView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/event_location_text"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:id="@+id/editTextView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:text="@string/event_location_text"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                <EditText
-                    android:id="@+id/edit_event_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="text" >
-                    <requestFocus />
-                </EditText>
-            </TableRow>
+        <EditText
+            android:id="@+id/edit_event_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/event_table_margin"
+            android:ems="17"
+            android:hint="Location"
+            android:textColor="@color/orange"
+            android:inputType="text" >
+            <requestFocus />
+        </EditText>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/event_table_margin"
+            android:layout_marginBottom="@dimen/event_table_margin" >
             <TableRow
                 android:id="@+id/editTableRow5"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
+                android:layout_height="wrap_content" >
 
                 <TextView
                     android:id="@+id/editTextView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
                     android:text="@string/event_date_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -98,18 +117,26 @@
                     android:id="@+id/edit_event_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/orange"
                     android:hint="@string/event_date_text" />
             </TableRow>
+            </TableLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/event_table_margin"
+            android:layout_marginBottom="@dimen/event_table_margin" >
             <TableRow
                 android:id="@+id/editTableRow6"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
+                android:layout_height="wrap_content" >
 
                 <TextView
                     android:id="@+id/editTextView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
                     android:text="@string/event_time_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -117,36 +144,52 @@
                     android:id="@+id/edit_event_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/orange"
                     android:hint="@string/event_time_text" />
             </TableRow>
+            </TableLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/event_table_margin"
+            android:layout_marginBottom="@dimen/event_table_margin" >
             <TableRow
                 android:id="@+id/editTableRow7"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
+                android:layout_height="wrap_content" >
 
                 <TextView
                     android:id="@+id/editTextView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
                     android:text="@string/event_gender_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <Spinner
                     android:id="@+id/edit_gender_spinner"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/orange"/>
             </TableRow>
+            </TableLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/event_table_margin"
+            android:layout_marginBottom="@dimen/event_table_margin" >
             <TableRow
                 android:id="@+id/editTableRow8"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
+                android:layout_height="wrap_content" >
 
                 <TextView
                     android:id="@+id/editTextView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
                     android:text="@string/event_age_group_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -156,57 +199,88 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:columnCount="2"
-                    android:rowCount="1"
-                    android:orientation="horizontal" >
+                    android:rowCount="2"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/editEventTextViewMin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Min" />
 
                     <Spinner
                         android:id="@+id/edit_age_min_spinner"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/orange"/>
+
+                    <TextView
+                        android:id="@+id/editEventTextViewMax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Max" />
+
                     <Spinner
                         android:id="@+id/edit_age_max_spinner"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/orange"/>
 
                 </GridLayout>
 
             </TableRow>
+            </TableLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/event_table_margin"
+            android:layout_marginBottom="@dimen/event_table_margin" >
             <TableRow
                 android:id="@+id/editTableRow9"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
+                android:layout_height="wrap_content" >
 
                 <TextView
                     android:id="@+id/editTextView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
                     android:text="@string/event_max_num_ppl_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <Spinner
                     android:id="@+id/edit_max_num_ppl_spinner"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/orange" />
 
             </TableRow>
+            </TableLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/event_table_margin"
+            android:layout_marginBottom="@dimen/event_table_margin">
             <TableRow
                 android:id="@+id/editTableRow10"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
+                android:layout_height="wrap_content" >
 
                 <TextView
                     android:id="@+id/editTextView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
                     android:text="@string/event_min_user_rating_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <Spinner
                     android:id="@+id/edit_min_user_rating_spinner"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/orange"/>
 
             </TableRow>
         </TableLayout>

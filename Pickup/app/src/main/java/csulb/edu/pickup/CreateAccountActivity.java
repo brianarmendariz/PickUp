@@ -32,7 +32,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +67,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         initSpinners();
 
         findViewsById();
+        setHints();
         setUpCancelButton();
         setUpUploadPhotoButton();
         setUpCreateAccountButton();
@@ -217,20 +222,14 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             startActivityForResult(myIntent, 0);
         }
         else if(view == uploadPhotoButton){
-            // Check Camera
-            if (getApplicationContext().getPackageManager().hasSystemFeature(
-                    PackageManager.FEATURE_CAMERA)) {
-                // Open default camera
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
 
-                // start the image capture Intent
-                startActivityForResult(intent, 100);
+            Intent intent = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, 0);
 
-            } else {
-                Toast.makeText(getApplication(), "Camera not supported", Toast.LENGTH_LONG).show();
-            }
-
+            /*URLConnection conn = new URLConnection();
+            conn.sendUploadPhoto("YODA.jpg","myusername" );
+*/
         }
         else if (view == createAccountButton) {
 
@@ -424,7 +423,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                 .show();
     }
 
-
+/*
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 100 && resultCode == RESULT_OK) {
 
@@ -446,5 +445,87 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             ImageView imageView = (ImageView) findViewById(R.id.Imageprev);
             imageView.setImageBitmap(photo);
         }
+    }*/
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) throws RuntimeException {
+        // TODO Auto-generated method stub
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK){
+            Uri targetUri = data.getData();
+            Bitmap bitmap;
+
+
+            try {
+
+                //bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
+                bitmap = getBitmapFromReturnedImage(targetUri,200,200);
+                ImageView imageView = (ImageView) findViewById(R.id.Imageprev);
+                imageView.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            catch(IOException e) {
+                e.printStackTrace();
+            }
+            catch(NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public Bitmap getBitmapFromReturnedImage(Uri selectedImage, int reqWidth, int reqHeight) throws IOException {
+
+        InputStream inputStream = getContentResolver().openInputStream(selectedImage);
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeStream(inputStream, null, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // close the input stream
+        inputStream.close();
+
+        // reopen the input stream
+        inputStream = getContentResolver().openInputStream(selectedImage);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeStream(inputStream, null, options);
+    }
+
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
+    public void setHints(){
+        ((EditText) findViewById(R.id.first_name)).setHint("First Name");
+        ((EditText) findViewById(R.id.last_name)).setHint("Last Name");
+        ((EditText) findViewById(R.id.email)).setHint("Email");
+        ((EditText) findViewById(R.id.userPassword)).setHint("Password");
+        ((EditText) findViewById(R.id.retype_password)).setHint("Retype Password");
+
+
     }
 }

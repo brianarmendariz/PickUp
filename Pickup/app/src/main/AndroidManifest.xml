@@ -108,7 +108,6 @@
         <activity android:name=".EditSettingsActivity"></activity>
 
 
-        <activity android:name=".MainActivity"></activity>
 
 
     </application>

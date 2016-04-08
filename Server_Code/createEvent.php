@@ -16,7 +16,8 @@ if( $_SERVER["REQUEST_METHOD"] == "POST")
 {
 
     /*set default values for these fields incase the user switches to advanced form */
-    $Author = $_POST["Author"];
+    $Author = $_POST["AuthorName"];
+    $Email = $_POST["Email"];
     $EventName = $_POST['EventName'];
     $Sport = $_POST['Sport'];
     $Location = $_POST['Location'];
@@ -29,9 +30,11 @@ if( $_SERVER["REQUEST_METHOD"] == "POST")
     $MinUserRating = $_POST["MinUserRating"];
     $PlayerNumber = $_POST['PlayerAmount'];
     $IsPrivate = $_POST['IsPrivate'];
+	$Gender = $_POST['Gender'];
 
-	$sql = 'INSERT INTO PickupEvents (Author, EventName, Sport, Location, DateTimeCreated, EventDateTime, Latitude, Longitude, AgeMax, AgeMin, MinUserRating, PlayerNumber, IsPrivate)
-    VALUES("'.$Author.'",
+	$sql = 'INSERT INTO PickupEvents (AuthorName,Email, EventName, Sport, Location, DateTimeCreated, EventDateTime, Latitude, Longitude, AgeMax, AgeMin, MinUserRating, PlayerNumber, IsPrivate, Gender)
+    VALUES("'.$AuthorName.'",
+	"'.$Email.'",
 	"'.$EventName.'", 
 	"'.$Sport.'", 
 	"'.$Location.'",
@@ -43,12 +46,24 @@ if( $_SERVER["REQUEST_METHOD"] == "POST")
 	"'.$AgeMin.'",
 	"'.$MinUserRating.'",
 	"'.$PlayerNumber.'",
-	"'.$IsPrivate.'")';
-    SQLQuery($sql);
+	"'.$IsPrivate.'",
+	"'.$Gender.'");';
+    
+	SQLQuery($sql);
 	
-	return true;
+	$sql = 'SELECT EventID FROM PickupEvents WHERE EventName="' . $EventName . '" AND Author = "' . $Author .
+		'" AND DateTimeCreated="' . $DateTimeCreated . '";';
+	$result = SQLQuery($sql);
+	if ($result->num_rows > 0) {
+		$row = $result->fetch_assoc();
+		$eventID = $row["EventID"];
+		print($eventID);
+	}
+	else{
+		print('false');
+	}
+//);
 }
-print ("Its Working");
 
 
 ?>

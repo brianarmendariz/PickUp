@@ -18,7 +18,8 @@ $resultData = "";
 		while($row = $result->fetch_assoc()) {
 
 	$resultData .= '#,EventID::' . $row["EventID"];
-	$resultData .= ',Author::' . $row["Author"];
+	$resultData .= ',AuthorName::' . $row["AuthorName"];
+	$resultData .= ',"Email::' . $row["Email"];
 	$resultData .= ',EventName::' . $row["EventName"];
 	$resultData .= ',Sport::' . $row["Sport"];
 	$resultData .= ',Location::' . $row["Location"];
@@ -29,9 +30,10 @@ $resultData = "";
 	$resultData .= ',AgeMax::' . $row["AgeMax"];
 	$resultData .= ',AgeMin::' . $row["AgeMin"];
 	$resultData .= ',MinUserRating::' . $row["MinUserRating"];
-	$resultData .= ',PlayerNumber::' . $row["PlayerNumber"];	$resultData .= 'PlayerNumber:' . $row["PlayerNumber"];
+	$resultData .= ',PlayerNumber::' . $row["PlayerNumber"];
+	$resultData .= ',PlayerNumber:' . $row["PlayerNumber"];
 	$resultData .= ',IsPrivate::' . $row["IsPrivate"];
-
+	$resultData .= ',Gender::' . $row["Gender"];
 	
 		}
 	}

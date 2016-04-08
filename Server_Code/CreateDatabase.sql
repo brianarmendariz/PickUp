@@ -1,11 +1,11 @@
- drop Database Pickup; 
-Create Database Pickup;
 Use Pickup;
+drop table PickupEvents;
 
 
 create Table PickupEvents(
    EventID int AUTO_INCREMENT PRIMARY KEY,
-   Author varchar(40), 
+   AuthorName varchar(40),
+   Email varchar(40), 
    EventName varchar(40),                
    Sport varchar(40),
    Location varchar(80),
@@ -13,10 +13,11 @@ create Table PickupEvents(
    Longitude double(20,16),
    DateTimeCreated datetime,
    EventDateTime datetime,
-   AgeMax int,
-   AgeMin int,
-   MinUserRating int,
-   PlayerNumber int,
-   IsPrivate boolean
+   AgeMax varchar(3),
+   AgeMin varchar(3),
+   MinUserRating varchar(3),
+   PlayerNumber varchar(3),
+   IsPrivate boolean,
+   Gender varchar(10)
    
 );

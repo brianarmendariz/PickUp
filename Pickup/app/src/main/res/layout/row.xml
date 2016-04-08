@@ -13,7 +13,7 @@
         android:layout_toRightOf="@+id/image"
         android:padding="3dip"
         android:layout_marginTop="2dip"
-        android:textColor="@drawable/red"
+        android:textColor="@color/orange"
         android:textStyle="bold"
         android:id="@+id/company"
         android:text="Sport"
@@ -23,7 +23,7 @@
     <TextView
         android:layout_toRightOf="@+id/image"
         android:padding="2dip"
-        android:textColor="@drawable/darkgrey"
+        android:textColor="@color/orange"
         android:layout_marginLeft="5dip"
         android:id="@+id/sub"
         android:layout_below="@+id/company"

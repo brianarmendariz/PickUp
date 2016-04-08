@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#008000"
+        android:background="#000000"
         android:gravity="center"
 
         >
@@ -38,30 +38,19 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
     </LinearLayout>
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:shrinkColumns="2"
-            >
 
 
-            <TableRow
-                android:id="@+id/createAccountTableRow1"
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:layout_margin="10dp" >
-
-                <TextView
-                    android:id="@+id/createAccountTextView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/create_acct_first_name_text"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:layout_column="0" />
 
                 <EditText
                     android:id="@+id/first_name"
-                    android:layout_width="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="5"
                     android:background="#FAEBD7"
@@ -69,27 +58,16 @@
                     android:fadeScrollbars="false"
                     android:scrollbars="horizontal"
                     android:inputType="text"
-                    android:layout_column="2">
+                    android:textSize="30dp">
                     <requestFocus />
                 </EditText>
-            </TableRow>
-            <TableRow
-                android:id="@+id/createAcountTableRow2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp" >
 
-                <TextView
-                    android:id="@+id/createAccountTextView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/create_acct_last_name_text"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:layout_column="0" />
+
 
                 <EditText
                     android:id="@+id/last_name"
-                    android:layout_width="10dp"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:background="#FAEBD7"
@@ -97,27 +75,17 @@
                     android:fadeScrollbars="false"
                     android:scrollbars="horizontal"
                     android:inputType="text"
-                    android:layout_column="2">
+                    android:textSize="30dp">
                     <requestFocus />
                 </EditText>
-            </TableRow>
-            <TableRow
-                android:id="@+id/createAccountTableRow3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp" >
 
-                <TextView
-                    android:id="@+id/createAccountTextView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/create_acct_email_text"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:layout_column="0" />
+
+
 
                 <EditText
                     android:id="@+id/email"
-                    android:layout_width="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:background="#FAEBD7"
@@ -125,27 +93,15 @@
                     android:fadeScrollbars="false"
                     android:scrollbars="horizontal"
                     android:inputType="text"
-                    android:layout_column="2">
+                    android:textSize="30dp">
                     <requestFocus />
                 </EditText>
-            </TableRow>
-            <TableRow
-                android:id="@+id/createAccountTableRow4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp" >
 
-                <TextView
-                    android:id="@+id/createAccountTextView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/create_acct_password_text"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:layout_column="0" />
 
                 <EditText
                     android:id="@+id/userPassword"
-                    android:layout_width="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="7"
                     android:background="#FAEBD7"
@@ -153,27 +109,15 @@
                     android:fadeScrollbars="false"
                     android:scrollbars="horizontal"
                     android:inputType="textPassword"
-                    android:layout_column="2">
+                    android:textSize="30dp">
                     <requestFocus />
                 </EditText>
-            </TableRow>
-            <TableRow
-                android:id="@+id/eventTableRow2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp" >
 
-                <TextView
-                    android:id="@+id/createAccountTextView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/create_acct_retype_text"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:layout_column="0" />
 
                 <EditText
                     android:id="@+id/retype_password"
-                    android:layout_width="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:background="#FAEBD7"
@@ -181,10 +125,15 @@
                     android:scrollHorizontally="true"
                     android:scrollbars="horizontal"
                     android:inputType="textPassword"
-                    android:layout_column="2">
+                    android:textSize="30dp">
                     <requestFocus />
                 </EditText>
-            </TableRow>
+                </LinearLayout>
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:shrinkColumns="2"
+            >
             <TableRow
                 android:id="@+id/createAccountTableRow5"
                 android:layout_width="wrap_content"
@@ -260,7 +209,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/upload_btn_txt"
-            android:background="#000033"
+            android:background="#008000"
             android:textSize="20dp"
             android:textColor="#FFFFFF"
             android:shadowColor="#000000"
@@ -294,9 +243,9 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/cancel_btn_txt"
-                    android:background="#FFFF00"
+                    android:background="#008000"
                     android:textSize="20dp"
-                    android:textColor="#000000"
+                    android:textColor="#FFFFFF"
                     android:shadowColor="#000000"
                     android:shadowDx="0.0"
                     android:shadowDy="0.0"

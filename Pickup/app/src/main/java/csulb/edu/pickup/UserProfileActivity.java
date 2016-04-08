@@ -36,7 +36,10 @@ public class UserProfileActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         Bundle data = getIntent().getExtras();
         thisUser = (User) data.getParcelable("USER");
+
+        thisUser.getEmail();
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.view_profile);
         profileImage = (ImageView)findViewById(R.id.imageView);
         profileImage.setOnClickListener(new View.OnClickListener() {

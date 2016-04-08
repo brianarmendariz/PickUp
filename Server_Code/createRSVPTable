@@ -1,0 +1,9 @@
+Use Pickup;
+/*Drop Table EventRSVP;
+*/
+create Table EventRSVP (
+	/*
+   RSVPID int AUTO_INCREMENT PRIMARY KEY,
+   RSVPUser varchar(40), 
+   EventID int*/
+);

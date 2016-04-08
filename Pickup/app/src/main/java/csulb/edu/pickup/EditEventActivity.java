@@ -385,7 +385,7 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
             }
             catch(Exception e)
             {
-                Log.i(TAG, "HashMap ERROR");
+                Log.i(TAG, "ERROR");
             }
         }
     }

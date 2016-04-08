@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,8 @@ import android.content.Intent;
 import android.os.StrictMode;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.facebook.login.LoginManager;
 
 import java.io.IOException;
 
@@ -29,6 +32,10 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
     private Button _editEventButton;
     private Button _deleteEventButton;
     private Button _cancelEventButton;
+    private Button _RSVPEventButton;
+    private Button _UnRSVPEventButton;
+
+
 
     private Event _event;
 
@@ -45,29 +52,77 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
         StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.view_event);
 
+
         Log.i(TAG, "onCreate");
+
+        // little sloppy
+        Intent intent = getIntent();
+        String extra = intent.getStringExtra("EventID");
+        _event = getEventDetails(Integer.parseInt(extra));
+        Log.d("VIEW EVENT ID", extra);
+
+        LinearLayout ll = (LinearLayout) findViewById(R.id.view_event_buttons);
+        if(thisUser.getEmail().equals(_event.getCreatorEmail())) {
+            Button editButton = new Button(this);
+            editButton.setText("Edit");
+            editButton.setTag("event_edit_btn");
+            editButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            ll.addView(editButton);
+            setupEditEventButton();
+
+            Button deleteButton = new Button(this);
+            deleteButton.setText("Delete");
+            deleteButton.setTag("event_delete_btn");
+            deleteButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            ll.addView(deleteButton);
+            setupDeleteEventButton();
+
+        }
+        URLConnection http = new URLConnection();
+        try {
+            String[][] RSVPList = http.sendGetRSVPList(Integer.parseInt(_event.getEventID()));
+            boolean hasRSVPd = false;
+            for (int i = 0; i < RSVPList.length; i++) {
+                if (RSVPList[i][1].equals(thisUser.getEmail())) {
+                    hasRSVPd = true;
+                }
+            }
+            if(!hasRSVPd && RSVPList.length>=Integer.parseInt(_event.getMaxNumberPpl())) {
+
+            }
+            else {
+                if (hasRSVPd) {
+                    Button unRSVPButton = new Button(this);
+                    unRSVPButton.setText("unRSVP");
+                    unRSVPButton.setTag("event_unrsvp_btn");
+                    unRSVPButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    ll.addView(unRSVPButton);
+                    setupUnRSVPButton();
+                }
+                else if (RSVPList.length < Integer.parseInt(_event.getMaxNumberPpl())) {
+                    Button RSVPButton = new Button(this);
+                    RSVPButton.setText("RSVP");
+                    RSVPButton.setTag("event_rsvp_btn");
+                    RSVPButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    ll.addView(RSVPButton);
+                    setupRSVPButton();
+                }
+            }
+        }catch(IOException ie){
+            ie.printStackTrace();
+        }
+
 
         findViewsById();
 
-        setupEditEventButton();
-        setupDeleteEventButton();
         setupCancelEventButton();
-        Intent intent = getIntent();
-        String extra = intent.getStringExtra("EventID");
-        Log.d("VIEW EVENT ID", extra);
-        // little sloppy
-        _event = getEventDetails(Integer.parseInt(extra));
+
+
         //Toast.makeText(getApplicationContext(), event.getAddress(), Toast.LENGTH_SHORT).show();
         putEventDetailsToForm(_event);
+
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -76,11 +131,39 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        /*if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.user_profile) {
+            Bundle b = new Bundle();
+            b.putParcelable("USER", thisUser);
+            Intent userProfileIntent = new Intent(getBaseContext(), UserProfileActivity.class);
+            userProfileIntent.putExtras(b);
+            startActivity(userProfileIntent);
+
         }
-*/
+        if(id==R.id.map){
+            Bundle b = new Bundle();
+            b.putParcelable("USER", thisUser);
+            Intent mapIntent = new Intent(getBaseContext(), MapsActivity.class);
+            mapIntent.putExtras(b);
+            startActivity(mapIntent);
+
+        }
+
+        if(id==R.id.edit_settings){
+            Bundle b = new Bundle();
+            b.putParcelable("USER", thisUser);
+            Intent mapIntent = new Intent(getBaseContext(), EditSettingsActivity.class);
+            mapIntent.putExtras(b);
+            startActivity(mapIntent);
+        }
+
+        if (id == R.id.user_logout) {
+            LoginManager.getInstance().logOut();
+            Intent loginActivityIntent = new Intent(getBaseContext(), LoginActivity.class);
+
+            loginActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(loginActivityIntent);
+            finish();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -118,7 +201,6 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
         if(name.length() > 10)
             eventViewName.setMovementMethod(new ScrollingMovementMethod());
         eventViewName.setText(name);
-        Toast.makeText(getApplicationContext(), name, Toast.LENGTH_SHORT).show();
 
         TextView eventViewCreator = (TextView) findViewById(R.id.event_view_creator);
         eventViewCreator.setText(author);
@@ -151,11 +233,27 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
 
     public void findViewsById()
     {
-        _editEventButton = (Button) findViewById(R.id.event_edit_btn);
-        _editEventButton.requestFocus();
+        LinearLayout ll = (LinearLayout) findViewById(R.id.view_event_buttons);
 
-        _deleteEventButton = (Button) findViewById(R.id.event_delete_btn);
-        _deleteEventButton.requestFocus();
+        if(ll.findViewWithTag("event_edit_btn")!=null) {
+            _editEventButton = (Button) ll.findViewWithTag("event_edit_btn");
+            _editEventButton.requestFocus();
+        }
+
+
+        if(ll.findViewWithTag("event_delete_btn")!=null) {
+            _deleteEventButton = (Button) ll.findViewWithTag("event_delete_btn");
+            _deleteEventButton.requestFocus();
+        }
+        if(ll.findViewWithTag("event_rsvp_btn")!=null) {
+            _RSVPEventButton = (Button) ll.findViewWithTag("event_rsvp_btn");
+            _RSVPEventButton.requestFocus();
+        }
+
+        if(ll.findViewWithTag("event_unrsvp_btn")!=null) {
+            _UnRSVPEventButton = (Button) ll.findViewWithTag("event_unrsvp_btn");
+            _UnRSVPEventButton.requestFocus();
+        }
 
         _cancelEventButton = (Button) findViewById(R.id.view_cancel_btn);
         _cancelEventButton.requestFocus();
@@ -175,6 +273,13 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
     {
         _cancelEventButton.setOnClickListener(this);
     }
+    public void setupRSVPButton() {
+        _RSVPEventButton.setOnClickListener(this);
+    }
+    public void setupUnRSVPButton(){
+        _UnRSVPEventButton.setOnClickListener(this);
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -220,6 +325,33 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
             returnIntent.putExtras(b);
             setResult(MapsActivity.RESULT_CANCELED, returnIntent);
             finish();
+
+        }
+        else if(view == _RSVPEventButton){
+            URLConnection http = new URLConnection();
+            try {
+                http.sendRSVP(thisUser.getEmail(), _event.getEventID());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            LinearLayout ll = (LinearLayout) findViewById(R.id.view_event_buttons);
+            ll.removeView(_RSVPEventButton);
+            Button unRSVPButton = new Button(this);
+            unRSVPButton.setText("unRSVP");
+            unRSVPButton.setTag("event_unrsvp_btn");
+            unRSVPButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            ll.addView(unRSVPButton);
+            setupUnRSVPButton();
+        }
+        else if(view == _UnRSVPEventButton){
+            LinearLayout ll = (LinearLayout) findViewById(R.id.view_event_buttons);
+            ll.removeView(_UnRSVPEventButton);
+            Button RSVPButton = new Button(this);
+            RSVPButton.setText("RSVP");
+            RSVPButton.setTag("event_rsvp_btn");
+            RSVPButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            ll.addView(RSVPButton);
+            setupRSVPButton();
 
         }
     }
