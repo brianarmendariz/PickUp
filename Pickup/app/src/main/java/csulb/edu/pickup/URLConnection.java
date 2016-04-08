@@ -105,6 +105,13 @@ public class URLConnection {
         String urlParameters = "RSVPUser="+username+"&EventID="+eventID;
         return makeHTTPRequest(url,urlParameters);
     }
+
+    /**
+     * Returns a list of the users who are on the RSVP list
+     * @param eventID
+     * @return 2d array [user's full name][username]
+     * @throws IOException
+     */
     public String [][] sendGetRSVPList( int eventID) throws IOException  {
 
 			/*url of route being requested*/
