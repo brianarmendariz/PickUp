@@ -174,13 +174,21 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
             startActivity(userProfileIntent);
 
         }
+
+        if (id == R.id.calendar) {
+            Bundle b = new Bundle();
+            b.putParcelable("USER", thisUser);
+            Intent calendarIntent = new Intent(getBaseContext(), CalendarActivity.class);
+            calendarIntent.putExtras(b);
+            startActivity(calendarIntent);
+        }
+
         if(id==R.id.map){
             Bundle b = new Bundle();
             b.putParcelable("USER", thisUser);
             Intent mapIntent = new Intent(getBaseContext(), MapsActivity.class);
             mapIntent.putExtras(b);
             startActivity(mapIntent);
-
         }
 
         if(id==R.id.edit_settings){
@@ -199,6 +207,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
             startActivity(loginActivityIntent);
             finish();
         }
+
         return super.onOptionsItemSelected(item);
     }
 

@@ -318,6 +318,28 @@ public class URLConnection {
     }
 
     /**
+     * gets a list of all events for a user in database on server.
+     * @return ArrayList<Event> - an event object for each event in server
+     * @throws IOException
+     */
+    public ArrayList<Event> sendGetEventsForUser(String username) throws IOException  {
+
+        System.out.println("GetEventsForUser");
+
+		/*url of route being requested*/
+        String url = "http://www.csulbpickup.com/getEventsForUser.php";
+
+        String response = makeHTTPRequest(url, urlParameters);
+
+        //print result
+        String stringResponse = response.toString();
+        System.out.println("Response: " + response);
+        ArrayList<Event> list = convertEventList(stringResponse);
+
+        return list;
+    }
+
+    /**
      * Gets a single event from server for the given EventID
      * @param eventID
      * @return Event - an Event object for the retrieved Event on server.
