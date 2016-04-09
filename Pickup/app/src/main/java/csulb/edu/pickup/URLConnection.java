@@ -105,7 +105,13 @@ public class URLConnection {
         String urlParameters = "RSVPUser="+username+"&EventID="+eventID;
         return makeHTTPRequest(url,urlParameters);
     }
+    public String sendUnRSVP(String username, String eventID) throws IOException  {
 
+				/*url of route being requested*/
+        String url = "http://www.csulbpickup.com/CreateUnRSVP.php";
+        String urlParameters = "UnRSVPUser="+username+"&EventID="+eventID;
+        return makeHTTPRequest(url,urlParameters);
+    }
     /**
      * Returns a list of the users who are on the RSVP list
      * @param eventID
@@ -119,6 +125,9 @@ public class URLConnection {
         String urlParameters = "EventID="+eventID;
         String response =  makeHTTPRequest(url,urlParameters);
         String[][] RSVPList =  convertRSVPList(response);
+        for(int i = 0;i<RSVPList.length;i++){
+            System.out.println(i+" "+RSVPList[i][0]+" "+RSVPList[i][1]);
+        }
         return RSVPList;
     }
 
@@ -230,7 +239,7 @@ public class URLConnection {
 				/*url of route being requested*/
         String url = "http://www.csulbpickup.com/createEvent.php";
 
-        String urlParameters = "Author="+authorName+"&Email="+authorEmail+"&EventName="+eventName+"&Sport="+sport+"&Location="+location+"&Latitude="+latitude+
+        String urlParameters = "AuthorName="+authorName+"&Email="+authorEmail+"&EventName="+eventName+"&Sport="+sport+"&Location="+location+"&Latitude="+latitude+
                 "&Longitude="+longitude+"&EventDateTime="+eventDateTime+"&AgeMax="+ageMax+"&AgeMin="+ageMin+
                 "&PlayerAmount="+playerAmount+"&MinUserRating="+minUserRating+"&IsPrivate="+isPrivate+"&Gender="+gender;
 
@@ -428,27 +437,39 @@ public class URLConnection {
         return thisUser;
 
     }
+
+
     private  String[][] convertRSVPList(String str){
 		    	/*Divide string up into lines */
         String[] lines=str.split("#");
 
-        String[][] RSVPPairs = new String[lines.length][2];
+        String[][] RSVPPairs = new String[lines.length-1][2];
 			        /*for each line parse key-value pairs */
         int lineCount = 0;
+        int arrayCount = 0;
         for(String line : lines){
-            if(!line.isEmpty()){
+           // if(!line.isEmpty()&& line!=null){
+                System.out.println("line:"+line);
                 Map <String, String> RSVPList = new HashMap<>();
                 for(String pair: line.split(",")){
                     String[] tokens = pair.split("::");
-                    for (int i=0; i<tokens.length-1; ){
+                    for (int i=0; i<tokens.length-1; i++){
+
                         RSVPList.put(tokens[i++], tokens[i++]);
                     }
                 }
-                RSVPPairs[lineCount][0] = RSVPList.get("Name");
-                RSVPPairs[lineCount][1] = RSVPList.get("Username");
+                System.out.println(lineCount+"line:"+line);
+               if(RSVPList.get("Name")!=null && RSVPList.get("Username")!=null &&lineCount<lines.length) {
+                    RSVPPairs[arrayCount][0] = RSVPList.get("Name");
+                    RSVPPairs[arrayCount][1] = RSVPList.get("Username");
+                   arrayCount++;
+                }
 
-            }
+           // }
             lineCount++;
+        }
+        for (int i = 0; i < RSVPPairs.length; i++) {
+            System.out.println("pairs"+RSVPPairs[i][0]);
         }
         return RSVPPairs;
     }

@@ -1,12 +1,15 @@
 package csulb.edu.pickup;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.HashMap;
@@ -46,6 +49,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
 
         Bundle data = getIntent().getExtras();
         thisUser = (User) data.getParcelable("USER");
+        //thisUser = new User("Sarah", "Shibley", "sarahshib@hotmail.com","abcd","1994-10-12","female", "");
 
         super.onCreate(savedInstanceState);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -59,6 +63,8 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
         Intent intent = getIntent();
         String extra = intent.getStringExtra("EventID");
         _event = getEventDetails(Integer.parseInt(extra));
+
+
         Log.d("VIEW EVENT ID", extra);
 
         LinearLayout ll = (LinearLayout) findViewById(R.id.view_event_buttons);
@@ -66,23 +72,38 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
             Button editButton = new Button(this);
             editButton.setText("Edit");
             editButton.setTag("event_edit_btn");
+            editButton.setGravity(Gravity.CENTER);
+            editButton.setTextColor(Color.parseColor("#008000"));
             editButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);
+            params.gravity = Gravity.CENTER;
+            editButton.setLayoutParams(params);
             ll.addView(editButton);
+            _editEventButton = (Button) ll.findViewWithTag("event_edit_btn");
+            _editEventButton.requestFocus();
             setupEditEventButton();
+
 
             Button deleteButton = new Button(this);
             deleteButton.setText("Delete");
             deleteButton.setTag("event_delete_btn");
+            deleteButton.setGravity(Gravity.CENTER);
+            deleteButton.setTextColor(Color.parseColor("#008000"));
             deleteButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);
+            params2.gravity = Gravity.CENTER;
+            deleteButton.setLayoutParams(params2);
             ll.addView(deleteButton);
+            _deleteEventButton = (Button) ll.findViewWithTag("event_delete_btn");
+            _deleteEventButton.requestFocus();
             setupDeleteEventButton();
-
         }
         URLConnection http = new URLConnection();
         try {
             String[][] RSVPList = http.sendGetRSVPList(Integer.parseInt(_event.getEventID()));
             boolean hasRSVPd = false;
             for (int i = 0; i < RSVPList.length; i++) {
+                Log.d("SARAH", "name"+RSVPList[i][0]);
                 if (RSVPList[i][1].equals(thisUser.getEmail())) {
                     hasRSVPd = true;
                 }
@@ -95,16 +116,30 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
                     Button unRSVPButton = new Button(this);
                     unRSVPButton.setText("unRSVP");
                     unRSVPButton.setTag("event_unrsvp_btn");
+                    unRSVPButton.setGravity(Gravity.CENTER);
+                    unRSVPButton.setTextColor(Color.parseColor("#008000"));
                     unRSVPButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     ll.addView(unRSVPButton);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);
+                    params.gravity = Gravity.CENTER;
+                    unRSVPButton.setLayoutParams(params);
+                    _UnRSVPEventButton = (Button) ll.findViewWithTag("event_unrsvp_btn");
+                    _UnRSVPEventButton.requestFocus();
                     setupUnRSVPButton();
                 }
                 else if (RSVPList.length < Integer.parseInt(_event.getMaxNumberPpl())) {
                     Button RSVPButton = new Button(this);
                     RSVPButton.setText("RSVP");
                     RSVPButton.setTag("event_rsvp_btn");
+                    RSVPButton.setGravity(Gravity.CENTER);
+                    RSVPButton.setTextColor(Color.parseColor("#008000"));
                     RSVPButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);
+                    params.gravity = Gravity.CENTER;
+                    RSVPButton.setLayoutParams(params);
                     ll.addView(RSVPButton);
+                    _RSVPEventButton = (Button) ll.findViewWithTag("event_rsvp_btn");
+                    _RSVPEventButton.requestFocus();
                     setupRSVPButton();
                 }
             }
@@ -339,18 +374,37 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
             Button unRSVPButton = new Button(this);
             unRSVPButton.setText("unRSVP");
             unRSVPButton.setTag("event_unrsvp_btn");
+            unRSVPButton.setGravity(Gravity.CENTER);
+            unRSVPButton.setTextColor(Color.parseColor("#008000"));
             unRSVPButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             ll.addView(unRSVPButton);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);
+            params.gravity = Gravity.CENTER;
+            unRSVPButton.setLayoutParams(params);
+            _UnRSVPEventButton = (Button) ll.findViewWithTag("event_unrsvp_btn");
+            _UnRSVPEventButton.requestFocus();
             setupUnRSVPButton();
         }
         else if(view == _UnRSVPEventButton){
+            URLConnection http = new URLConnection();
+            try {
+                http.sendUnRSVP(thisUser.getEmail(), _event.getEventID());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             LinearLayout ll = (LinearLayout) findViewById(R.id.view_event_buttons);
             ll.removeView(_UnRSVPEventButton);
             Button RSVPButton = new Button(this);
             RSVPButton.setText("RSVP");
             RSVPButton.setTag("event_rsvp_btn");
-            RSVPButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            RSVPButton.setGravity(Gravity.CENTER);
+            RSVPButton.setTextColor(Color.parseColor("#008000"));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);
+            params.gravity = Gravity.CENTER;
+            RSVPButton.setLayoutParams(params);
             ll.addView(RSVPButton);
+            _RSVPEventButton = (Button) ll.findViewWithTag("event_rsvp_btn");
+            _RSVPEventButton.requestFocus();
             setupRSVPButton();
 
         }

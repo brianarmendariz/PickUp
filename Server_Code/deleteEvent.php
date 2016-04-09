@@ -24,6 +24,10 @@ if( $_SERVER["REQUEST_METHOD"] == "POST")
 		$sql = 'DELETE FROM PickupEvents WHERE EventID = ' . $EventID . ';';
 		if(SQLQuery($sql)=== TRUE){
 			print ("true");
+
+		$sql = 'DELETE FROM EventRSVPs WHERE EventID = ' . $EventID . ';';
+		SQLQuery($sql);
+
 		}
 		else{
 			print("false");

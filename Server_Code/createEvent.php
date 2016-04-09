@@ -16,7 +16,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST")
 {
 
     /*set default values for these fields incase the user switches to advanced form */
-    $Author = $_POST["AuthorName"];
+    $AuthorName = $_POST["AuthorName"];
     $Email = $_POST["Email"];
     $EventName = $_POST['EventName'];
     $Sport = $_POST['Sport'];
@@ -51,13 +51,16 @@ if( $_SERVER["REQUEST_METHOD"] == "POST")
     
 	SQLQuery($sql);
 	
-	$sql = 'SELECT EventID FROM PickupEvents WHERE EventName="' . $EventName . '" AND Author = "' . $Author .
-		'" AND DateTimeCreated="' . $DateTimeCreated . '";';
+	$sql = 'SELECT EventID FROM PickupEvents WHERE EventName="' . $EventName . '" AND AuthorName = "' . $AuthorName .'" AND DateTimeCreated="' . $DateTimeCreated . '";';
 	$result = SQLQuery($sql);
 	if ($result->num_rows > 0) {
 		$row = $result->fetch_assoc();
 		$eventID = $row["EventID"];
 		print($eventID);
+		$sql = 'INSERT INTO EventRSVPs (RSVPUser, EventID)VALUES("'.$Email.'", ' . $eventID.');';
+    
+		$result2 = SQLQuery($sql);
+		print($result2);
 	}
 	else{
 		print('false');

@@ -22,6 +22,7 @@
     <string name="event_min_user_rating_text">Min User Rating</string>
 
     <string name="create_event_btn_txt">Create Event</string>
+    <string name="share_event_btn_txt">Share Event</string>
     <string name="edit_event_btn_txt">Edit Event</string>
     <string name="delete_event_btn_txt">Delete Event</string>
     <string name="save_changes_event_btn_txt">Save Changes</string>

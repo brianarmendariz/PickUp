@@ -218,9 +218,15 @@ public class MapsActivity extends FragmentActivity implements android.location.L
             String s = marker.getTitle();
             URLConnection http = new URLConnection();
             ArrayList<Event> list = http.sendGetEvents();
+            for (int j = 0; j < list.size(); j++) {
+                System.out.println("firstListName: " + list.get(j).getName());
+            }
             for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).getName().equals(marker.getTitle())) {
-                    //Event e = list.get(i);
+                System.out.println("listName: "+list.get(i).getName());
+                System.out.println("markerName: "+marker.getTitle());
+               if (list.get(i).getName()!=null && marker.getTitle()!=null && list.get(i).getName().equals(marker.getTitle())) {
+                //if (marker.getTitle().equals("abc")) {
+                        //Event e = list.get(i);
 
                     Bundle b = new Bundle();
                     b.putParcelable("USER", thisUser);
