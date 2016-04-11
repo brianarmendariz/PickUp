@@ -7,14 +7,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.StrictMode;
 
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
 
@@ -26,9 +25,21 @@ import java.io.InputStream;
 /**
  * Created by Nessa on 3/19/16.
  */
+
+/*
+    SHOW THE USER PROFILE NAME GENDER
+ */
 public class UserProfileActivity extends Activity {
 
-    ImageView profileImage;
+
+
+    private ImageView profileImage;
+    private TextView name;
+    private TextView birthday;
+    private TextView gender;
+
+
+
 
     User thisUser;
 
@@ -37,7 +48,7 @@ public class UserProfileActivity extends Activity {
         Bundle data = getIntent().getExtras();
         thisUser = (User) data.getParcelable("USER");
 
-        thisUser.getEmail();
+        //thisUser.getEmail();
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.view_profile);
@@ -51,7 +62,15 @@ public class UserProfileActivity extends Activity {
             }
         });
 
+        name  = (TextView) findViewById(R.id.NameEditText);
+        birthday = (TextView) findViewById(R.id.BirthdayEditText);
+        gender = (TextView) findViewById(R.id.GenderEditText);
+        name.setText(thisUser.getFirstName());
+        birthday.setText(thisUser.getBirthday());
+        gender.setText(thisUser.getGender());
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

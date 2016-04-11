@@ -21,6 +21,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 
 import java.io.IOException;
 
@@ -30,14 +32,14 @@ import java.io.IOException;
 public class ViewEventActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final String TAG = "brainsMessages";
-    private static final int EDIT_MAP_EVENT = 3;
-    private static final int DELETE_MAP_EVENT = 4;
     private Button _editEventButton;
     private Button _deleteEventButton;
     private Button _cancelEventButton;
     private Button _RSVPEventButton;
     private Button _UnRSVPEventButton;
-
+    private Button _shareOnFBButton;
+    private Button _MMButton;
+    private ShareDialog shareDialog;
 
 
     private Event _event;
@@ -97,6 +99,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
             _deleteEventButton = (Button) ll.findViewWithTag("event_delete_btn");
             _deleteEventButton.requestFocus();
             setupDeleteEventButton();
+
         }
         URLConnection http = new URLConnection();
         try {
@@ -149,7 +152,8 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
 
 
         findViewsById();
-
+        setUpShareOnFBButton();
+        setUpMMButton();
         setupCancelEventButton();
 
 
@@ -298,9 +302,11 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
             _UnRSVPEventButton = (Button) ll.findViewWithTag("event_unrsvp_btn");
             _UnRSVPEventButton.requestFocus();
         }
-
+        _shareOnFBButton = (Button) findViewById(R.id.share_on_facebook);
+        _MMButton = (Button) findViewById(R.id.MMButton);
         _cancelEventButton = (Button) findViewById(R.id.view_cancel_btn);
         _cancelEventButton.requestFocus();
+
     }
 
     public void setupEditEventButton()
@@ -323,7 +329,26 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
     public void setupUnRSVPButton(){
         _UnRSVPEventButton.setOnClickListener(this);
     }
+    public void setUpShareOnFBButton() {
+        shareDialog = new ShareDialog(this);
+        _shareOnFBButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
 
+                if (ShareDialog.canShow(ShareLinkContent.class)) {
+                    ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                            .setContentTitle("Events")
+                            .setContentDescription(
+                                    "simple event")
+                            .build();
+
+                    shareDialog.show(linkContent);  // Show facebook ShareDialog
+                }
+
+            }
+        });
+    }
+    public void setUpMMButton() {_MMButton.setOnClickListener(this);}
 
     @Override
     public void onClick(View view) {
@@ -416,6 +441,12 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
             _RSVPEventButton.requestFocus();
             setupRSVPButton();
 
+        }
+
+        else if (view == _MMButton) {
+
+            Intent intent = new Intent(getBaseContext(), MMActivity.class);
+            startActivity(intent);
         }
     }
 
