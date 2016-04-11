@@ -21,6 +21,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 
 import java.io.IOException;
 
@@ -37,7 +39,8 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
     private Button _cancelEventButton;
     private Button _RSVPEventButton;
     private Button _UnRSVPEventButton;
-
+    private Button _shareOnFBButton;
+    private ShareDialog shareDialog;
 
 
     private Event _event;
@@ -97,6 +100,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
             _deleteEventButton = (Button) ll.findViewWithTag("event_delete_btn");
             _deleteEventButton.requestFocus();
             setupDeleteEventButton();
+
         }
         URLConnection http = new URLConnection();
         try {
@@ -149,7 +153,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
 
 
         findViewsById();
-
+        setUpShareOnFBButton();
         setupCancelEventButton();
 
 
@@ -298,9 +302,10 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
             _UnRSVPEventButton = (Button) ll.findViewWithTag("event_unrsvp_btn");
             _UnRSVPEventButton.requestFocus();
         }
-
+        _shareOnFBButton = (Button) findViewById(R.id.share_on_facebook);
         _cancelEventButton = (Button) findViewById(R.id.view_cancel_btn);
         _cancelEventButton.requestFocus();
+
     }
 
     public void setupEditEventButton()
@@ -322,6 +327,25 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
     }
     public void setupUnRSVPButton(){
         _UnRSVPEventButton.setOnClickListener(this);
+    }
+    public void setUpShareOnFBButton() {
+        shareDialog = new ShareDialog(this);
+        _shareOnFBButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                if (ShareDialog.canShow(ShareLinkContent.class)) {
+                    ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                            .setContentTitle("Events")
+                            .setContentDescription(
+                                    "simple event")
+                            .build();
+
+                    shareDialog.show(linkContent);  // Show facebook ShareDialog
+                }
+
+            }
+        });
     }
 
 

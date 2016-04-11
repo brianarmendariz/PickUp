@@ -26,6 +26,10 @@ import java.io.InputStream;
 /**
  * Created by Nessa on 3/19/16.
  */
+
+/*
+    SHOW THE USER PROFILE NAME GENDER
+ */
 public class UserProfileActivity extends Activity {
 
     ImageView profileImage;

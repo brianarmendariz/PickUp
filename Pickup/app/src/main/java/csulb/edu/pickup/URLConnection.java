@@ -118,7 +118,7 @@ public class URLConnection {
      * @return 2d array [user's full name][username]
      * @throws IOException
      */
-    public String [][] sendGetRSVPList( int eventID) throws IOException  {
+    public String [][] sendGetRSVPList(int eventID) throws IOException  {
 
 			/*url of route being requested*/
         String url = "http://www.csulbpickup.com/getRSVPList.php";
@@ -328,7 +328,7 @@ public class URLConnection {
 
 		/*url of route being requested*/
         String url = "http://www.csulbpickup.com/getEventsForUser.php";
-
+        String urlParameters = "Username=" + username;
         String response = makeHTTPRequest(url, urlParameters);
 
         //print result

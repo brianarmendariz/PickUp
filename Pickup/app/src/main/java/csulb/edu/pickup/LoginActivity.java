@@ -26,6 +26,8 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
@@ -40,9 +42,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 public class LoginActivity extends Activity implements View.OnClickListener {
 
@@ -56,7 +62,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private AccessToken accessToken;
     private AccessTokenTracker mTokenTracker;
     private ProfileTracker mProfileTracker;
-    private ShareDialog shareDialog;
+
 
     private FacebookCallback<LoginResult> mFacebookCallback = new FacebookCallback<LoginResult>() {
         @Override
@@ -65,12 +71,39 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
             accessToken = loginResult.getAccessToken();
 
+            User thisUser;
+            GraphRequest request = GraphRequest.newMeRequest(
+                    loginResult.getAccessToken(),
+                    new GraphRequest.GraphJSONObjectCallback() {
+                        @Override
+                        public void onCompleted(JSONObject object, GraphResponse response) {
+                            //thisUser = new User("Sarah", "Shibley", "sarahshib@hotmail.com","abcd","1994-10-12","female", "");
+                            Log.v("LoginActivity", response.toString());
+                            try {
+                                // Application code
+                                String name = object.getString("name");
+                                String email = object.getString("email");
+                                String birthday = object.getString("birthday"); // 01/31/1980 format
+                                String gender = object.getString("gender");
+                                mTextDetails.setText("Name: " + name + " Email: " + email + " Birthday: " + birthday);
+                                //thisUser = new User("name", "", email, "", birthday, gender, "");
+                            } catch (JSONException jE) {
+                                throw new RuntimeException(jE);
+                            }
+                        }
+                    });
+            thisUser = new User("Sarah", "Shibley", "sarahshib@hotmail.com","abcd","1994-10-12","female", "");
+            Bundle b = new Bundle();
+            b.putParcelable("USER", thisUser);
+            Intent myIntent = new Intent(getBaseContext(), MapsActivity.class);
+            myIntent.putExtras(b);
+            startActivityForResult(myIntent, 0);
 
 
 
-            Intent mapIntent = new Intent(getBaseContext(), MapsActivity.class);
-            mapIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(mapIntent);
+            //Intent mapIntent = new Intent(getBaseContext(), MapsActivity.class);
+            //mapIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            //startActivity(mapIntent);
             Log.d("LOG", "THIS IS READING");
             finish();
 
@@ -113,6 +146,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.login);
         setupLoginFBButton();
         mTextDetails = (TextView) findViewById(R.id.text_details);
+
         //Setup trackers for user profile
 
         findViewsById();
@@ -147,12 +181,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         if (accessToken == null) {
             Log.d("LOG", "accessToken null");
         }
-        else if (accessToken != null) {
+    /*    else if (accessToken != null) {
             Intent mapIntent = new Intent(getBaseContext(), MapsActivity.class);
             mapIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(mapIntent);
             finish();
-        }
+        }*/
 
     }
 
@@ -203,7 +237,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     //print keyhash
     private void setupLoginFBButton() {
         LoginButton mButtonLogin = (LoginButton) findViewById(R.id.facebook_login_button);
-        //mButtonLogin.registerCallback(mCallbackManager, mFacebookCallback);
+        mButtonLogin.setCompoundDrawables(null, null, null, null);
+        mButtonLogin.setReadPermissions(Arrays.asList("public_profile", "email", "user_birthday", "user_friends"));
+        mButtonLogin.registerCallback(mCallbackManager, mFacebookCallback);
     }
 
 
