@@ -112,6 +112,7 @@
         <activity android:name=".ForgotPasswdActivity"></activity>
         <activity android:name=".ResetPasswordActivity"></activity>
         <activity android:name=".EditSettingsActivity"></activity>
+        <activity android:name=".MMActivity"></activity>
 
 
 

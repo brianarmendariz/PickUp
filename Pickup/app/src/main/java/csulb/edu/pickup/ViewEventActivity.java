@@ -38,6 +38,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
     private Button _RSVPEventButton;
     private Button _UnRSVPEventButton;
     private Button _shareOnFBButton;
+    private Button _MMButton;
     private ShareDialog shareDialog;
 
 
@@ -152,6 +153,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
 
         findViewsById();
         setUpShareOnFBButton();
+        setUpMMButton();
         setupCancelEventButton();
 
 
@@ -301,6 +303,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
             _UnRSVPEventButton.requestFocus();
         }
         _shareOnFBButton = (Button) findViewById(R.id.share_on_facebook);
+        _MMButton = (Button) findViewById(R.id.MMButton);
         _cancelEventButton = (Button) findViewById(R.id.view_cancel_btn);
         _cancelEventButton.requestFocus();
 
@@ -345,7 +348,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
             }
         });
     }
-
+    public void setUpMMButton() {_MMButton.setOnClickListener(this);}
 
     @Override
     public void onClick(View view) {
@@ -438,6 +441,12 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
             _RSVPEventButton.requestFocus();
             setupRSVPButton();
 
+        }
+
+        else if (view == _MMButton) {
+
+            Intent intent = new Intent(getBaseContext(), MMActivity.class);
+            startActivity(intent);
         }
     }
 

@@ -277,6 +277,20 @@
 
         </LinearLayout>
 
+        <Button
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/mm_circle"
+            android:id="@+id/MMButton"
+            android:layout_gravity="right"
+            android:onClick="onClick_MM"
+            android:text="MM"
+            android:textColor="@color/yellow"
+            android:layout_marginBottom="5dp"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:layout_marginRight="5dp"/>
+
     </LinearLayout>
 
 </ScrollView>
