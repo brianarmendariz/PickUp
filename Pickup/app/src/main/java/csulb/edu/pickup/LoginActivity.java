@@ -71,7 +71,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
             accessToken = loginResult.getAccessToken();
 
-            User thisUser;
             GraphRequest request = GraphRequest.newMeRequest(
                     loginResult.getAccessToken(),
                     new GraphRequest.GraphJSONObjectCallback() {
@@ -85,26 +84,35 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                 String email = object.getString("email");
                                 String birthday = object.getString("birthday"); // 01/31/1980 format
                                 String gender = object.getString("gender");
-                                mTextDetails.setText("Name: " + name + " Email: " + email + " Birthday: " + birthday);
-                                //thisUser = new User("name", "", email, "", birthday, gender, "");
+                                //mTextDetails.setText("Name: " + name + " Email: " + email + " Birthday: " + birthday);
+                                //thisUser = new User("Sarah", "Shibley", "sarahshib@hotmail.com","abcd","1994-10-12","female", "");
+                                User thisUser;
+                                thisUser = new User(name,  "", email, "", birthday, gender, "");
+                                Bundle b = new Bundle();
+                                b.putParcelable("USER", thisUser);
+                                Intent mapIntent = new Intent(getBaseContext(), MapsActivity.class);
+                                mapIntent.putExtras(b);
+                                mapIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(mapIntent);
+
+
                             } catch (JSONException jE) {
                                 throw new RuntimeException(jE);
                             }
                         }
                     });
-            thisUser = new User("Sarah", "Shibley", "sarahshib@hotmail.com","abcd","1994-10-12","female", "");
-            Bundle b = new Bundle();
-            b.putParcelable("USER", thisUser);
-            Intent myIntent = new Intent(getBaseContext(), MapsActivity.class);
-            myIntent.putExtras(b);
-            startActivityForResult(myIntent, 0);
+
+
+            Bundle parameters = new Bundle();
+
+            //parameters.putString("fields", s);
+
+            parameters.putString("fields", "id,name,email,birthday,gender");
+            request.setParameters(parameters);
+            request.executeAsync();
 
 
 
-            //Intent mapIntent = new Intent(getBaseContext(), MapsActivity.class);
-            //mapIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            //startActivity(mapIntent);
-            Log.d("LOG", "THIS IS READING");
             finish();
 
         }

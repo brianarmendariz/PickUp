@@ -32,8 +32,6 @@ import java.io.IOException;
 public class ViewEventActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final String TAG = "brainsMessages";
-    private static final int EDIT_MAP_EVENT = 3;
-    private static final int DELETE_MAP_EVENT = 4;
     private Button _editEventButton;
     private Button _deleteEventButton;
     private Button _cancelEventButton;

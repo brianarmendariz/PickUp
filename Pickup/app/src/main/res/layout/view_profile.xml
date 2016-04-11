@@ -41,17 +41,17 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/AgeTextView"
-        android:text="Age:"
+        android:id="@+id/BirthDayTextView"
+        android:text="Birthday:"
         android:textColor="#FFFF00"
         android:gravity="center_vertical|center_horizontal"
         android:textStyle="bold"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/AgeEditText"
-        android:layout_toStartOf="@+id/AgeEditText"
-        android:layout_alignTop="@+id/AgeEditText"
-        android:layout_alignBottom="@+id/AgeEditText"/>
+        android:layout_toLeftOf="@+id/BirthdayEditText"
+        android:layout_toStartOf="@+id/BirthdayEditText"
+        android:layout_alignTop="@+id/BirthdayEditText"
+        android:layout_alignBottom="@+id/BirthdayEditText"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
         android:layout_toStartOf="@+id/GenderEditText"
         android:layout_alignTop="@+id/GenderEditText"/>
 
-    <EditText
+    <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/GenderEditText"
@@ -77,15 +77,15 @@
         android:maxLines="1"
         android:hint="M/F"
         android:gravity="center_horizontal"
-        android:layout_below="@+id/AgeTextView"
+        android:layout_below="@+id/BirthDayTextView"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/AgeTextView"
-        android:layout_toEndOf="@+id/AgeTextView"
+        android:layout_toRightOf="@+id/BirthDayTextView"
+        android:layout_toEndOf="@+id/BirthDayTextView"
         android:layout_marginTop="30dp"
-        android:maxLength="1"/>
+        android:editable="false"/>
 
-    <EditText
+    <TextView
 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -98,19 +98,18 @@
         android:layout_below="@+id/imageView"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/AgeTextView"
-        android:layout_toEndOf="@+id/AgeTextView"
+        android:layout_toRightOf="@+id/BirthDayTextView"
+        android:layout_toEndOf="@+id/BirthDayTextView"
         android:gravity="center_horizontal">
 
-    </EditText>
+    </TextView>
 
-    <EditText
+    <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/AgeEditText"
+        android:id="@+id/BirthdayEditText"
         android:textColor="#181818"
         android:background="@drawable/roundedwhitebutton"
-        android:maxLength="3"
         android:layout_marginTop="30dp"
         android:maxLines="1"
         android:layout_below="@+id/NameEditText"
@@ -120,16 +119,5 @@
         android:layout_alignStart="@+id/imageView"
         android:gravity="center_horizontal"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        android:id="@+id/SaveButton"
-        android:background="@drawable/roundedbutton"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="45dp"
-        android:textStyle="bold"
-        android:textColor="#FFFF00"/>
 
 </RelativeLayout>

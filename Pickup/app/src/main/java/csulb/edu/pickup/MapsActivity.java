@@ -56,9 +56,8 @@ public class MapsActivity extends FragmentActivity implements android.location.L
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle data = getIntent().getExtras();
-        thisUser = (User) data.getParcelable("USER");
+        thisUser = data.getParcelable("USER");
 
-        //thisUser = new User("Sarah", "Shibley", "sarahshib@hotmail.com","abcd","1994-10-12","female", "");
         Log.d("SARAH", "username:"+thisUser.getEmail());
         Log.d("SARAH", "username:"+thisUser.getBirthday());
 

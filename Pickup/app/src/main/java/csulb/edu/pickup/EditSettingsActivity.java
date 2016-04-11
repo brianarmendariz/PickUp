@@ -40,8 +40,8 @@ public class EditSettingsActivity extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         Bundle data = getIntent().getExtras();
         thisUser = (User) data.getParcelable("USER");
-        Log.d("SARAH","username"+thisUser.getEmail());
-        Log.d("SARAH","birthday"+thisUser.getBirthday());
+       // Log.d("SARAH","username"+thisUser.getEmail());
+       // Log.d("SARAH","birthday"+thisUser.getBirthday());
 
        // thisUser = new User("ln", "em", "pw", "female", "2016-01-01", "female", "a");
         super.onCreate(savedInstanceState);
