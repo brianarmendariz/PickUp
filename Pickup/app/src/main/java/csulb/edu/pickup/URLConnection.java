@@ -467,34 +467,25 @@ public class URLConnection {
     private  String[][] convertRSVPList(String str){
 		    	/*Divide string up into lines */
         String[] lines=str.split("#");
-
         String[][] RSVPPairs = new String[lines.length-1][2];
 			        /*for each line parse key-value pairs */
-        int lineCount = 0;
-        int arrayCount = 0;
+        int arrayCount=0;
         for(String line : lines){
-           // if(!line.isEmpty()&& line!=null){
-                System.out.println("line:"+line);
+            if(line.isEmpty()){
+
+            }
+            else{
                 Map <String, String> RSVPList = new HashMap<>();
                 for(String pair: line.split(",")){
                     String[] tokens = pair.split("::");
-                    for (int i=0; i<tokens.length-1; i++){
-
-                        RSVPList.put(tokens[i++], tokens[i++]);
+                    for (int i=0; i<tokens.length-1;i++ ){
+                        RSVPList.put(tokens[i], tokens[i+1]);
                     }
                 }
-                System.out.println(lineCount+"line:"+line);
-               if(RSVPList.get("Name")!=null && RSVPList.get("Username")!=null &&lineCount<lines.length) {
-                    RSVPPairs[arrayCount][0] = RSVPList.get("Name");
-                    RSVPPairs[arrayCount][1] = RSVPList.get("Username");
-                   arrayCount++;
-                }
-
-           // }
-            lineCount++;
-        }
-        for (int i = 0; i < RSVPPairs.length; i++) {
-            System.out.println("pairs"+RSVPPairs[i][0]);
+                RSVPPairs[arrayCount][0] = RSVPList.get("Name");
+                RSVPPairs[arrayCount][1] = RSVPList.get("Username");
+                arrayCount++;
+            }
         }
         return RSVPPairs;
     }
