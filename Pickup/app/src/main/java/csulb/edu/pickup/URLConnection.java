@@ -328,7 +328,10 @@ public class URLConnection {
 
 		/*url of route being requested*/
         String url = "http://www.csulbpickup.com/getEventsForUser.php";
+
         String urlParameters = "Username=" + username;
+
+
         String response = makeHTTPRequest(url, urlParameters);
 
         //print result

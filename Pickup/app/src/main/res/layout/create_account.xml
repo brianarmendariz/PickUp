@@ -10,14 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#C0C0C0"
         >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#000000"
         android:gravity="center"
 
         >
@@ -26,17 +24,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/create_acct_label_text"
-            android:textColor="#FFFFFF"
-            android:shadowColor="#FFFFFF"
-            android:shadowDx="0.0"
-            android:shadowDy="0.0"
-            android:shadowRadius="2.0"
-            android:textSize="40dp"
+            android:textColor="@color/orange"
+            android:textSize="30dp"
             android:layout_weight=".99"
             android:textStyle="bold"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceLarge" />
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
     </LinearLayout>
 
 
@@ -52,13 +49,13 @@
                     android:layout_margin="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="5"
-                    android:background="#FAEBD7"
+                    android:ems="8"
                     android:scrollHorizontally="true"
                     android:fadeScrollbars="false"
+                    android:textColor="@color/orange"
                     android:scrollbars="horizontal"
                     android:inputType="text"
-                    android:textSize="30dp">
+                    android:textSize="25dp">
                     <requestFocus />
                 </EditText>
 
@@ -70,12 +67,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:background="#FAEBD7"
+                    android:textColor="@color/orange"
                     android:scrollHorizontally="true"
                     android:fadeScrollbars="false"
                     android:scrollbars="horizontal"
                     android:inputType="text"
-                    android:textSize="30dp">
+                    android:textSize="25dp">
                     <requestFocus />
                 </EditText>
 
@@ -88,12 +85,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:background="#FAEBD7"
+                    android:textColor="@color/orange"
                     android:scrollHorizontally="true"
                     android:fadeScrollbars="false"
                     android:scrollbars="horizontal"
                     android:inputType="text"
-                    android:textSize="30dp">
+                    android:textSize="25dp">
                     <requestFocus />
                 </EditText>
 
@@ -104,12 +101,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="7"
-                    android:background="#FAEBD7"
+                    android:textColor="@color/orange"
                     android:scrollHorizontally="true"
                     android:fadeScrollbars="false"
                     android:scrollbars="horizontal"
                     android:inputType="textPassword"
-                    android:textSize="30dp">
+                    android:textSize="25dp">
                     <requestFocus />
                 </EditText>
 
@@ -120,12 +117,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:background="#FAEBD7"
+                    android:textColor="@color/orange"
                     android:fadeScrollbars="false"
                     android:scrollHorizontally="true"
                     android:scrollbars="horizontal"
                     android:inputType="textPassword"
-                    android:textSize="30dp">
+                    android:textSize="25dp">
                     <requestFocus />
                 </EditText>
                 </LinearLayout>
@@ -145,6 +142,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/create_acct_gender_text"
+                    android:textColor="@color/orange"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:layout_column="0" />
 
@@ -156,10 +154,12 @@
                     <RadioButton android:id="@+id/radio_male"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/orange"
                         android:text="@string/create_acct_male_text" />
                     <RadioButton android:id="@+id/radio_female"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/orange"
                         android:text="@string/create_acct_female_text" />
                 </RadioGroup>
 
@@ -169,28 +169,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:background="#C0C0C0"
                 >
 
                 <TextView
                     android:id="@+id/createAccountTextView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/orange"
                     android:text="@string/create_acct_bday_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <Spinner
                     android:id="@+id/bday_month_spinner"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/orange"
+                    />
                 <Spinner
                     android:id="@+id/bday_day_spinner"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/orange"
+                    />
                 <Spinner
                     android:id="@+id/bday_year_spinner"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/orange"
+                    />
             </LinearLayout>
         </TableLayout>
     <LinearLayout
@@ -203,61 +209,58 @@
             android:layout_height="100dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"/>
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/event_table_margin"
+            android:layout_marginBottom="@dimen/event_table_margin" >
 
+        <TableRow
+            android:id="@+id/create_account_table1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            >
         <Button
             android:id="@+id/upload_photo_btn"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
             android:text="@string/upload_btn_txt"
-            android:background="#008000"
-            android:textSize="20dp"
-            android:textColor="#FFFFFF"
-            android:shadowColor="#000000"
-            android:shadowDx="0.0"
-            android:shadowDy="0.0"
-            android:shadowRadius="2.0"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/dark_grey"
+            android:textSize="15dp"
             android:textStyle="bold"
-            android:gravity="center"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp"
+            android:layout_centerHorizontal="true"></Button>
+        </TableRow>
+        </TableLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
                 <Button
                     android:id="@+id/create_account_btn"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
                     android:text="@string/create_acct_btn_txt"
-                    android:background="#008000"
-                    android:textSize="20dp"
-                    android:textColor="#FFFFFF"
-                    android:shadowColor="#000000"
-                    android:shadowDx="0.0"
-                    android:shadowDy="0.0"
-                    android:shadowRadius="2.0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/orange"
+                    android:textSize="15dp"
                     android:textStyle="bold"
-                    android:gravity="center"
-                    android:layout_gravity="center_horizontal"
                     android:layout_margin="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"/>
+                    android:layout_weight=".99"></Button>
                 <Button
                     android:id="@+id/cancel_btn"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
                     android:text="@string/cancel_btn_txt"
-                    android:background="#008000"
-                    android:textSize="20dp"
-                    android:textColor="#FFFFFF"
-                    android:shadowColor="#000000"
-                    android:shadowDx="0.0"
-                    android:shadowDy="0.0"
-                    android:shadowRadius="2.0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/orange"
+                    android:textSize="15dp"
                     android:textStyle="bold"
-                    android:gravity="center"
-                    android:layout_gravity="center_horizontal"
                     android:layout_margin="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-
+                    android:layout_weight=".99"
                     />
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
