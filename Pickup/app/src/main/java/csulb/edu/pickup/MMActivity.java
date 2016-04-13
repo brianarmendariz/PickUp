@@ -58,7 +58,7 @@ public class MMActivity extends Activity {
             arr1 = http.sendGetRSVPList(Integer.parseInt(extra));
             for (int i = 0; i < arr1.length;i++) {
                 String name = arr1[i][0];
-                String username = arr1[i][0];
+                String username = arr1[i][1];
             }
         }
         catch (IOException e){
