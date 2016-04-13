@@ -446,9 +446,11 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
         }
 
         else if (view == _MMButton) {
-
-            Intent intent = new Intent(getBaseContext(), MMActivity.class);
-            startActivity(intent);
+            Intent intent = getIntent();
+            Intent MMIntent = new Intent(getBaseContext(), MMActivity.class);
+            String extra = intent.getStringExtra("EventID");
+            MMIntent.putExtra("EventID", extra);
+            startActivityForResult(MMIntent, 1);
         }
     }
 

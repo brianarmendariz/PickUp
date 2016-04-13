@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -11,7 +12,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +37,7 @@ public class MMActivity extends Activity {
     private TextView noOfTeams;
     private Button shuffleButton;
     private MMListViewAdapter adapter;
+    private Event _event;
     String[][] arr1;
 
 
@@ -49,30 +50,29 @@ public class MMActivity extends Activity {
         StrictMode.setThreadPolicy(policy);
 
         setContentView(R.layout.matchmaking);
+        URLConnection http = new URLConnection();
+        Intent intent = getIntent();
+        String extra = intent.getStringExtra("EventID");
 
-        URLConnection rsvpList = new URLConnection();
-        /* try {
-            if (rsvpList.sendGetRSVPList(1) == null) {
-                Log.d("Nessa", "THIS IS NULL");
-            }
-            else {
-                s = rsvpList.sendGetRSVPList(1);
-
-
+        try {
+            arr1 = http.sendGetRSVPList(Integer.parseInt(extra));
+            for (int i = 0; i < arr1.length;i++) {
+                String name = arr1[i][0];
+                String username = arr1[i][0];
             }
         }
         catch (IOException e){
             Log.e("ERROR", "RVSP ERROR");
-        }*/
+        }
 
 
-        arr1 = new String[][] {{"a", "userA"},
+        /*arr1 = new String[][] {{"a", "userA"},
 
                 {"b","userB"}, {"c", "userC"} , {"d","userD"},
 
                 { "e", "userE"} ,{ "f", "userF"} ,{ "g", "userG"} ,
 
-                {"h", "userH"} , {"i", "userI"} , { "j", "userJ"}};
+                {"h", "userH"} , {"i", "userI"} , { "j", "userJ"}};*/
 
 
         noOfTeams = (TextView) findViewById(R.id.NoOfTeamsEditText);
