@@ -69,7 +69,6 @@ public class MMListViewAdapter extends BaseAdapter {
         HashMap<String, String> map=list.get(position);
         txtFirst.setText(map.get(FIRST_COLUMN));
         txtSecond.setText(map.get(SECOND_COLUMN));
-        Log.d("Nessa", "This is executed");
 
         return convertView;
     }
