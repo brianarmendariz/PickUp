@@ -20,6 +20,7 @@ import android.os.StrictMode;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
@@ -54,6 +55,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
         //thisUser = new User("Sarah", "Shibley", "sarahshib@hotmail.com","abcd","1994-10-12","female", "");
 
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.view_event);

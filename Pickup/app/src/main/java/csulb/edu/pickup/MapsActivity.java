@@ -321,7 +321,9 @@ public class MapsActivity extends FragmentActivity implements android.location.L
 
         // TODO Auto-generated method stub
         super.onDestroy();
-        LoginManager.getInstance().logOut();
+        if (LoginManager.getInstance() != null) {
+            LoginManager.getInstance().logOut();
+        }
 
 
 
