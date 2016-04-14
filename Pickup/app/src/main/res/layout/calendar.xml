@@ -5,4 +5,11 @@
     android:layout_height="match_parent"
     android:id="@+id/CalendarLinearLayout" >
 
+    <com.imanoweb.calendarview.CustomCalendarView
+        android:id="@+id/calendar_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff">
+    </com.imanoweb.calendarview.CustomCalendarView>
+
 </LinearLayout>

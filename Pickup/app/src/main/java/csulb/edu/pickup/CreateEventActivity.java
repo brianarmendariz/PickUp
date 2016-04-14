@@ -1,10 +1,12 @@
 package csulb.edu.pickup;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -344,103 +346,82 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             startActivityForResult(myIntent, 0);
         } else if (view == createEventButton) {
 
-            try {
-                Log.d("SARAH", "calling formToMap");
 
-                Map<String, String> formMap = formToMap();
-                Log.d("SARAH", "called formToMap");
+            Map<String, String> formMap = formToMap();
 
-                System.out.println(formMap);
-                String authorName = thisUser.getFirstName()+" "+thisUser.getlastName();
-                String authorEmail = thisUser.getEmail();
-                String name = formMap.get("event name");
-                String sport = formMap.get("sport");
-                String location = formMap.get("location");
-                String date = formMap.get("date");
-                String time = formMap.get("time");
+            System.out.println(formMap);
+            String authorName = thisUser.getFirstName()+" "+thisUser.getlastName();
+            String authorEmail = thisUser.getEmail();
+            String name = formMap.get("event name");
+            String sport = formMap.get("sport");
+            String location = formMap.get("location");
+            String date = formMap.get("date");
+            System.out.println("date = " + date);
+            String time = formMap.get("time");
 
-                Log.d("SARAH", "made it past map stuff");
-                //date yyyy-mm-dd  and the time hh:min:ss
-                String dateTime = (convertDate(date) + " " + convertTime(time));
+            //date yyyy-mm-dd  and the time hh:min:ss
+            String dateTime = (convertDate(date) + " " + convertTime(time));
 
-                String gender = formMap.get("gender");
-                String ageMin = formMap.get("age min");
-                String ageMax = formMap.get("age max");
-                String playerAmount = formMap.get("max num ppl");
-                String minUserRating = formMap.get("min rating");
-
-                Log.d("SARAH", "made it past map stuff");
+            Log.d("DATE/TIME", dateTime);
+            String gender = formMap.get("gender");
+            String ageMin = formMap.get("age min");
+            String ageMax = formMap.get("age max");
+            String playerAmount = formMap.get("max num ppl");
+            String minUserRating = formMap.get("min rating");
 
 
-                Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-                List<Address> addresses;
-                addresses = geocoder.getFromLocationName(location, 1);
+            boolean createEventFlag = checkForm(name, location, date, time,
+                    gender, ageMin, ageMax);
 
-                if (addresses.size() > 0) {
-                    double latitude = addresses.get(0).getLatitude();
-                    double longitude = addresses.get(0).getLongitude();
+            if (createEventFlag) {
+                try {
+                    Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+                    List<Address> addresses;
+                    addresses = geocoder.getFromLocationName(location, 1);
 
-                    //open connection
-                    URLConnection http = new URLConnection();
-                    Log.d("SARAH", "created URLConnection");
+                    if (addresses.size() > 0) {
+                        double latitude = addresses.get(0).getLatitude();
+                        double longitude = addresses.get(0).getLongitude();
 
-                    http.sendCreateEvent(authorName, authorEmail, name, sport, location,
-                            String.valueOf(latitude), String.valueOf(longitude), dateTime,
-                            ageMax, ageMin, minUserRating,
-                            playerAmount, "P/NP", gender
-                    );
+                        //open connection
+                        URLConnection http = new URLConnection();
 
-                    Log.d("SARAH", "created Events");
-
-                    //Retrieve data from server
-                    http.sendGetEvents();
-
-                    //Delete event from server
-                    //http.sendDeleteEvent(1);
+                        http.sendCreateEvent(authorName, authorEmail, name, sport, location,
+                                String.valueOf(latitude), String.valueOf(longitude), dateTime,
+                                ageMax, ageMin, minUserRating,
+                                playerAmount, "P/NP", gender
+                        );
 
 
-                    //Return to the MainActivity
+                        //Retrieve data from server
+                        //      http.sendGetEvents();
 
-                    Bundle b = new Bundle();
-                    b.putParcelable("USER", thisUser);
-                    Intent returnIntent = new Intent();
-                    returnIntent.putExtras(b);
-                    returnIntent.putExtra("result", latitude + " " + longitude + " " + name + " " + authorName);
+                        //Delete event from server
+                        //http.sendDeleteEvent(1);
 
-                    setResult(MapsActivity.RESULT_OK, returnIntent);
-                    finish();
+                        //Return to the MainActivity
+//                    Intent returnIntent = new Intent();
+//                    returnIntent.putExtra("result", latitude + " " + longitude);
+//                    setResult(MapsActivity.RESULT_OK, returnIntent);
+                        Intent intent = new Intent(getBaseContext(), MapsActivity.class);
+//                    intent.putExtra("EventID", list.get(i).getEventID());
+                        startActivity(intent);
+                        finish();
+
+                    } else {
+                        Bundle b = new Bundle();
+                        b.putParcelable("USER", thisUser);
+                        Intent returnIntent = new Intent();
+                        returnIntent.putExtras(b);
+                        setResult(MapsActivity.RESULT_CANCELED, returnIntent);
+                        finish();
+                    }
+                } catch (IOException e) {
+                    Log.e(TAG, "Unable connect to Geocoder", e);
+                } catch (Exception e) {
+                    Log.i(TAG, "ERROR");
                 }
-                else {
-                    Bundle b = new Bundle();
-                    b.putParcelable("USER", thisUser);
-                    Intent returnIntent = new Intent();
-                    returnIntent.putExtras(b);
-                    setResult(MapsActivity.RESULT_CANCELED, returnIntent);
-                    finish();
-                }
             }
-            catch (IOException e) {
-                Toast.makeText(getBaseContext(), "Unable to connect to the location service. Please try again later" ,
-                        Toast.LENGTH_LONG).show();
-                Log.e(TAG, "Unable connect to Geocoder", e);
-            }
-            catch(Exception e)
-            {
-                Log.i(TAG, "ERROR");
-            }
-
-            // create an event when clicked
-            // Event event = new Event();
-
-            // POST it to the server
-
-            // Let user know if successful or not
-
-
-            //Intent myIntent = new Intent(view.getContext(), CreateEventActivity.class);
-            //startActivityForResult(myIntent, 0);
-
-
         }
     }
 
@@ -466,6 +447,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
         EditText editTextBox5 = (EditText) findViewById(R.id.event_date);
         String eventDateStr = editTextBox5.getText().toString();
+        System.out.println("date = " + eventDateStr);
         formMap.put("date", eventDateStr);
 
         EditText editTextBox6 = (EditText) findViewById(R.id.event_time);
@@ -511,16 +493,67 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         return formMap;
     }
 
+    public boolean checkForm(String name, String location,
+                             String date, String time, String gender, String ageMin,
+                             String ageMax)
+    {
+        if(name.equals("")){
+            createAlert("Name Required", "Please Enter a Name");
+            return false;
+        }
+        else if(location.equals("")){
+            createAlert("Location Required", "Please Enter a Location");
+            return false;
+        }
+        else if(date.equals("")){
+            Log.d("brians message", "date: " + date);
+            createAlert("Date Required", "Please Select a Date");
+            return false;
+        }
+        else if(time.equals("")){
+            createAlert("Time Required", "Please Select a Time" );
+            return false;
+        }
+        else if(!ageMin.equals("Any") && !ageMax.equals("Any") &&
+                Integer.parseInt(ageMin) > Integer.parseInt(ageMax)){
+            createAlert("Age Violation", "Please Select a Minimum Age Less " +
+                    "Than Maximum Age");
+            return false;
+        }
+        createAlert("Date Required", date);
+        return true;
+    }
+
+    public void createAlert(String title, String message){
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
 
     //Convert date to yyyy-mm-dd format
     private String convertDate(String date) {
         String convertedStr = "";
         String y, m, d;
 
-        d = date.substring(0, date.indexOf("-"));
-        m = date.substring(3,5);
-        y = date.substring(date.length() - 4);
-        convertedStr = y + "-" + m + "-" + d;
+        if(!date.equals("")) {
+            d = date.substring(0, date.indexOf("-"));
+            m = date.substring(3, 5);
+            y = date.substring(date.length() - 4);
+            convertedStr = y + "-" + m + "-" + d;
+        }
         return convertedStr;
     }
 
@@ -529,16 +562,19 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         String convertedTime = "";
         //h and m for hour and min
 
-        String h = time.substring(0, time.indexOf(":"));
-        String m = time.substring(3, 5);
-        int hour = 0;
-        String timeAMPM = time.substring(time.length()-2);
-        if (timeAMPM.equals("PM")) {
-            hour = Integer.parseInt(h);
-            hour += 12;
-            h = String.valueOf(hour);
+        if(!time.equals(""))
+        {
+            String h = time.substring(0, time.indexOf(":"));
+            String m = time.substring(3, 5);
+            int hour = 0;
+            String timeAMPM = time.substring(time.length() - 2);
+            if (timeAMPM.equals("PM")) {
+                hour = Integer.parseInt(h);
+                hour += 12;
+                h = String.valueOf(hour);
+            }
+            convertedTime = h + ":" + m + ":00";
         }
-        convertedTime = h + ":" + m + ":00";
         return convertedTime;
     }
 

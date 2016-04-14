@@ -1,7 +1,10 @@
 package csulb.edu.pickup;
 
 
-public class Event
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Event implements Parcelable
 {
     private String _name;
     private String _description;
@@ -168,7 +171,64 @@ public class Event
         _maxNumberPpl = maxNumberPpl;
     }
 
+    public void setDate(String day, String month, String year)
+    {
+        _eventDate = day + "-" + month + "-" + year;
+    }
+
+    public String getDay()
+    {
+        String day = _eventDate.substring(0,2);
+        if(day.substring(0,1).equals("0"))
+            day = day.substring(1);
+        return day;
+    }
+    public String getMonth()
+    {
+        String month = _eventDate.substring(3,5);
+        if(month.substring(0,1).equals("0"))
+            month = month.substring(1);
+        return month;
+    }
+    public String getYear()
+    {
+        return _eventDate.substring(6);
+    }
+
+    public int equals(Event otherEvent)
+    {
+        return _eventID.compareTo(otherEvent.getEventID());
+    }
+//    public int equals(Event otherEvent)
+//    {
+//        return _eventDate.compareTo(otherEvent.getEventDate());
+//    }
 
 
+    // PARCELABLE
+    private int mData;
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(mData);
+    }
+
+    public static final Parcelable.Creator<Event> CREATOR
+            = new Parcelable.Creator<Event>() {
+        public Event createFromParcel(Parcel in) {
+            return new Event(in);
+        }
+
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
+
+    private Event(Parcel in) {
+        mData = in.readInt();
+    }
 
 }

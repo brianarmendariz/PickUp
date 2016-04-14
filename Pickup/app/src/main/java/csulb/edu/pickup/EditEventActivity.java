@@ -1,8 +1,10 @@
 package csulb.edu.pickup;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -318,74 +320,80 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
             myIntent.putExtras(b);
             startActivityForResult(myIntent, 0);
         }
-        else if(view == saveChangesButton) {
-            try {
-                Map<String, String> formMap = formToMap();
+        else if(view == saveChangesButton)
+        {
+            Map<String, String> formMap = formToMap();
 
-                System.out.println(formMap);
-                String author = formMap.get("author");
-                String name = formMap.get("event name");
-                String sport = formMap.get("sport");
-                String location = formMap.get("location");
-                String date = formMap.get("date");
-                String time = formMap.get("time");
+            System.out.println(formMap);
+            String author = formMap.get("author");
+            String name = formMap.get("event name");
+            String sport = formMap.get("sport");
+            String location = formMap.get("location");
+            String date = formMap.get("date");
+            String time = formMap.get("time");
 
-                //date yyyy-mm-dd  and the time hh:min:ss
-                String dateTime = (convertDate(date) + " " + convertTime(time));
+            //date yyyy-mm-dd  and the time hh:min:ss
+            String dateTime = (convertDate(date) + " " + convertTime(time));
 
-                Log.d("DATE/TIME" , dateTime);
-                String gender = formMap.get("gender");
-                String ageMin = formMap.get("age min");
-                String ageMax = formMap.get("age max");
-                String playerAmount = formMap.get("max num ppl");
-                String minUserRating = formMap.get("min rating");
-                Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-                List<Address> addresses;
-                addresses = geocoder.getFromLocationName(location, 1);
+            Log.d("DATE/TIME", dateTime);
+            String gender = formMap.get("gender");
+            String ageMin = formMap.get("age min");
+            String ageMax = formMap.get("age max");
+            String playerAmount = formMap.get("max num ppl");
+            String minUserRating = formMap.get("min rating");
 
-                if (addresses.size() > 0) {
-                    double latitude = addresses.get(0).getLatitude();
-                    double longitude = addresses.get(0).getLongitude();
 
-                    //open connection
-                    URLConnection http = new URLConnection();
+            boolean createEventFlag = checkForm(name, location, date, time,
+                    gender, ageMin, ageMax);
 
-                    http.sendEditEvent(Integer.parseInt(_event.getEventID()), name, sport, location,
-                            String.valueOf(latitude), String.valueOf(longitude), dateTime,
-                            ageMax, ageMin, minUserRating,
-                            playerAmount, "P/NP", gender
-                    );
+            if (createEventFlag) {
+                try {
+                    Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+                    List<Address> addresses;
+                    addresses = geocoder.getFromLocationName(location, 1);
 
-                    //Retrieve data from server
-                    http.sendGetEvents();
+                    if (addresses.size() > 0) {
+                        double latitude = addresses.get(0).getLatitude();
+                        double longitude = addresses.get(0).getLongitude();
 
-                    //Delete event from server
-                    //http.sendDeleteEvent(1);
+                        //open connection
+                        URLConnection http = new URLConnection();
 
-                    //Return to the MainActivity
+                        http.sendEditEvent(Integer.parseInt(_event.getEventID()), name, sport, location,
+                                String.valueOf(latitude), String.valueOf(longitude), dateTime,
+                                ageMax, ageMin, minUserRating,
+                                playerAmount, "P/NP", gender
+                        );
+
+
+                        //Retrieve data from server
+                        //      http.sendGetEvents();
+
+                        //Delete event from server
+                        //http.sendDeleteEvent(1);
+
+                        //Return to the MainActivity
 //                    Intent returnIntent = new Intent();
 //                    returnIntent.putExtra("result", latitude + " " + longitude);
 //                    setResult(MapsActivity.RESULT_OK, returnIntent);
-                    Intent intent = new Intent(getBaseContext(), MapsActivity.class);
+                        Intent intent = new Intent(getBaseContext(), MapsActivity.class);
 //                    intent.putExtra("EventID", list.get(i).getEventID());
-                    startActivity(intent);
-                    finish();
+                        startActivity(intent);
+                        finish();
+
+                    } else {
+                        Bundle b = new Bundle();
+                        b.putParcelable("USER", thisUser);
+                        Intent returnIntent = new Intent();
+                        returnIntent.putExtras(b);
+                        setResult(MapsActivity.RESULT_CANCELED, returnIntent);
+                        finish();
+                    }
+                } catch (IOException e) {
+                    Log.e(TAG, "Unable connect to Geocoder", e);
+                } catch (Exception e) {
+                    Log.i(TAG, "ERROR");
                 }
-                else {
-                    Bundle b = new Bundle();
-                    b.putParcelable("USER", thisUser);
-                    Intent returnIntent = new Intent();
-                    returnIntent.putExtras(b);
-                    setResult(MapsActivity.RESULT_CANCELED, returnIntent);
-                    finish();
-                }
-            }
-            catch (IOException e) {
-                Log.e(TAG, "Unable connect to Geocoder", e);
-            }
-            catch(Exception e)
-            {
-                Log.i(TAG, "ERROR");
             }
         }
     }
@@ -594,48 +602,6 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
         return event;
     }
 
-    public Map<String, String> getEventDetails()
-    {
-        Map<String, String> eventDetailMap = new HashMap<String,
-                String>();
-
-        // reality we will get these values from the db
-        String author = "Brain";
-        eventDetailMap.put("author", author);
-
-        String name = "Basketball at the Park";
-        eventDetailMap.put("event name", name);
-
-        String sport = "Basketball";
-        eventDetailMap.put("sport", sport);
-
-        String location = "csulb";
-        eventDetailMap.put("location", location);
-
-        String date = "2/23/16";
-        eventDetailMap.put("date", date);
-
-        String time = "6:15 pm";
-        eventDetailMap.put("time", time);
-
-        String gender = "any";
-        eventDetailMap.put("gender", gender);
-
-        String ageMin = "16";
-        eventDetailMap.put("age min", ageMin);
-
-        String ageMax = "35";
-        eventDetailMap.put("age max", ageMax);
-
-        String maxNumPpl = "12";
-        eventDetailMap.put("max num ppl", maxNumPpl);
-
-        String minRating = "0";
-        eventDetailMap.put("min rating", minRating);
-
-        return eventDetailMap;
-    }
-
     public Map<String, String> formToMap()
     {
         Map<String, String> formMap = new HashMap<String, String>();
@@ -686,15 +652,65 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
         return formMap;
     }
 
+    public boolean checkForm(String name, String location,
+                             String date, String time, String gender, String ageMin,
+                             String ageMax)
+    {
+        if(name.equals("")){
+            createAlert("Name Required", "Please Enter a Name" );
+            return false;
+        }
+        else if(location.equals("")){
+            createAlert("Location Required", "Please Enter a Location" );
+            return false;
+        }
+        else if(date.equals("")){
+            createAlert("Date Required", "Please Select a Date");
+            return false;
+        }
+        else if(time.equals("")){
+            createAlert("Time Required", "Please Select a Time" );
+            return false;
+        }
+        else if(!ageMin.equals("Any") && !ageMax.equals("Any") &&
+                Integer.parseInt(ageMin) > Integer.parseInt(ageMax)){
+            createAlert("Age Violation", "Please Select a Minimum Age Less " +
+                    "Than Maximum Age");
+            return false;
+        }
+        return true;
+    }
+
+    public void createAlert(String title, String message){
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
     //Convert date to yyyy-mm-dd format
     private String convertDate(String date) {
         String convertedStr = "";
         String y, m, d;
 
-        d = date.substring(0, date.indexOf("-"));
-        m = date.substring(3,5);
-        y = date.substring(date.length() - 4);
-        convertedStr = y + "-" + m + "-" + d;
+        if(!date.equals(""))
+        {
+            d = date.substring(0, date.indexOf("-"));
+            m = date.substring(3, 5);
+            y = date.substring(date.length() - 4);
+            convertedStr = y + "-" + m + "-" + d;
+        }
         return convertedStr;
     }
 
@@ -703,16 +719,19 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
         String convertedTime = "";
         //h and m for hour and min
 
-        String h = time.substring(0, time.indexOf(":"));
-        String m = time.substring(3, 5);
-        int hour = 0;
-        String timeAMPM = time.substring(time.length()-2);
-        if (timeAMPM.equals("PM")) {
-            hour = Integer.parseInt(h);
-            hour += 12;
-            h = String.valueOf(hour);
+        if(!time.equals(""))
+        {
+            String h = time.substring(0, time.indexOf(":"));
+            String m = time.substring(3, 5);
+            int hour = 0;
+            String timeAMPM = time.substring(time.length() - 2);
+            if (timeAMPM.equals("PM")) {
+                hour = Integer.parseInt(h);
+                hour += 12;
+                h = String.valueOf(hour);
+            }
+            convertedTime = h + ":" + m + ":00";
         }
-        convertedTime = h + ":" + m + ":00";
         return convertedTime;
     }
 
