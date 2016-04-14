@@ -151,7 +151,13 @@ public class MapsActivity extends FragmentActivity implements android.location.L
     }
 
     public void onClick_Filter(View v) {
+        Bundle b = new Bundle();
+        b.putParcelable("USER", thisUser);
+        Intent myIntent = new Intent(v.getContext(), FilterEvents.class);
+        myIntent.putExtras(b);
+        startActivityForResult(myIntent, 1);
 
+        startActivityForResult(myIntent, 0);
     }
 
     public void onClick_ImageButton(View v) {

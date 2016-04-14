@@ -98,6 +98,23 @@ public class URLConnection {
         String urlParameters = "Username="+username+"&Password="+password;
         return makeHTTPRequest(url,urlParameters);
     }
+
+    public ArrayList<Event> sendFilterEvents( String author, String eventName, String sport,
+                                    String location, String latitude, String longitude, String dateCreatedStart, String dateCreatedEnd, String eventTimeStart, String eventTimeEnd, String eventDateStart, String eventDateEnd, String ageMax, String ageMin,
+                                    String minUserRating, String onlyNotFull, String isPublic, String gender) throws IOException  {
+            /*url of route being requested*/
+            String url = "http://www.csulbpickup.com/filterEvents.php";
+            String urlParameters = "Author="+author+"&EventName="+eventName+"&Sport="+sport+"&Location="+location+"&Latitude="+latitude+
+                "&Longitude="+longitude+"&DateCreatedStart="+dateCreatedStart+"&DateCreatedEnd="+dateCreatedEnd+"&EventTimeStart="+eventTimeStart+
+                "&EventTimeEnd="+eventTimeEnd+"&EventDateStart="+eventDateStart+"&EventDateEnd="+eventDateEnd+"&AgeMax="+ageMax+"&AgeMin="+ageMin+
+                "&OnlyNotFull="+onlyNotFull+"&MinUserRating="+minUserRating+"&IsPublic="+isPublic+"&Gender="+gender;
+        String response = makeHTTPRequest(url,urlParameters);
+        String stringResponse = response.toString();
+        ArrayList<Event> list = convertEventList(stringResponse);
+
+        return list;
+
+    }
     public String sendRSVP(String username, String eventID) throws IOException  {
 
 				/*url of route being requested*/

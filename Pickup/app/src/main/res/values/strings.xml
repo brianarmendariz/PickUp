@@ -116,4 +116,17 @@
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>
 
+    <string name="date_created">Date Created</string>
+    <string name="date_event">Event Date</string>
+    <string name="time_event">Event Time</string>
+    <string name="age_range">Age Range </string>
+    <string name="date_format"> dd-mm-yyyy </string>
+    <string name="time_format">hh:mm</string>
+    <string name="open_events">Open Events Only</string>
+    <string name="between">between</string>
+    <string name="and">and </string>
+    <string name="search">Search</string>
+
+
+
 </resources>

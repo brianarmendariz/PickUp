@@ -87,7 +87,17 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                 //mTextDetails.setText("Name: " + name + " Email: " + email + " Birthday: " + birthday);
                                 //thisUser = new User("Sarah", "Shibley", "sarahshib@hotmail.com","abcd","1994-10-12","female", "");
                                 User thisUser;
+
                                 thisUser = new User(name,  "", email, "", birthday, gender, "");
+                                try {
+                                    URLConnection http = new URLConnection();
+                                    if(http.sendGetUser(thisUser.getEmail())==null){
+                                        http.sendCreateUser(email, "", name,"", birthday, gender, "0", "");
+                                    }
+                                    else{thisUser=http.sendGetUser(thisUser.getEmail());}
+                                }catch(IOException e){
+                                    e.printStackTrace();
+                                }
                                 Bundle b = new Bundle();
                                 b.putParcelable("USER", thisUser);
                                 Intent mapIntent = new Intent(getBaseContext(), MapsActivity.class);
