@@ -283,7 +283,7 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
                                           int selectedMinute) {
                         hour = selectedHour;
                         minute = selectedMinute;
-                        newDate.set(Calendar.HOUR, hour);
+                        newDate.set(Calendar.HOUR_OF_DAY, hour);
                         newDate.set(Calendar.MINUTE, minute);
                         newDate.set(Calendar.SECOND, 0);
                         dateFormatter = new SimpleDateFormat("h:mm a", Locale.US);
@@ -621,6 +621,7 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
 
         EditText editTextBox5 = (EditText) findViewById(R.id.edit_event_date);
         String eventDateStr = editTextBox5.getText().toString();
+        System.out.println("date: " + eventDateStr);
         formMap.put("date", eventDateStr);
 
         EditText editTextBox6 = (EditText) findViewById(R.id.edit_event_time);

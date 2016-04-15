@@ -310,7 +310,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                                           int selectedMinute) {
                         hour = selectedHour;
                         minute = selectedMinute;
-                        newDate.set(Calendar.HOUR, hour);
+                        newDate.set(Calendar.HOUR_OF_DAY, hour);
                         newDate.set(Calendar.MINUTE, minute);
                         newDate.set(Calendar.SECOND, 0);
                         dateFormatter = new SimpleDateFormat("hh:mm a", Locale.US);
@@ -447,7 +447,6 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
         EditText editTextBox5 = (EditText) findViewById(R.id.event_date);
         String eventDateStr = editTextBox5.getText().toString();
-        System.out.println("date = " + eventDateStr);
         formMap.put("date", eventDateStr);
 
         EditText editTextBox6 = (EditText) findViewById(R.id.event_time);
@@ -506,7 +505,6 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             return false;
         }
         else if(date.equals("")){
-            Log.d("brians message", "date: " + date);
             createAlert("Date Required", "Please Select a Date");
             return false;
         }
@@ -520,7 +518,6 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                     "Than Maximum Age");
             return false;
         }
-        createAlert("Date Required", date);
         return true;
     }
 

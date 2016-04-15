@@ -243,6 +243,7 @@ public class CalendarActivity extends AppCompatActivity {
             // add color to map to signal there is 1 to N events that day
             if(userEventsMap.get(date) != null)
             {
+                boolean flag = true;
                 ArrayList<Event> tempList = userEventsMap.get(date);
                 for(int i = 0; i < tempList.size(); i++)
                 {
@@ -250,8 +251,9 @@ public class CalendarActivity extends AppCompatActivity {
                     if(thisUser.getEmail().equals(eventCreator))
                     {
                         dayView.setBackgroundColor(getResources().getColor(R.color.orange));
+                        flag = false;
                     }
-                    else
+                    else if(flag)
                     {
                         dayView.setBackgroundColor(getResources().getColor(R.color.lite_grey));
                     }
