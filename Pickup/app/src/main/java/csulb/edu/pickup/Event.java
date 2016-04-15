@@ -211,13 +211,20 @@ public class Event implements Parcelable
     public int describeContents() {
         return 0;
     }
-
+    @Override
     public void writeToParcel(Parcel out, int flags) {
-        out.writeInt(mData);
+        //out.writeInt(mData);
+
+        out.writeStringArray(new String[]{_name, _description, _creatorName, _creatorEmail,
+                _sport, "" +_longitude, ""+_latitude, _address, _gender, _ageMax, _ageMin,_minUserRating,
+                _maxNumberPpl, _dateCreated, _eventDate, _eventTime, _isPrivate, _eventID });
+
     }
 
-    public static final Parcelable.Creator<Event> CREATOR
-            = new Parcelable.Creator<Event>() {
+
+
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public Event createFromParcel(Parcel in) {
             return new Event(in);
         }
@@ -228,7 +235,28 @@ public class Event implements Parcelable
     };
 
     private Event(Parcel in) {
-        mData = in.readInt();
+        //mData = in.readInt();
+        String[] data = new String[18];
+
+        in.readStringArray(data);
+        this._name = data[0];
+        this._description = data[1];
+        this._creatorName = data[2];
+        this._creatorEmail = data[3];
+        this._sport = data[4];
+        this._longitude = Double.parseDouble(data[5]);
+        this._latitude = Double.parseDouble(data[6]);
+        this._address = data[7];
+        this._gender = data[8];
+        this._ageMax = data[9];
+        this._ageMin = data[10];
+        this._minUserRating = data[11];
+        this._maxNumberPpl = data[12];
+        this._dateCreated = data[13];
+        this._eventDate = data[14];
+        this._eventTime = data[15];
+        this._isPrivate = data[16];
+        this._eventID = data[17];
     }
 
 }

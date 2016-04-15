@@ -49,7 +49,7 @@ public class MapsActivity extends FragmentActivity implements android.location.L
 
     private GoogleMap map; // Might be null if Google Play services APK is not available.
     private ImageButton button;
-
+    ArrayList<Event> eventList;
     User thisUser;
 
 
@@ -58,8 +58,6 @@ public class MapsActivity extends FragmentActivity implements android.location.L
         Bundle data = getIntent().getExtras();
         thisUser = data.getParcelable("USER");
 
-        Log.d("SARAH", "username:"+thisUser.getEmail());
-        Log.d("SARAH", "username:"+thisUser.getBirthday());
 
         super.onCreate(savedInstanceState);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -80,13 +78,20 @@ public class MapsActivity extends FragmentActivity implements android.location.L
 
             }
         }
-        Location location = locationManager.getLastKnownLocation(bestProvider);
-        if (location != null) {
-            onLocationChanged(location);
-            //get current location and zoom in
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        if(data.containsKey("filterLat") && data.containsKey("filterLong")){
+            LatLng latLng = new LatLng(data.getDouble("filterLat"), data.getDouble("filterLong"));
             map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
             map.animateCamera(CameraUpdateFactory.zoomTo(10));
+        }
+        else {
+            Location location = locationManager.getLastKnownLocation(bestProvider);
+            if (location != null) {
+                onLocationChanged(location);
+                //get current location and zoom in
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                map.animateCamera(CameraUpdateFactory.zoomTo(10));
+            }
         }
 
 
@@ -111,18 +116,42 @@ public class MapsActivity extends FragmentActivity implements android.location.L
         try {
             map.setOnMarkerClickListener(this);
             URLConnection http = new URLConnection();
-            ArrayList<Event> list = http.sendGetEvents();
-
+            Bundle data = getIntent().getExtras();
+            ArrayList<Event> eventList;
             LatLng latLng = new LatLng(0,0);
             String eventName = "";
             String creator = "";
-            for (int i = 0; i < list.size(); i++) {
-                //add marker to each position
-                latLng = new LatLng(list.get(i).getLatitude(), list.get(i).getLongitude());
-                eventName = list.get(i).getName();
-                creator = list.get(i).getCreatorName();
+            if(data.containsKey("EVENTS")|| data.getParcelable("EVENTS")!=null){
+                eventList = data.getParcelableArrayList("EVENTS");
+                ArrayList<Event> preEventList = data.getParcelableArrayList("EVENTS");
+                int listSize = preEventList.size();
+                for(int s = 0; s<listSize; s++){
+                    System.out.println(preEventList.get(s).getAddress());
+                    System.out.println(preEventList.get(s).getName());
+                    System.out.println(preEventList.get(s).getCreatorName());
+                    System.out.println(preEventList.get(s).getAgeMax());
+                    System.out.println(preEventList.get(s).getEventID());
+                    System.out.println("new");
 
-                map.addMarker(new MarkerOptions().position(latLng).title(eventName).snippet(creator)).setVisible(true);
+                }
+
+            }
+            else {
+                eventList = http.sendGetEvents();
+            }
+            Log.d("SARAH", "listsize:"+eventList.size());
+            //ArrayList<Event> preEventList = getIntent().getExtras().getParcelableArrayList("EVENTS");
+            //Log.d("SARAH", "preEventList"+preEventList.get(1).getName());
+
+            for (int i = 0; i < eventList.size(); i++) {
+                //add marker to each position
+                latLng = new LatLng(eventList.get(i).getLatitude(), eventList.get(i).getLongitude());
+                if (eventList.get(i).getName() != null) {
+                    eventName = eventList.get(i).getName();
+                    creator = eventList.get(i).getCreatorName();
+                    Log.d("SARAH", "eventName"+eventList.get(i).getName());
+                    map.addMarker(new MarkerOptions().position(latLng).title(eventName).snippet(creator)).setVisible(true);
+                }
             }
 
 
@@ -147,6 +176,46 @@ public class MapsActivity extends FragmentActivity implements android.location.L
     protected void onResume() {
         super.onResume();
         Log.d("SARAH", "username:" + thisUser.getEmail());
+        Bundle data = getIntent().getExtras();
+
+        if(data.containsKey("EVENT")) {
+            Event newEvent = data.getParcelable("EVENT");
+            Log.d("SARAH", "PassedEvent "+newEvent.getName());
+
+        }
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String bestProvider = locationManager.getBestProvider(criteria, true);
+        if (locationManager != null) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            }
+        }
+        if(data.containsKey("filterLat") && data.containsKey("filterLong")){
+            LatLng latLng = new LatLng(data.getDouble("filterLat"), data.getDouble("filterLong"));
+            map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            map.animateCamera(CameraUpdateFactory.zoomTo(10));
+        }
+        else {
+            Location location = locationManager.getLastKnownLocation(bestProvider);
+            if (location != null) {
+                onLocationChanged(location);
+                //get current location and zoom in
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                map.animateCamera(CameraUpdateFactory.zoomTo(10));
+            }
+        }
+
+        if(/*data.containsKey("EVENTS")){*/ getIntent().getExtras().getParcelableArrayList("EVENTS")!=null){
+            Log.d("SARAH", "EVENTS is set at top");
+
+            eventList = getIntent().getParcelableArrayListExtra("EVENTS");
+
+        }
+        getPositionsFromServer();
+
 
     }
 

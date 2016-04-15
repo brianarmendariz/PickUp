@@ -18,16 +18,24 @@
                 android:id="@+id/viewTableRow1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp" >
 
                 <TextView
                     android:id="@+id/viewTextView1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@drawable/black"
+                    android:textSize="15dp"
                     android:text="@string/event_name_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
-
+            </TableRow>
+            <TableRow
+                android:id="@+id/viewTableRow1b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp" >
                 <TextView
                     android:id="@+id/event_view_name"
                     android:layout_width="wrap_content"
@@ -43,16 +51,24 @@
                 android:id="@+id/viewTableRow2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp" >
 
                 <TextView
                     android:id="@+id/viewTextView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@drawable/black"
+                    android:textSize="15dp"
                     android:text="@string/event_creator_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
-
+            </TableRow>
+            <TableRow
+                android:id="@+id/viewTableRow2b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp" >
                 <TextView
                     android:id="@+id/event_view_creator"
                     android:layout_width="wrap_content"
@@ -66,15 +82,24 @@
                 android:id="@+id/viewTableRow3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp" >
 
                 <TextView
                     android:id="@+id/viewTextView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="15dp"
                     android:textColor="@drawable/black"
                     android:text="@string/event_sport_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/viewTableRow3b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp" >
 
                 <TextView
                     android:id="@+id/event_view_sport"
@@ -89,15 +114,24 @@
                 android:id="@+id/viewTableRow4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp" >
 
                 <TextView
                     android:id="@+id/viewTextView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@drawable/black"
+                    android:textSize="15dp"
                     android:text="@string/event_location_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/viewTableRow4b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp">
 
                 <TextView
                     android:id="@+id/event_view_location"
@@ -112,15 +146,18 @@
                 android:id="@+id/viewTableRow5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp" >
 
                 <TextView
                     android:id="@+id/viewTextView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@drawable/black"
+                    android:textSize="15dp"
                     android:text="@string/event_date_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
+            </TableRow>
 
                 <TextView
                     android:id="@+id/event_view_date"
@@ -130,20 +167,35 @@
                     android:textColor="@drawable/white"
                     android:text=""
                     android:textAppearance="?android:attr/textAppearanceLarge" />
+            <TableRow
+                android:id="@+id/viewTableRow5b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp" >
             </TableRow>
             <TableRow
                 android:id="@+id/viewTableRow6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp" >
 
                 <TextView
                     android:id="@+id/viewTextView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@drawable/black"
+                    android:textSize="15dp"
                     android:text="@string/event_time_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/viewTableRow6b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp" >
 
                 <TextView
                     android:id="@+id/event_view_time"
@@ -158,16 +210,24 @@
                 android:id="@+id/viewTableRow7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp" >
 
                 <TextView
                     android:id="@+id/viewTextView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="15dp"
                     android:textColor="@drawable/black"
                     android:text="@string/event_gender_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
-
+            </TableRow>
+            <TableRow
+                android:id="@+id/viewTableRow7b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp" >
                 <TextView
                     android:id="@+id/event_view_gender"
                     android:layout_width="wrap_content"
@@ -181,15 +241,24 @@
                 android:id="@+id/viewTableRow8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp" >
 
                 <TextView
                     android:id="@+id/viewTextView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="15dp"
                     android:textColor="@drawable/black"
                     android:text="@string/event_age_group_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/viewTableRow8b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp" >
 
                 <TextView
                     android:id="@+id/event_view_age_group"
@@ -205,16 +274,24 @@
                 android:id="@+id/viewTableRow9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp" >
 
                 <TextView
                     android:id="@+id/viewTextView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="15dp"
                     android:textColor="@drawable/black"
                     android:text="@string/event_max_num_ppl_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
-
+            </TableRow>
+            <TableRow
+                android:id="@+id/viewTableRow9b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp" >
                 <TextView
                     android:id="@+id/event_view_max_num_ppl"
                     android:layout_width="wrap_content"
@@ -228,15 +305,24 @@
                 android:id="@+id/viewTableRow10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp" >
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp" >
 
                 <TextView
                     android:id="@+id/viewTextView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="15dp"
                     android:textColor="@drawable/black"
                     android:text="@string/event_min_user_rating_text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
+            </TableRow>
+            <TableRow
+                android:id="@+id/viewTableRow10b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp" >
 
                 <TextView
                     android:id="@+id/event_view_min_user_rating"
