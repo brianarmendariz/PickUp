@@ -100,7 +100,7 @@ public class MapsActivity extends FragmentActivity implements android.location.L
         //locationManager.requestLocationUpdates(bestProvider, 20000, 0, this);
         getPositionsFromServer();
 
-        map.setOnMapClickListener(new OnMapClickListener() {
+        /*map.setOnMapClickListener(new OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
                 // Drawing marker on the map
@@ -108,7 +108,7 @@ public class MapsActivity extends FragmentActivity implements android.location.L
                 //Toast.makeText(getBaseContext(), "Longtitude: " + String.valueOf(point.longitude) + "\n" +
                 //        "Latitude: " + String.valueOf(point.latitude), Toast.LENGTH_LONG).show();
             }
-        });
+        });*/
     }
 
     //Get addresses from the database

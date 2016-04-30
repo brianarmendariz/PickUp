@@ -32,6 +32,7 @@ public class MMActivity extends Activity {
 
     private ArrayList<LinkedHashMap<String, String>> list;
     public static final String FIRST_COLUMN = "First";
+    //Email
     public static final String SECOND_COLUMN = "Second";
 
     private TextView noOfTeams;

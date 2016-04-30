@@ -89,7 +89,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                 User thisUser;
 
                                 thisUser = new User(name,  "", email, "", birthday, gender, "");
-                                try {
+                               /* try {
                                     URLConnection http = new URLConnection();
                                     if(http.sendGetUser(thisUser.getEmail())==null){
                                         http.sendCreateUser(email, "", name,"", birthday, gender, "0", "");
@@ -97,7 +97,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                     else{thisUser=http.sendGetUser(thisUser.getEmail());}
                                 }catch(IOException e){
                                     e.printStackTrace();
+                                }*/
+                                if (email.equalsIgnoreCase("")) {
+                                    email = "";
                                 }
+                                Log.d("NESSA", name + " " + email + " " + birthday + " " + gender);
                                 Bundle b = new Bundle();
                                 b.putParcelable("USER", thisUser);
                                 Intent mapIntent = new Intent(getBaseContext(), MapsActivity.class);
