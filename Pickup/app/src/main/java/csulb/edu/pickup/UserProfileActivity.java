@@ -9,10 +9,14 @@ import android.net.Uri;
 import android.os.Bundle;
 
 
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
@@ -20,6 +24,7 @@ import com.facebook.login.LoginManager;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 
 /**
@@ -31,15 +36,12 @@ import java.io.InputStream;
  */
 public class UserProfileActivity extends Activity {
 
-
+    private static final int VIEW_MAP_EVENT = 2;
 
     private ImageView profileImage;
     private TextView name;
     private TextView birthday;
     private TextView gender;
-
-
-
 
     User thisUser;
 
@@ -48,11 +50,12 @@ public class UserProfileActivity extends Activity {
         Bundle data = getIntent().getExtras();
         thisUser = (User) data.getParcelable("USER");
 
+
         //thisUser.getEmail();
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.view_profile);
-        profileImage = (ImageView)findViewById(R.id.imageView);
+        profileImage = (ImageView)findViewById(R.id.profileImageView);
         profileImage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
@@ -65,10 +68,25 @@ public class UserProfileActivity extends Activity {
         name  = (TextView) findViewById(R.id.NameEditText);
         birthday = (TextView) findViewById(R.id.BirthdayEditText);
         gender = (TextView) findViewById(R.id.GenderEditText);
-        name.setText(thisUser.getFirstName());
-        birthday.setText(thisUser.getBirthday());
-        gender.setText(thisUser.getGender());
 
+        User user = data.getParcelable("VIEWUSER");
+        System.out.println("viewUser " + user);
+        if(user != null)
+        {
+            System.out.println("not null");
+            name.setText(user.getFirstName());
+            birthday.setText(user.getBirthday());
+            gender.setText(user.getGender());
+            setupEvents(viewUser(user.getEmail()));
+        }
+        else
+        {
+            System.out.println("null");
+            name.setText(thisUser.getFirstName());
+            birthday.setText(thisUser.getBirthday());
+            gender.setText(thisUser.getGender());
+            setupEvents(viewUser(thisUser.getEmail()));
+        }
     }
 
 
@@ -171,4 +189,60 @@ public class UserProfileActivity extends Activity {
         return inSampleSize;
     }
 
+    private ArrayList<Event> viewUser(String username) {
+        ArrayList<Event> events = null;
+        URLConnection http = new URLConnection();
+        try {
+            events = http.sendGetEventsForUser(username);
+        } catch (IOException e) {
+        }
+        return events;
+    }
+
+    private void setupEvents(final ArrayList<Event> events)
+    {
+        TableLayout layout = (TableLayout)findViewById(R.id.profileTableLayout2);
+        TableLayout.LayoutParams tableParams = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
+        TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+
+        int prevTextViewId = 0;
+        for(int i = 0; i < events.size(); i++)
+        {
+            final int id = i;
+            String name = events.get(i).getName();
+            String sport = events.get(i).getSport();
+            String date = events.get(i).getEventDate();
+            final TextView textViewName = new TextView(this);
+            textViewName.setPadding(30,0,0,0);
+            textViewName.setText(name);
+            textViewName.setTextColor(getResources().getColor(R.color.dark_grey));
+            textViewName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) { // onClick listener for event name
+                    Bundle b = new Bundle();
+                    b.putParcelable("USER", thisUser);
+                    Intent intent = new Intent(getApplicationContext(), ViewEventActivity.class);
+                    intent.putExtra("EventID", events.get(id).getEventID());
+                    intent.putExtras(b);
+                    startActivityForResult(intent, VIEW_MAP_EVENT);
+                }
+            });
+            textViewName.setLayoutParams(rowParams);
+            TableRow tableRow = new TableRow(this); // create a row
+            tableRow.setLayoutParams(tableParams);
+            tableRow.addView(textViewName); // add event name textview to row
+            TextView textViewSport = new TextView(this);
+            TextView textViewDate = new TextView(this);
+            textViewSport.setPadding(50,0,50,0);
+            textViewDate.setPadding(0,0,30,0);
+            textViewSport.setText(sport); // add sport to textview
+            textViewDate.setText(date); // add date to textview
+            textViewSport.setTextColor(getResources().getColor(R.color.dark_grey));
+            textViewDate.setTextColor(getResources().getColor(R.color.dark_grey));
+            tableRow.addView(textViewSport); // add sport textview to row
+            tableRow.addView(textViewDate);  // add date textview to row
+            tableRow.setGravity(Gravity.CENTER);
+            layout.addView(tableRow, tableParams); // add row to tablelayout
+        }
+    }
 }

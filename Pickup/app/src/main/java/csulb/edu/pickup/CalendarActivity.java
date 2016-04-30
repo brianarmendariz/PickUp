@@ -181,24 +181,15 @@ public class CalendarActivity extends AppCompatActivity {
 
     public void setupCalendar()
     {
-        //Initialize CustomCalendarView from layout
-        calendarView = (CustomCalendarView) findViewById(R.id.calendar_view);
+        calendarView = (CustomCalendarView) findViewById(R.id.calendar_view); // initialize CustomCalendarView from layout
+        final Calendar currentCalendar = Calendar.getInstance(Locale.getDefault()); // initialize calendar with date
+        calendarView.setFirstDayOfWeek(Calendar.MONDAY); // show Monday as first date of week
+        calendarView.setShowOverflowDate(false); // show/hide overflow days of a month
 
-        //Initialize calendar with date
-        final Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());
-
-        //Show Monday as first date of week
-        calendarView.setFirstDayOfWeek(Calendar.MONDAY);
-
-        //Show/hide overflow days of a month
-        calendarView.setShowOverflowDate(false);
-
-        //call refreshCalendar to update calendar the view
-        //adding calendar day decorators
         List decorators = new ArrayList<>();
-        decorators.add(new DaysDecorator());
+        decorators.add(new DaysDecorator()); //adding calendar day decorators
         calendarView.setDecorators(decorators);
-        calendarView.refreshCalendar(currentCalendar);
+        calendarView.refreshCalendar(currentCalendar);  //call refreshCalendar to update calendar the view
 
         //Handling custom calendar events
         calendarView.setCalendarListener(new CalendarListener() {

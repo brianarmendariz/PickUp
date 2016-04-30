@@ -40,10 +40,16 @@ public class MMActivity extends Activity {
     private Event _event;
     String[][] arr1;
 
+    LinkedHashMap shuffledMap;
+
+    User thisUser;
 
     final Context context = this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Bundle data = getIntent().getExtras();
+        thisUser = (User) data.getParcelable("USER");
+
         super.onCreate(savedInstanceState);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -89,8 +95,27 @@ public class MMActivity extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int pos = position + 1;
-                Toast.makeText(MMActivity.this, Integer.toString(pos) + " Clicked", Toast.LENGTH_SHORT).show();
+                String email = list.get(position).get(SECOND_COLUMN);
+                Toast.makeText(MMActivity.this, email, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MMActivity.this, , Toast.LENGTH_SHORT).show();
+                Bundle b = new Bundle();
+                //add current user
+                b.putParcelable("USER", thisUser);
+                Intent userProfileIntent = new Intent(getBaseContext(), UserProfileActivity.class);
+                userProfileIntent.putExtras(b);
+                //add user to view
+                User user = viewUser(email);
+                if(user != null)
+                {
+                    System.out.println("putting the parceable");
+                    b.putParcelable("VIEWUSER", user);
+                    userProfileIntent.putExtras(b);
+                }
+                else
+                {
+                    System.out.println("not putting the parceable");
+                }
+                startActivity(userProfileIntent);
             }
 
         });
@@ -172,7 +197,7 @@ public class MMActivity extends Activity {
                     List<String> keys = new ArrayList<String>(hm.keySet());
                     Collections.shuffle(keys);
 
-                    LinkedHashMap shuffledMap = new LinkedHashMap();
+                    shuffledMap = new LinkedHashMap();
                     //number of teams
                     int n = 0;
                     int iterator = 0;
@@ -233,6 +258,20 @@ public class MMActivity extends Activity {
 
 
 
+    }
+
+    private User viewUser(String username)
+    {
+        User user = null;
+        URLConnection http = new URLConnection();
+        try
+        {
+            user = http.sendGetUser(username);
+            System.out.println("user " + user);
+        } catch(IOException e)
+        {
+        }
+        return user;
     }
 
 

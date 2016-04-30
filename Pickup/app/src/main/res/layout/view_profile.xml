@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/userprofilebg"
-    tools:context=".UserProfileActivity">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/orange3"
+    tools:context=".UserProfileActivity" >
 
-
+    <RelativeLayout
+        android:id="@+id/profileRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:adjustViewBounds="false"
-        android:id="@+id/imageView"
+        android:id="@+id/profileImageView"
         android:src="@drawable/browse"
         android:background="@drawable/rounded_transparent"
         android:layout_alignParentTop="true"
@@ -21,103 +24,112 @@
         android:clickable="true"
         android:onClick="onClick"/>
 
+    <TableLayout
+        android:id="@+id/profileTableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="10dip"
+        android:layout_below="@id/profileImageView">
 
+        <TableRow
+            android:id="@+id/profileTableRowName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="3dip" >
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/NameTextView"
+                android:text="NAME:"
+                android:textColor="@color/dark_grey"
+                android:gravity="center_vertical|center_horizontal"
+                android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/NameEditText"
+                android:textColor="@color/dark_grey"
+                android:background="@drawable/roundedwhitebutton"
+                android:maxLines="1"
+                android:maxLength="30"
+                android:gravity="center_horizontal" />
+        </TableRow>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/NameTextView"
-        android:text="Name:"
-        android:textColor="@color/yellow"
-        android:gravity="center_vertical|center_horizontal"
-        android:textStyle="bold"
-        android:layout_alignBottom="@+id/NameEditText"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/NameEditText"
-        android:layout_toStartOf="@+id/NameEditText"
-        android:layout_alignTop="@+id/NameEditText"/>
+        <TableRow
+            android:id="@+id/profileTableRowBirthday"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="3dip" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/BirthDayTextView"
+                android:text="BIRTHDAY:"
+                android:textColor="@color/dark_grey"
+                android:gravity="center_vertical|center_horizontal"
+                android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/BirthdayEditText"
+                android:textColor="@color/dark_grey"
+                android:background="@drawable/roundedwhitebutton"
+                android:maxLines="1"
+                android:gravity="center_horizontal"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/BirthDayTextView"
-        android:text="Birthday:"
-        android:textColor="@color/yellow"
-        android:gravity="center_vertical|center_horizontal"
-        android:textStyle="bold"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/BirthdayEditText"
-        android:layout_toStartOf="@+id/BirthdayEditText"
-        android:layout_alignTop="@+id/BirthdayEditText"
-        android:layout_alignBottom="@+id/BirthdayEditText"/>
+        </TableRow>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/GenderTextView"
-        android:text="Gender:"
-        android:textColor="@color/yellow"
-        android:textStyle="bold"
-        android:gravity="center_horizontal"
-        android:layout_alignBottom="@+id/GenderEditText"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/GenderEditText"
-        android:layout_toStartOf="@+id/GenderEditText"
-        android:layout_alignTop="@+id/GenderEditText"/>
+        <TableRow
+            android:id="@+id/profileTableRowGender"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="3dip" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/GenderTextView"
+                android:text="GENDER:"
+                android:textColor="@color/dark_grey"
+                android:textStyle="bold"
+                android:gravity="center_horizontal" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/GenderEditText"
+                android:textColor="@color/dark_grey"
+                android:background="@drawable/roundedwhitebutton"
+                android:maxLines="1"
+                android:hint="M/F"
+                android:editable="false"
+                android:gravity="center_horizontal"/>
+        </TableRow>
+    </TableLayout>
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/GenderEditText"
-        android:textColor="#181818"
-        android:background="@drawable/roundedwhitebutton"
-        android:maxLines="1"
-        android:hint="M/F"
-        android:gravity="center_horizontal"
-        android:layout_below="@+id/BirthDayTextView"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/BirthDayTextView"
-        android:layout_toEndOf="@+id/BirthDayTextView"
-        android:layout_marginTop="30dp"
-        android:editable="false"/>
+        <RelativeLayout
+            android:id="@+id/profileRelativeLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profileTableLayout"
+            android:paddingTop="10dip">
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/event_txt"
+                android:textColor="@color/dark_grey"
+                android:textStyle="bold"/>
+        </RelativeLayout>
 
-    <TextView
+        <TableLayout
+            android:id="@+id/profileTableLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profileRelativeLayout2"
+            android:padding="3dip">
+        </TableLayout>
 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/NameEditText"
-        android:textColor="#181818"
-        android:background="@drawable/roundedwhitebutton"
-        android:maxLines="1"
-        android:maxLength="30"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/imageView"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/BirthDayTextView"
-        android:layout_toEndOf="@+id/BirthDayTextView"
-        android:gravity="center_horizontal">
-
-    </TextView>
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/BirthdayEditText"
-        android:textColor="#181818"
-        android:background="@drawable/roundedwhitebutton"
-        android:layout_marginTop="30dp"
-        android:maxLines="1"
-        android:layout_below="@+id/NameEditText"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignLeft="@+id/imageView"
-        android:layout_alignStart="@+id/imageView"
-        android:gravity="center_horizontal"/>
-
-
-</RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

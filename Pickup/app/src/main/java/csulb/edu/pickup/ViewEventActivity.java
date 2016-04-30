@@ -449,6 +449,9 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
             Intent intent = getIntent();
             Intent MMIntent = new Intent(getBaseContext(), MMActivity.class);
             String extra = intent.getStringExtra("EventID");
+            Bundle b = new Bundle();
+            b.putParcelable("USER", thisUser);
+            MMIntent.putExtras(b);
             MMIntent.putExtra("EventID", extra);
             startActivityForResult(MMIntent, 1);
         }
