@@ -1,5 +1,8 @@
 package csulb.edu.pickup;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +12,6 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
@@ -46,6 +48,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
 
 
     private Event _event;
+    private Context context;
 
     User thisUser;
 
@@ -62,7 +65,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.view_event);
-
+        context = this;
         animAlpha = AnimationUtils.loadAnimation(this,R.anim.anim_alpha);
 
         Log.i(TAG, "onCreate");
@@ -411,21 +414,43 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            LinearLayout ll = (LinearLayout) findViewById(R.id.view_event_buttons);
-            ll.removeView(_RSVPEventButton);
-            Button unRSVPButton = new Button(this);
-            unRSVPButton.setText("unRSVP");
-            unRSVPButton.setTag("event_unrsvp_btn");
-            unRSVPButton.setGravity(Gravity.CENTER);
-            unRSVPButton.setTextColor(Color.parseColor("#008000"));
-            unRSVPButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            ll.addView(unRSVPButton);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);
-            params.gravity = Gravity.CENTER;
-            unRSVPButton.setLayoutParams(params);
-            _UnRSVPEventButton = (Button) ll.findViewWithTag("event_unrsvp_btn");
-            _UnRSVPEventButton.requestFocus();
-            setupUnRSVPButton();
+
+            //_event is the event that was clicked
+            if(Integer.parseInt(thisUser.getUserRating()) >= Integer.parseInt(_event.getMinUserRating())) {
+                LinearLayout ll = (LinearLayout) findViewById(R.id.view_event_buttons);
+                ll.removeView(_RSVPEventButton);
+                Button unRSVPButton = new Button(this);
+                unRSVPButton.setText("unRSVP");
+                unRSVPButton.setTag("event_unrsvp_btn");
+                unRSVPButton.setGravity(Gravity.CENTER);
+                unRSVPButton.setTextColor(Color.parseColor("#008000"));
+                unRSVPButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                ll.addView(unRSVPButton);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);
+                params.gravity = Gravity.CENTER;
+                unRSVPButton.setLayoutParams(params);
+                _UnRSVPEventButton = (Button) ll.findViewWithTag("event_unrsvp_btn");
+                _UnRSVPEventButton.requestFocus();
+                setupUnRSVPButton();
+            }
+            else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("You cannot RSVP to this event because your user rating " +
+                        "is lower than the event's minimum user rating.");
+                builder.setCancelable(true);
+
+                builder.setPositiveButton(
+                        "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+
         }
         else if(view == _UnRSVPEventButton){
             URLConnection http = new URLConnection();
