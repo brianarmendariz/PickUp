@@ -14,6 +14,7 @@ public class User implements Parcelable {
     String birthday;
     String gender;
     String userRating;
+    String picturePath;
 
     public User(String fn, String ln, String em,String pw,String bday,String gend, String useRate){
         firstName = fn;
@@ -23,6 +24,16 @@ public class User implements Parcelable {
         birthday = bday;
         gender = gend;
         userRating = useRate;
+    }
+    public User(String fn, String ln, String em,String pw,String bday,String gend, String useRate, String picture){
+        firstName = fn;
+        lastName = ln;
+        email = em;
+        password = pw;
+        birthday = bday;
+        gender = gend;
+        userRating = useRate;
+        picturePath = picture;
     }
     public User(Parcel in){
         String[] data = new String[7];
@@ -35,6 +46,7 @@ public class User implements Parcelable {
         this.birthday = data[4];
         this.gender = data[5];
         this.userRating = data[6];
+       // this.picturePath = data[7];
 
     }
 
@@ -57,6 +69,7 @@ public class User implements Parcelable {
     public String getUserRating(){
         return userRating;
     }
+    //public String getPicturePath() {return picturePath;}
 
     public void setPassword(String pw){
         password = pw;
@@ -75,6 +88,9 @@ public class User implements Parcelable {
     }
     public void UserRating(String useRate){
         userRating = useRate;
+    }
+    public void setPicturePath(String picture) {
+        picturePath= picture;
     }
 
     @Override

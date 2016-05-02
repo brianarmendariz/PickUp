@@ -130,8 +130,6 @@ public class MMActivity extends Activity {
 
             public void onClick(View v) {
 
-                Log.d("Nessa", "YES THIS IS SHUFFLE");
-
                 if (noOfTeams.getText().toString().equals("") || Integer.parseInt(noOfTeams.getText().toString()) <= 0
                         || Integer.parseInt(noOfTeams.getText().toString()) > arr1.length) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -242,8 +240,6 @@ public class MMActivity extends Activity {
                         iterator++;
 
                     }
-
-                    Log.d("Nessa", "size" + list.get(0).get(SECOND_COLUMN));
 
                     adapter.notifyDataSetChanged();
 

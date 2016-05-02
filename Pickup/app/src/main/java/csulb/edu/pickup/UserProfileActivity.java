@@ -2,19 +2,25 @@ package csulb.edu.pickup;
 
 
 import android.app.Activity;
+
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+
 import android.net.Uri;
 import android.os.Bundle;
-
 
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -42,8 +48,21 @@ public class UserProfileActivity extends Activity {
     private TextView name;
     private TextView birthday;
     private TextView gender;
-
+    private TextView userRating;
+    private Button upvote;
+    private Button downvote;
+    //current user
     User thisUser;
+    //the user that is viewed.
+    User viewUsername;
+
+    User updatedUser;
+    // 1 indicates upvoted
+    // 0 indicates unrated
+    // -1 indicates downvoted
+    int rated = 0;
+    boolean voted = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,16 +87,19 @@ public class UserProfileActivity extends Activity {
         name  = (TextView) findViewById(R.id.NameEditText);
         birthday = (TextView) findViewById(R.id.BirthdayEditText);
         gender = (TextView) findViewById(R.id.GenderEditText);
+        userRating = (TextView) findViewById(R.id.UserRatingEditText);
 
-        User user = data.getParcelable("VIEWUSER");
-        System.out.println("viewUser " + user);
-        if(user != null)
+        final User viewUser = data.getParcelable("VIEWUSER");
+        viewUsername = viewUser;
+
+        if(viewUser != null)
         {
             System.out.println("not null");
-            name.setText(user.getFirstName());
-            birthday.setText(user.getBirthday());
-            gender.setText(user.getGender());
-            setupEvents(viewUser(user.getEmail()));
+            name.setText(viewUser.getFirstName());
+            birthday.setText(viewUser.getBirthday());
+            gender.setText(viewUser.getGender());
+            userRating.setText(viewUser.getUserRating());
+            setupEvents(viewUser(viewUser.getEmail()));
         }
         else
         {
@@ -85,7 +107,397 @@ public class UserProfileActivity extends Activity {
             name.setText(thisUser.getFirstName());
             birthday.setText(thisUser.getBirthday());
             gender.setText(thisUser.getGender());
+            userRating.setText(thisUser.getUserRating());
             setupEvents(viewUser(thisUser.getEmail()));
+        }
+
+        //If the user views his/her own profile
+        if(viewUser == null) {
+
+        }
+        //If the user views other user profile
+        else {
+            Button upVoteButton = new Button(this);
+            Button downVoteButton = new Button(this);
+            LinearLayout llLayout = (LinearLayout) findViewById(R.id.profileLinearLayout3);
+            llLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+                    LayoutParams.WRAP_CONTENT);
+            params.weight = 1.0f;
+
+
+            URLConnection http4 = new URLConnection();
+            try {
+                //get the list
+                String[][] RatingList = http4.sendGetUserRatingsList(thisUser.getEmail());
+                for (int i = 0; i < RatingList.length; i++) {
+
+                    //already down rated this other user
+                    if (RatingList[i][0].equals(thisUser.getEmail()) && RatingList[i][1].equals(viewUsername.getEmail())
+                            && RatingList[i][2].equals("-1")) {
+                        rated = -1;
+
+                    }
+                    //already up rated this other user
+                    if (RatingList[i][0].equals(thisUser.getEmail()) && RatingList[i][1].equals(viewUsername.getEmail())
+                            && RatingList[i][2].equals("1")) {
+                        rated = 1;
+
+                    }
+
+                    //already unrated this other user
+                    if (RatingList[i][0].equals(thisUser.getEmail()) && RatingList[i][1].equals(viewUsername.getEmail())
+                            && RatingList[i][2].equals("0")) {
+                        voted = true;
+                        rated = 0;
+                    }
+
+                } // end checking for loop
+            }
+            catch( IOException e) {
+                e.printStackTrace();
+            }
+
+            if(!voted && rated == 0) {
+                upVoteButton.setText("Upvote");
+                downVoteButton.setText("Downvote");
+
+            }
+            //for the user that undownvoted another user
+            else if (rated == -1) {
+                upVoteButton.setText("Upvote");
+                downVoteButton.setText("Undownvote");
+
+            }
+
+            else if (rated == 0) {
+                upVoteButton.setText("Upvote");
+                downVoteButton.setText("Downvote");
+
+            }
+            else if (rated == 1) {
+                upVoteButton.setText("Unupvote");
+                downVoteButton.setText("Downvote");
+            }
+
+            upVoteButton.setTextColor(Color.parseColor("#008000"));
+            upVoteButton.setGravity(Gravity.CENTER_HORIZONTAL);
+            upVoteButton.setLayoutParams(params);
+
+            downVoteButton.setTextColor(Color.parseColor("#008000"));
+            downVoteButton.setGravity(Gravity.CENTER_HORIZONTAL);
+            downVoteButton.setLayoutParams(params);
+
+            //set the the actually upvote button to use
+            upvote = upVoteButton;
+            downvote = downVoteButton;
+
+            upVoteButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+
+                    try {
+                        URLConnection http = new URLConnection();
+                        //get the list
+                        String[][] RatingList = http.sendGetUserRatingsList(thisUser.getEmail());
+                        for (int i = 0; i < RatingList.length; i++) {
+
+                            //already down rated this other user
+                            if (RatingList[i][0].equals(thisUser.getEmail()) && RatingList[i][1].equals(viewUsername.getEmail())
+                                    && RatingList[i][2].equals("-1")) {
+                                rated = -1;
+
+                            }
+                            //already up rated this other user
+                            if (RatingList[i][0].equals(thisUser.getEmail()) && RatingList[i][1].equals(viewUsername.getEmail())
+                                    && RatingList[i][2].equals("1")) {
+                                rated = 1;
+
+                            }
+
+                            //already unrated this other user
+                            if (RatingList[i][0].equals(thisUser.getEmail()) && RatingList[i][1].equals(viewUsername.getEmail())
+                                    && RatingList[i][2].equals("0")) {
+                                voted = true;
+                            }
+
+                        } // end checking for loop
+
+                        URLConnection http2 = new URLConnection();
+
+                        //if they didn't vote to the viewUser at all, create a user in the database
+                        if (rated == 0 && !voted) {
+                            http.sendCreateRatings(thisUser.getEmail(), viewUsername.getEmail(), 1);
+                            rated = 1;
+
+                            viewUsername = http2.sendGetUser(viewUsername.getEmail());
+
+                            int rating = 0;
+                            String rate;
+                            //Calculate the viewUsername's userRating
+                            rating = Integer.parseInt(viewUsername.userRating) + 1;
+                            rate =  rating + "";
+
+                            //save to the server
+                            http2.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
+                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+
+                            updatedUser = http2.sendGetUser(viewUsername.getEmail());
+                            upvote.setText("Unupvote");
+                            downvote.setText("Downvote");
+                        }
+
+                        //if the user downvoted the viewUser before, change the vote to 1
+                        else if (rated == -1) {
+                            http.sendEditUserRatings(thisUser.getEmail(), viewUsername.getEmail(), 1);
+                            rated = 1;
+
+
+                            //get the updated user
+                            viewUsername = http2.sendGetUser(viewUsername.getEmail());
+
+                            int rating = 0;
+                            String rate;
+                            //Calculate the viewUsername's userRating
+                            rating = Integer.parseInt(viewUsername.userRating) + 2;
+                            rate =  rating + "";
+
+                            //save to the server
+                            http2.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
+                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+
+                            //update the user
+                            updatedUser = http2.sendGetUser(viewUsername.getEmail());
+
+                            upvote.setText("Unupvote");
+                            downvote.setText("Downvote");
+                        }
+
+                        //if the user vote the unrated viewUser, rate = 1
+                        else if (rated == 0) {
+                            //change the vote to 1
+                            http.sendEditUserRatings(thisUser.getEmail(), viewUsername.getEmail(), 1);
+                            rated = 1;
+
+
+                            //get the updated user
+                            viewUsername = http2.sendGetUser(viewUsername.getEmail());
+
+
+                            int rating = 0;
+                            String rate;
+                            //Calculate the viewUsername's userRating
+                            rating = Integer.parseInt(viewUsername.userRating) + 1;
+                            rate =  rating + "";
+
+                            //save to the server
+                            http2.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
+                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+
+                            //update the user
+                            updatedUser = http2.sendGetUser(viewUsername.getEmail());
+
+                            upvote.setText("Unupvote");
+                            downvote.setText("Downvote");
+
+                        }
+
+                        //if the user upvoted the viewUser before, change the vote to 0
+                        else if (rated == 1) {
+
+                            http.sendEditUserRatings(thisUser.getEmail(), viewUsername.getEmail(), 0);
+
+                            rated = 0;
+
+                            int rating = 0;
+                            String rate;
+
+                            //get the updated user
+                            viewUsername = http2.sendGetUser(viewUsername.getEmail());
+
+                            //Calculate the viewUsername's userRating
+                            rating = Integer.parseInt(viewUsername.userRating) - 1;
+                            rate =  rating + "";
+
+                            //save to the server
+                            http2.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
+                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+
+                            //update the user
+                            updatedUser = http2.sendGetUser(viewUsername.getEmail());
+
+                            upvote.setText("Upvote");
+                            downvote.setText("Downvote");
+
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    finally {
+
+                        //set the text to the updated user rating
+                        userRating.setText(updatedUser.getUserRating());
+
+                    }
+                }
+            });
+
+            downVoteButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+
+                    try {
+                        URLConnection http = new URLConnection();
+                        String[][] RatingList = http.sendGetUserRatingsList(thisUser.getEmail());
+                        for (int i = 0; i < RatingList.length; i++) {
+
+                            //already down rated this other user
+                            if (RatingList[i][0].equals(thisUser.getEmail()) && RatingList[i][1].equals(viewUsername.getEmail())
+                                    && RatingList[i][2].equals("-1")) {
+                                rated = -1;
+                            }
+                            //already up rated this other user
+                            if (RatingList[i][0].equals(thisUser.getEmail()) && RatingList[i][1].equals(viewUsername.getEmail())
+                                    && RatingList[i][2].equals("1")) {
+                                rated = 1;
+
+
+                            }
+
+                            //already unrated this other user
+                            if (RatingList[i][0].equals(thisUser.getEmail()) && RatingList[i][1].equals(viewUsername.getEmail())
+                                    && RatingList[i][2].equals("0")) {
+                                voted = true;
+                            }
+
+
+                        }
+
+                        URLConnection http3 = new URLConnection();
+
+                        //the user never voted
+                        if (rated == 0 && !voted) {
+                            http.sendCreateRatings(thisUser.getEmail(), viewUsername.getEmail(), -1);
+                            rated = -1;
+
+                            viewUsername = http3.sendGetUser(viewUsername.getEmail());
+
+                            int rating = 0;
+                            String rate;
+                            //Calculate the viewUsername's userRating
+                            rating = Integer.parseInt(viewUsername.userRating) - 1;
+                            rate =  rating + "";
+
+                            //save to the server
+                            http3.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
+                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+
+                            updatedUser = http3.sendGetUser(viewUsername.getEmail());
+
+                            upvote.setText("Upvote");
+                            downvote.setText("Undownvote");
+
+
+                        }
+
+                        //if the user upvoted before
+                        else if (rated == 1) {
+                            http.sendEditUserRatings(thisUser.getEmail(), viewUsername.getEmail(), -1);
+                            rated = -1;
+
+
+                            //get the updated user
+                            viewUsername = http3.sendGetUser(viewUsername.getEmail());
+
+                            int rating = 0;
+                            String rate;
+                            //Calculate the viewUsername's userRating
+                            rating = Integer.parseInt(viewUsername.userRating) - 2;
+                            rate =  rating + "";
+
+                            //save to the server
+                            http3.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
+                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+
+                            //update the user
+                            updatedUser = http3.sendGetUser(viewUsername.getEmail());
+
+                            upvote.setText("Upvote");
+                            downvote.setText("Undownvote");
+
+                        }
+
+                        //if the user downvote the viewUser
+                        else if (rated == 0) {
+                            http.sendEditUserRatings(thisUser.getEmail(), viewUsername.getEmail(), -1);
+                            rated = -1;
+
+                            //get the updated user
+                            viewUsername = http3.sendGetUser(viewUsername.getEmail());
+
+
+                            int rating = 0;
+                            String rate;
+                            //Calculate the viewUsername's userRating
+                            rating = Integer.parseInt(viewUsername.userRating) - 1;
+                            rate =  rating + "";
+
+                            //save to the server
+                            http3.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
+                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+
+                            //update the user
+                            updatedUser = http3.sendGetUser(viewUsername.getEmail());
+
+                            upvote.setText("Upvote");
+                            downvote.setText("Undownvote");
+
+                        }
+
+                        //if the user downvoted viewUser before
+                        else if (rated == -1) {
+                            http.sendEditUserRatings(thisUser.getEmail(), viewUsername.getEmail(), 0);
+                            rated = 0;
+
+
+                            int rating = 0;
+                            String rate;
+
+                            //get the updated user
+                            viewUsername = http3.sendGetUser(viewUsername.getEmail());
+
+                            //Calculate the viewUsername's userRating
+                            rating = Integer.parseInt(viewUsername.userRating) + 1;
+                            rate =  rating + "";
+
+                            //save to the server
+                            http3.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
+                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+
+                            //update the user
+                            updatedUser = http3.sendGetUser(viewUsername.getEmail());
+
+                            upvote.setText("Upvote");
+                            downvote.setText("Downvote");
+                        }
+                        //userRating.setText("10");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    finally {
+
+                        //update the text
+                        userRating.setText(updatedUser.getUserRating());
+
+                    }
+                }
+            });
+
+            llLayout.addView(upvote);
+            llLayout.addView(downvote);
+
         }
     }
 
@@ -245,4 +657,6 @@ public class UserProfileActivity extends Activity {
             layout.addView(tableRow, tableParams); // add row to tablelayout
         }
     }
+
+
 }
