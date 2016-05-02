@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@drawable/orange3"
     tools:context=".UserProfileActivity" >
 
@@ -106,15 +106,58 @@
                 android:editable="false"
                 android:gravity="center_horizontal"/>
         </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/UserRatingTextView"
+                android:text="User Rating"
+                android:textColor="@color/dark_grey"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"/>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/UserRatingEditText"
+                android:textColor="@color/dark_grey"
+                android:background="@drawable/roundedwhitebutton"
+                android:maxLines="1"
+                android:hint="User Rating"
+                android:editable="false"
+                android:gravity="center_horizontal"
+                android:layout_column="1"/>
+
+        </TableRow>
+
     </TableLayout>
+
+        <LinearLayout
+            android:id="@+id/profileLinearLayout3"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profileTableLayout"
+            android:paddingTop="10dip"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="false">
+
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/profileRelativeLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/profileTableLayout"
+            android:layout_below="@id/profileLinearLayout3"
             android:paddingTop="10dip">
             <TextView
+                android:id="@+id/profileEventsTextView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"

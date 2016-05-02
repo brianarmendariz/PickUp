@@ -1,5 +1,7 @@
 package csulb.edu.pickup;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -480,7 +482,6 @@ public class URLConnection {
 
     }
 
-
     private  String[][] convertRSVPList(String str){
 		    	/*Divide string up into lines */
         String[] lines=str.split("#");
@@ -506,4 +507,70 @@ public class URLConnection {
         }
         return RSVPPairs;
     }
+
+    //Create user who rates another user
+    public String sendCreateRatings(String RaterUsername, String RatedUsername, int Vote)
+            throws IOException  {
+
+        /*url of route being requested*/
+        String url = "http://www.csulbpickup.com/createRatings.php";
+        String urlParameters = "RaterUsername="+RaterUsername+"&RatedUsername="+RatedUsername+"&Vote="+Vote;
+        return makeHTTPRequest(url,urlParameters);
+    }
+
+    //Edit user who already rated another person and uppdate value
+    public String sendEditUserRatings(String RaterUsername, String RatedUsername, int Vote) throws IOException {
+        String url = "http://www.csulbpickup.com/editUserRatings.php";
+        String urlParameters = "RaterUsername="+RaterUsername+"&RatedUsername="+RatedUsername+"&Vote="+Vote;
+        return makeHTTPRequest(url, urlParameters);
+    }
+
+    public String[][] sendGetUserRatingsList(String RaterUsername) throws IOException  {
+
+			/*url of route being requested*/
+        String url = "http://www.csulbpickup.com/getUserRatingsList.php";
+        String urlParameters = "RaterUsername="+RaterUsername;
+        String response =  makeHTTPRequest(url,urlParameters);
+        String[][] RatingList =  convertRatingList(response);
+        for(int i = 0;i<RatingList.length;i++){
+            System.out.println(i+" "+RatingList[i][0]+" "+RatingList[i][1]);
+        }
+
+        return RatingList;
+
+    }
+
+    private String[][] convertRatingList (String response){
+        String[] lines=response.split("#");
+        String[][] RatingPairs = new String[lines.length-1][3];
+
+
+        int arrayCount=0;
+        for(String line : lines){
+            if(line.isEmpty()){
+
+            }
+            else{
+                Map <String, String> RatingList = new HashMap<>();
+                for(String pair: line.split(",")){
+                    String[] tokens = pair.split("::");
+                    for (int i=0; i<tokens.length-1;i++ ){
+                        RatingList.put(tokens[i], tokens[i+1]);
+
+                    }
+                }
+                RatingPairs[arrayCount][0] = RatingList.get("RaterUsername");
+                RatingPairs[arrayCount][1] = RatingList.get("RatedUsername");
+                RatingPairs[arrayCount][2] = RatingList.get("Vote");
+                arrayCount++;
+            }
+        }
+
+
+
+        return RatingPairs;
+
+    }
+
+
 }

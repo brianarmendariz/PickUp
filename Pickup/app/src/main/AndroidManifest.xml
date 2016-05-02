@@ -3,7 +3,7 @@
     package="csulb.edu.pickup" >
 
     <uses-sdk
-        android:minSdkVersion="15"
+        android:minSdkVersion="16"
         android:targetSdkVersion="20"
         />
 
