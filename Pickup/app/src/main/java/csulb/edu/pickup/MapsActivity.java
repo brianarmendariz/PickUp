@@ -18,6 +18,8 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -52,6 +54,7 @@ public class MapsActivity extends FragmentActivity implements android.location.L
     ArrayList<Event> eventList;
     User thisUser;
 
+    Animation animAlpha;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,8 @@ public class MapsActivity extends FragmentActivity implements android.location.L
         StrictMode.setThreadPolicy(policy);
 
         setContentView(R.layout.activity_maps);
+        animAlpha = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);
+
         setupTopbar();
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         // Enabling MyLocation Layer of Google Map
@@ -220,16 +225,17 @@ public class MapsActivity extends FragmentActivity implements android.location.L
     }
 
     public void onClick_Filter(View v) {
+        v.startAnimation(animAlpha);
         Bundle b = new Bundle();
         b.putParcelable("USER", thisUser);
         Intent myIntent = new Intent(v.getContext(), FilterEvents.class);
         myIntent.putExtras(b);
         startActivityForResult(myIntent, 1);
 
-        startActivityForResult(myIntent, 0);
     }
 
     public void onClick_ImageButton(View v) {
+        v.startAnimation(animAlpha);
         Bundle b = new Bundle();
         b.putParcelable("USER", thisUser);
         Intent myIntent = new Intent(v.getContext(), CreateEventActivity.class);

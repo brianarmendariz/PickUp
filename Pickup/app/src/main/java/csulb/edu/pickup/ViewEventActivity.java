@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -47,6 +49,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
 
     User thisUser;
 
+    Animation animAlpha;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -60,6 +63,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
         StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.view_event);
 
+        animAlpha = AnimationUtils.loadAnimation(this,R.anim.anim_alpha);
 
         Log.i(TAG, "onCreate");
 
@@ -70,6 +74,8 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
 
 
         Log.d("VIEW EVENT ID", extra);
+
+
 
         LinearLayout ll = (LinearLayout) findViewById(R.id.view_event_buttons);
         if(thisUser.getEmail().equals(_event.getCreatorEmail())) {
@@ -341,7 +347,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
                     ShareLinkContent linkContent = new ShareLinkContent.Builder()
                             .setContentTitle("Events")
                             .setContentDescription(
-                                    "simple event")
+                                    "Sport Event")
                             .build();
 
                     shareDialog.show(linkContent);  // Show facebook ShareDialog
@@ -446,6 +452,7 @@ public class ViewEventActivity extends AppCompatActivity implements View.OnClick
         }
 
         else if (view == _MMButton) {
+            view.startAnimation(animAlpha);
             Intent intent = getIntent();
             Intent MMIntent = new Intent(getBaseContext(), MMActivity.class);
             String extra = intent.getStringExtra("EventID");
