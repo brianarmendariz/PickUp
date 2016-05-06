@@ -66,7 +66,7 @@ public class FilterTest  extends ActivityInstrumentationTestCase2<FilterEvents>{
             @Override
             public void run() {
                 locationEditText.requestFocus();
-                Toast.makeText(filterEvents.getBaseContext(), "DONE", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -76,8 +76,16 @@ public class FilterTest  extends ActivityInstrumentationTestCase2<FilterEvents>{
             @Override
             public void run() {
                 filterButton.performClick();
+                Toast.makeText(filterEvents.getBaseContext(), "Filter Fill In: Success", Toast.LENGTH_SHORT).show();
             }
         });
+        try {
+            Thread.sleep(6000);
+
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
     }

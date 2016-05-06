@@ -1,7 +1,7 @@
 package csulb.edu.pickup;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.UiThreadTest;
+import android.test.suitebuilder.annotation.SmallTest;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -39,6 +39,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 <LoginAc
         assertEquals("", password.getText().toString());
     }
 
+    @SmallTest
     public void testLogin() {
         loginActivity = getActivity();
 
@@ -65,16 +66,24 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 <LoginAc
             @Override
             public void run() {
                 passwordEditText.requestFocus();
-                Toast.makeText(loginActivity.getBaseContext(), "DONE", Toast.LENGTH_SHORT).show();
+
             }
         });
 
+        try {
+            Thread.sleep(500);
+
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         getInstrumentation().waitForIdleSync();
         getInstrumentation().sendStringSync("a");
 
         loginActivity.runOnUiThread(new Runnable() {
             public void run() {
                 loginButton.performClick();
+                Toast.makeText(loginActivity.getBaseContext(), "Log In Information: Success", Toast.LENGTH_SHORT).show();
             }
         });
 
