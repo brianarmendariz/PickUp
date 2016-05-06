@@ -283,7 +283,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                         User thisUser = new User(firstName, lastName, email ,password, bday, gender, "0");
                         Bundle b = new Bundle();
                         b.putParcelable("USER", thisUser);
-                        Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
+                        Intent myIntent = new Intent(view.getContext(), MainActivity.class);
                         myIntent.putExtras(b);
                         startActivityForResult(myIntent, 0);
                     }

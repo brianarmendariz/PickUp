@@ -2,6 +2,7 @@ package csulb.edu.pickup;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -102,9 +103,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                     email = "";
                                 }
                                 Log.d("NESSA", name + " " + email + " " + birthday + " " + gender);
+
+
                                 Bundle b = new Bundle();
                                 b.putParcelable("USER", thisUser);
-                                Intent mapIntent = new Intent(getBaseContext(), MapsActivity.class);
+                                Intent mapIntent = new Intent(getBaseContext(), MainActivity.class);
                                 mapIntent.putExtras(b);
                                 mapIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(mapIntent);
@@ -323,7 +326,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
                     Bundle b = new Bundle();
                     b.putParcelable("USER", thisUser);
-                    Intent myIntent = new Intent(view.getContext(), MapsActivity.class);
+                    Intent myIntent = new Intent(view.getContext(), MainActivity.class);
                     myIntent.putExtras(b);
                     startActivityForResult(myIntent, 0);
                 }

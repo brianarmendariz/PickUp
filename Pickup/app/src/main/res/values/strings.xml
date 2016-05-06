@@ -33,6 +33,13 @@
         <item>Female</item>
         <item>Male</item>
     </string-array>
+
+    <string-array name="gender_array2">
+        <item></item>
+        <item>Any</item>
+        <item>Female</item>
+        <item>Male</item>
+    </string-array>
     <string name="hello"></string>
     <string name="prompt">Choose a Sport</string>
     <drawable name="white">#ffffff</drawable>

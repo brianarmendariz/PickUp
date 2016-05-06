@@ -3,11 +3,14 @@ package csulb.edu.pickup;
 public class DrawerItem {
 
     String ItemName;
+    int imgResID;
 
 
-    public DrawerItem(String itemName) {
+    public DrawerItem(String itemName,int imgResID) {
         super();
         ItemName = itemName;
+        this.imgResID = imgResID;
+
 
     }
 
@@ -18,5 +21,10 @@ public class DrawerItem {
         ItemName = itemName;
     }
 
-
+    public int getImgResID() {
+        return imgResID;
+    }
+    public void setImgResID(int imgResID) {
+        this.imgResID = imgResID;
+    }
 }

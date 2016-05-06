@@ -1,22 +1,23 @@
 package csulb.edu.pickup;
 
-import java.util.ArrayList;
-import java.util.List;
+        import java.util.ArrayList;
+        import java.util.List;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.content.res.Configuration;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v4.widget.DrawerLayout;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+        import android.os.Bundle;
+        import android.app.Activity;
+        import android.app.Fragment;
+        import android.app.FragmentManager;
+        import android.content.res.Configuration;
+        import android.support.v7.app.ActionBarActivity;
+        import android.support.v7.app.ActionBarDrawerToggle;
+        import android.support.v7.app.ActionBar;
+        import android.support.v4.view.GravityCompat;
+        import android.support.v4.widget.DrawerLayout;
+        import android.view.Menu;
+        import android.view.MenuItem;
+        import android.view.View;
+        import android.widget.AdapterView;
+        import android.widget.ListView;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -41,15 +42,17 @@ public class MainActivity extends ActionBarActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-        /*mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
-                GravityCompat.START);
-*/
+        //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
+          //      GravityCompat.START);
+
         // Add Drawer Item to dataList
-        dataList.add(new DrawerItem("Map"));
-        dataList.add(new DrawerItem("Create Event"));
-        dataList.add(new DrawerItem("View Profile"));
-        dataList.add(new DrawerItem("Edit Settings"));
-        dataList.add(new DrawerItem("Logout"));
+        dataList.add(new DrawerItem("Map", R.drawable.map_icon));
+        dataList.add(new DrawerItem("Create Event", R.drawable.plus_icon));
+        dataList.add(new DrawerItem("View Profile", R.drawable.profile_icon));
+        dataList.add(new DrawerItem("Calendar", R.drawable.calendar_icon));
+        dataList.add(new DrawerItem("Friends", R.drawable.friends_icon));
+        dataList.add(new DrawerItem("Edit Settings", R.drawable.settings_icon));
+        dataList.add(new DrawerItem("Logout", R.drawable.logout_icon));
 
 
         adapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item,
@@ -58,14 +61,12 @@ public class MainActivity extends ActionBarActivity {
         mDrawerList.setAdapter(adapter);
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.roundedbutton, R.string.drawer_open,
-                R.string.drawer_close) {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open,  R.string.drawer_close) {
             public void onDrawerClosed(View view) {
+
                 getSupportActionBar().setTitle(mTitle);
                 invalidateOptionsMenu(); // creates call to
                 // onPrepareOptionsMenu()
@@ -78,7 +79,7 @@ public class MainActivity extends ActionBarActivity {
             }
         };
 
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
             SelectItem(0);
@@ -99,41 +100,51 @@ public class MainActivity extends ActionBarActivity {
         Bundle args = new Bundle();
         switch (possition) {
             case 0:
-                fragment = new FragmentOne();
+                fragment = new MapsFragment();
                 args.putString(FragmentOne.ITEM_NAME, dataList.get(possition)
                         .getItemName());
-
+                args.putInt(FragmentOne.IMAGE_RESOURCE_ID, dataList.get(possition)
+                        .getImgResID());
                 break;
             case 1:
-                fragment = new FragmentTwo();
+                fragment = new CreateEventFragment();
                 args.putString(FragmentTwo.ITEM_NAME, dataList.get(possition)
                         .getItemName());
-
+                args.putInt(FragmentTwo.IMAGE_RESOURCE_ID, dataList.get(possition)
+                        .getImgResID());
                 break;
             case 2:
-                fragment = new FragmentThree();
+                fragment = new UserProfileFragment();
                 args.putString(FragmentThree.ITEM_NAME, dataList.get(possition)
                         .getItemName());
-
+                args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList.get(possition)
+                        .getImgResID());
                 break;
             case 3:
-                fragment = new FragmentOne();
+                fragment = new CalendarFragment();
                 args.putString(FragmentOne.ITEM_NAME, dataList.get(possition)
                         .getItemName());
-
+                args.putInt(FragmentOne.IMAGE_RESOURCE_ID, dataList.get(possition)
+                        .getImgResID());
                 break;
-            case 4:
+            case 4://friends
                 fragment = new FragmentTwo();
                 args.putString(FragmentTwo.ITEM_NAME, dataList.get(possition)
                         .getItemName());
-
+                args.putInt(FragmentTwo.IMAGE_RESOURCE_ID, dataList.get(possition)
+                        .getImgResID());
                 break;
             case 5:
-                fragment = new FragmentThree();
+                fragment = new EditSettingsFragment();
                 args.putString(FragmentThree.ITEM_NAME, dataList.get(possition)
                         .getItemName());
+                args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList.get(possition)
+                        .getImgResID());
+                break;
+            case 6://logout
 
                 break;
+
         }
 
         fragment.setArguments(args);
@@ -150,7 +161,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
-        getSupportActionBar().setTitle(mTitle);
+        getSupportActionBar().setTitle("Map");
     }
 
     @Override
@@ -186,6 +197,19 @@ public class MainActivity extends ActionBarActivity {
             SelectItem(position);
 
         }
+    }
+    @Override
+    public void onBackPressed() {
+
+        int count = getFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            super.onBackPressed();
+            //additional code
+        } else {
+            getFragmentManager().popBackStack();
+        }
+
     }
 
 }

@@ -1,6 +1,8 @@
 package csulb.edu.pickup;
 
 import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -35,26 +37,7 @@ public class CalendarEventDialog extends DialogFragment {
 
         for(int i = 0; i < eventList.size(); i++) {
             final int x = i;
-            // Add textview
-            TextView textView = new TextView(getActivity());
-            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-            textView.setTextColor(getResources().getColor(R.color.orange));
-            textView.setText(eventList.get(i).getName());
-            textView.setPadding(20, 20, 20, 20);// in pixels (left, top, right, bottom)
-            linearLayout.addView(textView);
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle b = new Bundle();
-                    b.putParcelable("USER", thisUser);
-                    Intent intent = new Intent(getActivity(), ViewEventActivity.class);
-                    intent.putExtra("EventID", eventList.get(x).getEventID());
-                    intent.putExtras(b);
-                    startActivityForResult(intent, VIEW_MAP_EVENT);
-                }
-            });
-        }
+
 
         Button dismiss = new Button(getActivity());
         dismiss.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -69,6 +52,34 @@ public class CalendarEventDialog extends DialogFragment {
                 dismiss();
             }
         });
+            // Add textview
+            TextView textView = new TextView(getActivity());
+            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            textView.setTextColor(getResources().getColor(R.color.orange));
+            textView.setText(eventList.get(i).getName());
+            textView.setPadding(20, 20, 20, 20);// in pixels (left, top, right, bottom)
+            linearLayout.addView(textView);
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle args = new Bundle();
+                    Fragment fragment = new ViewEventFragment();
+                    args.putString(FragmentOne.ITEM_NAME, new DrawerItem("View Event", 0)
+                            .getItemName());
+                    args.putString("EventID", eventList.get(x).getEventID());
+
+                    fragment.setArguments(args);
+                    System.out.println("Should be changing frames");
+                    FragmentManager frgManager = getFragmentManager();
+
+                    dismiss();
+                    frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack( "Calendar Dialog" )
+                            .commit();
+
+                }
+            });
+        }
 
         return rootView;
     }

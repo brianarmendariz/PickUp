@@ -1,0 +1,23 @@
+a.button {
+    background-color: green; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+header {
+	background-color:black;
+	color:white;
+	text-align:center;
+	padding:5px;
+}
+footer {
+	background-color:black;
+	color:white;
+	clear:both;
+	text-align:center;
+	padding:5px;
+}

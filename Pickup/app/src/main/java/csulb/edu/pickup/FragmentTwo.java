@@ -1,12 +1,24 @@
 package csulb.edu.pickup;
 
+import android.*;
 import android.app.Fragment;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 public class FragmentTwo   extends Fragment {
 
@@ -25,14 +37,14 @@ public class FragmentTwo   extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view=inflater.inflate(R.layout.fragment_layout_1,container, false);
 
-        ivIcon=(ImageView)view.findViewById(R.id.frag1_icon);
-        tvItemName=(TextView)view.findViewById(R.id.frag1_text);
+        View view=inflater.inflate(R.layout.activity_maps,container, false);
 
-        tvItemName.setText(getArguments().getString(ITEM_NAME));
+
 
         return view;
+
+
     }
 
 }

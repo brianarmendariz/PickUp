@@ -129,7 +129,7 @@ public class FragmentOne extends Fragment implements View.OnClickListener{
         if (view == cancelButton) {
             Bundle b = new Bundle();
             b.putParcelable("USER", thisUser);
-            Intent myIntent = new Intent(view.getContext(), EditSettingsActivity.class);
+            Intent myIntent = new Intent(view.getContext(), EditSettingsFragment.class);
             myIntent.putExtras(b);
             startActivityForResult(myIntent, 0);
         } else if (view == saveButton) {
@@ -159,7 +159,7 @@ public class FragmentOne extends Fragment implements View.OnClickListener{
                         thisUser.setPassword(newPasswd);
                         Bundle b = new Bundle();
                         b.putParcelable("USER", thisUser);
-                        Intent myIntent = new Intent(view.getContext(), EditSettingsActivity.class);
+                        Intent myIntent = new Intent(view.getContext(), EditSettingsFragment.class);
                         myIntent.putExtras(b);
                         startActivityForResult(myIntent, 0);
                     }
