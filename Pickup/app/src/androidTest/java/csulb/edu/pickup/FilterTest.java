@@ -79,7 +79,6 @@ public class FilterTest  extends ActivityInstrumentationTestCase2<FilterEvents>{
             }
         });
 
-
     }
 
 
