@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -86,8 +87,12 @@ public class MapsFragment extends Fragment implements android.location.LocationL
 
         FragmentManager fm = getChildFragmentManager();
         mapFrag = (MapFragment) fm.findFragmentById(R.id.map_container);
-        map = ((MapFragment) getChildFragmentManager().findFragmentById(R.id.map)).getMap();
-
+        mapFrag = (MapFragment) fm.findFragmentById(R.id.map_container);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            map = ((MapFragment) getChildFragmentManager().findFragmentById(R.id.map)).getMap();
+        } else {
+            map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+        }
         if (mapFrag == null) {
             mapFrag = MapFragment.newInstance();
             fm.beginTransaction().replace(R.id.map_container, mapFrag).addToBackStack( "Map" ).commit();
