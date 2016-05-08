@@ -4,6 +4,7 @@
     <string name="facebook_app_id">481034845414002</string>
     <string name="cancel">Cancel</string>
 
+    <string name="hintSearch"><i>Search Friend...</i></string>
     <string name="action_settings">Settings</string>
 
     <string name="user_profile">User Profile</string>

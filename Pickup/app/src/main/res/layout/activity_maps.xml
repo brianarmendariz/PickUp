@@ -65,5 +65,39 @@
         android:layout_alignStart="@+id/imageButton"
         />
 
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchFriend"
+        android:background="@drawable/roundedwhitebutton"
+        android:textSize="18dp"
+        android:clickable="false"
+        android:textColor="@color/dark_grey"
+        android:hint="@string/hintSearch"
+        android:gravity="left|center_vertical"
+        android:inputType="text"
+        android:lines="1"
+        android:maxLength="40"
+        android:paddingLeft="10dp"
+        android:layout_below="@+id/btnFilter"
+        android:layout_marginLeft="60dp"
+        android:layout_toLeftOf="@+id/search"
+        android:layout_toStartOf="@+id/search"
+        android:onClick="onClick_Search"/>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundedwhitebutton"
+        android:drawableLeft="@android:drawable/ic_menu_search"
+        android:gravity="center_horizontal"
+        android:id="@+id/search"
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView"
+        android:layout_alignTop="@+id/searchFriend"
+        android:layout_alignBottom="@+id/searchFriend"
+        android:paddingLeft="10dp"/>
+
 
 </RelativeLayout>

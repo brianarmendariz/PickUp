@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -16,10 +17,15 @@ import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.text.InputType;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -50,10 +56,9 @@ public class MapsActivity extends FragmentActivity implements android.location.L
     private static final int VIEW_MAP_EVENT = 2;
 
     private GoogleMap map; // Might be null if Google Play services APK is not available.
-    private ImageButton button;
     ArrayList<Event> eventList;
     User thisUser;
-
+    private EditText searchFriend;
     Animation animAlpha;
 
     @Override
@@ -67,6 +72,21 @@ public class MapsActivity extends FragmentActivity implements android.location.L
         StrictMode.setThreadPolicy(policy);
 
         setContentView(R.layout.activity_maps);
+        searchFriend = (EditText) findViewById(R.id.searchFriend);
+        searchFriend.setCursorVisible(false);
+        searchFriend.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    searchFriend.setCursorVisible(true);
+
+                }
+                else if (MotionEvent.ACTION_CANCEL == event.getAction()) {
+                    searchFriend.setCursorVisible(false);
+                }
+                return false;
+            }
+        });
         animAlpha = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);
 
         setupTopbar();
@@ -83,11 +103,6 @@ public class MapsActivity extends FragmentActivity implements android.location.L
 
             }
         }
-        if(data.containsKey("filterLat") && data.containsKey("filterLong")){
-            LatLng latLng = new LatLng(data.getDouble("filterLat"), data.getDouble("filterLong"));
-            map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            map.animateCamera(CameraUpdateFactory.zoomTo(10));
-        }
         else {
             Location location = locationManager.getLastKnownLocation(bestProvider);
             if (location != null) {
@@ -98,10 +113,16 @@ public class MapsActivity extends FragmentActivity implements android.location.L
                 map.animateCamera(CameraUpdateFactory.zoomTo(10));
             }
         }
+        if(data.containsKey("filterLat") && data.containsKey("filterLong")){
+            LatLng latLng = new LatLng(data.getDouble("filterLat"), data.getDouble("filterLong"));
+            map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            map.animateCamera(CameraUpdateFactory.zoomTo(10));
+        }
 
 
 
-        //Get Location updates from server
+
+        //Get Location updates from server every 20 seconds
         //locationManager.requestLocationUpdates(bestProvider, 20000, 0, this);
         getPositionsFromServer();
 
@@ -197,11 +218,7 @@ public class MapsActivity extends FragmentActivity implements android.location.L
 
             }
         }
-        if(data.containsKey("filterLat") && data.containsKey("filterLong")){
-            LatLng latLng = new LatLng(data.getDouble("filterLat"), data.getDouble("filterLong"));
-            map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            map.animateCamera(CameraUpdateFactory.zoomTo(10));
-        }
+
         else {
             Location location = locationManager.getLastKnownLocation(bestProvider);
             if (location != null) {
@@ -211,6 +228,12 @@ public class MapsActivity extends FragmentActivity implements android.location.L
                 map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                 map.animateCamera(CameraUpdateFactory.zoomTo(10));
             }
+        }
+
+        if(data.containsKey("filterLat") && data.containsKey("filterLong")){
+            LatLng latLng = new LatLng(data.getDouble("filterLat"), data.getDouble("filterLong"));
+            map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            map.animateCamera(CameraUpdateFactory.zoomTo(10));
         }
 
         if(/*data.containsKey("EVENTS")){*/ getIntent().getExtras().getParcelableArrayList("EVENTS")!=null){
@@ -243,15 +266,19 @@ public class MapsActivity extends FragmentActivity implements android.location.L
         startActivityForResult(myIntent, 1);
     }
 
+    //TO DO: implement search friends here
+    public void onClick_Search(View v) {
+
+    }
 
     public void onLocationChanged(Location location) {
 
-        //    double latitude = location.getLatitude();
-        //    double longitude = location.getLongitude();
-        //    LatLng latLng = new LatLng(latitude, longitude);
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+            LatLng latLng = new LatLng(latitude, longitude);
         // map.addMarker(new MarkerOptions().position(latLng)); // add marker
-        //   map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        //   map.animateCamera(CameraUpdateFactory.zoomTo(15));
+           map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+           map.animateCamera(CameraUpdateFactory.zoomTo(15));
         //   Log.d(String.valueOf(longitude), "longtitude");
         //   Log.d(String.valueOf(latitude), "latitude");
 
@@ -405,8 +432,6 @@ public class MapsActivity extends FragmentActivity implements android.location.L
         if (LoginManager.getInstance() != null) {
             LoginManager.getInstance().logOut();
         }
-
-
 
     }
 
