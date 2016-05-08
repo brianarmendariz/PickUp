@@ -1,14 +1,13 @@
 package csulb.edu.pickup;
 
 import android.Manifest;
-import android.content.Context;
+
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
+
 import android.location.Criteria;
-import android.location.Geocoder;
+
 import android.location.Location;
 import android.location.LocationManager;
 
@@ -17,30 +16,25 @@ import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.text.InputType;
+
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
+
 import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
-import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -68,6 +62,7 @@ public class MapsActivity extends FragmentActivity implements android.location.L
 
 
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
