@@ -5,7 +5,10 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
@@ -31,6 +34,8 @@ import android.widget.Toast;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
 
 import java.io.IOException;
@@ -308,13 +313,35 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
             public void onClick(View v) {
 
                 if (ShareDialog.canShow(ShareLinkContent.class)) {
-                    ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                    TextToImage t2i = new TextToImage();
+                   // t2i.createImage(_event); // creates image with transparent bkg from text
+                	//t2i.createFlyer(_event); // adds text to image to create a flyer
+                    Bitmap image = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.myevent_pevent_flyer);
+                    SharePhoto photo = new SharePhoto.Builder()
+                            .setBitmap(image)
+                            .build();
+                    SharePhotoContent content = new SharePhotoContent.Builder()
+                            .addPhoto(photo)
+                            .build();
+
+                    /*ShareLinkContent linkContent = new ShareLinkContent.Builder()
                             .setContentTitle("Events")
                             .setContentDescription(
                                     "Sport Event")
-                            .build();
 
-                    shareDialog.show(linkContent);  // Show facebook ShareDialog
+                                   /* .setImageUrl(Uri.parse("https://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=600x300&maptype=roadmap\n" +
+                                            "&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318\n" +
+                                            "&markers=color:red%7Clabel:C%7C40.718217,-73.998284\n" +
+                                            "&key=" + "AIzaSyAxuoNpmK7MCWSy6pFqo - FDIsFCubO5JBg")).
+                                    setContentUrl(Uri.parse("https://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=600x300&maptype=roadmap\n" +
+                                            "&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318\n" +
+                                            "&markers=color:red%7Clabel:C%7C40.718217,-73.998284\n" +
+                                            "&key=" + "AIzaSyAxuoNpmK7MCWSy6pFqo - FDIsFCubO5JBg"))
+                                    .build();*/
+
+
+
+                    shareDialog.show(content);  // Show facebook ShareDialog
                 }
 
             }

@@ -2,6 +2,7 @@ package csulb.edu.pickup;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -54,7 +55,7 @@ public class MapsFragment extends Fragment implements android.location.LocationL
     private ImageButton button;
     ArrayList<Event> eventList;
     User thisUser;
-    View rootView;
+    static View rootView;
 
     Animation animAlpha;
 
@@ -73,7 +74,10 @@ public class MapsFragment extends Fragment implements android.location.LocationL
         thisUser = data.getParcelable("USER");
         //thisUser = new User("Sarah", "Shibley", "sarahshib@hotmail.com","abcd","1994-10-12","female", "");
 
-        rootView=inflater.inflate(R.layout.activity_maps, container, false);
+        if(rootView==null || Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            rootView = inflater.inflate(R.layout.activity_maps, container, false);
+        }
+        else
         getActivity().setTitle("Map");
 
 
@@ -85,8 +89,37 @@ public class MapsFragment extends Fragment implements android.location.LocationL
 
         setupTopbar();
 
+
+
+
+        //mapFrame =  getChildFragmentManager().findFragmentById(R.id.map_container);
+        // Enabling MyLocation Layer of Google Map
+
+
+
+        //super.onCreate(savedInstanceState);
+        //setContentView(R.layout.activity_maps);
+
+
+
+
+
+        /**************************************/
+
+        super.onResume();
+        Log.d("SARAH", "username:" + thisUser.getEmail());
+       /* Bundle data = getActivity().getIntent().getExtras();
+
+        if(data.containsKey("EVENT")) {
+            Event newEvent = data.getParcelable("EVENT");
+            Log.d("SARAH", "PassedEvent " + newEvent.getName());
+
+        }*/
+
         FragmentManager fm = getChildFragmentManager();
-        mapFrag = (MapFragment) fm.findFragmentById(R.id.map_container);
+
+
+
         mapFrag = (MapFragment) fm.findFragmentById(R.id.map_container);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             map = ((MapFragment) getChildFragmentManager().findFragmentById(R.id.map)).getMap();
@@ -98,34 +131,9 @@ public class MapsFragment extends Fragment implements android.location.LocationL
             fm.beginTransaction().replace(R.id.map_container, mapFrag).addToBackStack( "Map" ).commit();
             System.out.println("map frag was null");
         }
-
-
-        //mapFrame =  getChildFragmentManager().findFragmentById(R.id.map_container);
-        // Enabling MyLocation Layer of Google Map
-
-
-
-        //super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_maps);
         findViewsById();
         setUpPlusButton();
         setUpFilterButton();
-
-
-
-
-        /**************************************/
-        map.setMyLocationEnabled(true);
-
-        super.onResume();
-        Log.d("SARAH", "username:" + thisUser.getEmail());
-       /* Bundle data = getActivity().getIntent().getExtras();
-
-        if(data.containsKey("EVENT")) {
-            Event newEvent = data.getParcelable("EVENT");
-            Log.d("SARAH", "PassedEvent " + newEvent.getName());
-
-        }*/
         map.setMyLocationEnabled(true);
 
 
@@ -411,6 +419,8 @@ public class MapsFragment extends Fragment implements android.location.LocationL
                     Bundle args = new Bundle();
                     Fragment fragment = new ViewEventFragment();
                     args.putString("EventID", list.get(i).getEventID());
+
+                    //args.putString("MapURL",map.toUrlValue());
                     fragment.setArguments(args);
                     FragmentManager frgManager = getFragmentManager();
                     frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("Map")
@@ -511,6 +521,24 @@ public class MapsFragment extends Fragment implements android.location.LocationL
         */
 
 
+
+
+
+    }
+    public void onDestroyView() {
+       /* FragmentManager fm = getChildFragmentManager();
+        Fragment fragment = (fm.findFragmentById(R.id.map));
+
+        if (fragment.isResumed()) {
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.remove(fragment);
+            ft.commit();
+        }
+        */
+        super.onDestroyView();
+        Fragment f = getChildFragmentManager().findFragmentById(R.id.map);
+        if (f != null)
+            getChildFragmentManager().beginTransaction().remove(f).commit();
 
     }
 

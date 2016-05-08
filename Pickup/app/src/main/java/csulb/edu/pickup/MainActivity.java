@@ -150,6 +150,7 @@ public class MainActivity extends ActionBarActivity {
         fragment.setArguments(args);
         FragmentManager frgManager = getFragmentManager();
         frgManager.beginTransaction().replace(R.id.content_frame, fragment)
+                .addToBackStack( "tag" )
                 .commit();
 
         mDrawerList.setItemChecked(possition, true);
