@@ -400,12 +400,13 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                         //http.sendDeleteEvent(1);
 
                         //Return to the MainActivity
-//                    Intent returnIntent = new Intent();
-//                    returnIntent.putExtra("result", latitude + " " + longitude);
-//                    setResult(MapsActivity.RESULT_OK, returnIntent);
-                        Intent intent = new Intent(getBaseContext(), MapsActivity.class);
-//                    intent.putExtra("EventID", list.get(i).getEventID());
-                        startActivity(intent);
+                        Bundle b = new Bundle();
+                        b.putParcelable("USER", thisUser);
+                        Intent returnIntent = new Intent();
+                        returnIntent.putExtras(b);
+                        returnIntent.putExtra("result", latitude + " " + longitude + " " + name + "@" + authorName);
+
+                        setResult(MapsActivity.RESULT_OK, returnIntent);
                         finish();
 
                     } else {

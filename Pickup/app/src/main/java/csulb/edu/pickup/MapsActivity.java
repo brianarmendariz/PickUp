@@ -277,8 +277,8 @@ public class MapsActivity extends FragmentActivity implements android.location.L
             double longitude = location.getLongitude();
             LatLng latLng = new LatLng(latitude, longitude);
         // map.addMarker(new MarkerOptions().position(latLng)); // add marker
-           map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-           map.animateCamera(CameraUpdateFactory.zoomTo(15));
+        //   map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        //   map.animateCamera(CameraUpdateFactory.zoomTo(15));
         //   Log.d(String.valueOf(longitude), "longtitude");
         //   Log.d(String.valueOf(latitude), "latitude");
 
@@ -319,9 +319,10 @@ public class MapsActivity extends FragmentActivity implements android.location.L
     //Click on the marker to view an event
 
     @Override
-    public boolean onMarkerClick(final Marker marker) {
+    public boolean onMarkerClick(Marker marker) {
 
         try {
+
             String s = marker.getTitle();
             URLConnection http = new URLConnection();
             ArrayList<Event> list = http.sendGetEvents();
@@ -341,6 +342,7 @@ public class MapsActivity extends FragmentActivity implements android.location.L
                     intent.putExtra("EventID", list.get(i).getEventID());
                     intent.putExtras(b);
                     startActivityForResult(intent, VIEW_MAP_EVENT);
+
 
                     Log.d("TO GET EVENT", list.get(i).getName());
                     return true;
@@ -368,14 +370,19 @@ public class MapsActivity extends FragmentActivity implements android.location.L
         if (requestCode == CREATE_MAP_EVENT) {
             if(resultCode == MapsActivity.RESULT_OK){
                 String result=data.getStringExtra("result");
-                Scanner read = new Scanner(result);
+                //Scanner read = new Scanner(result);
                 double lat = 0;
                 double lon = 0;
                 String eventName = "";
                 String eventCreator = "";
+                //parsing strings
+                String[] parts = result.split("@");
+                Scanner read = new Scanner(parts[0]);
                 lat = read.nextDouble();
                 lon = read.nextDouble();
-                eventName = read.next();
+                eventName = read.nextLine();
+                read = new Scanner(parts[1]);
+                eventCreator = read.nextLine();
                 LatLng latLng = new LatLng(lat, lon);
                 map.addMarker(new MarkerOptions().position(latLng).title(eventName).snippet(eventCreator));
                 map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
