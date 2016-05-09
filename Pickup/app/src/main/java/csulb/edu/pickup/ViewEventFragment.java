@@ -6,8 +6,12 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Align;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -304,47 +308,28 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
     public void setupUnRSVPButton(){
         _UnRSVPEventButton.setOnClickListener(this);
     }
+    //share on facebook button
     public void setUpShareOnFBButton() {
+
         shareDialog = new ShareDialog(this);
         _shareOnFBButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
 
-                if (ShareDialog.canShow(ShareLinkContent.class)) {
-                    TextToImage t2i = new TextToImage();
-                   // t2i.createImage(_event); // creates image with transparent bkg from text
-                	//t2i.createFlyer(_event); // adds text to image to create a flyer
-                    Bitmap image = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.myevent_pevent_flyer);
+                if (ShareDialog.canShow(SharePhotoContent.class)) {
                     SharePhoto photo = new SharePhoto.Builder()
-                            .setBitmap(image)
+                            .setBitmap(convertTextToImage())
                             .build();
                     SharePhotoContent content = new SharePhotoContent.Builder()
                             .addPhoto(photo)
                             .build();
-
-                    /*ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                            .setContentTitle("Events")
-                            .setContentDescription(
-                                    "Sport Event")
-
-                                   /* .setImageUrl(Uri.parse("https://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=600x300&maptype=roadmap\n" +
-                                            "&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318\n" +
-                                            "&markers=color:red%7Clabel:C%7C40.718217,-73.998284\n" +
-                                            "&key=" + "AIzaSyAxuoNpmK7MCWSy6pFqo - FDIsFCubO5JBg")).
-                                    setContentUrl(Uri.parse("https://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=600x300&maptype=roadmap\n" +
-                                            "&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318\n" +
-                                            "&markers=color:red%7Clabel:C%7C40.718217,-73.998284\n" +
-                                            "&key=" + "AIzaSyAxuoNpmK7MCWSy6pFqo - FDIsFCubO5JBg"))
-                                    .build();*/
-
-
-
-                    shareDialog.show(content);  // Show facebook ShareDialog
+                    shareDialog.show(content);
                 }
 
             }
         });
     }
+
     public void setUpMMButton() {_MMButton.setOnClickListener(this);}
 
     @Override
@@ -493,5 +478,45 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
 
         }
     }
+
+
+    //convert event to bitmap to be posted on Facebook
+
+    private Bitmap convertTextToImage() {
+        Paint paint = new Paint();
+
+        //set the text size
+        paint.setTextSize(15);
+        paint.setTextAlign(Align.LEFT);
+
+        float baseline = -paint.ascent();
+        //create an image
+        Bitmap image;
+        //if the characters are very long in a line, make the bitmap bigger.
+        if (_event.getName().length() > 40 || _event.getCreatorName().length() > 40 || _event.getAddress().length() > 40 ) {
+            image = Bitmap.createBitmap(500,200, Config.ARGB_8888);
+        }
+        else {
+
+            image = Bitmap.createBitmap(300, 200, Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(image);
+
+        paint.setColor(Color.YELLOW);
+
+        canvas.drawText("Event Name: " + _event.getName(), 0, baseline, paint);
+        canvas.drawText("Creator: " + _event.getCreatorName(), 0, baseline + 30, paint);
+        canvas.drawText("Sport: " + _event.getSport(), 0, baseline + 60, paint);
+        canvas.drawText("Location: " + _event.getAddress() , 0, baseline + 90, paint);
+        canvas.drawText("Date: " + _event.getEventDate(), 0, baseline +120, paint);
+        canvas.drawText("Time: " + _event.getEventTime() , 0, baseline + 150, paint);
+        canvas.drawText("Gender: " + _event.getGender(), 0, baseline + 180, paint);
+
+
+        return image;
+    }
+
+
 
 }
