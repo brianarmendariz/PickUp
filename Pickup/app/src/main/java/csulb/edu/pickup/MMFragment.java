@@ -66,19 +66,19 @@ public class MMFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.matchmaking, container, false);
         URLConnection http = new URLConnection();
-       // Intent intent = getActivity().getIntent();
+        // Intent intent = getActivity().getIntent();
         Bundle args = getArguments();
         String extra = args.getString("EventID");
 
-            try {
-                arr1 = http.sendGetRSVPList(Integer.parseInt(extra));
-                for (int i = 0; i < arr1.length; i++) {
-                    String name = arr1[i][0];
-                    String username = arr1[i][1];
-                }
-            } catch (IOException e) {
-                Log.e("ERROR", "RVSP ERROR");
+        try {
+            arr1 = http.sendGetRSVPList(Integer.parseInt(extra));
+            for (int i = 0; i < arr1.length; i++) {
+                String name = arr1[i][0];
+                String username = arr1[i][1];
             }
+        } catch (IOException e) {
+            Log.e("ERROR", "RVSP ERROR");
+        }
 
         /*arr1 = new String[][] {{"a", "userA"},
 
@@ -105,27 +105,24 @@ public class MMFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String email = list.get(position).get(SECOND_COLUMN);
                 Toast.makeText(getActivity(), email, Toast.LENGTH_SHORT).show();
-                //Toast.makeText(MMActivity.this, , Toast.LENGTH_SHORT).show();
 
                 Bundle b = new Bundle();
                 //add current user
                 b.putParcelable("USER", thisUser);
                 User user = viewUser(email);
-                if (user != null) {
+                if (user != null && !thisUser.getEmail().equals(user.getEmail())) {
                     System.out.println("putting the parceable");
                     b.putParcelable("VIEWUSER", user);
                 } else {
                     System.out.println("not putting the parceable");
                 }
-                Bundle args = new Bundle();
                 Fragment fragment = new UserProfileFragment();
-                fragment.setArguments(args);
+                fragment.setArguments(b);
                 FragmentManager frgManager = getFragmentManager();
                 frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("Map")
                         .commit();
+                
 
-                //add current user
-                b.putParcelable("USER", thisUser);
                 Intent thisIntent = new Intent(getActivity().getBaseContext(), MainActivity.class);
                 thisIntent.putExtras(b);
                 //add user to view
@@ -262,7 +259,7 @@ public class MMFragment extends Fragment {
 
         });
 
-    return rootView;
+        return rootView;
 
 
 

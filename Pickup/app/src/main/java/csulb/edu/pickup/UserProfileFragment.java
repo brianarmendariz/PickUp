@@ -6,6 +6,8 @@ import android.app.Activity;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,9 +16,13 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.support.annotation.Nullable;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +34,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 
@@ -44,7 +51,7 @@ import java.util.ArrayList;
 /*
     SHOW THE USER PROFILE NAME GENDER
  */
-public class UserProfileFragment extends Fragment {
+public class UserProfileFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     private static final int VIEW_MAP_EVENT = 2;
 
@@ -70,11 +77,102 @@ public class UserProfileFragment extends Fragment {
     View rootView;
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // What i have added is this
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
+
+        //inflater.inflate(R.menu.main, menu); // removed to not double the menu items
+        MenuItem item = menu.findItem(R.id.menu_search);
+        SearchView sv = new SearchView(((MainActivity) getActivity()).getSupportActionBar().getThemedContext());
+        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        MenuItemCompat.setActionView(item, sv);
+        sv.setOnQueryTextListener(this);
+        sv.setIconifiedByDefault(false);
+        sv.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
+
+        MenuItemCompat.setOnActionExpandListener(item, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                // Do something when collapsed
+                return true;  // Return true to collapse action view
+            }
+
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                // Do something when expanded
+                return true;  // Return true to expand action view
+            }
+        });
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    private User getUser(String username)
+    {
+        User user = null;
+        URLConnection http = new URLConnection();
+        try
+        {
+            user = http.sendGetUser(username);
+            System.out.println("user " + user);
+        } catch(IOException e)
+        {
+        }
+        return user;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        Toast.makeText(getActivity(), query,
+                Toast.LENGTH_LONG).show();
+
+        Bundle b = new Bundle();
+        //add current user
+        b.putParcelable("USER", thisUser);
+        User user = getUser(query);
+        if (user != null) {
+            System.out.println("putting the parceable");
+            b.putParcelable("VIEWUSER", user);
+        } else {
+            System.out.println("not putting the parceable");
+        }
+        Bundle args = new Bundle();
+        Fragment fragment = new UserProfileFragment();
+        fragment.setArguments(args);
+        FragmentManager frgManager = getFragmentManager();
+        frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("Map")
+                .commit();
+
+        //add current user
+        b.putParcelable("USER", thisUser);
+        Intent thisIntent = new Intent(getActivity().getBaseContext(), MainActivity.class);
+        thisIntent.putExtras(b);
+
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Bundle data = getActivity().getIntent().getExtras();
         thisUser = (User) data.getParcelable("USER");
         rootView = inflater.inflate(R.layout.view_profile, container, false);
+
+        System.out.println("UserProfileFragment: " + thisUser.getEmail());
 
 
         //thisUser.getEmail();
@@ -96,19 +194,11 @@ public class UserProfileFragment extends Fragment {
         gender = (TextView) rootView.findViewById(R.id.GenderEditText);
         userRating = (TextView) rootView.findViewById(R.id.UserRatingEditText);
 
-        final User viewUser = data.getParcelable("VIEWUSER");
+        Bundle fragBundle = this.getArguments();
+        User viewUser = (User)fragBundle.getParcelable("VIEWUSER");
         viewUsername = viewUser;
 
-        if(viewUser != null)
-        {
-            System.out.println("not null");
-            name.setText(viewUser.getFirstName());
-            birthday.setText(viewUser.getBirthday());
-            gender.setText(viewUser.getGender());
-            userRating.setText(viewUser.getUserRating());
-            setupEvents(viewUser(viewUser.getEmail()));
-        }
-        else
+        if(viewUser == null)
         {
             System.out.println("null");
             name.setText(thisUser.getFirstName());
@@ -117,13 +207,15 @@ public class UserProfileFragment extends Fragment {
             userRating.setText(thisUser.getUserRating());
             setupEvents(viewUser(thisUser.getEmail()));
         }
+        else  //If the user views his/her own profile
+        {
+            System.out.println("not null");
+            name.setText(viewUser.getFirstName());
+            birthday.setText(viewUser.getBirthday());
+            gender.setText(viewUser.getGender());
+            userRating.setText(viewUser.getUserRating());
+            setupEvents(viewUser(viewUser.getEmail()));
 
-        //If the user views his/her own profile
-        if(viewUser == null) {
-
-        }
-        //If the user views other user profile
-        else {
             Button upVoteButton = new Button(this.getActivity());
             Button downVoteButton = new Button(this.getActivity());
             LinearLayout llLayout = (LinearLayout) rootView.findViewById(R.id.profileLinearLayout3);
@@ -517,25 +609,25 @@ public class UserProfileFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         /*not sure what this is for - uncomment it later?*/
         //if (resultCode == RESULT_OK){
-            Uri targetUri = data.getData();
-            Bitmap bitmap;
+        Uri targetUri = data.getData();
+        Bitmap bitmap;
 
 
-            try {
+        try {
 
-                //bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
-                bitmap = getBitmapFromReturnedImage(targetUri,200,200);
-                profileImage.setImageBitmap(bitmap);
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            catch(IOException e) {
-                e.printStackTrace();
-            }
-            catch(NullPointerException e) {
-                e.printStackTrace();
-            }
+            //bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
+            bitmap = getBitmapFromReturnedImage(targetUri,200,200);
+            profileImage.setImageBitmap(bitmap);
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+        catch(NullPointerException e) {
+            e.printStackTrace();
+        }
         //}
     }
 
