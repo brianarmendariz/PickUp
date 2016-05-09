@@ -38,20 +38,6 @@ public class CalendarEventDialog extends DialogFragment {
         for(int i = 0; i < eventList.size(); i++) {
             final int x = i;
 
-
-        Button dismiss = new Button(getActivity());
-        dismiss.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        dismiss.setText("Dismiss");
-        dismiss.setPadding(20, 20, 20, 20);// in pixels (left, top, right, bottom)
-        linearLayout.addView(dismiss);
-        dismiss.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
             // Add textview
             TextView textView = new TextView(getActivity());
             textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -80,6 +66,20 @@ public class CalendarEventDialog extends DialogFragment {
                 }
             });
         }
+
+        Button dismiss = new Button(getActivity());
+        dismiss.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        dismiss.setText("Dismiss");
+        dismiss.setPadding(20, 20, 20, 20);// in pixels (left, top, right, bottom)
+        linearLayout.addView(dismiss);
+        dismiss.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
 
         return rootView;
     }

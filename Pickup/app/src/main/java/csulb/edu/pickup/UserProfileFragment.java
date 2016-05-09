@@ -4,10 +4,12 @@ package csulb.edu.pickup;
 import android.app.Activity;
 
 
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,6 +20,7 @@ import android.os.Bundle;
 
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -79,14 +82,13 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // What i have added is this
         setHasOptionsMenu(true);
     }
 
     @Override
     public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
 
-        //inflater.inflate(R.menu.main, menu); // removed to not double the menu items
+        inflater.inflate(R.menu.menu_main_search, menu); // removed to not double the menu items
         MenuItem item = menu.findItem(R.id.menu_search);
         SearchView sv = new SearchView(((MainActivity) getActivity()).getSupportActionBar().getThemedContext());
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
@@ -116,46 +118,77 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private User getUser(String username)
+    private ArrayList<String> getUsersFromServer()
     {
-        User user = null;
+        ArrayList<String> usernames = null;
         URLConnection http = new URLConnection();
-        try
-        {
-            user = http.sendGetUser(username);
-            System.out.println("user " + user);
-        } catch(IOException e)
-        {
+        try {
+            usernames = http.sendGetUsernames();
+        } catch (IOException e) {
         }
-        return user;
+        return usernames;
     }
 
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        Toast.makeText(getActivity(), query,
-                Toast.LENGTH_LONG).show();
-
+    private void viewUsersProfile(String username)
+    {
         Bundle b = new Bundle();
         //add current user
         b.putParcelable("USER", thisUser);
-        User user = getUser(query);
-        if (user != null) {
+        User user = getUser(username);
+        if (user != null && !thisUser.getEmail().equals(user.getEmail())) {
             System.out.println("putting the parceable");
             b.putParcelable("VIEWUSER", user);
         } else {
             System.out.println("not putting the parceable");
         }
-        Bundle args = new Bundle();
         Fragment fragment = new UserProfileFragment();
-        fragment.setArguments(args);
+        fragment.setArguments(b);
         FragmentManager frgManager = getFragmentManager();
         frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("Map")
                 .commit();
 
-        //add current user
+
+        Intent thisIntent = new Intent(getActivity().getBaseContext(), MainActivity.class);
+        thisIntent.putExtras(b);
+    }
+
+    private void popUpAlertDialog(String username)
+    {
+        Bundle b = new Bundle();
         b.putParcelable("USER", thisUser);
         Intent thisIntent = new Intent(getActivity().getBaseContext(), MainActivity.class);
         thisIntent.putExtras(b);
+        b.putString("TITLE", "User Not Found!");
+        b.putString("USERNAME", username);
+        MyDialogFragment fragment = new MyDialogFragment();
+        fragment.setArguments(b);
+        FragmentManager frgManager = getFragmentManager();
+        fragment.show(frgManager, "MyDialog");
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        ArrayList<String> usernames = getUsersFromServer(); // get users from the server
+        // see if requested user is a member
+        boolean member = false;
+        for(int i = 0; i < usernames.size(); i++)
+        {
+            // if user is member break from loop
+            if(query.equals(usernames.get(i))) {
+                member = true;
+                break;
+            }
+        }
+
+        // view the requested users profile
+        if(member)
+        {
+            viewUsersProfile(query);
+        }
+        else // alert that user does not exist
+        {
+            popUpAlertDialog(query);
+        }
 
         return true;
     }
@@ -175,7 +208,6 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         System.out.println("UserProfileFragment: " + thisUser.getEmail());
 
 
-        //thisUser.getEmail();
         super.onCreate(savedInstanceState);
         getActivity().setTitle("User Profile");
 
@@ -205,7 +237,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             birthday.setText(thisUser.getBirthday());
             gender.setText(thisUser.getGender());
             userRating.setText(thisUser.getUserRating());
-            setupEvents(viewUser(thisUser.getEmail()));
+            setupEvents(getEvents(thisUser.getEmail()));
         }
         else  //If the user views his/her own profile
         {
@@ -214,7 +246,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             birthday.setText(viewUser.getBirthday());
             gender.setText(viewUser.getGender());
             userRating.setText(viewUser.getUserRating());
-            setupEvents(viewUser(viewUser.getEmail()));
+            setupEvents(getEvents(viewUser.getEmail()));
 
             Button upVoteButton = new Button(this.getActivity());
             Button downVoteButton = new Button(this.getActivity());
@@ -676,7 +708,21 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         return inSampleSize;
     }
 
-    private ArrayList<Event> viewUser(String username) {
+    private User getUser(String username)
+    {
+        User user = null;
+        URLConnection http = new URLConnection();
+        try
+        {
+            user = http.sendGetUser(username);
+            System.out.println("user " + user);
+        } catch(IOException e)
+        {
+        }
+        return user;
+    }
+
+    private ArrayList<Event> getEvents(String username) {
         ArrayList<Event> events = null;
         URLConnection http = new URLConnection();
         try {

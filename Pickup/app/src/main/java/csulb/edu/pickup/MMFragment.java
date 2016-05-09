@@ -104,7 +104,7 @@ public class MMFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String email = list.get(position).get(SECOND_COLUMN);
-                Toast.makeText(getActivity(), email, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), email, Toast.LENGTH_SHORT).show();
 
                 Bundle b = new Bundle();
                 //add current user
@@ -121,11 +121,10 @@ public class MMFragment extends Fragment {
                 FragmentManager frgManager = getFragmentManager();
                 frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("Map")
                         .commit();
-                
+
 
                 Intent thisIntent = new Intent(getActivity().getBaseContext(), MainActivity.class);
                 thisIntent.putExtras(b);
-                //add user to view
 
             }
 

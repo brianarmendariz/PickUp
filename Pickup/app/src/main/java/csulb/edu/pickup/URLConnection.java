@@ -165,7 +165,7 @@ public class URLConnection {
         String url = "http://www.csulbpickup.com/changePassword.php";
 
         String urlParameters = "Username="+username+"&Password="+oldPassword+"&NewPassword="+newPassword;
-        return makeHTTPRequest(url,urlParameters);
+        return makeHTTPRequest(url, urlParameters);
     }
 
 
@@ -215,6 +215,27 @@ public class URLConnection {
         return convertUser(makeHTTPRequest(url, urlParameters));
     }
 
+
+    /**
+     * gets a list of all users in database on server.
+     * @return ArrayList<String> - a string object for each username in server
+     * @throws IOException
+     */
+    public ArrayList<String> sendGetUsernames() throws IOException  {
+
+
+				/*url of route being requested*/
+        String url = "http://www.csulbpickup.com/getUsers.php";
+
+        String urlParameters = "";
+        String response = makeHTTPRequest(url, urlParameters);
+
+        String stringResponse = response.toString();
+        ArrayList<String> list = convertUsernamesList(stringResponse);
+
+
+        return list;
+    }
 
     /**
      * Deletes an event  from the server database
@@ -410,6 +431,7 @@ public class URLConnection {
         }
         return hourInt+":"+minute+" AM";
     }
+
     private ArrayList<Event> convertEventList(String str) {
 
 		    	/*Divide string up into lines */
@@ -456,6 +478,7 @@ public class URLConnection {
 
         return list;
     }
+
     private User convertUser(String str) {
 
         Map<String, String> map = new HashMap<>();
@@ -480,6 +503,21 @@ public class URLConnection {
         );
         return thisUser;
 
+    }
+
+    private ArrayList<String> convertUsernamesList(String str) {
+
+		    	/*Divide string up into lines */
+        String[] lines=str.split("#");
+        ArrayList<String> list = new ArrayList<String>();
+
+        for(int i = 0; i < lines.length; i++)
+        {
+            if(!lines[i].isEmpty())
+                list.add(lines[i]); // add username to the list
+        }
+
+        return list;
     }
 
     private  String[][] convertRSVPList(String str){
