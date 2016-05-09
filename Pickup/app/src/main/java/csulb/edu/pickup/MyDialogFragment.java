@@ -30,6 +30,17 @@ public class MyDialogFragment extends DialogFragment {
         thisUser = (User) data.getParcelable("USER");
         String title = (String) data.getString("TITLE");
         String username = (String) data.getString("USERNAME");
+        String eventName = (String) data.getString("EVENTNAME");
+        String text = "";
+
+        if(username == null)
+        {
+            text = eventName + " is not an Event.";
+        }
+        else if(eventName == null)
+        {
+            text = username + " is not a Member.";
+        }
 
         View rootView = inflater.inflate(R.layout.my_dialog, container, false);
         getDialog().setTitle(title);
@@ -41,7 +52,7 @@ public class MyDialogFragment extends DialogFragment {
         textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         textView.setTextColor(getResources().getColor(R.color.orange));
-        textView.setText(username + " is not a Member.");
+        textView.setText(text);
         textView.setPadding(20, 20, 20, 20);// in pixels (left, top, right, bottom)
         linearLayout.addView(textView);
 

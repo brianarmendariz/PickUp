@@ -82,8 +82,6 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
 
         Log.i(TAG, "onCreate");
 
-        // little sloppy
-        /*uncomment these lines */
         Bundle extras = getArguments();
         String extra = extras.getString("EventID");
 

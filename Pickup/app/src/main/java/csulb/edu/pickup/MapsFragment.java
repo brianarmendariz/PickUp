@@ -12,11 +12,17 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -43,7 +49,9 @@ import java.util.Scanner;
 /**
  * Created by Sarah on 4/29/2016.
  */
-public class MapsFragment extends Fragment implements android.location.LocationListener, GoogleMap.OnMarkerClickListener{
+public class MapsFragment extends Fragment implements android.location.LocationListener, GoogleMap.OnMarkerClickListener,
+        SearchView.OnQueryTextListener
+{
 
     private static final String ETag = "Error Message";
     private static final int CREATE_MAP_EVENT = 1;
@@ -51,19 +59,132 @@ public class MapsFragment extends Fragment implements android.location.LocationL
 
 
     private GoogleMap map;// Might be null if Google Play services APK is not available.
-    MapFragment mapFrag;
+    private MapFragment mapFrag;
     private ImageButton button;
-    ArrayList<Event> eventList;
-    User thisUser;
-    static View rootView;
+    private ArrayList<Event> eventList = null;
+    private User thisUser;
+    private static View rootView;
 
-    Animation animAlpha;
+    private Animation animAlpha;
 
     private ImageButton plusButton;
     private Button filterButton;
 
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
+    @Override
+    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
+
+        inflater.inflate(R.menu.menu_main_search, menu); // removed to not double the menu items
+        MenuItem item = menu.findItem(R.id.menu_search);
+        SearchView sv = new SearchView(((MainActivity) getActivity()).getSupportActionBar().getThemedContext());
+        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        MenuItemCompat.setActionView(item, sv);
+        sv.setOnQueryTextListener(this);
+        sv.setIconifiedByDefault(false);
+        sv.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
+
+        MenuItemCompat.setOnActionExpandListener(item, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                // Do something when collapsed
+                return true;  // Return true to collapse action view
+            }
+
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                // Do something when expanded
+                return true;  // Return true to expand action view
+            }
+        });
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    private void viewEvent(Event event)
+    {
+        Bundle b = new Bundle();
+        //add current user
+        b.putParcelable("USER", thisUser);
+        String eventId = event.getEventID();
+        if (eventId != null) {
+            System.out.println("putting the event string");
+            b.putString("EventID", eventId);
+        } else {
+            System.out.println("not putting the event string");
+        }
+        Fragment fragment = new ViewEventFragment();
+        fragment.setArguments(b);
+        FragmentManager frgManager = getFragmentManager();
+        frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("Map")
+                .commit();
+
+
+//        Intent thisIntent = new Intent(getActivity().getBaseContext(), MainActivity.class);
+//        thisIntent.putExtras(b);
+    }
+
+    private void popUpAlertDialog(String eventName)
+    {
+        Bundle b = new Bundle();
+        b.putParcelable("USER", thisUser);
+        Intent thisIntent = new Intent(getActivity().getBaseContext(), MainActivity.class);
+        thisIntent.putExtras(b);
+        b.putString("TITLE", "Event Not Found!");
+        b.putString("EVENTNAME", eventName);
+        MyDialogFragment fragment = new MyDialogFragment();
+        fragment.setArguments(b);
+        FragmentManager frgManager = getFragmentManager();
+        fragment.show(frgManager, "MyDialog");
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        // see if requested event is a made
+        boolean isEvent = false;
+        Event event = null;
+
+        if(!eventList.isEmpty())
+        {
+            for (int i = 0; i < eventList.size(); i++)
+            {
+                // if user is member break from loop
+                if (query.equals(eventList.get(i).getName()))
+                {
+                    System.out.println("loop");
+                    isEvent = true;
+                    event = eventList.get(i);
+                    break;
+                }
+            }
+        }
+
+        // view the requested users profile
+        if(isEvent)
+        {
+            viewEvent(event);
+        }
+        else // alert that user does not exist
+        {
+            popUpAlertDialog(query);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
 
 
     @Override
@@ -171,7 +292,6 @@ public class MapsFragment extends Fragment implements android.location.LocationL
             map.setOnMarkerClickListener(this);
             URLConnection http = new URLConnection();
             Bundle data = getArguments();
-            ArrayList<Event> eventList;
             LatLng latLng = new LatLng(0,0);
             String eventName = "";
             String creator = "";
