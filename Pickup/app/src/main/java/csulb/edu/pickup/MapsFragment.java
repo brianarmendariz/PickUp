@@ -49,8 +49,8 @@ public class MapsFragment extends Fragment implements android.location.LocationL
     private static final int CREATE_MAP_EVENT = 1;
     private static final int VIEW_MAP_EVENT = 2;
 
-    private Fragment mapFrame; // Might be null if Google Play services APK is not available.
-    private GoogleMap map;
+
+    private GoogleMap map;// Might be null if Google Play services APK is not available.
     MapFragment mapFrag;
     private ImageButton button;
     ArrayList<Event> eventList;
@@ -69,74 +69,55 @@ public class MapsFragment extends Fragment implements android.location.LocationL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        /* Get objects from MainActivity */
         Bundle data = getActivity().getIntent().getExtras();
         Bundle fragData = getArguments();
         thisUser = data.getParcelable("USER");
+
+        //thisUser below is used for testing
         //thisUser = new User("Sarah", "Shibley", "sarahshib@hotmail.com","abcd","1994-10-12","female", "");
 
+        /*Kit Kat and below require that the rootView be inflated every time it returns to map */
         if(rootView==null || Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             rootView = inflater.inflate(R.layout.activity_maps, container, false);
         }
-        else
+
         getActivity().setTitle("Map");
 
-
         super.onCreate(savedInstanceState);
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
+        /* animation for filter and add buttons */
         animAlpha = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_alpha);
 
         setupTopbar();
 
-
-
-
-        //mapFrame =  getChildFragmentManager().findFragmentById(R.id.map_container);
-        // Enabling MyLocation Layer of Google Map
-
-
-
-        //super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_maps);
-
-
-
-
-
-        /**************************************/
-
         super.onResume();
-        Log.d("SARAH", "username:" + thisUser.getEmail());
-       /* Bundle data = getActivity().getIntent().getExtras();
-
-        if(data.containsKey("EVENT")) {
-            Event newEvent = data.getParcelable("EVENT");
-            Log.d("SARAH", "PassedEvent " + newEvent.getName());
-
-        }*/
 
         FragmentManager fm = getChildFragmentManager();
-
-
-
         mapFrag = (MapFragment) fm.findFragmentById(R.id.map_container);
+
+        /* KitKat and below do not use getChildFragmentManager */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             map = ((MapFragment) getChildFragmentManager().findFragmentById(R.id.map)).getMap();
         } else {
             map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         }
+        /*only create the map if it has not already been created*/
         if (mapFrag == null) {
             mapFrag = MapFragment.newInstance();
             fm.beginTransaction().replace(R.id.map_container, mapFrag).addToBackStack( "Map" ).commit();
-            System.out.println("map frag was null");
         }
+
+        /* Set up user interface */
         findViewsById();
         setUpPlusButton();
         setUpFilterButton();
+
+        /* handle Google Maps location settings */
         map.setMyLocationEnabled(true);
-
-
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         String bestProvider = locationManager.getBestProvider(criteria, true);
@@ -146,11 +127,14 @@ public class MapsFragment extends Fragment implements android.location.LocationL
 
             }
         }
+
+        /* filterLat and filterLong specify a new location for the map to navigate to */
         if(fragData.containsKey("filterLat") && fragData.containsKey("filterLong")){
             LatLng latLng = new LatLng(data.getDouble("filterLat"), data.getDouble("filterLong"));
             map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
             map.animateCamera(CameraUpdateFactory.zoomTo(10));
         }
+        /* if no latitude and longitude specified, use last known location*/
         else {
             Location location = locationManager.getLastKnownLocation(bestProvider);
             if (location != null) {
@@ -161,8 +145,6 @@ public class MapsFragment extends Fragment implements android.location.LocationL
                 map.animateCamera(CameraUpdateFactory.zoomTo(10));
             }
         }
-
-
 
         //Get Location updates from server
         //locationManager.requestLocationUpdates(bestProvider, 20000, 0, this);
@@ -178,7 +160,7 @@ public class MapsFragment extends Fragment implements android.location.LocationL
             }
         });
 
-
+        /*fragments require that a view is returned in OnCreateView*/
         return rootView;
     }
 
@@ -193,6 +175,7 @@ public class MapsFragment extends Fragment implements android.location.LocationL
             LatLng latLng = new LatLng(0,0);
             String eventName = "";
             String creator = "";
+            /* EVENTS is an ArrayList of filtered events returned from FilterEventsFragment */
             if(data.containsKey("EVENTS")|| data.getParcelable("EVENTS")!=null){
                 eventList = data.getParcelableArrayList("EVENTS");
                 ArrayList<Event> preEventList = data.getParcelableArrayList("EVENTS");
@@ -200,17 +183,14 @@ public class MapsFragment extends Fragment implements android.location.LocationL
 
 
             }
-
+            /*if not coming from FilterEventsFragment, send request to server */
             else {
                 eventList = http.sendGetEvents();
-                Log.d("SARAH", "sending event request to server");
             }
-            Log.d("SARAH", "listsize:" + eventList.size());
             //ArrayList<Event> preEventList = getActivity().getIntent().getExtras().getParcelableArrayList("EVENTS");
             //Log.d("SARAH", "preEventList"+preEventList.get(1).getName());
 
             for (int i = 0; i < eventList.size(); i++) {
-                System.out.println("looping");
                 //add marker to each position
                 latLng = new LatLng(eventList.get(i).getLatitude(), eventList.get(i).getLongitude());
                 if (eventList.get(i).getName() != null) {
@@ -241,64 +221,9 @@ public class MapsFragment extends Fragment implements android.location.LocationL
 
     @Override
     public void onResume() {
-        Log.d("SARAH", "onResume ");
-
-        map = mapFrag.getMap();
-        map.setMyLocationEnabled(true);
 
         super.onResume();
-        Log.d("SARAH", "username:" + thisUser.getEmail());
-        Bundle data = getActivity().getIntent().getExtras();
-
-        if(data.containsKey("EVENT")) {
-            Event newEvent = data.getParcelable("EVENT");
-            Log.d("SARAH", "PassedEvent " + newEvent.getName());
-
-        }
-        map.setMyLocationEnabled(true);
-
-
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String bestProvider = locationManager.getBestProvider(criteria, true);
-        if (locationManager != null) {
-            if (ContextCompat.checkSelfPermission(this.getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                    || ContextCompat.checkSelfPermission(this.getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
-            }
-        }
-        if(data.containsKey("filterLat") && data.containsKey("filterLong")){
-            LatLng latLng = new LatLng(data.getDouble("filterLat"), data.getDouble("filterLong"));
-            map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            map.animateCamera(CameraUpdateFactory.zoomTo(10));
-        }
-        else {
-            Location location = locationManager.getLastKnownLocation(bestProvider);
-            if (location != null) {
-                onLocationChanged(location);
-                //get current location and zoom in
-                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                map.animateCamera(CameraUpdateFactory.zoomTo(10));
-            }
-        }
-
-
-
-        //Get Location updates from server
-        //locationManager.requestLocationUpdates(bestProvider, 20000, 0, this);
-        getPositionsFromServer();
-
-        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng point) {
-                // Drawing marker on the map
-                drawMarker(point);
-                //Toast.makeText(getBaseContext(), "Longtitude: " + String.valueOf(point.longitude) + "\n" +
-                //        "Latitude: " + String.valueOf(point.latitude), Toast.LENGTH_LONG).show();
-            }
-        });
-
+        //map = mapFrag.getMap();
     }
 
 
@@ -413,8 +338,7 @@ public class MapsFragment extends Fragment implements android.location.LocationL
             for (int i = 0; i < list.size(); i++) {
 
                 if (list.get(i).getName()!=null && marker.getTitle()!=null && list.get(i).getName().equals(marker.getTitle())) {
-                    //if (marker.getTitle().equals("abc")) {
-                    //Event e = list.get(i);
+
 
                     Bundle args = new Bundle();
                     Fragment fragment = new ViewEventFragment();
@@ -426,14 +350,9 @@ public class MapsFragment extends Fragment implements android.location.LocationL
                     frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("Map")
                             .commit();
 
-
-
-                    Log.d("TO GET EVENT", list.get(i).getName());
                     return true;
                 }
             }
-            Log.d("EVENT" , s);
-
         }
         catch (IOException e) {
             Log.e(ETag, "Unable connect to server", e);
@@ -526,21 +445,16 @@ public class MapsFragment extends Fragment implements android.location.LocationL
 
     }
     public void onDestroyView() {
-       /* FragmentManager fm = getChildFragmentManager();
-        Fragment fragment = (fm.findFragmentById(R.id.map));
 
-        if (fragment.isResumed()) {
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.remove(fragment);
-            ft.commit();
-        }
-        */
         super.onDestroyView();
         Fragment f = getChildFragmentManager().findFragmentById(R.id.map);
         if (f != null)
             getChildFragmentManager().beginTransaction().remove(f).commit();
 
+       /* Fragment f2 = getFragmentManager().findFragmentById(R.id.map_container);
+        if (f2 != null)
+            getFragmentManager().beginTransaction().remove(f2).commit();
+        */
     }
-
 
 }
