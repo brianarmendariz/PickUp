@@ -68,7 +68,7 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
     private int minute;
 
     String[] sportStringArray = {"Badminton", "Baseball", "Basketball", "Football",
-            "Handball", "Ice Hockey", "Racquetball", "Roller Hockey",
+            "Handball", "Ice Hockey", "Racquetball", "Roller Hockey", "Soccer",
             "Softball", "Tennis", "Volleyball"};
 
     User thisUser;
@@ -534,7 +534,7 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
         int arr_images[] = {R.drawable.badminton_icon,
                 R.drawable.baseball_icon, R.drawable.basketball_icon, R.drawable.football_icon,
                 R.drawable.handball_icon, R.drawable.icehockey_icon, R.drawable.racquetball_icon,
-                R.drawable.rollerhockey_icon, R.drawable.softball_icon, R.drawable.tennis_icon,
+                R.drawable.rollerhockey_icon, R.drawable.soccer, R.drawable.softball_icon, R.drawable.tennis_icon,
                 R.drawable.volleyball_icon};
 
         public MyCAdapter(Context context, int textViewResourceId, String[] objects) {

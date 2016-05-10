@@ -72,7 +72,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
 
 
     String[] sportStringArray = {"Badminton", "Baseball", "Basketball", "Football",
-            "Handball", "Ice Hockey", "Racquetball", "Roller Hockey",
+            "Handball", "Ice Hockey", "Racquetball", "Roller Hockey", "Soccer",
             "Softball", "Tennis", "Volleyball"};
 
     @Override
@@ -742,7 +742,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
         int arr_images[] = {R.drawable.badminton_icon,
                 R.drawable.baseball_icon, R.drawable.basketball_icon, R.drawable.football_icon,
                 R.drawable.handball_icon, R.drawable.icehockey_icon, R.drawable.racquetball_icon,
-                R.drawable.rollerhockey_icon, R.drawable.softball_icon, R.drawable.tennis_icon,
+                R.drawable.rollerhockey_icon, R.drawable.soccer, R.drawable.softball_icon, R.drawable.tennis_icon,
                 R.drawable.volleyball_icon};
 
         public MyEAdapter(Context context, int textViewResourceId, String[] objects) {
@@ -765,9 +765,6 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
             View row = inflater.inflate(R.layout.row, parent, false);
             TextView label = (TextView) row.findViewById(R.id.company);
             label.setText(sportStringArray[position]);
-
-//            TextView sub=(TextView)row.findViewById(R.id.sub);
-//            sub.setText(subs[position]        );
 
             ImageView icon = (ImageView) row.findViewById(R.id.image);
             icon.setImageResource(arr_images[position]);
