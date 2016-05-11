@@ -220,8 +220,7 @@ public class EditSettingsFragment extends Fragment implements View.OnClickListen
 
             Bundle args = new Bundle();
             Fragment fragment = new ResetPasswordFragment();
-            args.putString(FragmentOne.ITEM_NAME, new DrawerItem("ResetPassword", 0)
-                    .getItemName());
+
 
             fragment.setArguments(args);
             FragmentManager frgManager = getFragmentManager();
@@ -233,8 +232,6 @@ public class EditSettingsFragment extends Fragment implements View.OnClickListen
             Bundle args = new Bundle();
 
             Fragment fragment = new MapsFragment();
-            args.putString(FragmentOne.ITEM_NAME, new DrawerItem("Map", R.drawable.map_icon)
-                    .getItemName());
 
             fragment.setArguments(args);
             FragmentManager frgManager = getFragmentManager();
@@ -282,8 +279,7 @@ public class EditSettingsFragment extends Fragment implements View.OnClickListen
                     myIntent.putExtras(args);
 
                     Fragment fragment = new MapsFragment();
-                    args.putString(FragmentOne.ITEM_NAME, new DrawerItem("Map", R.drawable.map_icon)
-                            .getItemName());
+
 
                     fragment.setArguments(args);
                     FragmentManager frgManager = getFragmentManager();

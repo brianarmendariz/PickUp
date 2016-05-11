@@ -137,8 +137,7 @@ public class ResetPasswordFragment extends Fragment implements View.OnClickListe
             myIntent.putExtras(args);
 
             Fragment fragment = new EditSettingsFragment();
-            args.putString(FragmentOne.ITEM_NAME, new DrawerItem("Edit Settings", R.drawable.settings_icon)
-                    .getItemName());
+
 
             fragment.setArguments(args);
             FragmentManager frgManager = getFragmentManager();
@@ -185,8 +184,6 @@ public class ResetPasswordFragment extends Fragment implements View.OnClickListe
                         myIntent.putExtras(args);
 
                         Fragment fragment = new EditSettingsFragment();
-                        args.putString(FragmentOne.ITEM_NAME, new DrawerItem("Edit Settings", R.drawable.settings_icon)
-                                .getItemName());
 
                         fragment.setArguments(args);
                         FragmentManager frgManager = getFragmentManager();

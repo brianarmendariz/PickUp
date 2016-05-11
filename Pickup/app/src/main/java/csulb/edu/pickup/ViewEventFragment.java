@@ -339,8 +339,7 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
             //Go to edit activity
             Bundle args = new Bundle();
             Fragment fragment = new EditEventFragment();
-            args.putString(FragmentOne.ITEM_NAME, new DrawerItem("Edit Event", 0)
-                    .getItemName());
+
             args.putString("EventID", _event.getEventID());
             fragment.setArguments(args);
             FragmentManager frgManager = getFragmentManager();
@@ -365,8 +364,7 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
                 //Go to edit activity
                 Bundle args = new Bundle();
                 Fragment fragment = new MapsFragment();
-                args.putString(FragmentOne.ITEM_NAME, new DrawerItem("Map", 0)
-                        .getItemName());
+
                 args.putString("result", "delete");
 
                 args.putString("EventID", _event.getEventID());
@@ -381,8 +379,7 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
         {
             Bundle args = new Bundle();
             Fragment fragment = new MapsFragment();
-            args.putString(FragmentOne.ITEM_NAME, new DrawerItem("Map", 0)
-                    .getItemName());
+
             fragment.setArguments(args);
             FragmentManager frgManager = getFragmentManager();
             frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack( "View Event" )
@@ -467,8 +464,7 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
             String extra = getArguments().getString("EventID");
             Bundle args = new Bundle();
             Fragment fragment = new MMFragment();
-            args.putString(FragmentOne.ITEM_NAME, new DrawerItem("MatchMaking", 0)
-                    .getItemName());
+
             args.putString("EventID", extra);
             fragment.setArguments(args);
             FragmentManager frgManager = getFragmentManager();

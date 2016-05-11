@@ -51,8 +51,7 @@ public class CalendarEventDialog extends DialogFragment {
                 public void onClick(View v) {
                     Bundle args = new Bundle();
                     Fragment fragment = new ViewEventFragment();
-                    args.putString(FragmentOne.ITEM_NAME, new DrawerItem("View Event", 0)
-                            .getItemName());
+
                     args.putString("EventID", eventList.get(x).getEventID());
 
                     fragment.setArguments(args);

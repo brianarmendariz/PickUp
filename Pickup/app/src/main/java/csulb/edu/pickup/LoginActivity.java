@@ -108,10 +108,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                 Bundle b = new Bundle();
                                 b.putParcelable("USER", thisUser);
                                 Intent mapIntent = new Intent(getBaseContext(), MainActivity.class);
+                                mapIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
                                 mapIntent.putExtras(b);
                                 mapIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(mapIntent);
-
+                                finish();
 
                             } catch (JSONException jE) {
                                 throw new RuntimeException(jE);

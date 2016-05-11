@@ -65,6 +65,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
     private TextView userRating;
     private Button upvote;
     private Button downvote;
+    private Button addFriendButton;
     //current user
     User thisUser;
     //the user that is viewed.
@@ -76,7 +77,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
     // -1 indicates downvoted
     int rated = 0;
     boolean voted = false;
-
+    boolean areFriends = false;
     View rootView;
 
     @Override
@@ -202,14 +203,17 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Bundle data = getActivity().getIntent().getExtras();
+        getActivity().setTitle("User Profile");
+
         thisUser = (User) data.getParcelable("USER");
+        //thisUser = new User("sarah","Shibley","sarahshib@outlook.com", "","","","");
+
         rootView = inflater.inflate(R.layout.view_profile, container, false);
 
         System.out.println("UserProfileFragment: " + thisUser.getEmail());
 
 
         super.onCreate(savedInstanceState);
-        getActivity().setTitle("User Profile");
 
         profileImage = (ImageView)rootView.findViewById(R.id.profileImageView);
         profileImage.setOnClickListener(new View.OnClickListener() {
@@ -247,7 +251,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             gender.setText(viewUser.getGender());
             userRating.setText(viewUser.getUserRating());
             setupEvents(getEvents(viewUser.getEmail()));
-
+            addFriendButton = new Button (this.getActivity());
             Button upVoteButton = new Button(this.getActivity());
             Button downVoteButton = new Button(this.getActivity());
             LinearLayout llLayout = (LinearLayout) rootView.findViewById(R.id.profileLinearLayout3);
@@ -259,10 +263,18 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             params.weight = 1.0f;
 
 
-            URLConnection http4 = new URLConnection();
+            URLConnection http = new URLConnection();
+            try{
+                if(http.sendCheckIfFriends(thisUser.getEmail(), viewUser.getEmail()).equals("true")){
+                    areFriends = true;
+                }
+            } catch( IOException e) {
+                e.printStackTrace();
+            }
+
             try {
                 //get the list
-                String[][] RatingList = http4.sendGetUserRatingsList(thisUser.getEmail());
+                String[][] RatingList = http.sendGetUserRatingsList(thisUser.getEmail());
                 for (int i = 0; i < RatingList.length; i++) {
 
                     //already down rated this other user
@@ -312,6 +324,25 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                 upVoteButton.setText("Unupvote");
                 downVoteButton.setText("Downvote");
             }
+            if(areFriends) {
+                addFriendButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.unfriend_icon, 0, 0, 0);
+                addFriendButton.setText("UnFollow");
+
+            }
+            else{
+                addFriendButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_friend_icon, 0, 0, 0);
+                addFriendButton.setText("Follow");
+            }
+            addFriendButton.setTag("add_friend_btn");
+            addFriendButton.setGravity(Gravity.CENTER);
+            addFriendButton.setLayoutParams(new LinearLayout.LayoutParams(200, 100));
+
+
+            //addFriendButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.friend_button_frame);
+            ll.setGravity(Gravity.CENTER);
+            ll.addView(addFriendButton);
 
             upVoteButton.setTextColor(Color.parseColor("#008000"));
             upVoteButton.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -324,7 +355,31 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             //set the the actually upvote button to use
             upvote = upVoteButton;
             downvote = downVoteButton;
+            addFriendButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    URLConnection http = new URLConnection();
+                    try {
 
+                        if(areFriends){
+                        String response = http.sendDeleteFriend(thisUser.getEmail(), viewUsername.getEmail());
+                            System.out.println("delete result"+response);
+                        areFriends = false;
+                        addFriendButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_friend_icon, 0, 0, 0);
+                        addFriendButton.setText("Follow");
+                        }
+                        else{
+                            String response = http.sendAddFriend(thisUser.getEmail(), viewUsername.getEmail());
+                            System.out.println("add result"+response);
+
+                            areFriends = true;
+                            addFriendButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.unfriend_icon, 0, 0, 0);
+                            addFriendButton.setText("UnFollow");
+                        }
+                    }catch(IOException ie){
+                        ie.printStackTrace();
+                    }
+                }
+            });
             upVoteButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
@@ -755,8 +810,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
                     Bundle args = new Bundle();
                     Fragment fragment = new ViewEventFragment();
-                    args.putString(FragmentOne.ITEM_NAME, new DrawerItem("View Event", 0)
-                            .getItemName());
+
                     args.putString("EventID", events.get(id).getEventID());
                     fragment.setArguments(args);
                     FragmentManager frgManager = getFragmentManager();

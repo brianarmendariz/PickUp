@@ -149,7 +149,39 @@ public class URLConnection {
         }
         return RSVPList;
     }
+    public String sendCheckIfFriends(String myUsername, String thisUsername) throws IOException  {
 
+				/*url of route being requested*/
+        String url = "http://www.csulbpickup.com/CheckIfFriends.php";
+        String urlParameters = "myUsername="+myUsername+"&thisUsername="+thisUsername;
+        return makeHTTPRequest(url,urlParameters);
+    }
+    public String sendAddFriend(String myUsername, String thisUsername) throws IOException  {
+
+				/*url of route being requested*/
+        String url = "http://www.csulbpickup.com/CreateFollow.php";
+        String urlParameters = "Follower="+myUsername+"&Followee="+thisUsername;
+        return makeHTTPRequest(url,urlParameters);
+    }
+    public String sendDeleteFriend(String myUsername, String thisUsername) throws IOException  {
+
+				/*url of route being requested*/
+        String url = "http://www.csulbpickup.com/deleteFollow.php";
+        String urlParameters = "Follower="+myUsername+"&Followee="+thisUsername;
+        return makeHTTPRequest(url,urlParameters);
+    }
+    public String [][] sendGetFriendList(String Username) throws IOException  {
+
+			/*url of route being requested*/
+        String url = "http://www.csulbpickup.com/getFollows.php";
+        String urlParameters = "Follower="+Username;
+        String response =  makeHTTPRequest(url,urlParameters);
+        String[][] FriendList =  convertRSVPList(response);
+        for(int i = 0;i<FriendList.length;i++){
+            System.out.println(i+" "+FriendList[i][0]+" "+FriendList[i][1]);
+        }
+        return FriendList;
+    }
     public String sendResetEmail(String username) throws IOException  {
 
 				/*url of route being requested*/
@@ -527,12 +559,14 @@ public class URLConnection {
 			        /*for each line parse key-value pairs */
         int arrayCount=0;
         for(String line : lines){
+            System.out.println("line:"+line);
             if(line.isEmpty()){
 
             }
             else{
                 Map <String, String> RSVPList = new HashMap<>();
                 for(String pair: line.split(",")){
+                    System.out.println("Pair:"+pair);
                     String[] tokens = pair.split("::");
                     for (int i=0; i<tokens.length-1;i++ ){
                         RSVPList.put(tokens[i], tokens[i+1]);

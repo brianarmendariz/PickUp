@@ -6,21 +6,31 @@
     android:background="@drawable/orange3"
     tools:context=".UserProfileActivity" >
 
+
     <RelativeLayout
         android:id="@+id/profileRelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/friend_button_frame"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_alignParentTop="true"
+            ></LinearLayout>
 
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:adjustViewBounds="false"
         android:id="@+id/profileImageView"
-        android:src="@drawable/browse"
+        android:src="@drawable/com_facebook_profile_picture_blank_portrait"
         android:background="@drawable/rounded_transparent"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/friend_button_frame"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="10dp"
         android:clickable="true"
         android:onClick="onClick"/>
 

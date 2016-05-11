@@ -196,7 +196,7 @@ public class MapsFragment extends Fragment implements android.location.LocationL
         thisUser = data.getParcelable("USER");
 
         //thisUser below is used for testing
-        //thisUser = new User("Sarah", "Shibley", "sarahshib@hotmail.com","abcd","1994-10-12","female", "");
+        //thisUser = new User("Sarah", "Shibley", "sarahshib@outlook.com","abcd","1994-10-12","female", "");
 
         /*Kit Kat and below require that the rootView be inflated every time it returns to map */
         if(rootView==null || Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -358,7 +358,6 @@ public class MapsFragment extends Fragment implements android.location.LocationL
                 v.startAnimation(animAlpha);
                 Bundle args = new Bundle();
                 Fragment fragment = new CreateEventFragment();
-                args.putString(FragmentTwo.ITEM_NAME, "Create Event");
                 fragment.setArguments(args);
                 FragmentManager frgManager = getFragmentManager();
                 frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack( "Map" )
@@ -374,7 +373,6 @@ public class MapsFragment extends Fragment implements android.location.LocationL
                 v.startAnimation(animAlpha);
                 Bundle args = new Bundle();
                 Fragment fragment = new FilterEventsFragment();
-                args.putString(FragmentTwo.ITEM_NAME, "Filter Events");
                 fragment.setArguments(args);
                 FragmentManager frgManager = getFragmentManager();
                 frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("Map")

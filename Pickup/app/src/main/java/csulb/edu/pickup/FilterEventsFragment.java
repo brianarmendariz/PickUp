@@ -387,8 +387,7 @@ public class FilterEventsFragment extends Fragment implements View.OnClickListen
             Bundle args = new Bundle();
 
             Fragment fragment = new MapsFragment();
-            args.putString(FragmentOne.ITEM_NAME, new DrawerItem("Map", R.drawable.map_icon)
-                    .getItemName());
+
 
             fragment.setArguments(args);
             FragmentManager frgManager = getFragmentManager();
@@ -453,8 +452,7 @@ public class FilterEventsFragment extends Fragment implements View.OnClickListen
                 args.putParcelableArrayList("EVENTS", eventList);
 
 
-                args.putString(FragmentOne.ITEM_NAME, new DrawerItem("Map", R.drawable.map_icon)
-                        .getItemName());
+
                 Fragment fragment = new MapsFragment();
 
                 fragment.setArguments(args);

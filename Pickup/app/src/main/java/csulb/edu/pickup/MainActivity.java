@@ -101,45 +101,26 @@ public class MainActivity extends ActionBarActivity {
         switch (possition) {
             case 0:
                 fragment = new MapsFragment();
-                args.putString(FragmentOne.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FragmentOne.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());
+
                 break;
             case 1:
                 fragment = new CreateEventFragment();
-                args.putString(FragmentTwo.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FragmentTwo.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());
+
                 break;
             case 2:
                 fragment = new UserProfileFragment();
-                args.putString(FragmentThree.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());
                 break;
             case 3:
                 fragment = new CalendarFragment();
-                args.putString(FragmentOne.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FragmentOne.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());
+
                 break;
             case 4://friends
-                fragment = new FragmentTwo();
-                args.putString(FragmentTwo.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FragmentTwo.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());
+                fragment = new FriendsFragment();
+
                 break;
             case 5:
                 fragment = new EditSettingsFragment();
-                args.putString(FragmentThree.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());
+
                 break;
             case 6://logout
 
@@ -162,7 +143,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
-        getSupportActionBar().setTitle("Map");
+        getSupportActionBar().setTitle(title);
     }
 
     @Override
@@ -204,7 +185,7 @@ public class MainActivity extends ActionBarActivity {
 
         int count = getFragmentManager().getBackStackEntryCount();
 
-        if (count == 0) {
+        if (count == 1) {
             super.onBackPressed();
             //additional code
         } else {

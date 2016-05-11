@@ -287,8 +287,7 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             Bundle args = new Bundle();
 
             Fragment fragment = new MapsFragment();
-            args.putString(FragmentOne.ITEM_NAME, new DrawerItem("Map", R.drawable.map_icon)
-                    .getItemName());
+
 
             fragment.setArguments(args);
             FragmentManager frgManager = getFragmentManager();

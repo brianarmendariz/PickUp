@@ -286,8 +286,6 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
             Bundle args = new Bundle();
 
             Fragment fragment = new MapsFragment();
-            args.putString(FragmentOne.ITEM_NAME, new DrawerItem("Map", R.drawable.map_icon)
-                    .getItemName());
 
             fragment.setArguments(args);
             FragmentManager frgManager = getFragmentManager();
@@ -350,8 +348,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                         Bundle args = new Bundle();
 
                         Fragment fragment = new MapsFragment();
-                        args.putString(FragmentOne.ITEM_NAME, new DrawerItem("Map", R.drawable.map_icon)
-                                .getItemName());
+
                         //args.putString("result", latitude + " " + longitude);
                         //args.putString("EventID", list.get(i).getEventID());
                         Intent returnIntent = new Intent();
@@ -380,9 +377,6 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                         myIntent.putExtras(args);
 
                         Fragment fragment = new MapsFragment();
-                        args.putString(FragmentOne.ITEM_NAME, new DrawerItem("Map", R.drawable.map_icon)
-                                .getItemName());
-
 
                         fragment.setArguments(args);
                         FragmentManager frgManager = getFragmentManager();
