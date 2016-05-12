@@ -69,11 +69,11 @@ public class EspressoLoginTest {
         onView(withId(R.id.menu_search)).perform(click());
         onView(isAssignableFrom(EditText.class)).perform(typeText("abcxyz"), pressKey(KeyEvent.KEYCODE_ENTER));
         // check if the correct event was retrieved
-        onView(withId(R.id.event_view_name)).check(matches(isDisplayed()));
+        onView(withId(R.id.viewLinearLayout1)).check(matches(isDisplayed()));
         onView(withId(R.id.event_view_name)).check(matches(withText("abcxyz")));
 
         // go back to map
-        //pressBack();
+        pressBack();
 //        FragmentManager fm = getActivity().getSupportFragmentManager();
 //        fm.popBackStack();
 
