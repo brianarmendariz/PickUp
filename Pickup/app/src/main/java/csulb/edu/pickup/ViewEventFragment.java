@@ -414,7 +414,7 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
                 setupUnRSVPButton();
             }
             else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage("You cannot RSVP to this event because your user rating " +
                         "is lower than the event's minimum user rating.");
                 builder.setCancelable(true);

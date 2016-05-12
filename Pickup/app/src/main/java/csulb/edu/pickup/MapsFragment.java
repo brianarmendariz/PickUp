@@ -275,7 +275,7 @@ public class MapsFragment extends Fragment implements android.location.LocationL
             @Override
             public void onMapClick(LatLng point) {
                 // Drawing marker on the map
-                drawMarker(point);
+                //drawMarker(point);
                 //Toast.makeText(getBaseContext(), "Longtitude: " + String.valueOf(point.longitude) + "\n" +
                 //        "Latitude: " + String.valueOf(point.latitude), Toast.LENGTH_LONG).show();
             }

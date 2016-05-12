@@ -43,7 +43,6 @@ import android.app.FragmentManager;
 @LargeTest
 public class EspressoLoginTest {
 
-    private String mStringToBetyped;
 
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
