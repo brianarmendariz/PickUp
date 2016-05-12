@@ -6,11 +6,11 @@
 // ----------------------------------
 $config = array(
     "db" => array(
-            "host" => "localhost",
-            "dbname" => "Pickup",
-            "username" => "root",
-            "password" => "admin",  
-        ),
+        "host" => "localhost",
+        "dbname" => "Pickup",
+        "username" => "root",
+        "password" => "admin"
+    )
 );
 date_default_timezone_set("America/Los_Angeles");
 
