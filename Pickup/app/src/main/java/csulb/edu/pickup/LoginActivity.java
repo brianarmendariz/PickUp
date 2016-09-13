@@ -310,9 +310,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             EditText passwordBox = (EditText) findViewById(R.id.password);
             String password = passwordBox.getText().toString();
 
-
-
             URLConnection http = new URLConnection();
+
             try {
                 String loginResult = http.sendLogin(username, password);
                 if (loginResult.equals("login failed")) {
@@ -343,9 +342,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             startActivityForResult(myIntent, 0);
 
         }
-
-
-
     }
 
 

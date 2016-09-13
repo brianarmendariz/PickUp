@@ -2,11 +2,11 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:id="@+id/eventLinearLayout1"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:background="@drawable/orange3"
     android:layout_height="fill_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -21,8 +21,6 @@
                 android:src="@drawable/circle_logo"/>
 
 
-
-
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
@@ -32,29 +30,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp" >
-
-
             </TableRow>
 
             <TableRow
                 android:id="@+id/eventTableRow2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp" >
-
+                android:layout_margin="10dp"
+                android:gravity="center_horizontal">
 
                 <EditText
                     android:id="@+id/username"
-                    android:layout_width="match_parent"
+                    android:layout_width="@dimen/edittext_size"
                     android:layout_height="wrap_content"
-                    android:ems="12"
-                    android:textSize="25dp"
+                    android:textSize="@dimen/edittext_text"
                     android:hint="Email"
                     android:fadeScrollbars="false"
                     android:scrollbars="horizontal"
-                    android:layout_centerInParent="true"
-                    android:inputType="text"
-                    >
+                    android:inputType="text">
                     <requestFocus />
                 </EditText>
             </TableRow>
@@ -62,19 +55,17 @@
                 android:id="@+id/eventTableRow3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp" >
-
-
+                android:layout_margin="10dp"
+                android:gravity="center_horizontal">
 
                 <EditText
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:textSize="25dp"
+                    android:textSize="@dimen/edittext_text"
                     android:fadeScrollbars="false"
                     android:scrollbars="horizontal"
-                    android:layout_centerInParent="true"
+                    android:layout_centerInParent="false"
                     android:inputType="textPassword"
                     android:hint="Password">
                     <requestFocus />
@@ -92,8 +83,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/forgot_passwd_btn_txt"
                     android:background="@android:color/transparent"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="15dp"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
                     android:layout_weight=".99"
                     />
             </TableRow>
@@ -105,23 +96,25 @@
 
                 <Button
                     android:id="@+id/login_btn"
+                    android:backgroundTint="@color/white"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="@string/login_btn_txt"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/button_text_size"
                     android:textStyle="bold"
                     android:layout_margin="10dp"
                     android:layout_weight=".99"
                     />
                 <Button
                     android:id="@+id/create_account_btn"
+                    android:backgroundTint="@color/white"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="@string/create_acct_btn_txt"
                     android:layout_margin="10dp"
-                    android:textSize="15dp"
-                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/button_text_size"
+                    android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_weight=".0" />
             </TableRow>
@@ -156,5 +149,5 @@
 
 
 
-</LinearLayout>
-    </ScrollView>
+    </LinearLayout>
+</ScrollView>

@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -201,7 +202,11 @@ public class MapsFragment extends Fragment implements android.location.LocationL
         /*Kit Kat and below require that the rootView be inflated every time it returns to map */
         if(rootView==null || Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             rootView = inflater.inflate(R.layout.activity_maps, container, false);
+
+            // adding permission checking at runtime
+            hasPermissions();
         }
+
 
         getActivity().setTitle("Map");
 
@@ -285,10 +290,37 @@ public class MapsFragment extends Fragment implements android.location.LocationL
         return rootView;
     }
 
+    private void hasPermissions()
+    {
+        ArrayList<String> permissionList = new ArrayList<String>();
+        int reqCode = 0;
+        if(ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            // if we do not have permission, request it
+            permissionList.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        if(ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            // if we do not have permission, request it
+            permissionList.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+
+        // if permissions need to be requested they will be in the list
+        if(permissionList.size() > 0)
+        {
+            requestPermission((String[])permissionList.toArray(), reqCode);
+        }
+    }
+
+    private void requestPermission(String[] permissions, int reqCode)
+    {
+        ActivityCompat.requestPermissions(getActivity(), permissions, reqCode);
+    }
 
     //Get addresses from the database
     private void getPositionsFromServer() {
-        try {
+        try
+        {
             map.setOnMarkerClickListener(this);
             URLConnection http = new URLConnection();
             Bundle data = getArguments();

@@ -371,7 +371,7 @@
             android:layout_gravity="right"
             android:onClick="onClick_MM"
             android:text="MM"
-            android:textColor="@color/yellow"
+            android:textColor="@color/black"
             android:layout_marginBottom="5dp"
             android:textStyle="bold"
             android:textSize="20dp"

@@ -189,7 +189,7 @@ public class CalendarFragment extends Fragment {
                     }
                     else if(flag)
                     {
-                        dayView.setBackgroundColor(getResources().getColor(R.color.lite_grey));
+                        dayView.setBackgroundColor(getResources().getColor(R.color.white));
                     }
                 }
             }

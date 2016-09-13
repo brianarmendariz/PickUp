@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/orange3"
-    tools:context=".UserProfileActivity" >
+    tools:context=".UserProfileFragment" >
 
 
     <RelativeLayout
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/NameTextView"
                 android:text="NAME:"
-                android:textColor="@color/dark_grey"
+                android:textColor="@color/white"
                 android:gravity="center_vertical|center_horizontal"
                 android:textStyle="bold" />
             <TextView
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:id="@+id/NameEditText"
-                android:textColor="@color/dark_grey"
+                android:textColor="@color/black"
                 android:background="@drawable/roundedwhitebutton"
                 android:maxLines="1"
                 android:maxLength="30"
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/BirthDayTextView"
                 android:text="BIRTHDAY:"
-                android:textColor="@color/dark_grey"
+                android:textColor="@color/black"
                 android:gravity="center_vertical|center_horizontal"
                 android:textStyle="bold" />
             <TextView
@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:id="@+id/BirthdayEditText"
-                android:textColor="@color/dark_grey"
+                android:textColor="@color/black"
                 android:background="@drawable/roundedwhitebutton"
                 android:maxLines="1"
                 android:gravity="center_horizontal"/>
@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/GenderTextView"
                 android:text="GENDER:"
-                android:textColor="@color/dark_grey"
+                android:textColor="@color/black"
                 android:textStyle="bold"
                 android:gravity="center_horizontal" />
             <TextView
@@ -109,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:id="@+id/GenderEditText"
-                android:textColor="@color/dark_grey"
+                android:textColor="@color/black"
                 android:background="@drawable/roundedwhitebutton"
                 android:maxLines="1"
                 android:hint="M/F"
@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/UserRatingTextView"
                 android:text="User Rating"
-                android:textColor="@color/dark_grey"
+                android:textColor="@color/black"
                 android:textStyle="bold"
                 android:gravity="center_horizontal"/>
 
@@ -135,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:id="@+id/UserRatingEditText"
-                android:textColor="@color/dark_grey"
+                android:textColor="@color/black"
                 android:background="@drawable/roundedwhitebutton"
                 android:maxLines="1"
                 android:hint="User Rating"
@@ -172,7 +172,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="@string/event_txt"
-                android:textColor="@color/dark_grey"
+                android:textColor="@color/black"
                 android:textStyle="bold"/>
         </RelativeLayout>
 

@@ -17,6 +17,7 @@
         <ImageView
             android:layout_width="@dimen/bkgnd_image_width"
             android:layout_height="@dimen/bkgnd_image_height"
+            android:layout_marginBottom="@dimen/event_table_margin"
             android:scaleType="fitXY"
             android:layout_gravity="center"
             android:id="@+id/create_event_image_view1"
@@ -24,142 +25,80 @@
 
         <EditText
             android:id="@+id/event_name"
-            android:layout_width="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/event_table_margin"
             android:layout_marginBottom="@dimen/event_table_margin"
-            android:ems="17"
             android:hint="Event Name"
             android:textColor="@color/orange"
+            android:textSize="@dimen/edittext_text"
             android:inputType="text" >
             <requestFocus />
         </EditText>
 
-        <TableLayout
-            android:layout_width="match_parent"
+        <Spinner
+            android:id="@+id/sport_spinner"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/event_table_margin"
-            android:layout_marginBottom="@dimen/event_table_margin" >
-
-            <TableRow
-                android:id="@+id/eventTableRow3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:id="@+id/eventTextView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:text="@string/event_sport_text"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                <Spinner
-                    android:id="@+id/sport_spinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/orange"
-                    android:drawSelectorOnTop="true"
-                    android:prompt="@string/prompt"
-                    />
-
-            </TableRow>
-        </TableLayout>
-
+            android:layout_marginBottom="@dimen/event_table_margin"
+            android:layout_gravity="center"
+            android:textColor="@color/orange"
+            android:drawSelectorOnTop="true"
+            android:prompt="@string/prompt" />
 
         <EditText
             android:id="@+id/event_location"
-            android:layout_width="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/event_table_margin"
             android:layout_marginBottom="@dimen/event_table_margin"
-            android:ems="17"
             android:hint="Location"
             android:textColor="@color/orange"
+            android:textSize="@dimen/edittext_text"
             android:inputType="text" >
             <requestFocus />
         </EditText>
 
-        <TableLayout
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/event_date"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/event_table_margin"
-            android:layout_marginBottom="@dimen/event_table_margin" >
-            <TableRow
-                android:id="@+id/eventTableRow5"
+            android:layout_marginBottom="@dimen/event_table_margin"
+            android:gravity="center_horizontal"
+            android:ems="10"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/edittext_text"
+            android:hint="@string/event_date_text" />
+
+
+            <EditText
+                android:id="@+id/event_time"
+                android:gravity="center_horizontal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/event_table_margin"
+                android:layout_marginBottom="@dimen/event_table_margin"
+                android:ems="10"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/edittext_text"
+                android:hint="@string/event_time_text" />
 
-                <TextView
-                    android:id="@+id/eventTextView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/event_date_text"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                <EditText
-                    android:id="@+id/event_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/orange"
-                    android:hint="@string/event_date_text" />
-            </TableRow>
-            </TableLayout>
-
-        <TableLayout
-            android:layout_width="match_parent"
+        <csulb.edu.pickup.NoDefaultSpinner
+            android:id="@+id/event_gender_spinner"
+            android:gravity="center"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/event_table_margin"
-            android:layout_marginBottom="@dimen/event_table_margin" >
-            <TableRow
-                android:id="@+id/eventTableRow6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:id="@+id/eventTextView6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:text="@string/event_time_text"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                <EditText
-                    android:id="@+id/event_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/orange"
-                    android:hint="@string/event_time_text" />
-            </TableRow>
-            </TableLayout>
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/event_table_margin"
-            android:layout_marginBottom="@dimen/event_table_margin" >
-            <TableRow
-                android:id="@+id/eventTableRow7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:id="@+id/eventTextView7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:text="@string/event_gender_text"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                <Spinner
-                    android:id="@+id/gender_spinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/orange"/>
-            </TableRow>
-            </TableLayout>
+            android:layout_marginBottom="@dimen/event_table_margin"
+            android:layout_gravity="center" />
 
         <TableLayout
             android:layout_width="match_parent"
@@ -171,105 +110,45 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
-                <TextView
-                    android:id="@+id/eventTextView8"
+                <csulb.edu.pickup.NoDefaultSpinner
+                    android:id="@+id/age_min_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:text="@string/event_age_group_text"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:layout_weight="1"
+                    android:textColor="@color/orange"
+                    android:textSize="@dimen/edittext_text"/>
 
-                <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:tools="http://schemas.android.com/tools"
-                    android:id="@+id/GridLayout1"
+                <csulb.edu.pickup.NoDefaultSpinner
+                    android:id="@+id/age_max_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:columnCount="2"
-                    android:rowCount="2"
-                    android:orientation="vertical" > <!--horizontal-->
-
-                    <TextView
-                        android:id="@+id/eventTextViewMin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Min" />
-
-                    <Spinner
-                        android:id="@+id/age_min_spinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/orange" />
-
-                    <TextView
-                        android:id="@+id/eventTextViewMax"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Max" />
-
-                    <Spinner
-                        android:id="@+id/age_max_spinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/orange" />
-
-                </GridLayout>
-
+                    android:layout_weight="1"
+                    android:textColor="@color/orange"
+                    android:textSize="@dimen/edittext_text"/>
             </TableRow>
             </TableLayout>
 
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/event_table_margin"
-            android:layout_marginBottom="@dimen/event_table_margin" >
-            <TableRow
-                android:id="@+id/eventTableRow9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+            <csulb.edu.pickup.NoDefaultSpinner
+                android:id="@+id/max_num_ppl_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/event_table_margin"
+                android:layout_marginBottom="@dimen/event_table_margin"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/edittext_text"/>
 
-                <TextView
-                    android:id="@+id/eventTextView9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:text="@string/event_max_num_ppl_text"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                <Spinner
-                    android:id="@+id/max_num_ppl_spinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/orange" />
-
-            </TableRow>
-            </TableLayout>
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/event_table_margin"
-            android:layout_marginBottom="@dimen/event_table_margin">
-            <TableRow
-                android:id="@+id/eventTableRow10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:id="@+id/eventTextView10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:text="@string/event_min_user_rating_text"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                <Spinner
-                    android:id="@+id/min_user_rating_spinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/orange"/>
-
-            </TableRow>
-        </TableLayout>
+            <csulb.edu.pickup.NoDefaultSpinner
+                android:id="@+id/min_user_rating_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/event_table_margin"
+                android:layout_marginBottom="@dimen/event_table_margin"
+                android:layout_gravity="center"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/edittext_text"
+                android:gravity="center"/>
 
 
         <LinearLayout
@@ -277,12 +156,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <ImageButton
+            <Button
                 android:id="@+id/event_create_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/add_icon"
-                android:background="@null"
+                android:text="@string/create_event_btn_txt"
                 android:gravity="center"
                 android:layout_gravity="center_horizontal" />
 

@@ -92,9 +92,6 @@ public class FriendsFragment extends Fragment{
             Log.e("ERROR", "FriendList ERROR");
         }
 
-
-
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -127,13 +124,7 @@ public class FriendsFragment extends Fragment{
 
         });
 
-
         return rootView;
-
-
-
-
-
     }
 
     private User viewUser(String username)

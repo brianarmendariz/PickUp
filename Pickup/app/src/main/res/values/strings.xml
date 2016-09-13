@@ -13,8 +13,8 @@
     <string name="event_creator_text">Creator</string>
     <string name="event_sport_text">Sport</string>
     <string name="event_location_text">Location</string>
-    <string name="event_time_text">Time</string>
-    <string name="event_date_text">Date</string>
+    <string name="event_time_text">Pick a Time</string>
+    <string name="event_date_text">Choose a Date</string>
     <string name="etxt_fromdate">Dat</string>
     <string name="event_gender_text">Gender</string>
     <string name="event_age_group_text">Age Group</string>

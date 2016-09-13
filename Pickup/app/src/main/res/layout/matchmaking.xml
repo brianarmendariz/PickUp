@@ -16,8 +16,8 @@
 
             android:id="@+id/NoOfTeamsTextView"
             android:minLines="1"
-            android:text="Number of Teams :"
-            android:textColor="@color/green"
+            android:text="Number of Teams:"
+            android:textColor="@color/black"
             android:textSize="20dp"
             android:textStyle="bold"
             android:textAlignment="center"

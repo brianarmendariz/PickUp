@@ -803,7 +803,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             final TextView textViewName = new TextView(this.getActivity());
             textViewName.setPadding(30,0,0,0);
             textViewName.setText(name);
-            textViewName.setTextColor(getResources().getColor(R.color.dark_grey));
+            textViewName.setTextColor(getResources().getColor(R.color.black));
             textViewName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) { // onClick listener for event name
@@ -830,8 +830,8 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             textViewDate.setPadding(0,0,30,0);
             textViewSport.setText(sport); // add sport to textview
             textViewDate.setText(date); // add date to textview
-            textViewSport.setTextColor(getResources().getColor(R.color.dark_grey));
-            textViewDate.setTextColor(getResources().getColor(R.color.dark_grey));
+            textViewSport.setTextColor(getResources().getColor(R.color.black));
+            textViewDate.setTextColor(getResources().getColor(R.color.black));
             tableRow.addView(textViewSport); // add sport textview to row
             tableRow.addView(textViewDate);  // add date textview to row
             tableRow.setGravity(Gravity.CENTER);

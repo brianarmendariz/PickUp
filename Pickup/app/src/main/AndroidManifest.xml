@@ -2,11 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="csulb.edu.pickup" >
 
-    <uses-sdk
-        android:minSdkVersion="17"
-        android:targetSdkVersion="20"
-        />
-
 
     <permission
         android:name="edu.csulb.permission.MAPS_RECEIVE"

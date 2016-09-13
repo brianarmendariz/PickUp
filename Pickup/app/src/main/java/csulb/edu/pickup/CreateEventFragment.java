@@ -52,8 +52,9 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
 
     private static final String TAG = "brainsMessages";
 
+    private Button genderButton;
     private Button cancelEventButton;
-    private ImageButton createEventButton;
+    private Button createEventButton;
     Calendar newDate = Calendar.getInstance(); // local object to couple date and time
 
     private EditText createDateEditText;
@@ -107,11 +108,6 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
 
     }
 
-
-
-
-
-
     @Override
     public void onStart() {
         super.onStart();
@@ -155,7 +151,7 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
     {
         int idSportSpinner = R.id.sport_spinner;
         int idSportArray = R.array.sport_array;
-        int idGenderSpinner = R.id.gender_spinner;
+        int idGenderSpinner = R.id.event_gender_spinner;
         int idGenderArray = R.array.gender_array;
         int idAgeMinSpinner = R.id.age_min_spinner;
         int idAgeMaxSpinner = R.id.age_max_spinner;
@@ -164,17 +160,15 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
 
         // attach values to sport spinner
         initSpinner(idSportSpinner, idSportArray);
-        //Spinner sportSpinner = (Spinner)findViewById(R.id.sport_spinner);
-        //sportSpinner.setAdapter(new MyAdapter(CreateEventActivity.this, R.layout.row, strings));
 
         // attach values to gender spinner
         initSpinner(idGenderSpinner, idGenderArray);
 
         // init min & max age, max num ppl, & min user rating spinners
-        initNumSpinner(idAgeMinSpinner, 5, 100);
-        initNumSpinner(idAgeMaxSpinner, 5, 100);
-        initNumSpinner(idMaxNumPplSpinner, 2, 30);
-        initNumSpinner(idMinUserRatingSpinner, -10, 20);
+        initSpinner(idAgeMinSpinner, 0);
+        initSpinner(idAgeMaxSpinner, 0);
+        initSpinner(idMaxNumPplSpinner, 0);
+        initSpinner(idMinUserRatingSpinner, 0);
     }
 
     private void initSpinner(int spinnerId, int arrayId)
@@ -185,6 +179,57 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
         if(spinnerId == R.id.sport_spinner){
             spinner.setAdapter(new MyCAdapter(this.getActivity(), R.layout.row, sportStringArray));
         }
+        else if(spinnerId == R.id.event_gender_spinner)
+        {
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.gender_array, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setPrompt("Gender...");
+            spinner.setAdapter(adapter);
+        }
+        else if(spinnerId == R.id.age_min_spinner || spinnerId == R.id.age_max_spinner
+                || spinnerId == R.id.max_num_ppl_spinner || spinnerId == R.id.min_user_rating_spinner)
+        {
+            int min = 0;
+            int max = 0;
+
+            switch(spinnerId)
+            {
+                case R.id.age_min_spinner:
+                    min = 5;
+                    max = 80;
+                    spinner.setPrompt("Minimum Age...");
+                    break;
+                case R.id.age_max_spinner:
+                    min = 5;
+                    max = 80;
+                    spinner.setPrompt("Maximum Age...");
+                    break;
+                case R.id.max_num_ppl_spinner:
+                    min = 2;
+                    max = 30;
+                    spinner.setPrompt("Number of Attendees...");
+                    break;
+                case R.id.min_user_rating_spinner:
+                    min = -10;
+                    max = 20;
+                    spinner.setPrompt("User Rating...");
+                    break;
+                default:
+                    break;
+            }
+
+            List<String> list=new ArrayList<String>();
+            for(int i = min; i < max; i++)
+            {
+                list.add(i + "");
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
+                    android.R.layout.simple_spinner_item, list);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            spinner.setAdapter(adapter);
+        }
+
         else {
             // Create an ArrayAdapter with provided resources and layout
             ArrayAdapter<CharSequence> spinnnerAdapter = ArrayAdapter.createFromResource(this.getActivity(),
@@ -211,10 +256,12 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
     }
 
     private void findViewsById() {
+
+
         cancelEventButton = (Button) rootView.findViewById(R.id.event_cancel_btn);
         cancelEventButton.requestFocus();
 
-        createEventButton = (ImageButton) rootView.findViewById(R.id.event_create_btn);
+        createEventButton = (Button) rootView.findViewById(R.id.event_create_btn);
         createEventButton.requestFocus();
 
         createDateEditText = (EditText) rootView.findViewById(R.id.event_date);
@@ -264,7 +311,6 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
                 }, hour, minute, false);
     }
 
-
     private void setUpCreateEventButton() {
         createEventButton.setOnClickListener(this);
     }
@@ -288,12 +334,12 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
 
             Fragment fragment = new MapsFragment();
 
-
             fragment.setArguments(args);
             FragmentManager frgManager = getFragmentManager();
             frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("Create Event" )
                     .commit();
-        } else if (view == createEventButton) {
+        }
+        else if (view == createEventButton) {
 
 
             Map<String, String> formMap = formToMap();
@@ -342,19 +388,9 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
                         );
 
 
-                        //Retrieve data from server
-                             // http.sendGetEvents();
-
-                        //Delete event from server
-                        //http.sendDeleteEvent(1);
-
                         //Return to the MainActivity
                         Bundle args = new Bundle();
-
                         Fragment fragment = new MapsFragment();
-
-                        //args.putString("result", latitude + " " + longitude);
-                        //args.putString("EventID", list.get(i).getEventID());
                         Intent returnIntent = new Intent();
                         getActivity().setResult(MainActivity.RESULT_OK, returnIntent);
 
@@ -367,7 +403,6 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
 
                     } else {
                        System.out.println("invalid address");
-
                     }
                 } catch (IOException e) {
                     Log.e(TAG, "Unable connect to Geocoder", e);
@@ -444,6 +479,7 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
 
         return formMap;
     }
+
 
     public boolean checkForm(String name, String location,
                              String date, String time, String gender, String ageMin,
@@ -556,10 +592,6 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             View row = inflater.inflate(R.layout.row, parent, false);
             TextView label = (TextView) row.findViewById(R.id.company);
             label.setText(sportStringArray[position]);
-
-//            TextView sub=(TextView)row.findViewById(R.id.sub);
-//            sub.setText(subs[position]        );
-
             ImageView icon = (ImageView) row.findViewById(R.id.image);
             icon.setImageResource(arr_images[position]);
 

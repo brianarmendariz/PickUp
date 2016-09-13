@@ -9,4 +9,12 @@
     <dimen name="login_image_height">120dp</dimen>
     <dimen name="login_image_width">120dp</dimen>
 
+    <!-- For Login Screens -->
+    <dimen name="button_text_size">16sp</dimen>
+    <dimen name="edittext_text">14sp</dimen>
+    <dimen name="checkbox_text">13sp</dimen>
+
+    <!-- For a medium sized screen -->
+    <dimen name="edittext_size">260dp</dimen>
+
 </resources>
