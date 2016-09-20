@@ -14,10 +14,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-public class URLConnection {
 
+public class URLConnection
+{
     private final String USER_AGENT = "Mozilla/5.0";
-
 
     /**
      * Performs the Http connection
@@ -27,7 +27,7 @@ public class URLConnection {
      * @return - a string response from the server
      * @throws IOException
      */
-    private String makeHTTPRequest(String url, String urlParameters)throws IOException{
+    private String makeHTTPRequest(String url, String urlParameters)throws IOException {
         java.net.URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -84,7 +84,6 @@ public class URLConnection {
                 "&UserRating="+userRating+"&PicturePath="+picturePath;
         return makeHTTPRequest(url,urlParameters);
     }
-
 
     /**
      *
@@ -402,6 +401,31 @@ public class URLConnection {
         String url = "http://www.csulbpickup.com/getEventsForUser.php";
 
         String urlParameters = "Username=" + username;
+
+
+        String response = makeHTTPRequest(url, urlParameters);
+
+        //print result
+        String stringResponse = response.toString();
+        System.out.println("Response: " + response);
+        ArrayList<Event> list = convertEventList(stringResponse);
+
+        return list;
+    }
+
+    /**
+     * gets a list of all events for a user in database on server.
+     * @return ArrayList<Event> - an event object for each event in server
+     * @throws IOException
+     */
+    public ArrayList<Event> sendGetEventsFromDistance(String latitude, String longitude, String distance) throws IOException  {
+
+        System.out.println("GetEventsFromDistance");
+
+		/*url of route being requested*/
+        String url = "http://www.csulbpickup.com/getEventsFromDistance.php";
+
+        String urlParameters = "Latitude=" + latitude + "&Longitude=" + longitude + "&Distance=" + distance;
 
 
         String response = makeHTTPRequest(url, urlParameters);

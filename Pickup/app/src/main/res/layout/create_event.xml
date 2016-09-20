@@ -78,18 +78,18 @@
             android:hint="@string/event_date_text" />
 
 
-            <EditText
-                android:id="@+id/event_time"
-                android:gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/event_table_margin"
-                android:layout_marginBottom="@dimen/event_table_margin"
-                android:ems="10"
-                android:textColor="@color/orange"
-                android:textSize="@dimen/edittext_text"
-                android:hint="@string/event_time_text" />
+        <EditText
+            android:id="@+id/event_time"
+            android:gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/event_table_margin"
+            android:layout_marginBottom="@dimen/event_table_margin"
+            android:ems="10"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/edittext_text"
+            android:hint="@string/event_time_text" />
 
         <csulb.edu.pickup.NoDefaultSpinner
             android:id="@+id/event_gender_spinner"
@@ -126,29 +126,29 @@
                     android:textColor="@color/orange"
                     android:textSize="@dimen/edittext_text"/>
             </TableRow>
-            </TableLayout>
+        </TableLayout>
 
-            <csulb.edu.pickup.NoDefaultSpinner
-                android:id="@+id/max_num_ppl_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/event_table_margin"
-                android:layout_marginBottom="@dimen/event_table_margin"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:textColor="@color/orange"
-                android:textSize="@dimen/edittext_text"/>
+        <csulb.edu.pickup.NoDefaultSpinner
+            android:id="@+id/max_num_ppl_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/event_table_margin"
+            android:layout_marginBottom="@dimen/event_table_margin"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/edittext_text"/>
 
-            <csulb.edu.pickup.NoDefaultSpinner
-                android:id="@+id/min_user_rating_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/event_table_margin"
-                android:layout_marginBottom="@dimen/event_table_margin"
-                android:layout_gravity="center"
-                android:textColor="@color/orange"
-                android:textSize="@dimen/edittext_text"
-                android:gravity="center"/>
+        <csulb.edu.pickup.NoDefaultSpinner
+            android:id="@+id/min_user_rating_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/event_table_margin"
+            android:layout_marginBottom="@dimen/event_table_margin"
+            android:layout_gravity="center"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/edittext_text"
+            android:gravity="center"/>
 
 
         <LinearLayout

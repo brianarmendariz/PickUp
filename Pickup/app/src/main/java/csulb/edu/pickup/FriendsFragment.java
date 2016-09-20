@@ -46,8 +46,6 @@ public class FriendsFragment extends Fragment{
     User thisUser;
     View rootView;
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

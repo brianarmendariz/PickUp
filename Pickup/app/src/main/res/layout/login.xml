@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/forgot_passwd_btn_txt"
                     android:background="@android:color/transparent"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="12dp"
                     android:layout_weight=".99"
                     />

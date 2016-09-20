@@ -70,6 +70,7 @@ public class MapsFragment extends Fragment implements android.location.LocationL
 
     private ImageButton plusButton;
     private Button filterButton;
+    private Button eventListButton;
 
 
     @Override
@@ -241,6 +242,7 @@ public class MapsFragment extends Fragment implements android.location.LocationL
         findViewsById();
         setUpPlusButton();
         setUpFilterButton();
+        setUpEventListButton();
 
         /* handle Google Maps location settings */
         map.setMyLocationEnabled(true);
@@ -328,7 +330,7 @@ public class MapsFragment extends Fragment implements android.location.LocationL
             String eventName = "";
             String creator = "";
             /* EVENTS is an ArrayList of filtered events returned from FilterEventsFragment */
-            if(data.containsKey("EVENTS")|| data.getParcelable("EVENTS")!=null){
+            if(data.containsKey("EVENTS") || data.getParcelable("EVENTS")!=null){
                 eventList = data.getParcelableArrayList("EVENTS");
                 ArrayList<Event> preEventList = data.getParcelableArrayList("EVENTS");
                 int listSize = preEventList.size();
@@ -352,8 +354,6 @@ public class MapsFragment extends Fragment implements android.location.LocationL
                     map.addMarker(new MarkerOptions().position(latLng).title(eventName).snippet(creator)).setVisible(true);
                 }
             }
-
-
         }
         catch (IOException e) {
             Log.e(ETag, "Unable connect to server", e);
@@ -392,8 +392,9 @@ public class MapsFragment extends Fragment implements android.location.LocationL
                 Fragment fragment = new CreateEventFragment();
                 fragment.setArguments(args);
                 FragmentManager frgManager = getFragmentManager();
-                frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack( "Map" )
-                        .commit();            }
+                frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("Map")
+                        .commit();
+            }
         });  }
 
     private void setUpFilterButton() {
@@ -412,17 +413,38 @@ public class MapsFragment extends Fragment implements android.location.LocationL
         });
     }
 
+    private void setUpEventListButton() {
+
+        eventListButton = (Button) rootView.findViewById(R.id.event_list_btn);
+        eventListButton.requestFocus();
+        eventListButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                v.startAnimation(animAlpha);
+                Bundle args = new Bundle();
+                Fragment fragment = new EventListFragment();
+                fragment.setArguments(args);
+                FragmentManager frgManager = getFragmentManager();
+                frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("Map")
+                        .commit();                 }
+        });
+    }
+
     private void findViewsById() {
 
     }
 
     public void onClick(View view) {
 
-        if (view == plusButton) {
+        if (view == plusButton)
+        {
             view.startAnimation(animAlpha);
-
-
-        } else if (view == filterButton) {
+        }
+        else if (view == filterButton)
+        {
+            view.startAnimation(animAlpha);
+        }
+        else if(view == eventListButton)
+        {
             view.startAnimation(animAlpha);
         }
 

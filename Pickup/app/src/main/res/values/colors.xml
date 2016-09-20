@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#181818</color>
+    <color name="lite_grey">#D3D3D3</color>
+    <color name="orange">#fea10f</color> <!-- ff6600 --> <!-- eb9114 -->
+    <color name="sky_blue">#71acd6</color>
     <color name="white">#ffffff</color>
-    <color name="orange">#ff6600</color>
     <color name="transparent">@android:color/transparent</color>
     <color name="transparentWhite">#80FFFFFF</color>
     <color name="transparentBlack">#80000000</color>
