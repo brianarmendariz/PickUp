@@ -1,27 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".EventListAdapter"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+
+    <ImageView
+        android:layout_margin="@dimen/small_margin"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:paddingTop="@dimen/small_margin"
+        android:scaleType="fitXY"
+        android:id="@+id/event_list_sport_image" />
 
     <TextView
         android:id="@+id/event_list_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop= "true"
-        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@id/event_list_sport_image"
         android:paddingLeft="@dimen/small_margin"
         android:paddingTop="@dimen/small_margin"
         android:textColor="@color/sky_blue"
         android:textSize="20dp"
         android:textAllCaps="true"/>
-        <!--android:text = "Dodgers vs Giants"-->
 
     <TextView
         android:id="@+id/event_list_sport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/event_list_name"
-        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@id/event_list_sport_image"
         android:paddingLeft="@dimen/small_margin"
         android:textColor="@color/orange"
         android:textSize="14dp"
@@ -33,11 +46,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/event_list_sport"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@id/event_list_sport_image"
         android:paddingLeft="@dimen/small_margin"
         android:paddingBottom="@dimen/small_margin"
-        android:textColor="@color/black"
+        android:textColor="@color/grey"
         android:textSize="12dp"/>
         <!--android:text = "123 Wallaby Way, Sydney, Australia"-->
 
@@ -52,5 +64,8 @@
             android:paddingTop="@dimen/small_margin"
             android:textSize="20dp"/>
             <!--android:text = "4/10"-->
+
+
+
 
 </RelativeLayout>

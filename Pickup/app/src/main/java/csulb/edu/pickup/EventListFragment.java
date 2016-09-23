@@ -59,7 +59,25 @@ public class EventListFragment extends Fragment
         }
 
         // TODO: add onClickListener to each event
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                Bundle b = new Bundle();
+                b.putParcelable("USER", thisUser);
+                b.putString("EventID", eventList.get(position).getEventID());
+                Fragment fragment = new ViewEventFragment();
+                fragment.setArguments(b);
+                FragmentManager frgManager = getFragmentManager();
+                frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("EventListFragment")
+                        .commit();
 
+                Intent thisIntent = new Intent(getActivity().getBaseContext(), MainActivity.class);
+                thisIntent.putExtras(b);
+
+            }
+
+        });
 
         return rootView;
     }

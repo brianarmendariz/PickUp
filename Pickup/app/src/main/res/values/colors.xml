@@ -2,22 +2,11 @@
 <resources>
     <color name="black">#181818</color>
     <color name="lite_grey">#D3D3D3</color>
-    <color name="orange">#fea10f</color> <!-- ff6600 --> <!-- eb9114 -->
+    <color name="grey">#696969</color>
+    <color name="orange">#fea10f</color>
     <color name="sky_blue">#71acd6</color>
     <color name="white">#ffffff</color>
     <color name="transparent">@android:color/transparent</color>
     <color name="transparentWhite">#80FFFFFF</color>
     <color name="transparentBlack">#80000000</color>
-    <!--
-        <color name="ColorPrimary">#FF5722</color>
-        <color name="ColorPrimaryDark">#E64A19</color>
-        <color name="transparent">@android:color/transparent</color>
-        <color name="gray">#c0c0c0</color>
-        <color name="transparentBlack">#80000000</color>
-        <color name="transparentWhite">#80FFFFFF</color>
-        <color name="green">#008000</color>
-        <color name="yellow">#FFFF00</color>
-        <color name="dark_grey">#4f4f4f</color>
-        <color name="lite_grey">#D3D3D3</color>
-    -->
 </resources>

@@ -1,5 +1,6 @@
 package csulb.edu.pickup;
 
+import android.widget.ImageView;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ public class EventListAdapter<String> extends BaseAdapter
     TextView textViewLocation;
     TextView textViewSport;
     TextView textViewPlayerAmount;
-    TextView textViewPlayerTotal;
+    ImageView imageViewSportImage;
     int layout;
     private final Context context;
 
@@ -46,23 +48,78 @@ public class EventListAdapter<String> extends BaseAdapter
         textViewLocation = (TextView) convertView.findViewById(R.id.event_list_location);
         textViewSport = (TextView) convertView.findViewById(R.id.event_list_sport);
         textViewPlayerAmount = (TextView) convertView.findViewById(R.id.event_list_player_amount);
+        imageViewSportImage = (ImageView) convertView.findViewById(R.id.event_list_sport_image);
 
+        java.lang.String name = eventList.get(position).getName();
+        java.lang.String location = eventList.get(position).getAddress();
+        java.lang.String sport = eventList.get(position).getSport();
 
-        //HashMap<java.lang.String, java.lang.String> map=friendList.get(position);
-        textViewName.setText(eventList.get(position).getName());
-        textViewLocation.setText(eventList.get(position).getAddress());
-        textViewSport.setText(eventList.get(position).getSport());
+        textViewName.setText(name);
+        textViewLocation.setText(location);
+        textViewSport.setText(sport);
         java.lang.String color1 = "#fea10f";
-        java.lang.String color2 = "#181818";
+        java.lang.String color2 = "#696969";
         java.lang.String text = "<font color=" + color1 + ">" + eventList.get(position).getMaxNumberPpl()
             + "</font><font color=" + color2 + ">/" + eventList.get(position).getMaxNumberPpl() + "</font>";
         textViewPlayerAmount.setText(Html.fromHtml(text));
 
-        if (position % 2 == 0) {
-            convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.lite_grey));
-        } else {
-            convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+        if (sport.equals("Badminton"))
+        {
+            imageViewSportImage.setImageResource(R.drawable.badminton_icon);
         }
+        else if (sport.equals("Baseball"))
+        {
+            imageViewSportImage.setImageResource(R.drawable.baseball_icon);
+        }
+        else if (sport.equals("Basketball"))
+        {
+            //imageViewSportImage.setVisibility(View.GONE);
+            imageViewSportImage.setImageResource(R.drawable.basketball_icon);
+        }
+        else if (sport.equals("Football"))
+        {
+            imageViewSportImage.setImageResource(R.drawable.football_icon);
+        }
+        else if (sport.equals("Handball"))
+        {
+            imageViewSportImage.setImageResource(R.drawable.handball_icon);
+        }
+        else if (sport.equals("Ice Hockey"))
+        {
+            imageViewSportImage.setImageResource(R.drawable.icehockey_icon);
+        }
+        else if (sport.equals("Racquetball"))
+        {
+            imageViewSportImage.setImageResource(R.drawable.racquetball_icon);
+        }
+        else if (sport.equals("Roller Hockey"))
+        {
+            imageViewSportImage.setImageResource(R.drawable.rollerhockey_icon);
+        }
+        else if (sport.equals("Softball"))
+        {
+            imageViewSportImage.setImageResource(R.drawable.softball_icon);
+        }
+        else if (sport.equals("Tennis"))
+        {
+            imageViewSportImage.setImageResource(R.drawable.tennis_icon);
+        }
+        else if (sport.equals("Volleyball"))
+        {
+            imageViewSportImage.setImageResource(R.drawable.volleyball_icon);
+        }
+        else {
+            // should never hit this
+        }
+        //imageViewSportImage.invalidate();
+//         imageViewSportImage.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+//                RelativeLayout.LayoutParams.WRAP_CONTENT));
+
+//        if (position % 2 == 0) {
+//            convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.lite_grey));
+//        } else {
+//            convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+//        }
 
         return convertView;
     }
