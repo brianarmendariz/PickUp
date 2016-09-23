@@ -26,7 +26,6 @@ public class Event implements Parcelable
     private String _isPrivate;
     private String _eventID;
 
-
     public Event()
     {
         _eventID = null;

@@ -427,7 +427,6 @@ public class URLConnection
 
         String urlParameters = "Latitude=" + latitude + "&Longitude=" + longitude + "&Distance=" + distance;
 
-
         String response = makeHTTPRequest(url, urlParameters);
 
         //print result
@@ -488,20 +487,30 @@ public class URLConnection
         return hourInt+":"+minute+" AM";
     }
 
+    private ArrayList<java.lang.String> distances;
+
+    public ArrayList<java.lang.String> getEventDistances()
+    {
+        return distances;
+    }
+
     private ArrayList<Event> convertEventList(String str) {
 
 		    	/*Divide string up into lines */
         String[] lines=str.split("#");
 
         ArrayList<Event> list = new ArrayList<Event>();
+        distances = new ArrayList<java.lang.String>();
 
-		        /*for each line parse key-value pairs */
+        /*for each line parse key-value pairs */
         for(String line : lines){
             if(!line.isEmpty()){
                 Map<String, String> map = new HashMap<>();
+//                int count = 0;
                 for(String pair: line.split(",")){
                     String[] tokens = pair.split("::");
-                    for (int i=0; i<tokens.length-1; ){
+                    for (int i=0; i<tokens.length-1; )
+                    {
                         map.put(tokens[i++], tokens[i++]);
                     }
                 }
@@ -529,11 +538,22 @@ public class URLConnection
                             map.get("EventID"));
                     list.add(newEvent);
                 }
+                if(map.containsKey("_distance"))
+                {
+                    java.lang.String distance = map.get("_distance");
+                    if(distance.contains("."))
+                    {
+                        int per = distance.indexOf(".");
+                        distance = distance.substring(0, per+2);
+                    }
+                    distances.add(distance);
+                }
             }
         }
 
         return list;
     }
+
 
     private User convertUser(String str) {
 

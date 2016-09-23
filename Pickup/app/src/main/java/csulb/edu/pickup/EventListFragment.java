@@ -2,9 +2,15 @@ package csulb.edu.pickup;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,9 +51,23 @@ public class EventListFragment extends Fragment
 
         // MAKE INTO FUNCTION
         URLConnection http = new URLConnection();
-        try {
-            eventList = http.sendGetEventsFromDistance("33.7838", "-118.1141", "50");
-            BaseAdapter adapter = new EventListAdapter<String>(getActivity(), R.layout.event_list, eventList, getActivity());
+        try
+        {
+            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            Criteria criteria = new Criteria();
+            String bestProvider = locationManager.getBestProvider(criteria, true);
+            if (locationManager != null) {
+                if (ContextCompat.checkSelfPermission(this.getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                        || ContextCompat.checkSelfPermission(this.getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+                }
+            }
+            Location location = locationManager.getLastKnownLocation(bestProvider);
+            String latitude = location.getLatitude() + "";
+            String longitude = location.getLongitude() + "";
+            eventList = http.sendGetEventsFromDistance(latitude, longitude, "50");
+            ArrayList<java.lang.String> distanceList = http.getEventDistances();
+            BaseAdapter adapter = new EventListAdapter<String>(getActivity(), R.layout.event_list, eventList, distanceList, getActivity());
 
             listView = (ListView) rootView.findViewById(R.id.event_list);
             listView.setAdapter(adapter);
@@ -58,7 +78,6 @@ public class EventListFragment extends Fragment
             e.printStackTrace();
         }
 
-        // TODO: add onClickListener to each event
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -76,7 +95,6 @@ public class EventListFragment extends Fragment
                 thisIntent.putExtras(b);
 
             }
-
         });
 
         return rootView;

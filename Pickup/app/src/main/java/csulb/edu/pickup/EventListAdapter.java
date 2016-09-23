@@ -20,21 +20,24 @@ import java.util.ArrayList;
  */
 public class EventListAdapter<String> extends BaseAdapter
 {
-    public ArrayList<Event> eventList;
+    private ArrayList<Event> eventList;
+    private ArrayList<java.lang.String> distanceList;
     Activity activity;
     TextView textViewName;
     TextView textViewLocation;
     TextView textViewSport;
     TextView textViewPlayerAmount;
+    TextView textViewDistanceAway;
     ImageView imageViewSportImage;
     int layout;
     private final Context context;
 
-    public EventListAdapter(Activity activity, int layout, ArrayList<Event> eventList, Context context) {
+    public EventListAdapter(Activity activity, int layout, ArrayList<Event> eventList, ArrayList<java.lang.String> distanceList, Context context) {
         super();
         this.activity = activity;
         this.layout = R.layout.friends_list;
         this.eventList = eventList;
+        this.distanceList = distanceList;
         this.context = context;
     }
     @Override
@@ -48,15 +51,18 @@ public class EventListAdapter<String> extends BaseAdapter
         textViewLocation = (TextView) convertView.findViewById(R.id.event_list_location);
         textViewSport = (TextView) convertView.findViewById(R.id.event_list_sport);
         textViewPlayerAmount = (TextView) convertView.findViewById(R.id.event_list_player_amount);
+        textViewDistanceAway = (TextView) convertView.findViewById(R.id.event_list_distance_away);
         imageViewSportImage = (ImageView) convertView.findViewById(R.id.event_list_sport_image);
 
         java.lang.String name = eventList.get(position).getName();
         java.lang.String location = eventList.get(position).getAddress();
         java.lang.String sport = eventList.get(position).getSport();
+        java.lang.String distanceAway = distanceList.get(position);
 
         textViewName.setText(name);
         textViewLocation.setText(location);
         textViewSport.setText(sport);
+        textViewDistanceAway.setText(distanceAway + " mi");
         java.lang.String color1 = "#fea10f";
         java.lang.String color2 = "#696969";
         java.lang.String text = "<font color=" + color1 + ">" + eventList.get(position).getMaxNumberPpl()
@@ -73,7 +79,6 @@ public class EventListAdapter<String> extends BaseAdapter
         }
         else if (sport.equals("Basketball"))
         {
-            //imageViewSportImage.setVisibility(View.GONE);
             imageViewSportImage.setImageResource(R.drawable.basketball_icon);
         }
         else if (sport.equals("Football"))
@@ -108,18 +113,10 @@ public class EventListAdapter<String> extends BaseAdapter
         {
             imageViewSportImage.setImageResource(R.drawable.volleyball_icon);
         }
-        else {
+        else
+        {
             // should never hit this
         }
-        //imageViewSportImage.invalidate();
-//         imageViewSportImage.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-//                RelativeLayout.LayoutParams.WRAP_CONTENT));
-
-//        if (position % 2 == 0) {
-//            convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.lite_grey));
-//        } else {
-//            convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
-//        }
 
         return convertView;
     }
