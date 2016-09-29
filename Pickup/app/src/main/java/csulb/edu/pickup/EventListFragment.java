@@ -48,7 +48,7 @@ public class EventListFragment extends Fragment
         ListView listView = (ListView)rootView.findViewById(R.id.listView);
         getActivity().setTitle("Event List");
 
-        getEventsAndDistancesFromServer(listView);
+        listView = getEventsAndDistancesFromServer(listView);
 
         setOnClickListeners(listView);
 
