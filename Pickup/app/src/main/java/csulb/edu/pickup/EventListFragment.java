@@ -28,7 +28,6 @@ import java.util.ArrayList;
 public class EventListFragment extends Fragment
 {
     ArrayList<Event> eventList;
-//    ListView listView;
     User thisUser;
     View rootView;
 
@@ -49,6 +48,15 @@ public class EventListFragment extends Fragment
         ListView listView = (ListView)rootView.findViewById(R.id.listView);
         getActivity().setTitle("Event List");
 
+        getEventsAndDistancesFromServer(listView);
+
+        setOnClickListeners(listView);
+
+        return rootView;
+    }
+
+    private ListView getEventsAndDistancesFromServer(ListView listView)
+    {
         // MAKE INTO FUNCTION
         URLConnection http = new URLConnection();
         try
@@ -77,7 +85,11 @@ public class EventListFragment extends Fragment
         {
             e.printStackTrace();
         }
+        return listView;
+    }
 
+    private void setOnClickListeners(ListView listView)
+    {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -96,7 +108,5 @@ public class EventListFragment extends Fragment
 
             }
         });
-
-        return rootView;
     }
 }
