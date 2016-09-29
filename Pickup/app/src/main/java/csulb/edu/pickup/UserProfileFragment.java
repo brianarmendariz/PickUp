@@ -11,17 +11,30 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
+import android.text.Html;
+import android.text.Layout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,11 +42,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -54,18 +72,20 @@ import java.util.ArrayList;
 /*
     SHOW THE USER PROFILE NAME GENDER
  */
-public class UserProfileFragment extends Fragment implements SearchView.OnQueryTextListener {
+public class UserProfileFragment extends Fragment implements SearchView.OnQueryTextListener
+{
 
     private static final int VIEW_MAP_EVENT = 2;
-
     private ImageView profileImage;
     private TextView name;
     private TextView birthday;
     private TextView gender;
     private TextView userRating;
-    private Button upvote;
-    private Button downvote;
-    private Button addFriendButton;
+    private ImageButton upvote;
+    private ImageButton downvote;
+    private ImageButton follow;
+    private ImageButton unfollow;
+    private ImageButton addFriendButton;
     //current user
     User thisUser;
     //the user that is viewed.
@@ -81,13 +101,15 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
     View rootView;
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState)
+    {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
     @Override
-    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater)
+    {
 
         inflater.inflate(R.menu.menu_main_search, menu); // removed to not double the menu items
         MenuItem item = menu.findItem(R.id.menu_search);
@@ -96,27 +118,33 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         MenuItemCompat.setActionView(item, sv);
         sv.setOnQueryTextListener(this);
         sv.setIconifiedByDefault(false);
-        sv.setOnSearchClickListener(new View.OnClickListener() {
+        sv.setOnSearchClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view) {
             }
         });
 
-        MenuItemCompat.setOnActionExpandListener(item, new MenuItemCompat.OnActionExpandListener() {
+        MenuItemCompat.setOnActionExpandListener(item, new MenuItemCompat.OnActionExpandListener()
+        {
             @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
+            public boolean onMenuItemActionCollapse(MenuItem item)
+            {
                 // Do something when collapsed
                 return true;  // Return true to collapse action view
             }
 
             @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
+            public boolean onMenuItemActionExpand(MenuItem item)
+            {
                 // Do something when expanded
                 return true;  // Return true to expand action view
             }
         });
 
         super.onCreateOptionsMenu(menu, inflater);
+
+
     }
 
     private ArrayList<String> getUsersFromServer()
@@ -136,10 +164,13 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         //add current user
         b.putParcelable("USER", thisUser);
         User user = getUser(username);
-        if (user != null && !thisUser.getEmail().equals(user.getEmail())) {
+        if (user != null && !thisUser.getEmail().equals(user.getEmail()))
+        {
             System.out.println("putting the parceable");
             b.putParcelable("VIEWUSER", user);
-        } else {
+        }
+        else
+        {
             System.out.println("not putting the parceable");
         }
         Fragment fragment = new UserProfileFragment();
@@ -168,14 +199,16 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
     }
 
     @Override
-    public boolean onQueryTextSubmit(String query) {
+    public boolean onQueryTextSubmit(String query)
+    {
         ArrayList<String> usernames = getUsersFromServer(); // get users from the server
         // see if requested user is a member
         boolean member = false;
         for(int i = 0; i < usernames.size(); i++)
         {
             // if user is member break from loop
-            if(query.equals(usernames.get(i))) {
+            if(query.equals(usernames.get(i)))
+            {
                 member = true;
                 break;
             }
@@ -200,8 +233,8 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         Bundle data = getActivity().getIntent().getExtras();
         getActivity().setTitle("User Profile");
 
@@ -216,6 +249,11 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         super.onCreate(savedInstanceState);
 
         profileImage = (ImageView)rootView.findViewById(R.id.profileImageView);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(),
+                R.drawable.com_facebook_profile_picture_blank_portrait);
+        Bitmap resized = Bitmap.createScaledBitmap(bm, 150, 150, true);
+        Bitmap conv_bm = getRoundedRectBitmap(resized, 150);
+        profileImage.setImageBitmap(conv_bm);
         profileImage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
@@ -228,34 +266,35 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         name  = (TextView) rootView.findViewById(R.id.NameEditText);
         birthday = (TextView) rootView.findViewById(R.id.BirthdayEditText);
         gender = (TextView) rootView.findViewById(R.id.GenderEditText);
-        userRating = (TextView) rootView.findViewById(R.id.UserRatingEditText);
+        upvote = (ImageButton) rootView.findViewById(R.id.thumbsup);
+        downvote = (ImageButton) rootView.findViewById(R.id.thumbsdown);
+//        unfollow = (ImageButton) rootView.findViewById(R.id.following);
+        follow = (ImageButton) rootView.findViewById(R.id.follow);
+//        userRating = (TextView) rootView.findViewById(R.id.UserRatingEditText);
+// Putting in Cropping of the Picture
+
+
 
         Bundle fragBundle = this.getArguments();
         User viewUser = (User)fragBundle.getParcelable("VIEWUSER");
         viewUsername = viewUser;
 
+
         if(viewUser == null)
         {
             System.out.println("null");
             name.setText(thisUser.getFirstName());
-            birthday.setText(thisUser.getBirthday());
+            birthday.setText(thisUser.getAge());
             gender.setText(thisUser.getGender());
-            userRating.setText(thisUser.getUserRating());
             setupEvents(getEvents(thisUser.getEmail()));
         }
         else  //If the user views his/her own profile
         {
             System.out.println("not null");
             name.setText(viewUser.getFirstName());
-            birthday.setText(viewUser.getBirthday());
+            birthday.setText(viewUser.getAge());
             gender.setText(viewUser.getGender());
-            userRating.setText(viewUser.getUserRating());
             setupEvents(getEvents(viewUser.getEmail()));
-            addFriendButton = new Button (this.getActivity());
-            Button upVoteButton = new Button(this.getActivity());
-            Button downVoteButton = new Button(this.getActivity());
-            LinearLayout llLayout = (LinearLayout) rootView.findViewById(R.id.profileLinearLayout3);
-            llLayout.setOrientation(LinearLayout.HORIZONTAL);
 
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
@@ -304,83 +343,68 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             }
 
             if(!voted && rated == 0) {
-                upVoteButton.setText("Upvote");
-                downVoteButton.setText("Downvote");
+                upvote.setEnabled(true);
+                downvote.setEnabled(true);
+//                upVoteButton.setText("Upvote");
+//                downVoteButton.setText("Downvote");
 
             }
             //for the user that undownvoted another user
             else if (rated == -1) {
-                upVoteButton.setText("Upvote");
-                downVoteButton.setText("Undownvote");
+//                upVoteButton.setText("Upvote");
+//                downVoteButton.setText("Undownvote");
+                upvote.setEnabled(true);
+                downvote.setEnabled(false);
 
             }
 
             else if (rated == 0) {
-                upVoteButton.setText("Upvote");
-                downVoteButton.setText("Downvote");
+                upvote.setEnabled(true);
+                downvote.setEnabled(true);
+//                upVoteButton.setText("Upvote");
+//                downVoteButton.setText("Downvote");
 
             }
             else if (rated == 1) {
-                upVoteButton.setText("Unupvote");
-                downVoteButton.setText("Downvote");
+                upvote.setEnabled(false);
+                downvote.setEnabled(true);
+//                upVoteButton.setText("Unupvote");
+//                downVoteButton.setText("Downvote");
             }
-            if(areFriends) {
-                addFriendButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.unfriend_icon, 0, 0, 0);
-                addFriendButton.setText("UnFollow");
 
+            if(areFriends) {
+                follow.setImageResource(R.drawable.following);
             }
             else{
-                addFriendButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_friend_icon, 0, 0, 0);
-                addFriendButton.setText("Follow");
+                follow.setImageResource(R.drawable.follow);
+
             }
-            addFriendButton.setTag("add_friend_btn");
-            addFriendButton.setGravity(Gravity.CENTER);
-            addFriendButton.setLayoutParams(new LinearLayout.LayoutParams(200, 100));
+//
 
-
-            //addFriendButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-            LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.friend_button_frame);
-            ll.setGravity(Gravity.CENTER);
-            ll.addView(addFriendButton);
-
-            upVoteButton.setTextColor(Color.parseColor("#008000"));
-            upVoteButton.setGravity(Gravity.CENTER_HORIZONTAL);
-            upVoteButton.setLayoutParams(params);
-
-            downVoteButton.setTextColor(Color.parseColor("#008000"));
-            downVoteButton.setGravity(Gravity.CENTER_HORIZONTAL);
-            downVoteButton.setLayoutParams(params);
-
-            //set the the actually upvote button to use
-            upvote = upVoteButton;
-            downvote = downVoteButton;
-            addFriendButton.setOnClickListener(new View.OnClickListener() {
+            follow.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     URLConnection http = new URLConnection();
                     try {
 
                         if(areFriends){
-                        String response = http.sendDeleteFriend(thisUser.getEmail(), viewUsername.getEmail());
+                            String response = http.sendDeleteFriend(thisUser.getEmail(), viewUsername.getEmail());
                             System.out.println("delete result"+response);
-                        areFriends = false;
-                        addFriendButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_friend_icon, 0, 0, 0);
-                        addFriendButton.setText("Follow");
+                            areFriends = false;
+                            follow.setImageResource(R.drawable.follow);
                         }
                         else{
                             String response = http.sendAddFriend(thisUser.getEmail(), viewUsername.getEmail());
                             System.out.println("add result"+response);
 
                             areFriends = true;
-                            addFriendButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.unfriend_icon, 0, 0, 0);
-                            addFriendButton.setText("UnFollow");
+                            follow.setImageResource(R.drawable.following);
                         }
                     }catch(IOException ie){
                         ie.printStackTrace();
                     }
                 }
             });
-            upVoteButton.setOnClickListener(new View.OnClickListener() {
+            upvote.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
                     try {
@@ -427,11 +451,11 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
                             //save to the server
                             http2.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
-                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+                                    , viewUsername.getAge(), viewUsername.getGender(), rate, "");
 
                             updatedUser = http2.sendGetUser(viewUsername.getEmail());
-                            upvote.setText("Unupvote");
-                            downvote.setText("Downvote");
+                            upvote.setEnabled(true);
+                            downvote.setEnabled(true);
                         }
 
                         //if the user downvoted the viewUser before, change the vote to 1
@@ -451,13 +475,12 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
                             //save to the server
                             http2.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
-                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+                                    , viewUsername.getAge(), viewUsername.getGender(), rate, "");
 
                             //update the user
                             updatedUser = http2.sendGetUser(viewUsername.getEmail());
-
-                            upvote.setText("Unupvote");
-                            downvote.setText("Downvote");
+                            upvote.setEnabled(false);
+                            downvote.setEnabled(true);
                         }
 
                         //if the user vote the unrated viewUser, rate = 1
@@ -479,13 +502,12 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
                             //save to the server
                             http2.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
-                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+                                    , viewUsername.getAge(), viewUsername.getGender(), rate, "");
 
                             //update the user
                             updatedUser = http2.sendGetUser(viewUsername.getEmail());
-
-                            upvote.setText("Unupvote");
-                            downvote.setText("Downvote");
+                            upvote.setEnabled(false);
+                            downvote.setEnabled(true);
 
                         }
 
@@ -508,13 +530,12 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
                             //save to the server
                             http2.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
-                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+                                    , viewUsername.getAge(), viewUsername.getGender(), rate, "");
 
                             //update the user
                             updatedUser = http2.sendGetUser(viewUsername.getEmail());
-
-                            upvote.setText("Upvote");
-                            downvote.setText("Downvote");
+                            upvote.setEnabled(true);
+                            downvote.setEnabled(true);
 
                         }
 
@@ -530,7 +551,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                 }
             });
 
-            downVoteButton.setOnClickListener(new View.OnClickListener() {
+            downvote.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
                     try {
@@ -577,12 +598,12 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
                             //save to the server
                             http3.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
-                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+                                    , viewUsername.getAge(), viewUsername.getGender(), rate, "");
 
                             updatedUser = http3.sendGetUser(viewUsername.getEmail());
 
-                            upvote.setText("Upvote");
-                            downvote.setText("Undownvote");
+                            upvote.setEnabled(true);
+                            downvote.setEnabled(false);
 
 
                         }
@@ -604,13 +625,12 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
                             //save to the server
                             http3.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
-                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+                                    , viewUsername.getAge(), viewUsername.getGender(), rate, "");
 
                             //update the user
                             updatedUser = http3.sendGetUser(viewUsername.getEmail());
-
-                            upvote.setText("Upvote");
-                            downvote.setText("Undownvote");
+                            upvote.setEnabled(true);
+                            downvote.setEnabled(false);
 
                         }
 
@@ -631,13 +651,12 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
                             //save to the server
                             http3.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
-                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+                                    , viewUsername.getAge(), viewUsername.getGender(), rate, "");
 
                             //update the user
                             updatedUser = http3.sendGetUser(viewUsername.getEmail());
-
-                            upvote.setText("Upvote");
-                            downvote.setText("Undownvote");
+                            upvote.setEnabled(true);
+                            downvote.setEnabled(false);
 
                         }
 
@@ -659,13 +678,12 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
                             //save to the server
                             http3.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
-                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+                                    , viewUsername.getAge(), viewUsername.getGender(), rate, "");
 
                             //update the user
                             updatedUser = http3.sendGetUser(viewUsername.getEmail());
-
-                            upvote.setText("Upvote");
-                            downvote.setText("Downvote");
+                            upvote.setEnabled(true);
+                            downvote.setEnabled(true);
                         }
                         //userRating.setText("10");
                     } catch (IOException e) {
@@ -681,8 +699,8 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                 }
             });
 
-            llLayout.addView(upvote);
-            llLayout.addView(downvote);
+//            llLayout.addView(upvote);
+//            llLayout.addView(downvote);
 
         }
         return rootView;
@@ -699,26 +717,31 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         Uri targetUri = data.getData();
         Bitmap bitmap;
 
-
-        try {
-
-            //bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
-            bitmap = getBitmapFromReturnedImage(targetUri,200,200);
-            profileImage.setImageBitmap(bitmap);
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch(IOException e) {
-            e.printStackTrace();
-        }
-        catch(NullPointerException e) {
-            e.printStackTrace();
-        }
+        Bitmap bm = BitmapFactory.decodeResource(getResources(),
+                R.drawable.com_facebook_profile_picture_blank_portrait);
+        Bitmap resized = Bitmap.createScaledBitmap(bm, 150, 150, true);
+        Bitmap conv_bm = getRoundedRectBitmap(resized, 150);
+        profileImage.setImageBitmap(conv_bm);
+//        try {
+//
+////            bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
+//            bitmap = getBitmapFromReturnedImage(targetUri,200,200);
+//
+//        } catch (FileNotFoundException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//        catch(IOException e) {
+//            e.printStackTrace();
+//        }
+//        catch(NullPointerException e) {
+//            e.printStackTrace();
+//        }
         //}
     }
 
-    public Bitmap getBitmapFromReturnedImage(Uri selectedImage, int reqWidth, int reqHeight) throws IOException {
+    public Bitmap getBitmapFromReturnedImage(Uri selectedImage, int reqWidth, int reqHeight) throws IOException
+    {
 
         InputStream inputStream = getActivity().getContentResolver().openInputStream(selectedImage);
 
@@ -741,7 +764,30 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         return BitmapFactory.decodeStream(inputStream, null, options);
     }
 
-    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    public static Bitmap getRoundedRectBitmap(Bitmap bitmap, int pixels) {
+        Bitmap result = null;
+        try {
+            result = Bitmap.createBitmap(150, 150, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(result);
+
+            int color = 0xff424242;
+            Paint paint = new Paint();
+            Rect rect = new Rect(0, 0, 200, 200);
+
+            paint.setAntiAlias(true);
+            canvas.drawARGB(0, 0, 0, 0);
+            paint.setColor(color);
+            canvas.drawCircle(75,75,75, paint);
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+            canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        } catch (NullPointerException e) {
+        } catch (OutOfMemoryError o) {
+        }
+        return result;
+    }
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)
+    {
         // Raw height and width of image
         final int height = options.outHeight;
         final int width = options.outWidth;
@@ -777,7 +823,8 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         return user;
     }
 
-    private ArrayList<Event> getEvents(String username) {
+    private ArrayList<Event> getEvents(String username)
+    {
         ArrayList<Event> events = null;
         URLConnection http = new URLConnection();
         try {
@@ -789,55 +836,130 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
     private void setupEvents(final ArrayList<Event> events)
     {
-        TableLayout layout = (TableLayout)rootView.findViewById(R.id.profileTableLayout2);
-        TableLayout.LayoutParams tableParams = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
-        TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+            ArrayList<String> distanceList = new ArrayList<String>();
+            ListView listView = (ListView)rootView.findViewById(R.id.profile_list_event);
 
-        int prevTextViewId = 0;
-        for(int i = 0; i < events.size(); i++)
-        {
-            final int id = i;
-            String name = events.get(i).getName();
-            String sport = events.get(i).getSport();
-            String date = events.get(i).getEventDate();
-            final TextView textViewName = new TextView(this.getActivity());
-            textViewName.setPadding(30,0,0,0);
-            textViewName.setText(name);
-            textViewName.setTextColor(getResources().getColor(R.color.black));
-            textViewName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) { // onClick listener for event name
+            BaseAdapter adapter = new EventListAdapter<String>(getActivity(), R.layout.event_list, events, distanceList, getActivity());
 
-                    Bundle args = new Bundle();
-                    Fragment fragment = new ViewEventFragment();
+            listView.setAdapter(adapter);
 
-                    args.putString("EventID", events.get(id).getEventID());
-                    fragment.setArguments(args);
-                    FragmentManager frgManager = getFragmentManager();
-                    frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack( "User Profile" )
-                            .commit();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                Bundle b = new Bundle();
+                b.putParcelable("USER", thisUser);
+                b.putString("EventID", events.get(position).getEventID());
+                Fragment fragment = new ViewEventFragment();
+                fragment.setArguments(b);
+                FragmentManager frgManager = getFragmentManager();
+                frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("EventListFragment")
+                        .commit();
 
+                Intent thisIntent = new Intent(getActivity().getBaseContext(), MainActivity.class);
+                thisIntent.putExtras(b);
 
-                }
-            });
-            textViewName.setLayoutParams(rowParams);
-            TableRow tableRow = new TableRow(this.getActivity()); // create a row
-            tableRow.setLayoutParams(tableParams);
-            tableRow.addView(textViewName); // add event name textview to row
-            TextView textViewSport = new TextView(this.getActivity());
-            TextView textViewDate = new TextView(this.getActivity());
-            textViewSport.setPadding(50,0,50,0);
-            textViewDate.setPadding(0,0,30,0);
-            textViewSport.setText(sport); // add sport to textview
-            textViewDate.setText(date); // add date to textview
-            textViewSport.setTextColor(getResources().getColor(R.color.black));
-            textViewDate.setTextColor(getResources().getColor(R.color.black));
-            tableRow.addView(textViewSport); // add sport textview to row
-            tableRow.addView(textViewDate);  // add date textview to row
-            tableRow.setGravity(Gravity.CENTER);
-            layout.addView(tableRow, tableParams); // add row to tablelayout
+            }
+        });
+
+//            View convertView = LayoutInflater.from(getActivity()).inflate(R.layout.event_list, null);
+//
+//            LinearLayout v = (LinearLayout)rootView.findViewById(R.id.profile_list_event);
+//            TextView textViewName =(TextView) convertView.findViewById(R.id.event_list_name);
+//            TextView textViewSport = (TextView) convertView.findViewById(R.id.event_list_sport);
+//            TextView textViewPlayerAmount = (TextView) convertView.findViewById(R.id.event_list_player_amount);
+//            TextView textViewDistanceAway = (TextView) convertView.findViewById(R.id.event_list_distance_away);
+//            ImageView imageViewSportImage = (ImageView) convertView.findViewById(R.id.event_list_sport_image);
+//
+//            java.lang.String name = events.get(position).getName();
+//            java.lang.String sport = events.get(position).getSport();
+//
+//            textViewName.setText(name);
+//            textViewSport.setText(sport);
+//
+//            java.lang.String color1 = "#fea10f";
+//            java.lang.String color2 = "#696969";
+////            java.lang.String text = "<font color=" + color1 + ">" + events.get(position).getMaxNumberPpl()
+////                    + "</font><font color=" + color2 + ">/" + events.get(position).getMaxNumberPpl() + "</font>";
+////            textViewPlayerAmount.setText(Html.fromHtml(text));
+//
+//            if (sport.equals("Badminton")) {
+//                imageViewSportImage.setImageResource(R.drawable.badminton_icon);
+//            } else if (sport.equals("Baseball")) {
+//                imageViewSportImage.setImageResource(R.drawable.baseball_icon);
+//            } else if (sport.equals("Basketball")) {
+//                imageViewSportImage.setImageResource(R.drawable.basketball_icon);
+//            } else if (sport.equals("Football")) {
+//                imageViewSportImage.setImageResource(R.drawable.football_icon);
+//            } else if (sport.equals("Handball")) {
+//                imageViewSportImage.setImageResource(R.drawable.handball_icon);
+//            } else if (sport.equals("Ice Hockey")) {
+//                imageViewSportImage.setImageResource(R.drawable.icehockey_icon);
+//            } else if (sport.equals("Racquetball")) {
+//                imageViewSportImage.setImageResource(R.drawable.racquetball_icon);
+//            } else if (sport.equals("Roller Hockey")) {
+//                imageViewSportImage.setImageResource(R.drawable.rollerhockey_icon);
+//            } else if (sport.equals("Softball")) {
+//                imageViewSportImage.setImageResource(R.drawable.softball_icon);
+//            } else if (sport.equals("Tennis")) {
+//                imageViewSportImage.setImageResource(R.drawable.tennis_icon);
+//            } else if (sport.equals("Volleyball")) {
+//                imageViewSportImage.setImageResource(R.drawable.volleyball_icon);
+//            } else {
+//                // should never hit this
+//            }
+//            v.addView(convertView);
+//            v.setDividerPadding(1);
         }
     }
+//              TableLayout layout = (TableLayout)rootView.findViewById(R.id.profileTableLayout2);
+//        TableLayout.LayoutParams tableParams = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
+//        TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+
+//        int prevTextViewId = 0;
+//        for(int i = 0; i < events.size(); i++)
+//        {
+//            final int id = i;
+//            String name = events.get(i).getName();
+//            String sport = events.get(i).getSport();
+//            String date = events.get(i).getEventDate();
+//            final TextView textViewName = new TextView(this.getActivity());
+//            textViewName.setPadding(30,0,0,0);
+//            textViewName.setText(name);
+//            textViewName.setTextColor(getResources().getColor(R.color.black));
+//            textViewName.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) { // onClick listener for event name
+//
+//                    Bundle args = new Bundle();
+//                    Fragment fragment = new ViewEventFragment();
+//
+//                    args.putString("EventID", events.get(id).getEventID());
+//                    fragment.setArguments(args);
+//                    FragmentManager frgManager = getFragmentManager();
+//                    frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack( "User Profile" )
+//                            .commit();
+//
+//
+//                }
+//            });
+//            textViewName.setLayoutParams(rowParams);
+//            TableRow tableRow = new TableRow(this.getActivity()); // create a row
+//            tableRow.setLayoutParams(tableParams);
+//            tableRow.addView(textViewName); // add event name textview to row
+//            TextView textViewSport = new TextView(this.getActivity());
+//            TextView textViewDate = new TextView(this.getActivity());
+//            textViewSport.setPadding(50,0,50,0);
+//            textViewDate.setPadding(0,0,30,0);
+//            textViewSport.setText(sport); // add sport to textview
+//            textViewDate.setText(date); // add date to textview
+//            textViewSport.setTextColor(getResources().getColor(R.color.black));
+//            textViewDate.setTextColor(getResources().getColor(R.color.black));
+//            tableRow.addView(textViewSport); // add sport textview to row
+//            tableRow.addView(textViewDate);  // add date textview to row
+//            tableRow.setGravity(Gravity.CENTER);
+//            layout.addView(tableRow, tableParams); // add row to tablelayout
+//
+//}
 
 
-}

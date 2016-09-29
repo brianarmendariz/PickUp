@@ -2,6 +2,12 @@ package csulb.edu.pickup;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by Sarah on 3/17/2016.
@@ -12,6 +18,7 @@ public class User implements Parcelable {
     String email;
     String password;
     String birthday;
+    String age;
     String gender;
     String userRating;
     String picturePath;
@@ -62,7 +69,19 @@ public class User implements Parcelable {
     public String getBirthday(){
         return birthday;
     }
-
+    public String getAge()
+    {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date birth = new Date();
+        try {
+            birth =  dateFormat.parse(birthday);
+        } catch(ParseException e) { }
+        long ageInMillis = (new GregorianCalendar().getInstance().getTimeInMillis() - birth.getTime());
+        Date age = new Date(ageInMillis);
+        Calendar can = new GregorianCalendar().getInstance();
+        can.setTime(age);
+        return ""+can.YEAR;
+    }
     public String getGender(){
         return gender;
     }

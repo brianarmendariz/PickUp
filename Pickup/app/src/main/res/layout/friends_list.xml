@@ -3,23 +3,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
     <TextView
         android:id="@+id/name_label"
+        android:textAllCaps="true"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:padding="10dip"
-        android:textSize="25dp"
-        android:textColor="@color/black"
+        android:padding="5dip"
+        android:textSize="20dp"
+        android:textColor="@color/sky_blue"
         android:textStyle="bold" >
     </TextView>
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/email_label"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:padding="10dip"
-        android:textSize="15dp"
-        android:textColor="@color/black"
+        android:padding="5dip"
+        android:textSize="14dp"
+        android:textColor="@color/orange"
         android:textStyle="bold" >
     </TextView>
 </LinearLayout>
