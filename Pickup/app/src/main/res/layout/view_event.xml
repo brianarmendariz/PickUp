@@ -159,14 +159,14 @@
                     android:textAppearance="?android:attr/textAppearanceLarge" />
             </TableRow>
 
-                <TextView
-                    android:id="@+id/event_view_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@drawable/white"
-                    android:text=""
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+            <TextView
+                android:id="@+id/event_view_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textColor="@drawable/white"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceLarge" />
             <TableRow
                 android:id="@+id/viewTableRow5b"
                 android:layout_width="wrap_content"

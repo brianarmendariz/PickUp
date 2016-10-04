@@ -90,15 +90,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                 User thisUser;
 
                                 thisUser = new User(name,  "", email, "", birthday, gender, "");
-                               /* try {
-                                    URLConnection http = new URLConnection();
-                                    if(http.sendGetUser(thisUser.getEmail())==null){
-                                        http.sendCreateUser(email, "", name,"", birthday, gender, "0", "");
-                                    }
-                                    else{thisUser=http.sendGetUser(thisUser.getEmail());}
-                                }catch(IOException e){
-                                    e.printStackTrace();
-                                }*/
                                 if (email.equalsIgnoreCase("")) {
                                     email = "";
                                 }

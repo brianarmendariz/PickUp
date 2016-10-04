@@ -136,5 +136,4 @@ public class EventListAdapter<String> extends BaseAdapter
         // TODO Auto-generated method stub
         return 0;
     }
-
 }

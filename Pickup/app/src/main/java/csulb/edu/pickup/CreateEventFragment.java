@@ -149,14 +149,14 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
 
     private void initSpinners()
     {
-        int idSportSpinner = R.id.sport_spinner;
+        int idSportSpinner = R.id.create_event_sport_spinner;
         int idSportArray = R.array.sport_array;
-        int idGenderSpinner = R.id.event_gender_spinner;
+        int idGenderSpinner = R.id.create_event_gender_spinner;
         int idGenderArray = R.array.gender_array;
-        int idAgeMinSpinner = R.id.age_min_spinner;
-        int idAgeMaxSpinner = R.id.age_max_spinner;
-        int idMaxNumPplSpinner = R.id.max_num_ppl_spinner;
-        int idMinUserRatingSpinner = R.id.min_user_rating_spinner;
+        int idAgeMinSpinner = R.id.create_event_age_min_spinner;
+        int idAgeMaxSpinner = R.id.create_event_age_max_spinner;
+        int idMaxNumPplSpinner = R.id.create_event_max_num_ppl_spinner;
+        int idMinUserRatingSpinner = R.id.create_event_min_user_rating_spinner;
 
         // attach values to sport spinner
         initSpinner(idSportSpinner, idSportArray);
@@ -176,40 +176,40 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
         // load values from resources to populate Gender spinner
         Spinner spinner = (Spinner) rootView.findViewById(spinnerId);
 
-        if(spinnerId == R.id.sport_spinner){
+        if(spinnerId == R.id.create_event_sport_spinner){
             spinner.setAdapter(new MyCAdapter(this.getActivity(), R.layout.row, sportStringArray));
         }
-        else if(spinnerId == R.id.event_gender_spinner)
+        else if(spinnerId == R.id.create_event_gender_spinner)
         {
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.gender_array, android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setPrompt("Gender...");
             spinner.setAdapter(adapter);
         }
-        else if(spinnerId == R.id.age_min_spinner || spinnerId == R.id.age_max_spinner
-                || spinnerId == R.id.max_num_ppl_spinner || spinnerId == R.id.min_user_rating_spinner)
+        else if(spinnerId == R.id.create_event_age_min_spinner || spinnerId == R.id.create_event_age_max_spinner
+                || spinnerId == R.id.create_event_max_num_ppl_spinner || spinnerId == R.id.create_event_min_user_rating_spinner)
         {
             int min = 0;
             int max = 0;
 
             switch(spinnerId)
             {
-                case R.id.age_min_spinner:
+                case R.id.create_event_age_min_spinner:
                     min = 5;
                     max = 80;
                     spinner.setPrompt("Minimum Age...");
                     break;
-                case R.id.age_max_spinner:
+                case R.id.create_event_age_max_spinner:
                     min = 5;
                     max = 80;
                     spinner.setPrompt("Maximum Age...");
                     break;
-                case R.id.max_num_ppl_spinner:
+                case R.id.create_event_max_num_ppl_spinner:
                     min = 2;
                     max = 30;
                     spinner.setPrompt("Number of Attendees...");
                     break;
-                case R.id.min_user_rating_spinner:
+                case R.id.create_event_min_user_rating_spinner:
                     min = -10;
                     max = 20;
                     spinner.setPrompt("User Rating...");
@@ -245,7 +245,8 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
     private void initNumSpinner(int spinnerId, int begin, int end)
     {
         List<String> list=new ArrayList<String>();
-        for(int i = begin; i < end; i++) {
+        for(int i = begin; i < end; i++)
+        {
             list.add(i + "");
         }
         final Spinner sp=(Spinner) rootView.findViewById(spinnerId);
@@ -258,17 +259,17 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
     private void findViewsById() {
 
 
-        cancelEventButton = (Button) rootView.findViewById(R.id.event_cancel_btn);
+        cancelEventButton = (Button) rootView.findViewById(R.id.create_event_cancel_btn);
         cancelEventButton.requestFocus();
 
-        createEventButton = (Button) rootView.findViewById(R.id.event_create_btn);
+        createEventButton = (Button) rootView.findViewById(R.id.create_event_create_btn);
         createEventButton.requestFocus();
 
-        createDateEditText = (EditText) rootView.findViewById(R.id.event_date);
+        createDateEditText = (EditText) rootView.findViewById(R.id.create_event_date);
         createDateEditText.setInputType(InputType.TYPE_NULL);
         createDateEditText.requestFocus();
 
-        createTimeEditText = (EditText) rootView.findViewById(R.id.event_time);
+        createTimeEditText = (EditText) rootView.findViewById(R.id.create_event_time);
         createTimeEditText.setInputType(InputType.TYPE_NULL);
         createTimeEditText.requestFocus();
     }
@@ -293,8 +294,6 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
 
     private void setTimeField() {
         createTimeEditText.setOnClickListener(this);
-
-//        Calendar newCalendar = Calendar.getInstance();
 
         timePickerDialog =
                 new TimePickerDialog(this.getActivity(), new TimePickerDialog.OnTimeSetListener() {
@@ -421,45 +420,45 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
         Map<String, String> formMap = new HashMap<>();
 
         // get text from the edit text box
-        EditText editTextBox1 = (EditText)rootView.findViewById(R.id.event_name);
+        EditText editTextBox1 = (EditText)rootView.findViewById(R.id.create_event_name);
         String eventNameStr = editTextBox1.getText().toString();
         formMap.put("event name", eventNameStr);
 
-        Spinner sportSpinner = (Spinner) rootView.findViewById(R.id.sport_spinner);
+        Spinner sportSpinner = (Spinner) rootView.findViewById(R.id.create_event_sport_spinner);
         String eventSportStr = sportSpinner.getSelectedItem().toString();
         formMap.put("sport", eventSportStr);
 
-        EditText editTextBox4 = (EditText)rootView.findViewById(R.id.event_location);
+        EditText editTextBox4 = (EditText)rootView.findViewById(R.id.create_event_location);
         String eventLocationStr = editTextBox4.getText().toString();
         formMap.put("location", eventLocationStr);
 
-        EditText editTextBox5 = (EditText) rootView.findViewById(R.id.event_date);
+        EditText editTextBox5 = (EditText) rootView.findViewById(R.id.create_event_date);
         String eventDateStr = editTextBox5.getText().toString();
         formMap.put("date", eventDateStr);
 
-        EditText editTextBox6 = (EditText) rootView.findViewById(R.id.event_time);
+        EditText editTextBox6 = (EditText) rootView.findViewById(R.id.create_event_time);
         String eventTimeStr = editTextBox6.getText().toString();
         formMap.put("time", eventTimeStr);
 
-        Spinner genderSpinner = (Spinner)rootView.findViewById(R.id.gender_spinner);
+        Spinner genderSpinner = (Spinner)rootView.findViewById(R.id.create_event_gender_spinner);
         String eventGenderStr = genderSpinner.getSelectedItem().toString();
         formMap.put("gender", eventGenderStr);
 
-        Spinner ageGroupMinSpinner = (Spinner)rootView.findViewById(R.id.age_min_spinner);
+        Spinner ageGroupMinSpinner = (Spinner)rootView.findViewById(R.id.create_event_age_min_spinner);
         String eventAgeGroupMinStr = ageGroupMinSpinner.getSelectedItem().toString();
         formMap.put("age min", eventAgeGroupMinStr);
 
-        Spinner ageGroupMaxSpinner = (Spinner)rootView.findViewById(R.id.age_max_spinner);
+        Spinner ageGroupMaxSpinner = (Spinner)rootView.findViewById(R.id.create_event_age_max_spinner);
         String eventAgeGroupMaxStr = ageGroupMaxSpinner.getSelectedItem().toString();
         formMap.put("age max", eventAgeGroupMaxStr);
 
         String eventAgeGroupStr = eventAgeGroupMinStr + " " + eventAgeGroupMaxStr;
 
-        Spinner maxNumPplSpinner = (Spinner)rootView.findViewById(R.id.max_num_ppl_spinner);
+        Spinner maxNumPplSpinner = (Spinner)rootView.findViewById(R.id.create_event_max_num_ppl_spinner);
         String eventMaxNumPplStr = maxNumPplSpinner.getSelectedItem().toString();
         formMap.put("max num ppl", eventMaxNumPplStr);
 
-        Spinner minUserRatingSpinner = (Spinner)rootView.findViewById(R.id.min_user_rating_spinner);
+        Spinner minUserRatingSpinner = (Spinner)rootView.findViewById(R.id.create_event_min_user_rating_spinner);
         String eventMinUserRatingStr = minUserRatingSpinner.getSelectedItem().toString();
         formMap.put("min rating", eventMinUserRatingStr);
 

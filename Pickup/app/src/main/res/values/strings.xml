@@ -29,7 +29,7 @@
     <string name="save_changes_event_btn_txt">Save Changes</string>
 
     <string-array name="gender_array">
-        <item>Any</item>
+        <item>Coed</item>
         <item>Female</item>
         <item>Male</item>
     </string-array>

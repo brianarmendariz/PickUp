@@ -20,6 +20,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/maven/com.google.guava/guava/pom.properties'
+        exclude 'META-INF/maven/com.google.guava/guava/pom.xml'
+    }
 }
 
 repositories {
@@ -51,3 +55,4 @@ dependencies {
     // add this for webview testing support
     androidTestCompile 'com.android.support.test.espresso:espresso-web:2.2'
 }
+

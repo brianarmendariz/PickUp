@@ -24,7 +24,7 @@
             android:src="@drawable/logo"/>
 
         <EditText
-            android:id="@+id/event_name"
+            android:id="@+id/create_event_name"
             android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
         </EditText>
 
         <Spinner
-            android:id="@+id/sport_spinner"
+            android:id="@+id/create_event_sport_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/event_table_margin"
@@ -50,7 +50,7 @@
             android:prompt="@string/prompt" />
 
         <EditText
-            android:id="@+id/event_location"
+            android:id="@+id/create_event_location"
             android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
         </EditText>
 
         <EditText
-            android:id="@+id/event_date"
+            android:id="@+id/create_event_date"
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
 
 
         <EditText
-            android:id="@+id/event_time"
+            android:id="@+id/create_event_time"
             android:gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
             android:hint="@string/event_time_text" />
 
         <csulb.edu.pickup.NoDefaultSpinner
-            android:id="@+id/event_gender_spinner"
+            android:id="@+id/create_event_gender_spinner"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                 android:layout_height="wrap_content" >
 
                 <csulb.edu.pickup.NoDefaultSpinner
-                    android:id="@+id/age_min_spinner"
+                    android:id="@+id/create_event_age_min_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -119,7 +119,7 @@
                     android:textSize="@dimen/edittext_text"/>
 
                 <csulb.edu.pickup.NoDefaultSpinner
-                    android:id="@+id/age_max_spinner"
+                    android:id="@+id/create_event_age_max_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -129,7 +129,7 @@
         </TableLayout>
 
         <csulb.edu.pickup.NoDefaultSpinner
-            android:id="@+id/max_num_ppl_spinner"
+            android:id="@+id/create_event_max_num_ppl_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/event_table_margin"
@@ -140,7 +140,7 @@
             android:textSize="@dimen/edittext_text"/>
 
         <csulb.edu.pickup.NoDefaultSpinner
-            android:id="@+id/min_user_rating_spinner"
+            android:id="@+id/create_event_min_user_rating_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/event_table_margin"
@@ -157,7 +157,7 @@
             android:orientation="vertical" >
 
             <Button
-                android:id="@+id/event_create_btn"
+                android:id="@+id/create_event_create_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/create_event_btn_txt"
@@ -165,7 +165,7 @@
                 android:layout_gravity="center_horizontal" />
 
             <Button
-                android:id="@+id/event_cancel_btn"
+                android:id="@+id/create_event_cancel_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cancel"

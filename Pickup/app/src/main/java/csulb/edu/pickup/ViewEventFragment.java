@@ -77,11 +77,7 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
         getActivity().setTitle("View Event");
 
         super.onCreate(savedInstanceState);
-        //FacebookSdk.sdkInitialize(getApplicationContext());
-       // StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-       // StrictMode.setThreadPolicy(policy);
-        //setContentView(R.layout.view_event);
-        //context = this;
+
         animAlpha = AnimationUtils.loadAnimation(this.getActivity(),R.anim.anim_alpha);
 
         Log.i(TAG, "onCreate");
@@ -89,11 +85,7 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
         Bundle extras = getArguments();
         String extra = extras.getString("EventID");
 
-        //String extra = "5";
         _event = getEventDetails(Integer.parseInt(extra));
-
-
-        //Log.d("VIEW EVENT ID", extra);
 
         rootView = inflater.inflate(R.layout.view_event, container, false);
 
