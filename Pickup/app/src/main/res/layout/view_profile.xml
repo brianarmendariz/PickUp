@@ -1,188 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/orange3"
     tools:context=".UserProfileFragment" >
 
-
-    <RelativeLayout
-        android:id="@+id/profileRelativeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:id="@+id/friend_button_frame"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="50dp"
-            android:layout_gravity="center_horizontal"
-            android:orientation="vertical"
-            android:layout_alignParentTop="true"
-            ></LinearLayout>
-
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:adjustViewBounds="false"
-        android:id="@+id/profileImageView"
-        android:src="@drawable/com_facebook_profile_picture_blank_portrait"
-        android:background="@drawable/rounded_transparent"
-        android:layout_below="@id/friend_button_frame"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:clickable="true"
-        android:onClick="onClick"/>
-
-    <TableLayout
-        android:id="@+id/profileTableLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="10dip"
-        android:layout_below="@id/profileImageView">
-
-        <TableRow
-            android:id="@+id/profileTableRowName"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="3dip" >
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/NameTextView"
-                android:text="NAME:"
-                android:textColor="@color/white"
-                android:gravity="center_vertical|center_horizontal"
-                android:textStyle="bold" />
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:layout_above="@+id/table_bar"
+        android:src="@drawable/orange_3d_geometric_abstract_background"
+        />
+    <TableLayout
+        android:id = "@+id/table_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        >
+        <TableRow>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:id="@+id/NameEditText"
-                android:textColor="@color/black"
-                android:background="@drawable/roundedwhitebutton"
-                android:maxLines="1"
-                android:maxLength="30"
-                android:gravity="center_horizontal" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/profileTableRowBirthday"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="3dip" >
+                android:textStyle="bold"
+                android:textSize ="20sp"
+                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/BirthDayTextView"
-                android:text="BIRTHDAY:"
-                android:textColor="@color/black"
-                android:gravity="center_vertical|center_horizontal"
-                android:textStyle="bold" />
+                android:text =" | "
+                android:textStyle="bold"
+                android:textSize="20sp"
+                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:id="@+id/BirthdayEditText"
-                android:textColor="@color/black"
-                android:background="@drawable/roundedwhitebutton"
-                android:maxLines="1"
-                android:gravity="center_horizontal"/>
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/profileTableRowGender"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="3dip" >
+                android:textStyle="bold"
+                android:textSize ="20sp"
+                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/GenderTextView"
-                android:text="GENDER:"
-                android:textColor="@color/black"
+                android:text =" | "
                 android:textStyle="bold"
-                android:gravity="center_horizontal" />
+                android:textSize="20sp"
+                />
             <TextView
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:id="@+id/GenderEditText"
-                android:textColor="@color/black"
-                android:background="@drawable/roundedwhitebutton"
-                android:maxLines="1"
-                android:hint="M/F"
-                android:editable="false"
-                android:gravity="center_horizontal"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/UserRatingTextView"
-                android:text="User Rating"
-                android:textColor="@color/black"
                 android:textStyle="bold"
-                android:gravity="center_horizontal"/>
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:id="@+id/UserRatingEditText"
-                android:textColor="@color/black"
-                android:background="@drawable/roundedwhitebutton"
-                android:maxLines="1"
-                android:hint="User Rating"
-                android:editable="false"
-                android:gravity="center_horizontal"
-                android:layout_column="1"/>
-
+                android:textSize ="20sp"
+                />
         </TableRow>
 
     </TableLayout>
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:adjustViewBounds="false"
+        android:id="@+id/profileImageView"
+        android:layout_below="@+id/table_name"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        />
 
-        <LinearLayout
-            android:id="@+id/profileLinearLayout3"
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/profileTableLayout"
-            android:paddingTop="10dip"
-            android:layout_gravity="center_horizontal"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="false">
+    <TableLayout
+        android:id="@+id/table_bar"
+        android:layout_below="@+id/profileImageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#71acd6"
+        >
 
-        </LinearLayout>
+        <TableRow>
+            <ImageButton
+                android:id="@+id/thumbsup"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="30dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/thumbsup"
+                android:background="@android:color/transparent"
+                android:enabled="true"
+                />
+            <ImageButton
+                android:id="@+id/thumbsdown"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/thumbsdown"
+                android:background="@android:color/transparent"
+                android:enabled="true"/>
 
-        <RelativeLayout
-            android:id="@+id/profileRelativeLayout2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/profileLinearLayout3"
-            android:paddingTop="10dip">
-            <TextView
-                android:id="@+id/profileEventsTextView"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="@string/event_txt"
-                android:textColor="@color/black"
-                android:textStyle="bold"/>
-        </RelativeLayout>
-
-        <TableLayout
-            android:id="@+id/profileTableLayout2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/profileRelativeLayout2"
-            android:padding="3dip">
-        </TableLayout>
-
-    </RelativeLayout>
-</ScrollView>
+            <ImageButton
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="50dp"
+                android:scaleType="fitXY"
+                android:id="@+id/follow"
+                android:background="@android:color/transparent"
+                android:enabled="true" />
+        </TableRow>
+    </TableLayout>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/table_bar"
+        android:divider="@color/sky_blue"
+        android:dividerHeight="1px"
+        android:id="@+id/profile_list_event">
+    </ListView>
+</RelativeLayout>

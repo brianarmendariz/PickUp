@@ -11,17 +11,30 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
+import android.text.Html;
+import android.text.Layout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,11 +42,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -57,15 +75,15 @@ import java.util.ArrayList;
 public class UserProfileFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     private static final int VIEW_MAP_EVENT = 2;
-
     private ImageView profileImage;
     private TextView name;
     private TextView birthday;
     private TextView gender;
     private TextView userRating;
-    private Button upvote;
-    private Button downvote;
-    private Button addFriendButton;
+    private ImageButton upvote;
+    private ImageButton downvote;
+    private ImageButton follow;
+
     //current user
     User thisUser;
     //the user that is viewed.
@@ -87,7 +105,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
     }
 
     @Override
-    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
         inflater.inflate(R.menu.menu_main_search, menu); // removed to not double the menu items
         MenuItem item = menu.findItem(R.id.menu_search);
@@ -117,10 +135,11 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         });
 
         super.onCreateOptionsMenu(menu, inflater);
+
+
     }
 
-    private ArrayList<String> getUsersFromServer()
-    {
+    private ArrayList<String> getUsersFromServer() {
         ArrayList<String> usernames = null;
         URLConnection http = new URLConnection();
         try {
@@ -130,8 +149,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         return usernames;
     }
 
-    private void viewUsersProfile(String username)
-    {
+    private void viewUsersProfile(String username) {
         Bundle b = new Bundle();
         //add current user
         b.putParcelable("USER", thisUser);
@@ -153,8 +171,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         thisIntent.putExtras(b);
     }
 
-    private void popUpAlertDialog(String username)
-    {
+    private void popUpAlertDialog(String username) {
         Bundle b = new Bundle();
         b.putParcelable("USER", thisUser);
         Intent thisIntent = new Intent(getActivity().getBaseContext(), MainActivity.class);
@@ -172,21 +189,18 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         ArrayList<String> usernames = getUsersFromServer(); // get users from the server
         // see if requested user is a member
         boolean member = false;
-        for(int i = 0; i < usernames.size(); i++)
-        {
+        for (int i = 0; i < usernames.size(); i++) {
             // if user is member break from loop
-            if(query.equals(usernames.get(i))) {
+            if (query.equals(usernames.get(i))) {
                 member = true;
                 break;
             }
         }
 
         // view the requested users profile
-        if(member)
-        {
+        if (member) {
             viewUsersProfile(query);
-        }
-        else // alert that user does not exist
+        } else // alert that user does not exist
         {
             popUpAlertDialog(query);
         }
@@ -200,13 +214,11 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle data = getActivity().getIntent().getExtras();
         getActivity().setTitle("User Profile");
 
         thisUser = (User) data.getParcelable("USER");
-        //thisUser = new User("sarah","Shibley","sarahshib@outlook.com", "","","","");
 
         rootView = inflater.inflate(R.layout.view_profile, container, false);
 
@@ -215,7 +227,12 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
         super.onCreate(savedInstanceState);
 
-        profileImage = (ImageView)rootView.findViewById(R.id.profileImageView);
+        profileImage = (ImageView) rootView.findViewById(R.id.profileImageView);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(),
+                R.drawable.com_facebook_profile_picture_blank_portrait);
+        Bitmap resized = Bitmap.createScaledBitmap(bm, 150, 150, true);
+        Bitmap conv_bm = getRoundedRectBitmap(resized, 150);
+        profileImage.setImageBitmap(conv_bm);
         profileImage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
@@ -225,37 +242,37 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             }
         });
 
-        name  = (TextView) rootView.findViewById(R.id.NameEditText);
+        name = (TextView) rootView.findViewById(R.id.NameEditText);
         birthday = (TextView) rootView.findViewById(R.id.BirthdayEditText);
         gender = (TextView) rootView.findViewById(R.id.GenderEditText);
-        userRating = (TextView) rootView.findViewById(R.id.UserRatingEditText);
+        upvote = (ImageButton) rootView.findViewById(R.id.thumbsup);
+        downvote = (ImageButton) rootView.findViewById(R.id.thumbsdown);
+        follow = (ImageButton) rootView.findViewById(R.id.follow);
+
+
 
         Bundle fragBundle = this.getArguments();
-        User viewUser = (User)fragBundle.getParcelable("VIEWUSER");
+        User viewUser = (User) fragBundle.getParcelable("VIEWUSER");
         viewUsername = viewUser;
 
-        if(viewUser == null)
+        //If the user views his/her own profile
+        if (viewUser == null)
         {
             System.out.println("null");
             name.setText(thisUser.getFirstName());
-            birthday.setText(thisUser.getBirthday());
+            birthday.setText(thisUser.getAge());
             gender.setText(thisUser.getGender());
-            userRating.setText(thisUser.getUserRating());
             setupEvents(getEvents(thisUser.getEmail()));
+            upvote.setVisibility(View.INVISIBLE);
+            downvote.setVisibility(View.INVISIBLE);
         }
-        else  //If the user views his/her own profile
+        else
         {
             System.out.println("not null");
             name.setText(viewUser.getFirstName());
-            birthday.setText(viewUser.getBirthday());
+            birthday.setText(viewUser.getAge());
             gender.setText(viewUser.getGender());
-            userRating.setText(viewUser.getUserRating());
             setupEvents(getEvents(viewUser.getEmail()));
-            addFriendButton = new Button (this.getActivity());
-            Button upVoteButton = new Button(this.getActivity());
-            Button downVoteButton = new Button(this.getActivity());
-            LinearLayout llLayout = (LinearLayout) rootView.findViewById(R.id.profileLinearLayout3);
-            llLayout.setOrientation(LinearLayout.HORIZONTAL);
 
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
@@ -264,11 +281,11 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
 
             URLConnection http = new URLConnection();
-            try{
-                if(http.sendCheckIfFriends(thisUser.getEmail(), viewUser.getEmail()).equals("true")){
+            try {
+                if (http.sendCheckIfFriends(thisUser.getEmail(), viewUser.getEmail()).equals("true")) {
                     areFriends = true;
                 }
-            } catch( IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -298,89 +315,65 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                     }
 
                 } // end checking for loop
-            }
-            catch( IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            if(!voted && rated == 0) {
-                upVoteButton.setText("Upvote");
-                downVoteButton.setText("Downvote");
-
+            if (!voted && rated == 0) {
+                upvote.setEnabled(true);
+                downvote.setEnabled(true);
             }
             //for the user that undownvoted another user
             else if (rated == -1) {
-                upVoteButton.setText("Upvote");
-                downVoteButton.setText("Undownvote");
+//                upVoteButton.setText("Upvote");
+//                downVoteButton.setText("Undownvote");
+                upvote.setEnabled(true);
+                downvote.setEnabled(false);
 
+            } else if (rated == 0) {
+                upvote.setEnabled(true);
+                downvote.setEnabled(true);
+//                upVoteButton.setText("Upvote");
+//                downVoteButton.setText("Downvote");
+
+            } else if (rated == 1) {
+                upvote.setEnabled(false);
+                downvote.setEnabled(true);
+//                upVoteButton.setText("Unupvote");
+//                downVoteButton.setText("Downvote");
             }
 
-            else if (rated == 0) {
-                upVoteButton.setText("Upvote");
-                downVoteButton.setText("Downvote");
+            if (areFriends) {
+                follow.setImageResource(R.drawable.following);
+            } else {
+                follow.setImageResource(R.drawable.follow);
 
             }
-            else if (rated == 1) {
-                upVoteButton.setText("Unupvote");
-                downVoteButton.setText("Downvote");
-            }
-            if(areFriends) {
-                addFriendButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.unfriend_icon, 0, 0, 0);
-                addFriendButton.setText("UnFollow");
+//
 
-            }
-            else{
-                addFriendButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_friend_icon, 0, 0, 0);
-                addFriendButton.setText("Follow");
-            }
-            addFriendButton.setTag("add_friend_btn");
-            addFriendButton.setGravity(Gravity.CENTER);
-            addFriendButton.setLayoutParams(new LinearLayout.LayoutParams(200, 100));
-
-
-            //addFriendButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-            LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.friend_button_frame);
-            ll.setGravity(Gravity.CENTER);
-            ll.addView(addFriendButton);
-
-            upVoteButton.setTextColor(Color.parseColor("#008000"));
-            upVoteButton.setGravity(Gravity.CENTER_HORIZONTAL);
-            upVoteButton.setLayoutParams(params);
-
-            downVoteButton.setTextColor(Color.parseColor("#008000"));
-            downVoteButton.setGravity(Gravity.CENTER_HORIZONTAL);
-            downVoteButton.setLayoutParams(params);
-
-            //set the the actually upvote button to use
-            upvote = upVoteButton;
-            downvote = downVoteButton;
-            addFriendButton.setOnClickListener(new View.OnClickListener() {
+            follow.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     URLConnection http = new URLConnection();
                     try {
 
-                        if(areFriends){
-                        String response = http.sendDeleteFriend(thisUser.getEmail(), viewUsername.getEmail());
-                            System.out.println("delete result"+response);
-                        areFriends = false;
-                        addFriendButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_friend_icon, 0, 0, 0);
-                        addFriendButton.setText("Follow");
-                        }
-                        else{
+                        if (areFriends) {
+                            String response = http.sendDeleteFriend(thisUser.getEmail(), viewUsername.getEmail());
+                            System.out.println("delete result" + response);
+                            areFriends = false;
+                            follow.setImageResource(R.drawable.follow);
+                        } else {
                             String response = http.sendAddFriend(thisUser.getEmail(), viewUsername.getEmail());
-                            System.out.println("add result"+response);
+                            System.out.println("add result" + response);
 
                             areFriends = true;
-                            addFriendButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.unfriend_icon, 0, 0, 0);
-                            addFriendButton.setText("UnFollow");
+                            follow.setImageResource(R.drawable.following);
                         }
-                    }catch(IOException ie){
+                    } catch (IOException ie) {
                         ie.printStackTrace();
                     }
                 }
             });
-            upVoteButton.setOnClickListener(new View.OnClickListener() {
+            upvote.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
                     try {
@@ -423,15 +416,15 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             String rate;
                             //Calculate the viewUsername's userRating
                             rating = Integer.parseInt(viewUsername.userRating) + 1;
-                            rate =  rating + "";
+                            rate = rating + "";
 
                             //save to the server
                             http2.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
-                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+                                    , viewUsername.getAge(), viewUsername.getGender(), rate, "");
 
                             updatedUser = http2.sendGetUser(viewUsername.getEmail());
-                            upvote.setText("Unupvote");
-                            downvote.setText("Downvote");
+                            upvote.setEnabled(true);
+                            downvote.setEnabled(true);
                         }
 
                         //if the user downvoted the viewUser before, change the vote to 1
@@ -447,17 +440,16 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             String rate;
                             //Calculate the viewUsername's userRating
                             rating = Integer.parseInt(viewUsername.userRating) + 2;
-                            rate =  rating + "";
+                            rate = rating + "";
 
                             //save to the server
                             http2.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
-                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+                                    , viewUsername.getAge(), viewUsername.getGender(), rate, "");
 
                             //update the user
                             updatedUser = http2.sendGetUser(viewUsername.getEmail());
-
-                            upvote.setText("Unupvote");
-                            downvote.setText("Downvote");
+                            upvote.setEnabled(false);
+                            downvote.setEnabled(true);
                         }
 
                         //if the user vote the unrated viewUser, rate = 1
@@ -475,17 +467,16 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             String rate;
                             //Calculate the viewUsername's userRating
                             rating = Integer.parseInt(viewUsername.userRating) + 1;
-                            rate =  rating + "";
+                            rate = rating + "";
 
                             //save to the server
                             http2.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
-                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+                                    , viewUsername.getAge(), viewUsername.getGender(), rate, "");
 
                             //update the user
                             updatedUser = http2.sendGetUser(viewUsername.getEmail());
-
-                            upvote.setText("Unupvote");
-                            downvote.setText("Downvote");
+                            upvote.setEnabled(false);
+                            downvote.setEnabled(true);
 
                         }
 
@@ -504,24 +495,22 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
                             //Calculate the viewUsername's userRating
                             rating = Integer.parseInt(viewUsername.userRating) - 1;
-                            rate =  rating + "";
+                            rate = rating + "";
 
                             //save to the server
                             http2.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
-                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+                                    , viewUsername.getAge(), viewUsername.getGender(), rate, "");
 
                             //update the user
                             updatedUser = http2.sendGetUser(viewUsername.getEmail());
-
-                            upvote.setText("Upvote");
-                            downvote.setText("Downvote");
+                            upvote.setEnabled(true);
+                            downvote.setEnabled(true);
 
                         }
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }
-                    finally {
+                    } finally {
 
                         //set the text to the updated user rating
                         userRating.setText(updatedUser.getUserRating());
@@ -530,7 +519,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                 }
             });
 
-            downVoteButton.setOnClickListener(new View.OnClickListener() {
+            downvote.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
                     try {
@@ -573,16 +562,16 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             String rate;
                             //Calculate the viewUsername's userRating
                             rating = Integer.parseInt(viewUsername.userRating) - 1;
-                            rate =  rating + "";
+                            rate = rating + "";
 
                             //save to the server
                             http3.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
-                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+                                    , viewUsername.getAge(), viewUsername.getGender(), rate, "");
 
                             updatedUser = http3.sendGetUser(viewUsername.getEmail());
 
-                            upvote.setText("Upvote");
-                            downvote.setText("Undownvote");
+                            upvote.setEnabled(true);
+                            downvote.setEnabled(false);
 
 
                         }
@@ -600,17 +589,16 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             String rate;
                             //Calculate the viewUsername's userRating
                             rating = Integer.parseInt(viewUsername.userRating) - 2;
-                            rate =  rating + "";
+                            rate = rating + "";
 
                             //save to the server
                             http3.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
-                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+                                    , viewUsername.getAge(), viewUsername.getGender(), rate, "");
 
                             //update the user
                             updatedUser = http3.sendGetUser(viewUsername.getEmail());
-
-                            upvote.setText("Upvote");
-                            downvote.setText("Undownvote");
+                            upvote.setEnabled(true);
+                            downvote.setEnabled(false);
 
                         }
 
@@ -627,17 +615,16 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             String rate;
                             //Calculate the viewUsername's userRating
                             rating = Integer.parseInt(viewUsername.userRating) - 1;
-                            rate =  rating + "";
+                            rate = rating + "";
 
                             //save to the server
                             http3.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
-                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+                                    , viewUsername.getAge(), viewUsername.getGender(), rate, "");
 
                             //update the user
                             updatedUser = http3.sendGetUser(viewUsername.getEmail());
-
-                            upvote.setText("Upvote");
-                            downvote.setText("Undownvote");
+                            upvote.setEnabled(true);
+                            downvote.setEnabled(false);
 
                         }
 
@@ -655,24 +642,21 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
                             //Calculate the viewUsername's userRating
                             rating = Integer.parseInt(viewUsername.userRating) + 1;
-                            rate =  rating + "";
+                            rate = rating + "";
 
                             //save to the server
                             http3.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
-                                    , viewUsername.getBirthday(), viewUsername.getGender(), rate, "");
+                                    , viewUsername.getAge(), viewUsername.getGender(), rate, "");
 
                             //update the user
                             updatedUser = http3.sendGetUser(viewUsername.getEmail());
-
-                            upvote.setText("Upvote");
-                            downvote.setText("Downvote");
+                            upvote.setEnabled(true);
+                            downvote.setEnabled(true);
                         }
                         //userRating.setText("10");
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }
-
-                    finally {
+                    } finally {
 
                         //update the text
                         userRating.setText(updatedUser.getUserRating());
@@ -681,13 +665,10 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                 }
             });
 
-            llLayout.addView(upvote);
-            llLayout.addView(downvote);
 
         }
         return rootView;
     }
-
 
 
     @Override
@@ -699,22 +680,26 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         Uri targetUri = data.getData();
         Bitmap bitmap;
 
-
-        try {
-
-            //bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
-            bitmap = getBitmapFromReturnedImage(targetUri,200,200);
-            profileImage.setImageBitmap(bitmap);
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch(IOException e) {
-            e.printStackTrace();
-        }
-        catch(NullPointerException e) {
-            e.printStackTrace();
-        }
+        Bitmap bm = BitmapFactory.decodeResource(getResources(),
+                R.drawable.com_facebook_profile_picture_blank_portrait);
+        Bitmap resized = Bitmap.createScaledBitmap(bm, 150, 150, true);
+        Bitmap conv_bm = getRoundedRectBitmap(resized, 150);
+        profileImage.setImageBitmap(conv_bm);
+//        try {
+//
+////            bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
+//            bitmap = getBitmapFromReturnedImage(targetUri,200,200);
+//
+//        } catch (FileNotFoundException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//        catch(IOException e) {
+//            e.printStackTrace();
+//        }
+//        catch(NullPointerException e) {
+//            e.printStackTrace();
+//        }
         //}
     }
 
@@ -741,6 +726,29 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         return BitmapFactory.decodeStream(inputStream, null, options);
     }
 
+    public static Bitmap getRoundedRectBitmap(Bitmap bitmap, int pixels) {
+        Bitmap result = null;
+        try {
+            result = Bitmap.createBitmap(150, 150, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(result);
+
+            int color = 0xff424242;
+            Paint paint = new Paint();
+            Rect rect = new Rect(0, 0, 200, 200);
+
+            paint.setAntiAlias(true);
+            canvas.drawARGB(0, 0, 0, 0);
+            paint.setColor(color);
+            canvas.drawCircle(75, 75, 75, paint);
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+            canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        } catch (NullPointerException e) {
+        } catch (OutOfMemoryError o) {
+        }
+        return result;
+    }
+
     public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
         final int height = options.outHeight;
@@ -763,16 +771,13 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         return inSampleSize;
     }
 
-    private User getUser(String username)
-    {
+    private User getUser(String username) {
         User user = null;
         URLConnection http = new URLConnection();
-        try
-        {
+        try {
             user = http.sendGetUser(username);
             System.out.println("user " + user);
-        } catch(IOException e)
-        {
+        } catch (IOException e) {
         }
         return user;
     }
@@ -787,57 +792,32 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         return events;
     }
 
-    private void setupEvents(final ArrayList<Event> events)
-    {
-        TableLayout layout = (TableLayout)rootView.findViewById(R.id.profileTableLayout2);
-        TableLayout.LayoutParams tableParams = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
-        TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+    private void setupEvents(final ArrayList<Event> events) {
+        ArrayList<String> distanceList = new ArrayList<String>();
+        ListView listView = (ListView) rootView.findViewById(R.id.profile_list_event);
 
-        int prevTextViewId = 0;
-        for(int i = 0; i < events.size(); i++)
-        {
-            final int id = i;
-            String name = events.get(i).getName();
-            String sport = events.get(i).getSport();
-            String date = events.get(i).getEventDate();
-            final TextView textViewName = new TextView(this.getActivity());
-            textViewName.setPadding(30,0,0,0);
-            textViewName.setText(name);
-            textViewName.setTextColor(getResources().getColor(R.color.black));
-            textViewName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) { // onClick listener for event name
+        BaseAdapter adapter = new EventListAdapter<String>(getActivity(), R.layout.event_list, events, distanceList, getActivity());
 
-                    Bundle args = new Bundle();
-                    Fragment fragment = new ViewEventFragment();
+        listView.setAdapter(adapter);
 
-                    args.putString("EventID", events.get(id).getEventID());
-                    fragment.setArguments(args);
-                    FragmentManager frgManager = getFragmentManager();
-                    frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack( "User Profile" )
-                            .commit();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle b = new Bundle();
+                b.putParcelable("USER", thisUser);
+                b.putString("EventID", events.get(position).getEventID());
+                Fragment fragment = new ViewEventFragment();
+                fragment.setArguments(b);
+                FragmentManager frgManager = getFragmentManager();
+                frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("EventListFragment")
+                        .commit();
 
+                Intent thisIntent = new Intent(getActivity().getBaseContext(), MainActivity.class);
+                thisIntent.putExtras(b);
 
-                }
-            });
-            textViewName.setLayoutParams(rowParams);
-            TableRow tableRow = new TableRow(this.getActivity()); // create a row
-            tableRow.setLayoutParams(tableParams);
-            tableRow.addView(textViewName); // add event name textview to row
-            TextView textViewSport = new TextView(this.getActivity());
-            TextView textViewDate = new TextView(this.getActivity());
-            textViewSport.setPadding(50,0,50,0);
-            textViewDate.setPadding(0,0,30,0);
-            textViewSport.setText(sport); // add sport to textview
-            textViewDate.setText(date); // add date to textview
-            textViewSport.setTextColor(getResources().getColor(R.color.black));
-            textViewDate.setTextColor(getResources().getColor(R.color.black));
-            tableRow.addView(textViewSport); // add sport textview to row
-            tableRow.addView(textViewDate);  // add date textview to row
-            tableRow.setGravity(Gravity.CENTER);
-            layout.addView(tableRow, tableParams); // add row to tablelayout
-        }
+            }
+        });
+
     }
-
 
 }
