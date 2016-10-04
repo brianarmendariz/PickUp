@@ -72,8 +72,7 @@ import java.util.ArrayList;
 /*
     SHOW THE USER PROFILE NAME GENDER
  */
-public class UserProfileFragment extends Fragment implements SearchView.OnQueryTextListener
-{
+public class UserProfileFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     private static final int VIEW_MAP_EVENT = 2;
     private ImageView profileImage;
@@ -84,8 +83,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
     private ImageButton upvote;
     private ImageButton downvote;
     private ImageButton follow;
-    private ImageButton unfollow;
-    private ImageButton addFriendButton;
+
     //current user
     User thisUser;
     //the user that is viewed.
@@ -101,15 +99,13 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
     View rootView;
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState)
-    {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
     @Override
-    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater)
-    {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
         inflater.inflate(R.menu.menu_main_search, menu); // removed to not double the menu items
         MenuItem item = menu.findItem(R.id.menu_search);
@@ -118,25 +114,21 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         MenuItemCompat.setActionView(item, sv);
         sv.setOnQueryTextListener(this);
         sv.setIconifiedByDefault(false);
-        sv.setOnSearchClickListener(new View.OnClickListener()
-        {
+        sv.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
             }
         });
 
-        MenuItemCompat.setOnActionExpandListener(item, new MenuItemCompat.OnActionExpandListener()
-        {
+        MenuItemCompat.setOnActionExpandListener(item, new MenuItemCompat.OnActionExpandListener() {
             @Override
-            public boolean onMenuItemActionCollapse(MenuItem item)
-            {
+            public boolean onMenuItemActionCollapse(MenuItem item) {
                 // Do something when collapsed
                 return true;  // Return true to collapse action view
             }
 
             @Override
-            public boolean onMenuItemActionExpand(MenuItem item)
-            {
+            public boolean onMenuItemActionExpand(MenuItem item) {
                 // Do something when expanded
                 return true;  // Return true to expand action view
             }
@@ -147,8 +139,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
     }
 
-    private ArrayList<String> getUsersFromServer()
-    {
+    private ArrayList<String> getUsersFromServer() {
         ArrayList<String> usernames = null;
         URLConnection http = new URLConnection();
         try {
@@ -158,19 +149,15 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         return usernames;
     }
 
-    private void viewUsersProfile(String username)
-    {
+    private void viewUsersProfile(String username) {
         Bundle b = new Bundle();
         //add current user
         b.putParcelable("USER", thisUser);
         User user = getUser(username);
-        if (user != null && !thisUser.getEmail().equals(user.getEmail()))
-        {
+        if (user != null && !thisUser.getEmail().equals(user.getEmail())) {
             System.out.println("putting the parceable");
             b.putParcelable("VIEWUSER", user);
-        }
-        else
-        {
+        } else {
             System.out.println("not putting the parceable");
         }
         Fragment fragment = new UserProfileFragment();
@@ -184,8 +171,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         thisIntent.putExtras(b);
     }
 
-    private void popUpAlertDialog(String username)
-    {
+    private void popUpAlertDialog(String username) {
         Bundle b = new Bundle();
         b.putParcelable("USER", thisUser);
         Intent thisIntent = new Intent(getActivity().getBaseContext(), MainActivity.class);
@@ -199,27 +185,22 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
     }
 
     @Override
-    public boolean onQueryTextSubmit(String query)
-    {
+    public boolean onQueryTextSubmit(String query) {
         ArrayList<String> usernames = getUsersFromServer(); // get users from the server
         // see if requested user is a member
         boolean member = false;
-        for(int i = 0; i < usernames.size(); i++)
-        {
+        for (int i = 0; i < usernames.size(); i++) {
             // if user is member break from loop
-            if(query.equals(usernames.get(i)))
-            {
+            if (query.equals(usernames.get(i))) {
                 member = true;
                 break;
             }
         }
 
         // view the requested users profile
-        if(member)
-        {
+        if (member) {
             viewUsersProfile(query);
-        }
-        else // alert that user does not exist
+        } else // alert that user does not exist
         {
             popUpAlertDialog(query);
         }
@@ -233,13 +214,11 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle data = getActivity().getIntent().getExtras();
         getActivity().setTitle("User Profile");
 
         thisUser = (User) data.getParcelable("USER");
-        //thisUser = new User("sarah","Shibley","sarahshib@outlook.com", "","","","");
 
         rootView = inflater.inflate(R.layout.view_profile, container, false);
 
@@ -248,7 +227,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
         super.onCreate(savedInstanceState);
 
-        profileImage = (ImageView)rootView.findViewById(R.id.profileImageView);
+        profileImage = (ImageView) rootView.findViewById(R.id.profileImageView);
         Bitmap bm = BitmapFactory.decodeResource(getResources(),
                 R.drawable.com_facebook_profile_picture_blank_portrait);
         Bitmap resized = Bitmap.createScaledBitmap(bm, 150, 150, true);
@@ -263,32 +242,31 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             }
         });
 
-        name  = (TextView) rootView.findViewById(R.id.NameEditText);
+        name = (TextView) rootView.findViewById(R.id.NameEditText);
         birthday = (TextView) rootView.findViewById(R.id.BirthdayEditText);
         gender = (TextView) rootView.findViewById(R.id.GenderEditText);
         upvote = (ImageButton) rootView.findViewById(R.id.thumbsup);
         downvote = (ImageButton) rootView.findViewById(R.id.thumbsdown);
-//        unfollow = (ImageButton) rootView.findViewById(R.id.following);
         follow = (ImageButton) rootView.findViewById(R.id.follow);
-//        userRating = (TextView) rootView.findViewById(R.id.UserRatingEditText);
-// Putting in Cropping of the Picture
 
 
 
         Bundle fragBundle = this.getArguments();
-        User viewUser = (User)fragBundle.getParcelable("VIEWUSER");
+        User viewUser = (User) fragBundle.getParcelable("VIEWUSER");
         viewUsername = viewUser;
 
-
-        if(viewUser == null)
+        //If the user views his/her own profile
+        if (viewUser == null)
         {
             System.out.println("null");
             name.setText(thisUser.getFirstName());
             birthday.setText(thisUser.getAge());
             gender.setText(thisUser.getGender());
             setupEvents(getEvents(thisUser.getEmail()));
+            upvote.setVisibility(View.INVISIBLE);
+            downvote.setVisibility(View.INVISIBLE);
         }
-        else  //If the user views his/her own profile
+        else
         {
             System.out.println("not null");
             name.setText(viewUser.getFirstName());
@@ -303,11 +281,11 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
 
             URLConnection http = new URLConnection();
-            try{
-                if(http.sendCheckIfFriends(thisUser.getEmail(), viewUser.getEmail()).equals("true")){
+            try {
+                if (http.sendCheckIfFriends(thisUser.getEmail(), viewUser.getEmail()).equals("true")) {
                     areFriends = true;
                 }
-            } catch( IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -337,17 +315,13 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                     }
 
                 } // end checking for loop
-            }
-            catch( IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            if(!voted && rated == 0) {
+            if (!voted && rated == 0) {
                 upvote.setEnabled(true);
                 downvote.setEnabled(true);
-//                upVoteButton.setText("Upvote");
-//                downVoteButton.setText("Downvote");
-
             }
             //for the user that undownvoted another user
             else if (rated == -1) {
@@ -356,26 +330,22 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                 upvote.setEnabled(true);
                 downvote.setEnabled(false);
 
-            }
-
-            else if (rated == 0) {
+            } else if (rated == 0) {
                 upvote.setEnabled(true);
                 downvote.setEnabled(true);
 //                upVoteButton.setText("Upvote");
 //                downVoteButton.setText("Downvote");
 
-            }
-            else if (rated == 1) {
+            } else if (rated == 1) {
                 upvote.setEnabled(false);
                 downvote.setEnabled(true);
 //                upVoteButton.setText("Unupvote");
 //                downVoteButton.setText("Downvote");
             }
 
-            if(areFriends) {
+            if (areFriends) {
                 follow.setImageResource(R.drawable.following);
-            }
-            else{
+            } else {
                 follow.setImageResource(R.drawable.follow);
 
             }
@@ -386,20 +356,19 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                     URLConnection http = new URLConnection();
                     try {
 
-                        if(areFriends){
+                        if (areFriends) {
                             String response = http.sendDeleteFriend(thisUser.getEmail(), viewUsername.getEmail());
-                            System.out.println("delete result"+response);
+                            System.out.println("delete result" + response);
                             areFriends = false;
                             follow.setImageResource(R.drawable.follow);
-                        }
-                        else{
+                        } else {
                             String response = http.sendAddFriend(thisUser.getEmail(), viewUsername.getEmail());
-                            System.out.println("add result"+response);
+                            System.out.println("add result" + response);
 
                             areFriends = true;
                             follow.setImageResource(R.drawable.following);
                         }
-                    }catch(IOException ie){
+                    } catch (IOException ie) {
                         ie.printStackTrace();
                     }
                 }
@@ -447,7 +416,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             String rate;
                             //Calculate the viewUsername's userRating
                             rating = Integer.parseInt(viewUsername.userRating) + 1;
-                            rate =  rating + "";
+                            rate = rating + "";
 
                             //save to the server
                             http2.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
@@ -471,7 +440,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             String rate;
                             //Calculate the viewUsername's userRating
                             rating = Integer.parseInt(viewUsername.userRating) + 2;
-                            rate =  rating + "";
+                            rate = rating + "";
 
                             //save to the server
                             http2.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
@@ -498,7 +467,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             String rate;
                             //Calculate the viewUsername's userRating
                             rating = Integer.parseInt(viewUsername.userRating) + 1;
-                            rate =  rating + "";
+                            rate = rating + "";
 
                             //save to the server
                             http2.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
@@ -526,7 +495,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
                             //Calculate the viewUsername's userRating
                             rating = Integer.parseInt(viewUsername.userRating) - 1;
-                            rate =  rating + "";
+                            rate = rating + "";
 
                             //save to the server
                             http2.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
@@ -541,8 +510,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }
-                    finally {
+                    } finally {
 
                         //set the text to the updated user rating
                         userRating.setText(updatedUser.getUserRating());
@@ -594,7 +562,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             String rate;
                             //Calculate the viewUsername's userRating
                             rating = Integer.parseInt(viewUsername.userRating) - 1;
-                            rate =  rating + "";
+                            rate = rating + "";
 
                             //save to the server
                             http3.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
@@ -621,7 +589,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             String rate;
                             //Calculate the viewUsername's userRating
                             rating = Integer.parseInt(viewUsername.userRating) - 2;
-                            rate =  rating + "";
+                            rate = rating + "";
 
                             //save to the server
                             http3.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
@@ -647,7 +615,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             String rate;
                             //Calculate the viewUsername's userRating
                             rating = Integer.parseInt(viewUsername.userRating) - 1;
-                            rate =  rating + "";
+                            rate = rating + "";
 
                             //save to the server
                             http3.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
@@ -674,7 +642,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
                             //Calculate the viewUsername's userRating
                             rating = Integer.parseInt(viewUsername.userRating) + 1;
-                            rate =  rating + "";
+                            rate = rating + "";
 
                             //save to the server
                             http3.sendEditUser(viewUsername.getEmail(), viewUsername.getFirstName(), viewUsername.getlastName()
@@ -688,9 +656,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                         //userRating.setText("10");
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }
-
-                    finally {
+                    } finally {
 
                         //update the text
                         userRating.setText(updatedUser.getUserRating());
@@ -699,13 +665,10 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                 }
             });
 
-//            llLayout.addView(upvote);
-//            llLayout.addView(downvote);
 
         }
         return rootView;
     }
-
 
 
     @Override
@@ -740,8 +703,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         //}
     }
 
-    public Bitmap getBitmapFromReturnedImage(Uri selectedImage, int reqWidth, int reqHeight) throws IOException
-    {
+    public Bitmap getBitmapFromReturnedImage(Uri selectedImage, int reqWidth, int reqHeight) throws IOException {
 
         InputStream inputStream = getActivity().getContentResolver().openInputStream(selectedImage);
 
@@ -777,7 +739,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             paint.setAntiAlias(true);
             canvas.drawARGB(0, 0, 0, 0);
             paint.setColor(color);
-            canvas.drawCircle(75,75,75, paint);
+            canvas.drawCircle(75, 75, 75, paint);
             paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
             canvas.drawBitmap(bitmap, rect, rect, paint);
 
@@ -786,8 +748,8 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         }
         return result;
     }
-    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)
-    {
+
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
         final int height = options.outHeight;
         final int width = options.outWidth;
@@ -809,22 +771,18 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         return inSampleSize;
     }
 
-    private User getUser(String username)
-    {
+    private User getUser(String username) {
         User user = null;
         URLConnection http = new URLConnection();
-        try
-        {
+        try {
             user = http.sendGetUser(username);
             System.out.println("user " + user);
-        } catch(IOException e)
-        {
+        } catch (IOException e) {
         }
         return user;
     }
 
-    private ArrayList<Event> getEvents(String username)
-    {
+    private ArrayList<Event> getEvents(String username) {
         ArrayList<Event> events = null;
         URLConnection http = new URLConnection();
         try {
@@ -834,19 +792,17 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         return events;
     }
 
-    private void setupEvents(final ArrayList<Event> events)
-    {
-            ArrayList<String> distanceList = new ArrayList<String>();
-            ListView listView = (ListView)rootView.findViewById(R.id.profile_list_event);
+    private void setupEvents(final ArrayList<Event> events) {
+        ArrayList<String> distanceList = new ArrayList<String>();
+        ListView listView = (ListView) rootView.findViewById(R.id.profile_list_event);
 
-            BaseAdapter adapter = new EventListAdapter<String>(getActivity(), R.layout.event_list, events, distanceList, getActivity());
+        BaseAdapter adapter = new EventListAdapter<String>(getActivity(), R.layout.event_list, events, distanceList, getActivity());
 
-            listView.setAdapter(adapter);
+        listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle b = new Bundle();
                 b.putParcelable("USER", thisUser);
                 b.putString("EventID", events.get(position).getEventID());
@@ -862,104 +818,6 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             }
         });
 
-//            View convertView = LayoutInflater.from(getActivity()).inflate(R.layout.event_list, null);
-//
-//            LinearLayout v = (LinearLayout)rootView.findViewById(R.id.profile_list_event);
-//            TextView textViewName =(TextView) convertView.findViewById(R.id.event_list_name);
-//            TextView textViewSport = (TextView) convertView.findViewById(R.id.event_list_sport);
-//            TextView textViewPlayerAmount = (TextView) convertView.findViewById(R.id.event_list_player_amount);
-//            TextView textViewDistanceAway = (TextView) convertView.findViewById(R.id.event_list_distance_away);
-//            ImageView imageViewSportImage = (ImageView) convertView.findViewById(R.id.event_list_sport_image);
-//
-//            java.lang.String name = events.get(position).getName();
-//            java.lang.String sport = events.get(position).getSport();
-//
-//            textViewName.setText(name);
-//            textViewSport.setText(sport);
-//
-//            java.lang.String color1 = "#fea10f";
-//            java.lang.String color2 = "#696969";
-////            java.lang.String text = "<font color=" + color1 + ">" + events.get(position).getMaxNumberPpl()
-////                    + "</font><font color=" + color2 + ">/" + events.get(position).getMaxNumberPpl() + "</font>";
-////            textViewPlayerAmount.setText(Html.fromHtml(text));
-//
-//            if (sport.equals("Badminton")) {
-//                imageViewSportImage.setImageResource(R.drawable.badminton_icon);
-//            } else if (sport.equals("Baseball")) {
-//                imageViewSportImage.setImageResource(R.drawable.baseball_icon);
-//            } else if (sport.equals("Basketball")) {
-//                imageViewSportImage.setImageResource(R.drawable.basketball_icon);
-//            } else if (sport.equals("Football")) {
-//                imageViewSportImage.setImageResource(R.drawable.football_icon);
-//            } else if (sport.equals("Handball")) {
-//                imageViewSportImage.setImageResource(R.drawable.handball_icon);
-//            } else if (sport.equals("Ice Hockey")) {
-//                imageViewSportImage.setImageResource(R.drawable.icehockey_icon);
-//            } else if (sport.equals("Racquetball")) {
-//                imageViewSportImage.setImageResource(R.drawable.racquetball_icon);
-//            } else if (sport.equals("Roller Hockey")) {
-//                imageViewSportImage.setImageResource(R.drawable.rollerhockey_icon);
-//            } else if (sport.equals("Softball")) {
-//                imageViewSportImage.setImageResource(R.drawable.softball_icon);
-//            } else if (sport.equals("Tennis")) {
-//                imageViewSportImage.setImageResource(R.drawable.tennis_icon);
-//            } else if (sport.equals("Volleyball")) {
-//                imageViewSportImage.setImageResource(R.drawable.volleyball_icon);
-//            } else {
-//                // should never hit this
-//            }
-//            v.addView(convertView);
-//            v.setDividerPadding(1);
-        }
     }
-//              TableLayout layout = (TableLayout)rootView.findViewById(R.id.profileTableLayout2);
-//        TableLayout.LayoutParams tableParams = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
-//        TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
 
-//        int prevTextViewId = 0;
-//        for(int i = 0; i < events.size(); i++)
-//        {
-//            final int id = i;
-//            String name = events.get(i).getName();
-//            String sport = events.get(i).getSport();
-//            String date = events.get(i).getEventDate();
-//            final TextView textViewName = new TextView(this.getActivity());
-//            textViewName.setPadding(30,0,0,0);
-//            textViewName.setText(name);
-//            textViewName.setTextColor(getResources().getColor(R.color.black));
-//            textViewName.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) { // onClick listener for event name
-//
-//                    Bundle args = new Bundle();
-//                    Fragment fragment = new ViewEventFragment();
-//
-//                    args.putString("EventID", events.get(id).getEventID());
-//                    fragment.setArguments(args);
-//                    FragmentManager frgManager = getFragmentManager();
-//                    frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack( "User Profile" )
-//                            .commit();
-//
-//
-//                }
-//            });
-//            textViewName.setLayoutParams(rowParams);
-//            TableRow tableRow = new TableRow(this.getActivity()); // create a row
-//            tableRow.setLayoutParams(tableParams);
-//            tableRow.addView(textViewName); // add event name textview to row
-//            TextView textViewSport = new TextView(this.getActivity());
-//            TextView textViewDate = new TextView(this.getActivity());
-//            textViewSport.setPadding(50,0,50,0);
-//            textViewDate.setPadding(0,0,30,0);
-//            textViewSport.setText(sport); // add sport to textview
-//            textViewDate.setText(date); // add date to textview
-//            textViewSport.setTextColor(getResources().getColor(R.color.black));
-//            textViewDate.setTextColor(getResources().getColor(R.color.black));
-//            tableRow.addView(textViewSport); // add sport textview to row
-//            tableRow.addView(textViewDate);  // add date textview to row
-//            tableRow.setGravity(Gravity.CENTER);
-//            layout.addView(tableRow, tableParams); // add row to tablelayout
-//
-//}
-
-
+}
