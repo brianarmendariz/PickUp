@@ -303,11 +303,12 @@ public class URLConnection
      * @return "true" if inserted to database, "false" if not.
      * @throws IOException
      */
-    public String sendCreateEvent( String authorName,String authorEmail, String eventName, String sport,
-                                   String location, String latitude, String longitude, String eventDateTime, String ageMax, String ageMin,
-                                   String minUserRating, String playerAmount, String isPrivate, String gender, String skill, String sportSpecific,
-                                   String eventEndDateTime, String playersPerTeam, String numberOfTeams, String terrain,
-                                   String environment) throws IOException  {
+    public String sendCreateEvent(String authorName,String authorEmail, String eventName, String sport,
+                                  String location, String latitude, String longitude, String eventDateTime,
+                                  String eventEndDateTime, String ageMax, String ageMin, String minUserRating,
+                                  String playerAmount, String isPrivate, String gender, String skill, String sportSpecific,
+                                  String playersPerTeam, String numberOfTeams, String terrain, String environment)
+                                  throws IOException  {
 
 				/*url of route being requested*/
         String url = "http://www.csulbpickup.com/createEvent.php";
@@ -523,7 +524,11 @@ public class URLConnection
 
 			    			/*Below line used for testing */
 
-                    Event newEvent = new Event(map.get("EventName"),"",
+                    /* TODO: get date working */
+                    Event newEvent = new Event(
+                            map.get("EventID"),
+                            map.get("EventName"),
+                            "",
                             Double.parseDouble(map.get("Longitude")),
                             Double.parseDouble(map.get("Latitude")),
                             map.get("Location"),
@@ -538,8 +543,16 @@ public class URLConnection
                             map.get("DateTimeCreated"),
                             serverToClientDate(map.get("EventDateTime")),
                             serverToClientTime(map.get("EventDateTime")),
+                            map.get("EventEndDateTime"),//serverToClientDate(map.get("EventEndDateTime")),
+                            map.get("EventEndDateTime"),//serverToClientTime(map.get("EventEndDateTime")),
                             map.get("IsPrivate"),
-                            map.get("EventID"));
+                            map.get("Skill"),
+                            map.get("SportSpecific"),
+                            map.get("PlayersPerTeam"),
+                            map.get("NumberOfTeams"),
+                            map.get("Terrain"),
+                            map.get("Environment")
+                            );
                     list.add(newEvent);
                 }
                 if(map.containsKey("_distance"))

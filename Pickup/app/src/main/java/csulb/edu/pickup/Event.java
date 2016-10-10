@@ -23,7 +23,15 @@ public class Event implements Parcelable
     private String _dateCreated;
     private String _eventDate;
     private String _eventTime;
+    private String _eventEndDate;
+    private String _eventEndTime;
     private String _isPrivate;
+    private String _skill;
+    private String _sportSpecific;
+    private String _playersPerTeam;
+    private String _numberOfTeams;
+    private String _terrain;
+    private String _environment;
     private String _eventID;
 
     public Event()
@@ -45,13 +53,24 @@ public class Event implements Parcelable
         _dateCreated = null;
         _eventDate = null;
         _eventTime = null;
+        _eventEndDate = null;
+        _eventEndTime = null;
         _isPrivate = null;
+        _skill = null;
+        _sportSpecific = null;
+        _playersPerTeam = null;
+        _numberOfTeams = null;
+        _terrain = null;
+        _environment = null;
     }
 
-    public Event(String name, String description, double longitude, double latitude, String address, String ageMax,
-                 String ageMin, String creatorName, String creatorEmail, String sport, String gender, String maxNumberPpl,String minUserRating,
-                 String dateCreated, String eventDate, String eventTime, String isPrivate, String eventID)
+    public Event(String eventID, String name, String description, double longitude, double latitude, String address, String ageMax,
+                 String ageMin, String creatorName, String creatorEmail, String sport, String gender, String maxNumberPpl,
+                 String minUserRating, String dateCreated, String eventDate, String eventTime, String eventEndDate,
+                 String eventEndTime, String isPrivate, String skill, String sportSpecific, String playersPerTeam,
+                 String numberOfTeams, String terrain, String environment)
     {
+        _eventID = eventID;
         _name = name;
         _description = description;
         _longitude = longitude;
@@ -68,9 +87,15 @@ public class Event implements Parcelable
         _dateCreated = dateCreated;
         _eventDate = eventDate;
         _eventTime = eventTime;
+        _eventEndDate = eventEndDate;
+        _eventEndTime = eventEndTime;
         _isPrivate = isPrivate;
-        _eventID = eventID;
-
+        _skill = skill;
+        _sportSpecific = sportSpecific;
+        _playersPerTeam = playersPerTeam;
+        _numberOfTeams = numberOfTeams;
+        _terrain = terrain;
+        _environment = environment;
     }
 
     /*
@@ -127,18 +152,11 @@ public class Event implements Parcelable
     {
         return _minUserRating;
     }
-    public String getDateCreated()
-    {
-        return _dateCreated;
-    }
-    public String getEventDate()
-    {
-        return _eventDate;
-    }
-    public String getEventTime()
-    {
-        return _eventTime;
-    }
+    public String getDateCreated() { return _dateCreated; }
+    public String getEventDate() { return _eventDate; }
+    public String getEventTime() { return _eventTime; }
+    public String getEventEndDate() { return _eventEndDate; }
+    public String getEventEndTime() { return _eventEndTime; }
     public String getIsPrivate()
     {
         return _isPrivate;
@@ -146,6 +164,19 @@ public class Event implements Parcelable
     public String getEventID()
     {
         return _eventID;
+    }
+
+    public String getSkill() { return _skill; }
+    public String getSportSpecific() { return _sportSpecific; }
+    public String getPlayersPerTeam() { return _playersPerTeam; }
+    public String getNumberOfTeams() { return _numberOfTeams; }
+    public String getTerrain()
+    {
+        return _terrain;
+    }
+    public String getEnvironment()
+    {
+        return _environment;
     }
     /*
     Setter Methods
@@ -159,6 +190,37 @@ public class Event implements Parcelable
     {
         _sport = sport;
     }
+
+    public void setEventEndDate(String endDate)
+    {
+        _eventEndDate = endDate;
+    }
+    public void setEventEndTime(String endTime)
+    {
+        _eventEndTime = endTime;
+    }
+    public void setSkill(String skill)
+    {
+        _skill = skill;
+    }
+    public void setSportSpecific(String sportSpecific)
+    {
+        _sport = _sportSpecific;
+    }
+    public void setPlayersPerTeam(String playersPerTeam)
+    {
+        _playersPerTeam = playersPerTeam;
+    }
+    public void setNumberOfTeams(String numberOfTeams)
+    {
+        _numberOfTeams = numberOfTeams;
+    }
+    public void setTerrain(String terrain)
+    {
+        _terrain = terrain;
+    }
+    public void setEnvironment(String environment) { _environment = environment;  }
+
 
     public void setGender(String gender)
     {

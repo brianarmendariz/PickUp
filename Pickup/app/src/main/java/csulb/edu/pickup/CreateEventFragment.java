@@ -363,6 +363,14 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             String playerAmount = formMap.get("max num ppl");
             String minUserRating = formMap.get("min rating");
 
+            /* TODO: get data from user */
+            String endDateTime = "";
+            String skill = "";
+            String sportSpecific = "";
+            String playersPerTeam = "";
+            String numberOfTeams = "";
+            String terrain = "";
+            String environment = "";
 
             boolean createEventFlag = checkForm(name, location, date, time,
                     gender, ageMin, ageMax);
@@ -382,9 +390,9 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
 
                         http.sendCreateEvent(authorName, authorEmail, name, sport, location,
                                 String.valueOf(latitude), String.valueOf(longitude), dateTime,
-                                ageMax, ageMin, minUserRating,
+                                endDateTime, ageMax, ageMin, minUserRating,
                                 playerAmount, "P/NP", gender,
-                                "", "", "", "", "", "", ""
+                                skill, sportSpecific, playersPerTeam, numberOfTeams, terrain, environment
                         );
 
 
