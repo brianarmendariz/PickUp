@@ -19,14 +19,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="846b56e1-b61c-4484-bf70-68650d6f3a99" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/androidTest/java/csulb/edu/pickup/EspressoLoginTest.java" afterPath="$PROJECT_DIR$/app/src/androidTest/java/csulb/edu/pickup/EspressoLoginTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/CreateEventFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/CreateEventFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/URLConnection.java" afterPath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/URLConnection.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/view_event1.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/view_event1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
     </list>
     <ignored path="Pickup.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -67,20 +61,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="URLConnection.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="URLConnection.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/URLConnection.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="308" column="59" selection-start-line="308" selection-start-column="59" selection-end-line="308" selection-end-column="59" />
+            <state vertical-scroll-proportion="0.265625">
+              <caret line="318" column="27" selection-start-line="318" selection-start-column="27" selection-end-line="318" selection-end-column="27" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CreateEventFragment.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CreateEventFragment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/CreateEventFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4497768">
+            <state vertical-scroll-proportion="0.0">
               <caret line="386" column="58" selection-start-line="386" selection-start-column="58" selection-end-line="386" selection-end-column="58" />
               <folding />
             </state>
@@ -2086,8 +2080,8 @@
         <option value="$PROJECT_DIR$/app/src/androidTest/java/csulb/edu/pickup/EspressoLoginTest.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/view_event1.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/URLConnection.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/CreateEventFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/URLConnection.java" />
       </list>
     </option>
   </component>
@@ -2534,7 +2528,13 @@
       <option name="project" value="LOCAL" />
       <updated>1475618430146</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Updates to CreateEvent to get the plumbing working. Web service call is working using empty strings. Next push will include user input values.">
+      <created>1476069483303</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1476069483303</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -2580,7 +2580,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1932" height="1056" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32792208" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
@@ -2596,7 +2596,7 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19123931" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19123931" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
@@ -2625,7 +2625,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Updates - Espresso Unit Testing&#10;               - Create Event now works again" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updates - Espresso Unit Testing&#10;               - Create Event now works again" />
+    <MESSAGE value="Updates to CreateEvent to get the plumbing working. Web service call is working using empty strings. Next push will include user input values." />
+    <MESSAGE value="Fix to sendCreateEvent method call" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix to sendCreateEvent method call" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -3067,18 +3069,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/URLConnection.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/CreateEventFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="308" column="59" selection-start-line="308" selection-start-column="59" selection-end-line="308" selection-end-column="59" />
+          <caret line="386" column="58" selection-start-line="386" selection-start-column="58" selection-end-line="386" selection-end-column="58" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/CreateEventFragment.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/URLConnection.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4497768">
-          <caret line="386" column="58" selection-start-line="386" selection-start-column="58" selection-end-line="386" selection-end-column="58" />
+        <state vertical-scroll-proportion="0.265625">
+          <caret line="318" column="27" selection-start-line="318" selection-start-column="27" selection-end-line="318" selection-end-column="27" />
           <folding />
         </state>
       </provider>
