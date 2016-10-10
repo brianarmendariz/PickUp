@@ -305,14 +305,18 @@ public class URLConnection
      */
     public String sendCreateEvent( String authorName,String authorEmail, String eventName, String sport,
                                    String location, String latitude, String longitude, String eventDateTime, String ageMax, String ageMin,
-                                   String minUserRating, String playerAmount, String isPrivate, String gender) throws IOException  {
+                                   String minUserRating, String playerAmount, String isPrivate, String gender, String Skill, String SportSpecific,
+                                   String EventEndDateTime, String PlayersPerTeam, String NumberOfTeams, String Terrain,
+                                   String Environment) throws IOException  {
 
 				/*url of route being requested*/
         String url = "http://www.csulbpickup.com/createEvent.php";
 
         String urlParameters = "AuthorName="+authorName+"&Email="+authorEmail+"&EventName="+eventName+"&Sport="+sport+"&Location="+location+"&Latitude="+latitude+
                 "&Longitude="+longitude+"&EventDateTime="+eventDateTime+"&AgeMax="+ageMax+"&AgeMin="+ageMin+
-                "&PlayerAmount="+playerAmount+"&MinUserRating="+minUserRating+"&IsPrivate="+isPrivate+"&Gender="+gender;
+                "&PlayerAmount="+playerAmount+"&MinUserRating="+minUserRating+"&IsPrivate="+isPrivate+"&Gender="+gender+
+                "&Skill="+Skill+"&SportSpecific="+SportSpecific+"&EventEndDateTime="+EventEndDateTime+"&EventEndDate="+EventEndDate+"&PlayersPerTeam="+PlayersPerTeam+"&PlayersPerTeam="+PlayersPerTeam+
+                "&Terrain="+Terrain+"&Environment="+Environment;
 
         return makeHTTPRequest(url,urlParameters);
 

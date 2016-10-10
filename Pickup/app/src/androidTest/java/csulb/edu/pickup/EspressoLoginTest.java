@@ -97,22 +97,23 @@ public class EspressoLoginTest {
 
         onView(withId(R.id.create_event_time)).perform(ViewActions.replaceText(time), closeSoftKeyboard());
 
+        //onView(withId(R.id.create_event_gender_spinner)).perform(closeSoftKeyboard());
         onView(withId(R.id.create_event_gender_spinner)).perform(click());
 //        onData(allOf(is(instanceOf(String.class)), is(gender))).perform(click());
-
-//        onView(withId(R.id.age_min_spinner)).perform(click());
+//
+//        onView(withId(R.id.create_event_age_min_spinner)).perform(click());
 //        onData(allOf(is(instanceOf(String.class)), is(ageMin))).perform(click());
 //
-//        onView(withId(R.id.age_max_spinner)).perform(click());
+//        onView(withId(R.id.create_event_age_max_spinner)).perform(click());
 //        onData(allOf(is(instanceOf(String.class)), is(ageMax))).perform(click());
 //
-//        onView(withId(R.id.max_num_ppl_spinner)).perform(click());
+//        onView(withId(R.id.create_event_max_num_ppl_spinner)).perform(click());
 //        onData(allOf(is(instanceOf(String.class)), is(maxPpl))).perform(click());
 //
-//        onView(withId(R.id.min_user_rating_spinner)).perform(click());
+//        onView(withId(R.id.create_event_min_user_rating_spinner)).perform(click());
 //        onData(allOf(is(instanceOf(String.class)), is(minRating))).perform(click());
-//
-//        onView(withId(R.id.event_create_btn)).perform(click());
+
+//        onView(withId(R.id.create_event_create_btn)).perform(click());
     }
 }
 
@@ -146,3 +147,4 @@ public class EspressoLoginTest {
 //onView((withId(R.id.map_plus_button))).perform(click());
 //onView(withId(R.id.eventScrollView1)).check(matches(isDisplayed()));
 // fill out the create event form
+

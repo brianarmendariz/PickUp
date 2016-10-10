@@ -16,6 +16,7 @@
 
     <!-- For a medium sized screen -->
     <dimen name="edittext_size">260dp</dimen>
+    <dimen name="padding_size">260dp</dimen>
 
     <!-- For event list -->
     <dimen name="small_margin">6dp</dimen>

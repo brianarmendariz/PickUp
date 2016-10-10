@@ -383,7 +383,8 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
                         http.sendCreateEvent(authorName, authorEmail, name, sport, location,
                                 String.valueOf(latitude), String.valueOf(longitude), dateTime,
                                 ageMax, ageMin, minUserRating,
-                                playerAmount, "P/NP", gender
+                                playerAmount, "P/NP", gender,
+                                "", "", "", "", "", "", ""
                         );
 
 
