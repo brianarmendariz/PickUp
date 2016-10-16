@@ -1,5 +1,7 @@
 package csulb.edu.pickup;
 
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -429,13 +431,49 @@ public class MapsFragment extends Fragment implements android.location.LocationL
         plusButton.requestFocus();
         plusButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
+                // GOES TO CREATE EVENT PAGE
                 v.startAnimation(animAlpha);
                 Bundle args = new Bundle();
-                Fragment fragment = new CreateEventFragment();
+                DialogFragment fragment = new SportPickerFragment();
                 fragment.setArguments(args);
                 FragmentManager frgManager = getFragmentManager();
-                frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("Map")
-                        .commit();
+                fragment.show(frgManager, "");
+//                frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("Map")
+//                        .commit();
+
+//                final Animation animAlpha = AnimationUtils.loadAnimation(rootView.getContext(), R.anim.slide_in_anim);
+//                ImageButton plusButton_1 = (ImageButton) rootView.findViewById(R.id.map_plus_button_1);
+//                ImageButton plusButton_2 = (ImageButton) rootView.findViewById(R.id.map_plus_button_2);
+//                ImageButton plusButton_3 = (ImageButton) rootView.findViewById(R.id.map_plus_button_3);
+//
+//                if (plusButton_1.getVisibility() == View.VISIBLE &&
+//                    plusButton_2.getVisibility() == View.VISIBLE &&
+//                    plusButton_3.getVisibility() == View.VISIBLE )
+//                {
+//                    // Its visible
+//                    plusButton_1.setVisibility(View.INVISIBLE);
+//                    plusButton_2.setVisibility(View.INVISIBLE);
+//                    plusButton_3.setVisibility(View.INVISIBLE);
+//                } else
+//                {
+//                    // Either gone or invisible
+//                    plusButton_1.setVisibility(View.VISIBLE);
+//                    plusButton_1.startAnimation(animAlpha);
+//                    plusButton_2.setVisibility(View.VISIBLE);
+//                    plusButton_2.startAnimation(animAlpha);
+//                    plusButton_3.setVisibility(View.VISIBLE);
+//                    plusButton_3.startAnimation(animAlpha);
+//                }
+
+                // GOES TO CREATE EVENT PAGE
+//                v.startAnimation(animAlpha);
+//                Bundle args = new Bundle();
+//                Fragment fragment = new CreateEventFragment();
+//                fragment.setArguments(args);
+//                FragmentManager frgManager = getFragmentManager();
+//                frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("Map")
+//                        .commit();
             }
         });  }
 
@@ -479,7 +517,7 @@ public class MapsFragment extends Fragment implements android.location.LocationL
 
         if (view == plusButton)
         {
-            view.startAnimation(animAlpha);
+            //view.startAnimation(animAlpha);
         }
         else if (view == filterButton)
         {

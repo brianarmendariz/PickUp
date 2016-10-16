@@ -736,7 +736,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
         int arr_images[] = {R.drawable.badminton_icon,
                 R.drawable.baseball_icon, R.drawable.basketball_icon, R.drawable.football_icon,
                 R.drawable.handball_icon, R.drawable.icehockey_icon, R.drawable.racquetball_icon,
-                R.drawable.rollerhockey_icon, R.drawable.soccer, R.drawable.softball_icon, R.drawable.tennis_icon,
+                R.drawable.rollerhockey_icon, R.drawable.soccer_icon, R.drawable.softball_icon, R.drawable.tennis_icon,
                 R.drawable.volleyball_icon};
 
         public MyEAdapter(Context context, int textViewResourceId, String[] objects) {

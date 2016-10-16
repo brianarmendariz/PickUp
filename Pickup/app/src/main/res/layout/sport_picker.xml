@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/DialogLayout"
+    android:columnCount="1"
+    android:rowCount="5"
+    android:padding="10dp"
+    android:background="@color/white"
+    android:gravity="center" > <!--android:gravity="center" android:orientation="horizontal"-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:orientation="horizontal">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/sp_button_badminton"
+            android:src="@drawable/badminton_icon"
+            android:layout_width="100px"
+            android:layout_height="100px"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/sp_button_baseball"
+            android:src="@drawable/baseball_icon"
+            android:layout_width="100px"
+            android:layout_height="100px"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/sp_button_basketball"
+            android:src="@drawable/basketball_icon"
+            android:layout_width="100px"
+            android:layout_height="100px"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:orientation="horizontal">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/sp_button_football"
+            android:src="@drawable/football_icon"
+            android:layout_width="100px"
+            android:layout_height="100px"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/sp_button_handball"
+            android:src="@drawable/handball_icon"
+            android:layout_width="100px"
+            android:layout_height="100px"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/sp_button_icehockey"
+            android:src="@drawable/icehockey_icon"
+            android:layout_width="100px"
+            android:layout_height="100px"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:orientation="horizontal">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/sp_button_racquetball"
+            android:src="@drawable/racquetball_icon"
+            android:layout_width="100px"
+            android:layout_height="100px"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/sp_button_rollerhockey"
+            android:src="@drawable/rollerhockey_icon"
+            android:layout_width="100px"
+            android:layout_height="100px"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/sp_button_running"
+            android:src="@drawable/running_icon"
+            android:layout_width="100px"
+            android:layout_height="100px"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:orientation="horizontal">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/sp_button_soccer"
+            android:src="@drawable/soccer_icon"
+            android:layout_width="100px"
+            android:layout_height="100px"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/sp_button_softball"
+            android:src="@drawable/softball_icon"
+            android:layout_width="100px"
+            android:layout_height="100px"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/sp_button_tennis"
+            android:src="@drawable/tennis_icon"
+            android:layout_width="100px"
+            android:layout_height="100px"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:orientation="horizontal">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/sp_button_volleyball"
+            android:src="@drawable/volleyball_icon"
+            android:layout_width="100px"
+            android:layout_height="100px"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/sp_button_weightlifting"
+            android:src="@drawable/weightlifting_icon"
+            android:layout_width="100px"
+            android:layout_height="100px"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/sp_button_yoga"
+            android:src="@drawable/yoga_icon"
+            android:layout_width="100px"
+            android:layout_height="100px"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+</GridLayout>

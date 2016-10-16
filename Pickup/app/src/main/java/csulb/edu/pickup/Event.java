@@ -276,13 +276,12 @@ public class Event implements Parcelable
     public void writeToParcel(Parcel out, int flags) {
         //out.writeInt(mData);
 
-        out.writeStringArray(new String[]{_name, _description, _creatorName, _creatorEmail,
+        out.writeStringArray(new String[]{_eventID, _name, _description, _creatorName, _creatorEmail,
                 _sport, "" +_longitude, ""+_latitude, _address, _gender, _ageMax, _ageMin,_minUserRating,
-                _maxNumberPpl, _dateCreated, _eventDate, _eventTime, _isPrivate, _eventID });
+                _maxNumberPpl, _dateCreated, _eventDate, _eventTime, _eventEndDate,_eventEndTime, _isPrivate,
+                _skill, _sportSpecific, _playersPerTeam, _numberOfTeams, _terrain, _environment});
 
     }
-
-
 
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -300,24 +299,33 @@ public class Event implements Parcelable
         String[] data = new String[18];
 
         in.readStringArray(data);
-        this._name = data[0];
-        this._description = data[1];
-        this._creatorName = data[2];
-        this._creatorEmail = data[3];
-        this._sport = data[4];
-        this._longitude = Double.parseDouble(data[5]);
-        this._latitude = Double.parseDouble(data[6]);
-        this._address = data[7];
-        this._gender = data[8];
-        this._ageMax = data[9];
-        this._ageMin = data[10];
-        this._minUserRating = data[11];
-        this._maxNumberPpl = data[12];
-        this._dateCreated = data[13];
-        this._eventDate = data[14];
-        this._eventTime = data[15];
-        this._isPrivate = data[16];
-        this._eventID = data[17];
+        this._eventID = data[0];
+        this._name = data[1];
+        this._description = data[2];
+        this._creatorName = data[3];
+        this._creatorEmail = data[4];
+        this._sport = data[5];
+        this._longitude = Double.parseDouble(data[6]);
+        this._latitude = Double.parseDouble(data[7]);
+        this._address = data[8];
+        this._gender = data[9];
+        this._ageMax = data[10];
+        this._ageMin = data[11];
+        this._minUserRating = data[12];
+        this._maxNumberPpl = data[13];
+        this._dateCreated = data[14];
+        this._eventDate = data[15];
+        this._eventTime = data[16];
+        this._eventEndDate = data[17];
+        this._eventEndDate = data[18];
+        this._isPrivate = data[19];
+        this._isPrivate = data[20];
+        this._skill = data[21];
+        this._sportSpecific = data[22];
+        this._playersPerTeam = data[23];
+        this._numberOfTeams = data[24];
+        this._terrain = data[25];
+        this._environment = data[26];
     }
 
 }

@@ -24,6 +24,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -76,13 +78,19 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
 
     View rootView;
 
+    int sport;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        // Bundle from MainActivity
+        Bundle mainArgs = getActivity().getIntent().getExtras();
+        thisUser = (User) mainArgs.getParcelable("USER");
 
-        Bundle data = getActivity().getIntent().getExtras();
-        thisUser = (User) data.getParcelable("USER");
+        // Bundle from SportFragment
+        Bundle fragArgs = this.getArguments();
+        sport = (int) fragArgs.getInt("SPORT"); // R.id.[sport_button_pressed]
         //thisUser = new User("ln", "em", "pw", "bday", "gend", "useRate", "a");
 
         super.onCreate(savedInstanceState);
@@ -256,9 +264,8 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
         sp.setAdapter(adp);
     }
 
-    private void findViewsById() {
-
-
+    private void findViewsById()
+    {
         cancelEventButton = (Button) rootView.findViewById(R.id.create_event_cancel_btn);
         cancelEventButton.requestFocus();
 
@@ -338,9 +345,8 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("Create Event" )
                     .commit();
         }
-        else if (view == createEventButton) {
-
-
+        else if (view == createEventButton)
+        {
             Map<String, String> formMap = formToMap();
 
             System.out.println(formMap);
@@ -375,7 +381,8 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             boolean createEventFlag = checkForm(name, location, date, time,
                     gender, ageMin, ageMax);
 
-            if (createEventFlag) {
+            if (createEventFlag)
+            {
                 try {
                     Geocoder geocoder = new Geocoder(this.getActivity(), Locale.getDefault());
                     List<Address> addresses;
@@ -577,7 +584,7 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
         int arr_images[] = {R.drawable.badminton_icon,
                 R.drawable.baseball_icon, R.drawable.basketball_icon, R.drawable.football_icon,
                 R.drawable.handball_icon, R.drawable.icehockey_icon, R.drawable.racquetball_icon,
-                R.drawable.rollerhockey_icon, R.drawable.soccer, R.drawable.softball_icon, R.drawable.tennis_icon,
+                R.drawable.rollerhockey_icon, R.drawable.soccer_icon, R.drawable.softball_icon, R.drawable.tennis_icon,
                 R.drawable.volleyball_icon};
 
         public MyCAdapter(Context context, int textViewResourceId, String[] objects) {
