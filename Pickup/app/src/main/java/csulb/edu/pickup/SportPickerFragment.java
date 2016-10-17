@@ -3,6 +3,8 @@ package csulb.edu.pickup;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.InputType;
@@ -25,23 +27,6 @@ public class SportPickerFragment extends DialogFragment implements View.OnClickL
     User thisUser;
     View rootView;
 
-    ArrayList<ImageButton> buttonList;
-
-    ImageButton badmintonButton;
-    ImageButton basketballButton;
-    ImageButton baseballButton;
-    ImageButton footballButton;
-    ImageButton handballButton;
-    ImageButton icehockeyButton;
-    ImageButton racquetballButton;
-    ImageButton rollerhockeyButton;
-    ImageButton runningButton;
-    ImageButton soccerButton;
-    ImageButton softballButton;
-    ImageButton tennisButton;
-    ImageButton volleyballButton;
-    ImageButton weightliftingButton;
-
     int image_buttons[] = {R.id.sp_button_badminton, R.id.sp_button_baseball, R.id.sp_button_basketball,
             R.id.sp_button_football, R.id.sp_button_handball, R.id.sp_button_icehockey, R.id.sp_button_racquetball,
             R.id.sp_button_rollerhockey, R.id.sp_button_running, R.id.sp_button_soccer, R.id.sp_button_softball,
@@ -60,7 +45,9 @@ public class SportPickerFragment extends DialogFragment implements View.OnClickL
         StrictMode.setThreadPolicy(policy);
 
         rootView = inflater.inflate(R.layout.sport_picker, container, false);
-        getDialog().setTitle("Sport Picker");
+//        getDialog().setTitle("Sport Picker");
+
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         // get all references to the ImageButtons in sport_picker.xml
         findViewsById();
@@ -73,8 +60,6 @@ public class SportPickerFragment extends DialogFragment implements View.OnClickL
      */
     private void findViewsById()
     {
-        buttonList = new ArrayList<ImageButton>();
-
         for(int i = 0; i < image_buttons.length; i++)
         {
             ImageButton button = (ImageButton)rootView.findViewById(image_buttons[i]);
