@@ -76,7 +76,7 @@ public class SportPickerFragment extends DialogFragment implements View.OnClickL
                 // sending over R.id.[sport_image_button] so you know which sport was picked
                 // in the create_event we would use an if statement
                 // ex) if(sport == R.id.sp_button_baseball) load baseball page
-                args.putInt("SPORT", image_buttons[i]);
+                args.putInt("SPORT", i);
 
                 Fragment fragment = new CreateEventFragment();
                 fragment.setArguments(args);

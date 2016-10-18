@@ -11,7 +11,10 @@
         <item name="android:windowActionBarOverlay">true</item>
     </style>
 
-
-
-
+    <!--<style name="AppTheme" parent="Theme.AppCompat.Light">-->
+        <!--<item name="colorPrimary">@color/color_accent</item>-->
+        <!--<item name="colorPrimaryDark">@color/color_secondary</item>-->
+        <!--<item name="colorAccent">@color/color_accent</item>-->
+        <!--<item name="android:statusBarColor">@color/color_primary</item>-->
+    <!--</style>-->
 </resources>

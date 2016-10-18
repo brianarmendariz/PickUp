@@ -158,7 +158,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
     private void initSpinners()
     {
         int idSportSpinner = R.id.edit_sport_spinner;
-        int idSportArray = R.array.sport_array;
+        int idSportArray = R.array.sport_array_default;
         int idGenderSpinner = R.id.edit_gender_spinner;
         int idGenderArray = R.array.gender_array;
         int idAgeMinSpinner = R.id.edit_age_min_spinner;
@@ -420,7 +420,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
 
 
         Spinner sportSpinner = (Spinner)rootView.findViewById(R.id.edit_sport_spinner);
-        String[] sportArray = getResources().getStringArray(R.array.sport_array);
+        String[] sportArray = getResources().getStringArray(R.array.sport_array_exclusion);
         for(int i = 0; i < sportArray.length; i++)
         {
             if(sport.equalsIgnoreCase(sportArray[i]))
@@ -511,7 +511,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
 
 
         Spinner sportSpinner = (Spinner)rootView.findViewById(R.id.edit_sport_spinner);
-        String[] sportArray = getResources().getStringArray(R.array.sport_array);
+        String[] sportArray = getResources().getStringArray(R.array.sport_array_default);
         for(int i = 0; i < sportArray.length; i++)
         {
             if(sport.equalsIgnoreCase(sportArray[i]))

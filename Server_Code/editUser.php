@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $Username    = $_POST['Username'];
     $FirstName   = $_POST['FirstName'];
     $LastName    = $_POST['LastName'];
-    $Birthday    = date('Y-m-d');
+    $Birthday    = $_POST[date('YYYY-mm-dd')];
     $Gender      = $_POST['Gender'];
     $UserRating  = $_POST['UserRating'];
     $PicturePath = $_POST['PicturePath'];

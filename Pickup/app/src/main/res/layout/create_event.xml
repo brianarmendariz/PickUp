@@ -37,7 +37,17 @@
             android:inputType="text" >
             <requestFocus />
         </EditText>
-
+        <Spinner
+            android:id="@+id/create_event_sport_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/event_table_margin"
+            android:layout_marginBottom="@dimen/event_table_margin"
+            android:layout_gravity="center"
+            android:textColor="@color/orange"
+            android:drawSelectorOnTop="true"
+            android:prompt="@string/sport_category_prompt">
+        </Spinner>
         <Spinner
             android:id="@+id/create_event_sport_spinner"
             android:layout_width="wrap_content"
@@ -65,32 +75,121 @@
         </EditText>
 
         <EditText
-            android:id="@+id/create_event_date"
+            android:id="@+id/create_event_sport_specific_edittext"
             android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/event_table_margin"
-            android:layout_marginBottom="@dimen/event_table_margin"
             android:gravity="center_horizontal"
-            android:ems="10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:textColor="@color/orange"
-            android:textSize="@dimen/edittext_text"
-            android:hint="@string/event_date_text" />
+            android:textSize="14sp"
+            android:visibility="gone"
+            />
+        <csulb.edu.pickup.NoDefaultSpinner
+            android:id="@+id/create_event_sport_specific_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/orange"
+            android:textSize="14sp"
+            android:visibility="gone"
+            />
+        <csulb.edu.pickup.NoDefaultSpinner
+            android:id="@+id/create_event_indoor_outdoor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/orange"
+            android:textSize="14sp"
+            android:prompt="@string/sport_environment_prompt"
+            />
 
+        <csulb.edu.pickup.NoDefaultSpinner
+            android:id="@+id/create_event_terrain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/orange"
+            android:textSize="14sp"
+            android:prompt="@string/sport_terrain_prompt"
+            />
+
+        <TableLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <EditText
-            android:id="@+id/create_event_time"
-            android:gravity="center_horizontal"
+            android:id="@+id/create_event_start_date"
+            android:layout_column="0"
+            android:layout_gravity="left|center_horizontal|fill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="@dimen/event_table_margin"
+            android:layout_marginTop="@dimen/event_table_margin"
+            android:layout_marginBottom="@dimen/event_table_margin"
+            android:gravity="center_horizontal"
+            android:ems="10"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/edittext_text"
+            android:hint="@string/event_start_date_text" />
+
+        <EditText
+            android:id="@+id/create_event_start_time"
+            android:layout_column="1"
+            android:layout_gravity="right|center_horizontal|fill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/event_table_margin"
+            android:layout_marginTop="@dimen/event_table_margin"
+            android:layout_marginBottom="@dimen/event_table_margin"
+            android:gravity="center_horizontal"
+            android:ems="10"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/edittext_text"
+            android:hint="@string/event_start_time_text" />
+
+    </TableRow>
+
+    <TableRow>
+
+        <EditText
+            android:id="@+id/create_event_end_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_gravity="left|center_horizontal|fill"
+            android:layout_marginRight="@dimen/event_table_margin"
             android:layout_marginTop="@dimen/event_table_margin"
             android:layout_marginBottom="@dimen/event_table_margin"
             android:ems="10"
             android:textColor="@color/orange"
             android:textSize="@dimen/edittext_text"
-            android:hint="@string/event_time_text" />
+            android:hint="@string/event_end_date_text" />
 
+        <EditText
+            android:id="@+id/create_event_end_time"
+            android:gravity="center_horizontal"
+            android:layout_gravity="right|center_horizontal|fill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/event_table_margin"
+            android:layout_marginTop="@dimen/event_table_margin"
+            android:layout_marginBottom="@dimen/event_table_margin"
+            android:ems="10"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/edittext_text"
+            android:hint="@string/event_end_time_text" />
+    </TableRow>
+</TableLayout>
         <csulb.edu.pickup.NoDefaultSpinner
             android:id="@+id/create_event_gender_spinner"
             android:gravity="center"
@@ -129,6 +228,27 @@
         </TableLayout>
 
         <csulb.edu.pickup.NoDefaultSpinner
+            android:id="@+id/create_event_skill_level"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/orange"
+            android:textSize="14sp"
+            android:prompt="@string/sport_skill_level_prompt"
+            />
+
+        <csulb.edu.pickup.NoDefaultSpinner
+            android:id="@+id/create_event_number_of_teams"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/orange"
+            android:textSize="14sp"
+            android:visibility="visible"
+            />
+        <csulb.edu.pickup.NoDefaultSpinner
             android:id="@+id/create_event_max_num_ppl_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -137,7 +257,20 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:textColor="@color/orange"
-            android:textSize="@dimen/edittext_text"/>
+            android:textSize="@dimen/edittext_text"
+            android:visibility="gone"/>
+
+        <csulb.edu.pickup.NoDefaultSpinner
+            android:id="@+id/create_event_number_of_people_per_team"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/event_table_margin"
+            android:layout_marginBottom="@dimen/event_table_margin"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/edittext_text"
+            android:visibility="visible"/>
 
         <csulb.edu.pickup.NoDefaultSpinner
             android:id="@+id/create_event_min_user_rating_spinner"
@@ -149,6 +282,7 @@
             android:textColor="@color/orange"
             android:textSize="@dimen/edittext_text"
             android:gravity="center"/>
+
 
 
         <LinearLayout

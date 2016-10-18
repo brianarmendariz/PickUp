@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 public class Event implements Parcelable
 {
+    private String _category;
     private String _name;
     private String _description;
     private String _creatorName;
@@ -68,7 +69,7 @@ public class Event implements Parcelable
                  String ageMin, String creatorName, String creatorEmail, String sport, String gender, String maxNumberPpl,
                  String minUserRating, String dateCreated, String eventDate, String eventTime, String eventEndDate,
                  String eventEndTime, String isPrivate, String skill, String sportSpecific, String playersPerTeam,
-                 String numberOfTeams, String terrain, String environment)
+                 String numberOfTeams, String terrain, String environment,String category)
     {
         _eventID = eventID;
         _name = name;
@@ -96,6 +97,7 @@ public class Event implements Parcelable
         _numberOfTeams = numberOfTeams;
         _terrain = terrain;
         _environment = environment;
+        _category = category;
     }
 
     /*

@@ -307,7 +307,7 @@ public class URLConnection
                                   String location, String latitude, String longitude, String eventDateTime,
                                   String eventEndDateTime, String ageMax, String ageMin, String minUserRating,
                                   String playerAmount, String isPrivate, String gender, String skill, String sportSpecific,
-                                  String playersPerTeam, String numberOfTeams, String terrain, String environment)
+                                  String playersPerTeam, String numberOfTeams, String terrain, String environment,String category)
                                   throws IOException  {
 
 				/*url of route being requested*/
@@ -317,7 +317,7 @@ public class URLConnection
                 "&Longitude="+longitude+"&EventDateTime="+eventDateTime+"&AgeMax="+ageMax+"&AgeMin="+ageMin+
                 "&PlayerAmount="+playerAmount+"&MinUserRating="+minUserRating+"&IsPrivate="+isPrivate+"&Gender="+gender+
                 "&Skill="+skill+"&SportSpecific="+sportSpecific+"&EventEndDateTime="+eventEndDateTime+"&PlayersPerTeam="+playersPerTeam+"&NumberOfTeams="+numberOfTeams+
-                "&Terrain="+terrain+"&Environment="+environment;
+                "&Terrain="+terrain+"&Environment="+environment+"&Category="+category;
 
         return makeHTTPRequest(url,urlParameters);
 
@@ -551,7 +551,8 @@ public class URLConnection
                             map.get("PlayersPerTeam"),
                             map.get("NumberOfTeams"),
                             map.get("Terrain"),
-                            map.get("Environment")
+                            map.get("Environment"),
+                            map.get("Category")
                             );
                     list.add(newEvent);
                 }

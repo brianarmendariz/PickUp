@@ -15,6 +15,10 @@
     <string name="event_location_text">Location</string>
     <string name="event_time_text">Pick a Time</string>
     <string name="event_date_text">Choose a Date</string>
+    <string name="event_start_time_text">Pick a Start Time</string>
+    <string name="event_end_time_text">Pick an End Time</string>
+    <string name="event_start_date_text">Choose a Start Date</string>
+    <string name="event_end_date_text">Choose an End Date</string>
     <string name="etxt_fromdate">Dat</string>
     <string name="event_gender_text">Gender</string>
     <string name="event_age_group_text">Age Group</string>
@@ -42,6 +46,10 @@
     </string-array>
     <string name="hello"></string>
     <string name="prompt">Choose a Sport</string>
+    <string name="sport_category_prompt">Choose a Category</string>
+    <string name="sport_environment_prompt">Choose an Environment</string>
+    <string name="sport_terrain_prompt">Choose a Terrain</string>
+    <string name="sport_skill_level_prompt">Choose a Skill Level</string>
     <drawable name="white">#ffffff</drawable>
     <drawable name="black">#000000</drawable>
     <drawable name="green">#347C2C</drawable>
@@ -91,7 +99,7 @@
     <string name="send_email_btn_txt">Send Email</string>
     <string name="rest_desc_text">Please enter your email address and we will send you instructions for resetting your password:</string>
     <string name="rest_passwd_label_txt">Reset Password</string>
-    <string-array name="sport_array">
+    <string-array name="sport_array_default">
         <item>Badminton</item>
         <item>Baseball</item>
         <item>Basketball</item>
@@ -100,12 +108,31 @@
         <item>Football</item>
         <item>Racquetball</item>
         <item>Roller Hockey</item>
-        <item>Softball</item>
+        <item>Running</item>
         <item>Soccer</item>
+        <item>Softball</item>
         <item>Tennis</item>
         <item>Volleyball</item>
+        <item>Weightlifting</item>
+        <item>Yoga</item>
     </string-array>
-
+    <string-array name="sport_array_exclusion">
+        <item>Badminton</item>
+        <item>Baseball</item>
+        <item>Basketball</item>
+        <item>Handball</item>
+        <item>Ice Hockey</item>
+        <item>Football</item>
+        <item>Racquetball</item>
+        <item>Roller Hockey</item>
+        <item>Soccer</item>
+        <item>Softball</item>
+        <item>Tennis</item>
+    </string-array>
+    <string-array name="indoor_outdoor">
+        <item>Indoor</item>
+        <item>Outdoor</item>
+    </string-array>
     <string-array name="bday_month_array">
         <item>Jan</item>
         <item>Feb</item>
@@ -120,6 +147,89 @@
         <item>Nov</item>
         <item>Dec</item>
     </string-array>
+    // create event arrays sb
+    // Badminton, Racquetball,Roller Hockey,Handball
+    <string-array name="Terrain_Default">
+        <item>Hardwood</item>
+        <item>Cement</item>
+        <item>Multi-Purpose</item>
+    </string-array>
+    <string-array name="Terrain_Baseball_Softball">
+        <item>Dirt</item>
+        <item>Grass</item>
+        <item>Turf</item>
+    </string-array>
+    <string-array name="Terrain_Basketball">
+    <item>Hardwood</item>
+    <item>Cement</item>
+    <item>Multi-Purpose</item>
+    <item>Advanced Multi-Purpose</item>
+</string-array>
+    <string-array name="Terrain_Football">
+        <item>Grass</item>
+        <item>Turf</item>
+    </string-array>
+    <string-array name="Terrain_Ice_Hockey">
+        <item>Ice Rink</item>
+    </string-array>
+    <string-array name="Terrain_Running">
+        <item>Asphalt</item>
+        <item>Cement</item>
+        <item>Beach</item>
+        <item>Grass</item>
+        <item>Trail</item>
+    </string-array>
+    <string-array name="Terrain_Soccer">
+        <item>Asphalt</item>
+        <item>Beach</item>
+        <item>Grass</item>
+        <item>Turf</item>
+        <item>Multi-Purpose</item>
+    </string-array>
+    <string-array name="Terrain_Tennis">
+        <item>Clay</item>
+        <item>Hard</item>
+        <item>Grass</item>
+        <item>Carpet</item>
+    </string-array>
+    <string-array name="Terrain_Volleyball">
+        <item>Beach</item>
+        <item>Grass</item>
+        <item>Multi-Purpose</item>
+    </string-array>
+
+    <string-array name="Event_Skill_Level">
+        <item>Beginner</item>
+        <item>Novice</item>
+        <item>Intermediate</item>
+        <item>Advanced</item>
+    </string-array>
+    <string-array name="Sport_Specific_Weightlifting">
+        <item>Full Body</item>
+        <item>Upper Body</item>
+        <item>Lower Body</item>
+        <item>Push</item>
+        <item>Pull</item>
+    </string-array>
+    
+    <string-array name="Sport_Specific_Hockey">
+        <item>Ball</item>
+        <item>Puck</item>
+    </string-array>
+
+    <string-array name="Sport_Specific_Football">
+        <item>Flag</item>
+        <item>Tackle</item>
+    </string-array>
+
+    <string-array name="Create_Event_Categories">
+        <item>Tournament</item>
+        <item>Match</item>
+        <item>Pick Up</item>
+    </string-array>
+    // end of create event arrays sb
+
+
 
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>

@@ -2,43 +2,34 @@ package csulb.edu.pickup;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 
 import android.os.StrictMode;
-import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+
+import android.widget.AdapterView;
+
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-
-import com.facebook.login.LoginManager;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -59,30 +50,51 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
     private Button createEventButton;
     Calendar newDate = Calendar.getInstance(); // local object to couple date and time
 
-    private EditText createDateEditText;
-    private EditText createTimeEditText;
+    private EditText createStartDateEditText;
+    private EditText createEndDateEditText;
+    private EditText createStartTimeEditText;
+    private EditText createEndTimeEditText;
 
-    private DatePickerDialog datePickerDialog;
-    private TimePickerDialog timePickerDialog;
+    private DatePickerDialog startDatePickerDialog;
+    private DatePickerDialog endDatePickerDialog;
+    private TimePickerDialog startTimePickerDialog;
+    private TimePickerDialog endTimePickerDialog;
 
     private SimpleDateFormat dateFormatter;
 
     private int hour;
     private int minute;
 
-    String[] sportStringArray = {"Badminton", "Baseball", "Basketball", "Football",
-            "Handball", "Ice Hockey", "Racquetball", "Roller Hockey", "Soccer",
-            "Softball", "Tennis", "Volleyball"};
+//    String[] sportStringArray = {"Badminton", "Baseball", "Basketball", "Football",
+//            "Handball", "Ice Hockey", "Racquetball", "Roller Hockey", "Running", "Soccer",
+//            "Softball", "Tennis", "Volleyball", "Weightlifting", "Yoga"};
+//
+
+//    String[] sportStringArray;
+
+    int arr_images_default[] = {R.drawable.badminton_icon,
+            R.drawable.baseball_icon, R.drawable.basketball_icon, R.drawable.football_icon,
+            R.drawable.handball_icon, R.drawable.icehockey_icon, R.drawable.racquetball_icon,
+            R.drawable.rollerhockey_icon,  R.drawable.running_icon,R.drawable.soccer_icon, R.drawable.softball_icon, R.drawable.tennis_icon,
+            R.drawable.volleyball_icon, R.drawable.weightlifting_icon, R.drawable.yoga_icon};
+    int arr_images_exclusion[] ={R.drawable.badminton_icon,
+            R.drawable.baseball_icon, R.drawable.basketball_icon, R.drawable.football_icon,
+            R.drawable.handball_icon, R.drawable.icehockey_icon, R.drawable.racquetball_icon,
+            R.drawable.rollerhockey_icon, R.drawable.soccer_icon, R.drawable.softball_icon, R.drawable.tennis_icon,
+            R.drawable.volleyball_icon
+
+    };
 
     User thisUser;
 
     View rootView;
 
-    int sport;
+    int current_sport;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle savedInstanceState)
+    {
 
         // Bundle from MainActivity
         Bundle mainArgs = getActivity().getIntent().getExtras();
@@ -90,7 +102,7 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
 
         // Bundle from SportFragment
         Bundle fragArgs = this.getArguments();
-        sport = (int) fragArgs.getInt("SPORT"); // R.id.[sport_button_pressed]
+        current_sport = (int) fragArgs.getInt("SPORT"); // R.id.[sport_button_pressed]
         //thisUser = new User("ln", "em", "pw", "bday", "gend", "useRate", "a");
 
         super.onCreate(savedInstanceState);
@@ -158,17 +170,37 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
     private void initSpinners()
     {
         int idSportSpinner = R.id.create_event_sport_spinner;
-        int idSportArray = R.array.sport_array;
+        int idSportArray = R.array.sport_array_default;
         int idGenderSpinner = R.id.create_event_gender_spinner;
         int idGenderArray = R.array.gender_array;
         int idAgeMinSpinner = R.id.create_event_age_min_spinner;
         int idAgeMaxSpinner = R.id.create_event_age_max_spinner;
         int idMaxNumPplSpinner = R.id.create_event_max_num_ppl_spinner;
+        int idNumPplPerTeamSpinner = R.id.create_event_number_of_people_per_team;
+        int idNumofTeamsSpinner = R.id.create_event_number_of_teams;
         int idMinUserRatingSpinner = R.id.create_event_min_user_rating_spinner;
+        //Sarah new edition
 
+        int idCategorySpinner = R.id.create_event_sport_category;
+        int idCategoryArray = R.array.Create_Event_Categories;
+
+        int idIndoorOutdoorSpinner = R.id.create_event_indoor_outdoor;
+        int idIndoorOutdoorArray = R.array.indoor_outdoor;
+
+        int idSkillLevel = R.id.create_event_skill_level;
+        int idSkillArray = R.array.Event_Skill_Level;
+
+        //attach value to Categories Spinner
+        initSpinner(idCategorySpinner,idCategoryArray);
+        //attach value to IndoorOutdoorSpinner
+
+        initSpinner(idIndoorOutdoorSpinner,idIndoorOutdoorArray);
+
+        // attach values to Skill Level spinner
+        initSpinner(idSkillLevel,idSkillArray);
         // attach values to sport spinner
-        initSpinner(idSportSpinner, idSportArray);
 
+        initSpinner(idSportSpinner,idSportArray);
         // attach values to gender spinner
         initSpinner(idGenderSpinner, idGenderArray);
 
@@ -177,6 +209,8 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
         initSpinner(idAgeMaxSpinner, 0);
         initSpinner(idMaxNumPplSpinner, 0);
         initSpinner(idMinUserRatingSpinner, 0);
+        initSpinner(idNumofTeamsSpinner, 0);
+        initSpinner(idNumPplPerTeamSpinner, 0);
     }
 
     private void initSpinner(int spinnerId, int arrayId)
@@ -184,8 +218,34 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
         // load values from resources to populate Gender spinner
         Spinner spinner = (Spinner) rootView.findViewById(spinnerId);
 
-        if(spinnerId == R.id.create_event_sport_spinner){
-            spinner.setAdapter(new MyCAdapter(this.getActivity(), R.layout.row, sportStringArray));
+        if(spinnerId == R.id.create_event_sport_category)
+        {
+            ArrayAdapter<CharSequence> spinnnerAdapter = ArrayAdapter.createFromResource(this.getActivity(),
+                    arrayId, android.R.layout.simple_spinner_item);
+            // Specify the layout
+            spinnnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // Apply the adapter to the spinner
+            spinner.setAdapter(spinnnerAdapter);
+            if(current_sport ==14 || current_sport == 13 || current_sport == 8)
+            {
+                spinner.setSelection(2);
+            }
+            spinner.setOnItemSelectedListener(CategoryListener);
+
+        }
+        else if(spinnerId == R.id.create_event_sport_spinner)
+        {
+            if(arrayId == R.array.sport_array_default)
+            {
+                spinner.setAdapter(new MyCAdapter(this.getActivity(), R.layout.row, arrayId,arr_images_default));
+                spinner.setOnItemSelectedListener(SportListener);
+            }
+            else
+            {
+                spinner.setAdapter(new MyCAdapter(this.getActivity(), R.layout.row, arrayId,arr_images_exclusion));
+                spinner.setOnItemSelectedListener(SportListener);
+            }
+            spinner.setSelection(current_sport);
         }
         else if(spinnerId == R.id.create_event_gender_spinner)
         {
@@ -195,7 +255,8 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             spinner.setAdapter(adapter);
         }
         else if(spinnerId == R.id.create_event_age_min_spinner || spinnerId == R.id.create_event_age_max_spinner
-                || spinnerId == R.id.create_event_max_num_ppl_spinner || spinnerId == R.id.create_event_min_user_rating_spinner)
+                || spinnerId == R.id.create_event_max_num_ppl_spinner || spinnerId == R.id.create_event_min_user_rating_spinner
+                || spinnerId == R.id.create_event_number_of_people_per_team || spinnerId == R.id.create_event_number_of_teams)
         {
             int min = 0;
             int max = 0;
@@ -221,6 +282,16 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
                     min = -10;
                     max = 20;
                     spinner.setPrompt("User Rating...");
+                    break;
+                case R.id.create_event_number_of_people_per_team:
+                    min = 2;
+                    max = 30;
+                    spinner.setPrompt("Number of People per Team...");
+                    break;
+                case R.id.create_event_number_of_teams:
+                    min = 2;
+                    max = 10;
+                    spinner.setPrompt("Number of Teams");
                     break;
                 default:
                     break;
@@ -272,27 +343,45 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
         createEventButton = (Button) rootView.findViewById(R.id.create_event_create_btn);
         createEventButton.requestFocus();
 
-        createDateEditText = (EditText) rootView.findViewById(R.id.create_event_date);
-        createDateEditText.setInputType(InputType.TYPE_NULL);
-        createDateEditText.requestFocus();
+        createStartDateEditText = (EditText) rootView.findViewById(R.id.create_event_start_date);
+        createStartDateEditText.setInputType(InputType.TYPE_NULL);
+        createStartDateEditText.requestFocus();
 
-        createTimeEditText = (EditText) rootView.findViewById(R.id.create_event_time);
-        createTimeEditText.setInputType(InputType.TYPE_NULL);
-        createTimeEditText.requestFocus();
+        createEndDateEditText = (EditText) rootView.findViewById(R.id.create_event_end_date);
+        createEndDateEditText.setInputType(InputType.TYPE_NULL);
+        createEndDateEditText.requestFocus();
+
+        createStartTimeEditText = (EditText) rootView.findViewById(R.id.create_event_start_time);
+        createStartTimeEditText.setInputType(InputType.TYPE_NULL);
+        createStartTimeEditText.requestFocus();
+
+        createEndTimeEditText = (EditText) rootView.findViewById(R.id.create_event_end_time);
+        createEndTimeEditText.setInputType(InputType.TYPE_NULL);
+        createEndTimeEditText.requestFocus();
     }
 
 
     private void setDateField() {
-        createDateEditText.setOnClickListener(this);
-
+        createStartDateEditText.setOnClickListener(this);
+        createEndDateEditText.setOnClickListener(this);
         Calendar newCalendar = Calendar.getInstance();
-        datePickerDialog = new DatePickerDialog(this.getActivity(), new DatePickerDialog.OnDateSetListener() {
+        startDatePickerDialog = new DatePickerDialog(this.getActivity(), new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
                 dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-                createDateEditText.setText(dateFormatter.format(newDate.getTime()));
+                createStartDateEditText.setText(dateFormatter.format(newDate.getTime()));
+            }
+
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        endDatePickerDialog = new DatePickerDialog(this.getActivity(), new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+                createEndDateEditText.setText(dateFormatter.format(newDate.getTime()));
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
@@ -300,9 +389,9 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
     }
 
     private void setTimeField() {
-        createTimeEditText.setOnClickListener(this);
-
-        timePickerDialog =
+        createStartTimeEditText.setOnClickListener(this);
+        createEndTimeEditText.setOnClickListener(this);
+        startTimePickerDialog =
                 new TimePickerDialog(this.getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     public void onTimeSet(TimePicker view, int selectedHour,
                                           int selectedMinute) {
@@ -312,9 +401,23 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
                         newDate.set(Calendar.MINUTE, minute);
                         newDate.set(Calendar.SECOND, 0);
                         dateFormatter = new SimpleDateFormat("hh:mm a", Locale.US);
-                        createTimeEditText.setText(dateFormatter.format(newDate.getTime()));
+                        createStartTimeEditText.setText(dateFormatter.format(newDate.getTime()));
+
                     }
                 }, hour, minute, false);
+        endTimePickerDialog =  new TimePickerDialog(this.getActivity(), new TimePickerDialog.OnTimeSetListener() {
+            public void onTimeSet(TimePicker view, int selectedHour,
+                                  int selectedMinute) {
+                hour = selectedHour;
+                minute = selectedMinute;
+                newDate.set(Calendar.HOUR_OF_DAY, hour);
+                newDate.set(Calendar.MINUTE, minute);
+                newDate.set(Calendar.SECOND, 0);
+                dateFormatter = new SimpleDateFormat("hh:mm a", Locale.US);
+                createEndTimeEditText.setText(dateFormatter.format(newDate.getTime()));
+
+            }
+        }, hour, minute, false);
     }
 
     private void setUpCreateEventButton() {
@@ -326,14 +429,168 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
     }
 
 
+    //Category Listener
+    AdapterView.OnItemSelectedListener CategoryListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+        {
+            if(position == 2)
+            {
+                initSpinner(R.id.create_event_sport_spinner,R.array.sport_array_default);
+            }
+            else
+            {
+                initSpinner(R.id.create_event_sport_spinner,R.array.sport_array_exclusion);
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent)
+        {
+
+        }
+
+    };
+    //SportListener
+    AdapterView.OnItemSelectedListener SportListener = new AdapterView.OnItemSelectedListener() {
+        int idTerrainSpinner = R.id.create_event_terrain;
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+        {
+            int idSportSpecificSpinner = R.id.create_event_sport_specific_spinner;
+            int idSportSpecificArray;
+            int idTerrainArray;
+            Spinner spin = (Spinner)rootView.findViewById(idSportSpecificSpinner);
+            spin.setVisibility(View.GONE);
+            EditText running = (EditText)rootView.findViewById(R.id.create_event_sport_specific_edittext);
+            running.setVisibility(View.GONE);
+            Spinner numofplayers = (Spinner)rootView.findViewById(R.id.create_event_max_num_ppl_spinner);
+            numofplayers.setVisibility(View.GONE);
+            Spinner numofteams = (Spinner) rootView.findViewById(R.id.create_event_number_of_teams);
+            numofteams.setVisibility(View.VISIBLE);
+            Spinner numofplayersperteam = (Spinner) rootView.findViewById(R.id.create_event_number_of_people_per_team);
+            numofplayersperteam.setVisibility(View.VISIBLE);
+            switch(position)
+                {
+                    //Badminton
+                    case 0:
+                        idTerrainArray = R.array.Terrain_Default;
+                        break;
+                    //Baseball
+                    case 1:
+                        idTerrainArray = R.array.Terrain_Baseball_Softball;
+                        break;
+                    //Basketball
+                    case 2:
+                        idTerrainArray = R.array.Terrain_Basketball;
+                        break;
+                    //Football
+                    case 3:
+                        idTerrainArray = R.array.Terrain_Football;
+                        idSportSpecificArray = R.array.Sport_Specific_Football;
+                        initSpinner(idSportSpecificSpinner,idSportSpecificArray);
+                        spin.setPrompt("Choose Football Game Type");
+                        spin.setVisibility(View.VISIBLE);
+                        break;
+                    //Handball
+                    case 4:
+                        idTerrainArray = R.array.Terrain_Default;
+                        break;
+                    //Ice Hockey
+                    case 5:
+                        idTerrainArray = R.array.Terrain_Ice_Hockey;
+                        idSportSpecificArray = R.array.Sport_Specific_Hockey;
+                        initSpinner(idSportSpecificSpinner,idSportSpecificArray);
+                        spin.setPrompt("Choose Hockey Type");
+                        spin.setVisibility(View.VISIBLE);
+                        break;
+                    //Racquetball
+                    case 6:
+                        idTerrainArray = R.array.Terrain_Default;
+                        break;
+                    //Roller Hockey
+                    case 7:
+                        idTerrainArray = R.array.Terrain_Default;
+                        idSportSpecificArray = R.array.Sport_Specific_Hockey;
+                        initSpinner(idSportSpecificSpinner,idSportSpecificArray);
+                        spin.setPrompt("Choose Hockey Type");
+                        spin.setVisibility(View.VISIBLE);
+                        break;
+                    //Running
+                    case 8:
+                        idTerrainArray = R.array.Terrain_Default;
+                        running.setVisibility(View.VISIBLE);
+                        running.setHint("Distance in miles");
+                        numofplayers.setVisibility(View.VISIBLE);
+                        numofplayersperteam.setVisibility(View.GONE);
+                        numofteams.setVisibility(View.GONE);
+                        break;
+                    //Soccer
+                    case 9:
+                        idTerrainArray = R.array.Terrain_Soccer;
+                        break;
+                    //Softball
+                    case 10:
+                        idTerrainArray = R.array.Terrain_Baseball_Softball;
+                        break;
+                    //Tennis
+                    case 11:
+                        idTerrainArray = R.array.Terrain_Tennis;
+                        break;
+                    //Volleyball
+                    case 12:
+                        idTerrainArray = R.array.Terrain_Volleyball;
+                        break;
+                    //weightlifting
+                    case 13:
+                        idTerrainArray = R.array.Terrain_Default;
+                        idSportSpecificArray = R.array.Sport_Specific_Weightlifting;
+                        initSpinner(idSportSpecificSpinner,idSportSpecificArray);
+                        spin.setPrompt("Choose Workout");
+                        spin.setVisibility(View.VISIBLE);
+                        numofplayers.setVisibility(View.VISIBLE);
+                        numofplayersperteam.setVisibility(View.GONE);
+                        numofteams.setVisibility(View.GONE);
+                        break;
+                    //yoga
+                    case 14:
+                        idTerrainArray = R.array.Terrain_Default;
+                        numofplayers.setVisibility(View.VISIBLE);
+                        numofplayersperteam.setVisibility(View.GONE);
+                        numofteams.setVisibility(View.GONE);
+                        break;
+                    default:
+                        idTerrainArray = R.array.Terrain_Default;
+
+                        break;
+                }
+            initSpinner(idTerrainSpinner,idTerrainArray);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent)
+        {
+            initSpinner(idTerrainSpinner,R.array.Terrain_Default);
+        }
+    };
+
     @Override
     public void onClick(View view) {
-        if (view == createDateEditText) {
-            datePickerDialog.show();
+
+        if (view == createStartDateEditText) {
+            startDatePickerDialog.show();
         }
-        else if(view == createTimeEditText)
+        else if(view == createEndDateEditText)
         {
-            timePickerDialog.show();
+            endDatePickerDialog.show();
+        }
+        else if(view == createStartTimeEditText)
+        {
+            startTimePickerDialog.show();
+        }
+        else if(view == createEndTimeEditText)
+        {
+            endTimePickerDialog.show();
         }
         else if (view == cancelEventButton) {
             Bundle args = new Bundle();
@@ -355,14 +612,14 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             String name = formMap.get("event name");
             String sport = formMap.get("sport");
             String location = formMap.get("location");
-            String date = formMap.get("date");
+            String date = formMap.get("start date");
             System.out.println("date = " + date);
-            String time = formMap.get("time");
+            String time = formMap.get("start time");
 
             //date yyyy-mm-dd  and the time hh:min:ss
-            String dateTime = (convertDate(date) + " " + convertTime(time));
+            String startDateTime = (convertDate(date) + " " + convertTime(time));
 
-            Log.d("DATE/TIME", dateTime);
+            Log.d("DATE/TIME", startDateTime);
             String gender = formMap.get("gender");
             String ageMin = formMap.get("age min");
             String ageMax = formMap.get("age max");
@@ -370,13 +627,16 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             String minUserRating = formMap.get("min rating");
 
             /* TODO: get data from user */
-            String endDateTime = "";
-            String skill = "";
-            String sportSpecific = "";
-            String playersPerTeam = "";
-            String numberOfTeams = "";
-            String terrain = "";
-            String environment = "";
+            String enddate = formMap.get("end date");
+            String endtime = formMap.get("end time");
+            String endDateTime = (convertDate(enddate) + " " + convertTime(endtime));
+            String skill = formMap.get("skill level");
+            String sportSpecific = formMap.get("sport specific");
+            String playersPerTeam = formMap.get("players per team");
+            String numberOfTeams = formMap.get("number of teams");
+            String terrain = formMap.get("terrain");
+            String environment = formMap.get("environment");
+            String category = formMap.get("category");
 
             boolean createEventFlag = checkForm(name, location, date, time,
                     gender, ageMin, ageMax);
@@ -396,10 +656,10 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
                         URLConnection http = new URLConnection();
 
                         http.sendCreateEvent(authorName, authorEmail, name, sport, location,
-                                String.valueOf(latitude), String.valueOf(longitude), dateTime,
+                                String.valueOf(latitude), String.valueOf(longitude), startDateTime,
                                 endDateTime, ageMax, ageMin, minUserRating,
                                 playerAmount, "P/NP", gender,
-                                skill, sportSpecific, playersPerTeam, numberOfTeams, terrain, environment
+                                skill, sportSpecific, playersPerTeam, numberOfTeams, terrain, environment,category
                         );
 
 
@@ -448,13 +708,21 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
         String eventLocationStr = editTextBox4.getText().toString();
         formMap.put("location", eventLocationStr);
 
-        EditText editTextBox5 = (EditText) rootView.findViewById(R.id.create_event_date);
-        String eventDateStr = editTextBox5.getText().toString();
-        formMap.put("date", eventDateStr);
+        EditText editTextBox5 = (EditText) rootView.findViewById(R.id.create_event_start_date);
+        String startEventDateStr = editTextBox5.getText().toString();
+        formMap.put("start date", startEventDateStr);
 
-        EditText editTextBox6 = (EditText) rootView.findViewById(R.id.create_event_time);
-        String eventTimeStr = editTextBox6.getText().toString();
-        formMap.put("time", eventTimeStr);
+        EditText editTextBox6 = (EditText) rootView.findViewById(R.id.create_event_start_time);
+        String startEventTimeStr = editTextBox6.getText().toString();
+        formMap.put("start time", startEventTimeStr);
+
+        EditText editTextBox7= (EditText) rootView.findViewById(R.id.create_event_end_date);
+        String endEventDateStr = editTextBox7.getText().toString();
+        formMap.put("end date", endEventDateStr);
+
+        EditText editTextBox8 = (EditText) rootView.findViewById(R.id.create_event_end_time);
+        String endEventTimeStr = editTextBox8.getText().toString();
+        formMap.put("end time", endEventTimeStr);
 
         Spinner genderSpinner = (Spinner)rootView.findViewById(R.id.create_event_gender_spinner);
         String eventGenderStr = genderSpinner.getSelectedItem().toString();
@@ -470,27 +738,74 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
 
         String eventAgeGroupStr = eventAgeGroupMinStr + " " + eventAgeGroupMaxStr;
 
-        Spinner maxNumPplSpinner = (Spinner)rootView.findViewById(R.id.create_event_max_num_ppl_spinner);
-        String eventMaxNumPplStr = maxNumPplSpinner.getSelectedItem().toString();
-        formMap.put("max num ppl", eventMaxNumPplStr);
+
 
         Spinner minUserRatingSpinner = (Spinner)rootView.findViewById(R.id.create_event_min_user_rating_spinner);
         String eventMinUserRatingStr = minUserRatingSpinner.getSelectedItem().toString();
         formMap.put("min rating", eventMinUserRatingStr);
 
+        if(eventSportStr.equalsIgnoreCase("Running") || eventSportStr.equalsIgnoreCase("Yoga") || eventSportStr.equalsIgnoreCase("Weightlifting"))
+        {
+            Spinner maxNumPplSpinner = (Spinner)rootView.findViewById(R.id.create_event_max_num_ppl_spinner);
+            String eventMaxNumPplStr = maxNumPplSpinner.getSelectedItem().toString();
+            formMap.put("max num ppl", eventMaxNumPplStr);
+        }
+        else
+        {
+            Spinner playersPerTeamSpinner = (Spinner) rootView.findViewById(R.id.create_event_number_of_people_per_team);
+            String eventPlayersPerTeamStr = playersPerTeamSpinner.getSelectedItem().toString();
+            formMap.put("players per team", eventPlayersPerTeamStr);
+
+            Spinner numberOfTeamsSpinner = (Spinner) rootView.findViewById(R.id.create_event_number_of_teams);
+            String eventNumOfTeams = numberOfTeamsSpinner.getSelectedItem().toString();
+            formMap.put("number of teams", eventNumOfTeams);
+        }
+        Spinner skillSpinner = (Spinner)rootView.findViewById(R.id.create_event_skill_level);
+        String eventSkillStr = skillSpinner.getSelectedItem().toString();
+        formMap.put("skill level",eventSkillStr);
+
+        if(eventSportStr.equalsIgnoreCase("Running"))
+        {
+            EditText SportSpecificEditText = (EditText)rootView.findViewById(R.id.create_event_sport_specific_edittext);
+            String SportSpecificStr = SportSpecificEditText.getText().toString();
+            formMap.put("sport specific", SportSpecificStr);
+        }
+        else if (eventSportStr.equalsIgnoreCase("Hockey") ||eventSportStr.equalsIgnoreCase("Weightlifting")
+                || eventSportStr.equalsIgnoreCase("Football") )
+        {
+            Spinner SportSpecificSpinner = (Spinner)rootView.findViewById(R.id.create_event_sport_specific_spinner);
+            String SportSpecificStr = SportSpecificSpinner.getSelectedItem().toString();
+            formMap.put("sport specific",SportSpecificStr);
+        }
+
+        Spinner terrainSpinner = (Spinner)rootView.findViewById(R.id.create_event_terrain);
+        String eventTerrainstr = terrainSpinner.getSelectedItem().toString();
+        formMap.put("terrain",eventTerrainstr);
+
+        Spinner environmentSpinner = (Spinner)rootView.findViewById(R.id.create_event_indoor_outdoor);
+        String eventEnviroStr = environmentSpinner.getSelectedItem().toString();
+        formMap.put("environment", eventEnviroStr);
+
+        Spinner categorySpinner = (Spinner)rootView.findViewById(R.id.create_event_sport_category);
+        String eventCatStr = categorySpinner.getSelectedItem().toString();
+        formMap.put("category", eventCatStr);
         Log.d("SARAH", "made it past spinners in formToMap");
 
-
-        String text = String.format("1: %s \n2: %s \n3: %s " +
-                        "\n4: %s \n5: %s \n6: %s \n7: %s \n8: %s" +
-                        "\n9: %s", eventNameStr, eventSportStr,
-                eventLocationStr, eventDateStr, eventTimeStr, eventGenderStr, eventAgeGroupStr,
-                eventMaxNumPplStr, eventMinUserRatingStr);
+//String authorName,String authorEmail, String eventName, String sport,
+  //      String location, String latitude, String longitude, String eventDateTime, String ageMax, String ageMin,
+   //         String minUserRating, String playerAmount, String isPrivate, String gender, String skill, String sportSpecific,
+    //        String eventEndDateTime, String playersPerTeam, String numberOfTeams, String terrain,
+      //      String environment
+//        String text = String.format("1: %s \n2: %s \n3: %s " +
+//                        "\n4: %s \n5: %s \n6: %s \n7: %s \n8: %s" +
+//                        "\n9: %s", eventNameStr, eventSportStr,
+//                eventLocationStr, startEventDateStr, startEventTimeStr, eventGenderStr, eventAgeGroupStr,
+//                 eventMinUserRatingStr);
 
         Log.d("SARAH", "made it past formatString");
 
         // Log to show that the vars are correct
-        Log.i(TAG, text);
+//        Log.i(TAG, text);
 
         return formMap;
     }
@@ -581,14 +896,12 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
 
     public class MyCAdapter extends ArrayAdapter<String> {
 
-        int arr_images[] = {R.drawable.badminton_icon,
-                R.drawable.baseball_icon, R.drawable.basketball_icon, R.drawable.football_icon,
-                R.drawable.handball_icon, R.drawable.icehockey_icon, R.drawable.racquetball_icon,
-                R.drawable.rollerhockey_icon, R.drawable.soccer_icon, R.drawable.softball_icon, R.drawable.tennis_icon,
-                R.drawable.volleyball_icon};
-
-        public MyCAdapter(Context context, int textViewResourceId, String[] objects) {
-            super(context, textViewResourceId, objects);
+        int[] arr_images;
+        String[] sportsArray;
+        public MyCAdapter(Context context, int textViewResourceId, int sportsArrayloc,int[] images) {
+            super(context, textViewResourceId,getResources().getStringArray(sportsArrayloc) );
+            sportsArray = getResources().getStringArray(sportsArrayloc);
+            arr_images = images;
         }
 
         @Override
@@ -606,7 +919,7 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             LayoutInflater inflater = getActivity().getLayoutInflater();
             View row = inflater.inflate(R.layout.row, parent, false);
             TextView label = (TextView) row.findViewById(R.id.company);
-            label.setText(sportStringArray[position]);
+            label.setText(sportsArray[position]);
             ImageView icon = (ImageView) row.findViewById(R.id.image);
             icon.setImageResource(arr_images[position]);
 

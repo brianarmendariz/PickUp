@@ -165,7 +165,7 @@ public class FilterEventsFragment extends Fragment implements View.OnClickListen
     private void initSpinners()
     {
         int idSportSpinner = R.id.sport_spinner;
-        int idSportArray = R.array.sport_array;
+        int idSportArray = R.array.sport_array_default;
         int idGenderSpinner = R.id.gender_spinner;
         int idGenderArray = R.array.gender_array2;
         int idAgeMinSpinner = R.id.age_min_spinner;
