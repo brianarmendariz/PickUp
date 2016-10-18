@@ -7,17 +7,11 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * Created by Brian on 10/14/2016.
@@ -45,8 +39,8 @@ public class SportPickerFragment extends DialogFragment implements View.OnClickL
         StrictMode.setThreadPolicy(policy);
 
         rootView = inflater.inflate(R.layout.sport_picker, container, false);
-//        getDialog().setTitle("Sport Picker");
 
+        // sets the clear background
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         // get all references to the ImageButtons in sport_picker.xml

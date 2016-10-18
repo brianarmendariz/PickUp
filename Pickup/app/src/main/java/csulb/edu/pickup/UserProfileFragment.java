@@ -98,6 +98,9 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
     boolean areFriends = false;
     View rootView;
 
+    private static final int REQUEST_CODE = 1;
+    private Bitmap bitmap;
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -673,34 +676,58 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) throws RuntimeException {
-        // TODO Auto-generated method stub
-        super.onActivityResult(requestCode, resultCode, data);
-        /*not sure what this is for - uncomment it later?*/
-        //if (resultCode == RESULT_OK){
-        Uri targetUri = data.getData();
-        Bitmap bitmap;
+        InputStream stream = null;
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK)
+            try {
+                // recyle unused bitmaps
+                if (bitmap != null) {
+                    bitmap.recycle();
+                }
+                stream =  getActivity().getContentResolver().openInputStream(data.getData());
+                bitmap = BitmapFactory.decodeStream(stream);
 
-        Bitmap bm = BitmapFactory.decodeResource(getResources(),
-                R.drawable.com_facebook_profile_picture_blank_portrait);
-        Bitmap resized = Bitmap.createScaledBitmap(bm, 150, 150, true);
-        Bitmap conv_bm = getRoundedRectBitmap(resized, 150);
-        profileImage.setImageBitmap(conv_bm);
-//        try {
+                profileImage.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } finally {
+             {
+                if (stream != null)
+                    try {
+                        stream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+            }
+        }
+
+//        // TODO Auto-generated method stub
+//        super.onActivityResult(requestCode, resultCode, data);
+//        /*not sure what this is for - uncomment it later?*/
+//        //if (resultCode == RESULT_OK){
+//        Uri targetUri = data.getData();
+//        Bitmap bitmap;
 //
-////            bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
-//            bitmap = getBitmapFromReturnedImage(targetUri,200,200);
-//
-//        } catch (FileNotFoundException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//        catch(IOException e) {
-//            e.printStackTrace();
-//        }
-//        catch(NullPointerException e) {
-//            e.printStackTrace();
-//        }
-        //}
+//        Bitmap bm = BitmapFactory.decodeResource(getResources(),
+//                R.drawable.com_facebook_profile_picture_blank_portrait);
+//        Bitmap resized = Bitmap.createScaledBitmap(bm, 150, 150, true);
+//        Bitmap conv_bm = getRoundedRectBitmap(resized, 150);
+//        profileImage.setImageBitmap(conv_bm);
+////        try {
+////
+//////            bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
+////            bitmap = getBitmapFromReturnedImage(targetUri,200,200);
+////
+////        } catch (FileNotFoundException e) {
+////            // TODO Auto-generated catch block
+////            e.printStackTrace();
+////        }
+////        catch(IOException e) {
+////            e.printStackTrace();
+////        }
+////        catch(NullPointerException e) {
+////            e.printStackTrace();
+////        }
+//        //}
     }
 
     public Bitmap getBitmapFromReturnedImage(Uri selectedImage, int reqWidth, int reqHeight) throws IOException {
