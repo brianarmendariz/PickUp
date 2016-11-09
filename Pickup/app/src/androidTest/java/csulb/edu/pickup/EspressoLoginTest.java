@@ -93,12 +93,12 @@ public class EspressoLoginTest {
 
         onView(withId(R.id.create_event_location)).perform(ViewActions.typeText(location), closeSoftKeyboard());
 
-        onView(withId(R.id.create_event_date)).perform(ViewActions.replaceText(date), closeSoftKeyboard());
-
-        onView(withId(R.id.create_event_time)).perform(ViewActions.replaceText(time), closeSoftKeyboard());
+//        onView(withId(R.id.create_event_date)).perform(ViewActions.replaceText(date), closeSoftKeyboard());
+//
+//        onView(withId(R.id.create_event_time)).perform(ViewActions.replaceText(time), closeSoftKeyboard());
 
         //onView(withId(R.id.create_event_gender_spinner)).perform(closeSoftKeyboard());
-        onView(withId(R.id.create_event_gender_spinner)).perform(click());
+//        onView(withId(R.id.create_event_gender_spinner)).perform(click());
 //        onData(allOf(is(instanceOf(String.class)), is(gender))).perform(click());
 //
 //        onView(withId(R.id.create_event_age_min_spinner)).perform(click());

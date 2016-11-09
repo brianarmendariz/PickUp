@@ -120,7 +120,7 @@ public class MapsFragment extends Fragment implements android.location.LocationL
         Bundle b = new Bundle();
         //add current user
         b.putParcelable("USER", thisUser);
-        String eventId = event.getEventID();
+        String eventId = event.getEventID() + "";
         if (eventId != null) {
             System.out.println("putting the event string");
             b.putString("EventID", eventId);
@@ -359,7 +359,6 @@ public class MapsFragment extends Fragment implements android.location.LocationL
                      * Erwin's Changes. To fix delete comment at top and delete the bottom code.
                      */
                     String s = eventList.get(i).getSport();
-                    String t = eventList.get(i).getDescription();
                     if (s.equals("Badminton")) {
                         map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.badminton_geo)).snippet(creator)).setVisible(true);
                     }
@@ -572,7 +571,7 @@ public class MapsFragment extends Fragment implements android.location.LocationL
 
                     Bundle args = new Bundle();
                     Fragment fragment = new ViewEventFragment();
-                    args.putString("EventID", list.get(i).getEventID());
+                    args.putString("EventID", list.get(i).getEventID() + "");
 
                     //args.putString("MapURL",map.toUrlValue());
                     fragment.setArguments(args);

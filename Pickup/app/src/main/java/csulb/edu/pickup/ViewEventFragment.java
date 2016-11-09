@@ -124,7 +124,7 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
         }
         URLConnection http = new URLConnection();
         try {
-            String[][] RSVPList = http.sendGetRSVPList(Integer.parseInt(_event.getEventID()));
+            String[][] RSVPList = http.sendGetRSVPList(_event.getEventID());
             boolean hasRSVPd = false;
             for (int i = 0; i < RSVPList.length; i++) {
                 Log.d("SARAH", "name"+RSVPList[i][0]);
@@ -132,10 +132,10 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
                     hasRSVPd = true;
                 }
             }
-            if(!hasRSVPd && RSVPList.length>=Integer.parseInt(_event.getMaxNumberPpl())) {
-
-            }
-            else {
+//            if(!hasRSVPd && RSVPList.length>=Integer.parseInt(_event.getMaxNumberPpl())) {
+//
+//            }
+//            else {
                 if (hasRSVPd) {
                     Button unRSVPButton = new Button(this.getActivity());
                     unRSVPButton.setText("unRSVP");
@@ -151,7 +151,7 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
                     _UnRSVPEventButton.requestFocus();
                     setupUnRSVPButton();
                 }
-                else if (RSVPList.length < Integer.parseInt(_event.getMaxNumberPpl())) {
+                else if (RSVPList.length < _event.getTotalHeadCount()) {
                     Button RSVPButton = new Button(this.getActivity());
                     RSVPButton.setText("RSVP");
                     RSVPButton.setTag("event_rsvp_btn");
@@ -166,7 +166,7 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
                     _RSVPEventButton.requestFocus();
                     setupRSVPButton();
                 }
-            }
+//            }
         }catch(IOException ie){
             ie.printStackTrace();
         }
@@ -208,13 +208,13 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
         String name = event.getName();
         String sport = event.getSport();
         String address = event.getAddress();
-        String date = event.getEventDate();
-        String time = event.getEventTime();
+        String date = event.getEventStartDate();
+        String time = event.getEventStartTime();
         String gender = event.getGender();
-        String ageMin = event.getAgeMin();
-        String ageMax = event.getAgeMax();
-        String maxNumPpl = event.getMaxNumberPpl();
-        String minUserRating = event.getMinUserRating();
+        String ageMin = event.getAgeMin() + "";
+        String ageMax = event.getAgeMax() + "";
+        String maxNumPpl = event.getTotalHeadCount() + "";
+        String minUserRating = event.getMinUserRating() + "";
 
         TextView eventViewName = (TextView) rootView.findViewById(R.id.event_view_name);
         if(name.length() > 10)
@@ -332,7 +332,7 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
             Bundle args = new Bundle();
             Fragment fragment = new EditEventFragment();
 
-            args.putString("EventID", _event.getEventID());
+            args.putString("EventID", _event.getEventID() + "");
             fragment.setArguments(args);
             FragmentManager frgManager = getFragmentManager();
             frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack( "View Event" )
@@ -346,7 +346,7 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
 
             try {
                 URLConnection http = new URLConnection();
-                http.sendDeleteEvent(Integer.parseInt(_event.getEventID()));
+                http.sendDeleteEvent(_event.getEventID());
             } catch(IOException e)
             {
                 e.printStackTrace();
@@ -359,7 +359,7 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
 
                 args.putString("result", "delete");
 
-                args.putString("EventID", _event.getEventID());
+                args.putString("EventID", _event.getEventID() + "");
                 fragment.setArguments(args);
                 FragmentManager frgManager = getFragmentManager();
                 frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack( "Map" )
@@ -382,13 +382,13 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
         else if(view == _RSVPEventButton){
             URLConnection http = new URLConnection();
             try {
-                http.sendRSVP(thisUser.getEmail(), _event.getEventID());
+                http.sendRSVP(thisUser.getEmail(), _event.getEventID() + "");
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
             //_event is the event that was clicked
-            if(Integer.parseInt(thisUser.getUserRating()) >= Integer.parseInt(_event.getMinUserRating())) {
+            if(Integer.parseInt(thisUser.getUserRating()) >= _event.getMinUserRating()) {
                 LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.view_event_buttons);
                 ll.removeView(_RSVPEventButton);
                 Button unRSVPButton = new Button(this.getActivity());
@@ -427,7 +427,7 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
         else if(view == _UnRSVPEventButton){
             URLConnection http = new URLConnection();
             try {
-                http.sendUnRSVP(thisUser.getEmail(), _event.getEventID());
+                http.sendUnRSVP(thisUser.getEmail(), _event.getEventID() + "");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -497,8 +497,8 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
         canvas.drawText("Creator: " + _event.getCreatorName(), 0, baseline + 30, paint);
         canvas.drawText("Sport: " + _event.getSport(), 0, baseline + 60, paint);
         canvas.drawText("Location: " + _event.getAddress() , 0, baseline + 90, paint);
-        canvas.drawText("Date: " + _event.getEventDate(), 0, baseline +120, paint);
-        canvas.drawText("Time: " + _event.getEventTime() , 0, baseline + 150, paint);
+        canvas.drawText("Date: " + _event.getEventStartDate(), 0, baseline +120, paint);
+        canvas.drawText("Time: " + _event.getEventStartTime() , 0, baseline + 150, paint);
         canvas.drawText("Gender: " + _event.getGender(), 0, baseline + 180, paint);
 
 

@@ -36,23 +36,21 @@ configurations.all {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.1.1'
-
     compile 'com.google.android.gms:play-services:8.3.0'
     compile 'com.facebook.android:facebook-android-sdk:4.15.0'
     testCompile 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-core:1.9.5"
+    testCompile 'org.mockito:mockito-core:1.9.5'
     compile 'com.github.npanigrahy:Custom-Calendar-View:v1.0'
-
     // Espresso
     androidTestCompile 'com.android.support.test:runner:0.3'
     androidTestCompile 'com.android.support.test:rules:0.3'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
-
     // add this for intent mocking support
     androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2'
     // add this for webview testing support
     androidTestCompile 'com.android.support.test.espresso:espresso-web:2.2'
+    compile files('libs/json-simple-1.1.jar')
 }
 

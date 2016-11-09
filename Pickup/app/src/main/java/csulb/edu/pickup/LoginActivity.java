@@ -305,7 +305,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
             try {
                 String loginResult = http.sendLogin(username, password);
-                if (loginResult.equals("login failed")) {
+                if (loginResult.equals("false")) {
                     Log.d("SARAH","login failed");
 
                     createAlert("Invalid Login", "Login Failed, Please try again");
@@ -322,7 +322,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     myIntent.putExtras(b);
                     startActivityForResult(myIntent, 0);
                 }
-            } catch(IOException e)
+            } catch(IOException | JSONException ex)
             {
 
             }

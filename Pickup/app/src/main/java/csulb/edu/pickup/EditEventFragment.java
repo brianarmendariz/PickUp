@@ -331,7 +331,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                         //open connection
                         URLConnection http = new URLConnection();
 
-                        http.sendEditEvent(Integer.parseInt(_event.getEventID()), name, sport, location,
+                        http.sendEditEvent(_event.getEventID(), name, sport, location,
                                 String.valueOf(latitude), String.valueOf(longitude), dateTime,
                                 ageMax, ageMin, minUserRating,
                                 playerAmount, "P/NP", gender
@@ -406,13 +406,15 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
         String name = event.getName();
         String sport = event.getSport();
         String address = event.getAddress();
-        String date = event.getEventDate();
-        String time = event.getEventTime();
+        String date = event.getEventStartDate();
+        String time = event.getEventStartTime();
         String gender = event.getGender();
-        String ageMin = event.getAgeMin();
-        String ageMax = event.getAgeMax();
-        String maxNumPpl = event.getMaxNumberPpl();
-        String minUserRating = event.getMinUserRating();
+        String ageMin = event.getAgeMin() + "";
+        String ageMax = event.getAgeMax() + "";
+        int numPlayers = event.getPlayersPerTeam() * event.getNumberOfTeams() == 0 ? event.getPlayersPerTeam()
+                : event.getPlayersPerTeam() * event.getNumberOfTeams();
+        String maxNumPpl = numPlayers + "";
+        String minUserRating = event.getMinUserRating() + "";
 
         // get text from the edit text box
         EditText editTextBox1 = (EditText)rootView.findViewById(R.id.edit_event_name);

@@ -29,19 +29,15 @@ public class TextToImage {
 		{
 			++lines;
 		}
-		if(!event.getDescription().isEmpty() && event.getDescription() != null)
-		{
-			++lines;
-		}
 		if(!event.getAddress().isEmpty() && event.getAddress() != null)
 		{
 			++lines;
 		}
-		if(!event.getEventTime().isEmpty() && event.getEventTime() != null)
+		if(!event.getEventStartTime().isEmpty() && event.getEventStartTime() != null)
 		{
 			++lines;
 		}
-		if(!event.getEventDate().isEmpty() && event.getEventDate() != null)
+		if(!event.getEventStartDate().isEmpty() && event.getEventStartDate() != null)
 		{
 			++lines;
 		}
@@ -107,14 +103,13 @@ public class TextToImage {
 	
 	private String[] makeEventArray(Event event)
 	{
-		String[] arr = new String[7];
+		String[] arr = new String[6];
 		arr[0] = event.getName();
 		arr[1] = event.getCreatorEmail();
 		arr[2] = event.getSport();
-		arr[3] = event.getDescription();
-		arr[4] = event.getAddress();
-		arr[5] = event.getEventTime();
-		arr[6] = getDate(event.getEventDate());
+		arr[3] = event.getAddress();
+		arr[4] = event.getEventStartTime();
+		arr[5] = getDate(event.getEventStartDate());
 		
 		return arr;
 	}

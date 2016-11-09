@@ -1,10 +1,15 @@
 package csulb.edu.pickup;
 
-import android.util.Log;
+import org.json.JSONException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -56,6 +61,101 @@ public class URLConnection
         return response.toString();
     }
 
+
+    /**
+     * Performs the Http connection
+     * is used in all of the calls to the server
+     * @param url - URL of the php file being called
+     * @param json -  key value pairs being passed to the server
+     * @return - a string response from the server
+     * @throws IOException
+     */
+    private String makeHTTPPostRequest(String url, String json) throws IOException
+    {
+        // instantiate URL object to connect to the internet
+        java.net.URL urlObj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) urlObj.openConnection();
+
+        // setup header to initiate http request
+        con.setRequestMethod("POST");                                              // set the type of HTTP action we want to use
+        con.setRequestProperty("User-Agent", USER_AGENT);
+        con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+        con.setRequestProperty("Content-Type", "application/json; charset=UTF-8"); // set data transfer type to json
+
+        // Send post request
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());         // get the connection stream to send data through
+        wr.writeBytes(json);                                                       // send json byte representation
+
+        // flush & close server
+        wr.flush();
+        wr.close();
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        // read in the response
+        while ((inputLine = in.readLine()) != null)
+        {
+            response.append(inputLine);
+        }
+
+        in.close();                   // close input connection
+        return response.toString();
+    }
+
+    private String makeHTTPGetRequest(String url) throws IOException
+    {
+        // instantiate URL object to connect to the internet
+        java.net.URL urlObj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) urlObj.openConnection();
+
+        // setup header to initiate http request
+        con.setRequestMethod("GET");                                    // set the type of HTTP action we want to use
+        con.setRequestProperty("User-Agent", USER_AGENT);
+        con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+        // get response
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        // read in the response
+        while ((inputLine = in.readLine()) != null)
+        {
+            response.append(inputLine);
+        }
+
+        in.close();                    // close input connection
+
+        return response.toString();
+    }
+
+    /**
+     *
+     * @param username
+     * @param password
+     * @return
+     * @throws IOException
+     */
+    public String sendLogin(String username, String password) throws IOException, JSONException
+    {
+	   /*url of route being requested*/
+        String url = "http://www.csulbpickup.com/login.php";
+
+        UserLogin userCredentials = new UserLogin(username, password);
+        JSONObject jsonObj = new JSONObject();
+
+        String[] fields = getFieldsForObject(userCredentials);
+
+        jsonObj.put(fields[0], userCredentials.getUsername());
+        jsonObj.put(fields[1], userCredentials.getPassword());
+
+        String json = jsonObj.toJSONString();
+        return makeHTTPPostRequest(url, json);
+    }
+
     /**
      * Sends event data to the server.
      *
@@ -70,52 +170,290 @@ public class URLConnection
      * @return String
      * @throws IOException
      */
-    //  @SuppressWarnings("unchecked")
-    public String sendCreateUser(String username, String password, String firstName,
-                                 String lastName, String birthday, String gender,
-                                 String userRating, String picturePath)
-            throws IOException  {
-
-				/*url of route being requested*/
+    public String sendCreateUser(String username, String password, String firstName, String lastName,
+                                 String birthday, String gender, String userRating, String picturePath) throws IOException, JSONException
+    {
+	   /*url of route being requested*/
         String url = "http://www.csulbpickup.com/createUser.php";
 
-        String urlParameters = "Username="+username+"&Password="+password+"&FirstName="+firstName+
-                "&LastName="+lastName+"&Birthday="+birthday+"&Gender="+gender+
-                "&UserRating="+userRating+"&PicturePath="+picturePath;
-        return makeHTTPRequest(url,urlParameters);
+        User user = new User(username, password, firstName, lastName, birthday, gender, userRating, picturePath);
+        JSONObject jsonObj = new JSONObject();
+
+        String[] fields = getFieldsForObject(user);
+
+        jsonObj.put(fields[0], user.getEmail());
+        jsonObj.put(fields[1], user.getPassword());
+        jsonObj.put(fields[2], user.getFirstName());
+        jsonObj.put(fields[3], user.getLastName());
+        jsonObj.put(fields[4], user.getBirthday());
+        jsonObj.put(fields[5], user.getGender());
+        jsonObj.put(fields[6], user.getUserRating());
+        jsonObj.put(fields[7], user.getPicturePath());
+
+        String json = jsonObj.toString();
+        return makeHTTPPostRequest(url, json);
+    }
+
+    public String sendCreateEvent(String name,String creatorName, String creatorEmail, String sport, String address,
+                                  String latitude, String longitude, String gender, String ageMin, String ageMax, String minUserRating,
+                                  String eventStartDate, String eventStartTime,  String eventEndDate, String eventEndTime,
+                                  String skill, String sportSpecific, String playersPerTeam, String numberOfTeams,
+                                  String terrain, String environment, String category) throws IOException, JSONException
+    {
+	   /*url of route being requested*/
+        String url = "http://www.csulbpickup.com/createEvent.php";
+
+       /* encapsulate data into object so we can send it as a json */
+        Event event = new Event(name, creatorName,  creatorEmail, sport, address, Double.parseDouble(latitude), Double.parseDouble(longitude),
+                gender, Integer.parseInt(ageMin), Integer.parseInt(ageMax), Integer.parseInt(minUserRating),
+                eventStartDate, eventStartTime,  eventEndDate, eventEndTime, skill, sportSpecific,
+                Integer.parseInt(playersPerTeam), Integer.parseInt(numberOfTeams),  terrain, environment, category);
+
+        JSONObject jsonObj = new JSONObject();
+
+       /* get all the field names for an object */
+        String[] fields = getFieldsForObject(event);
+
+        jsonObj.put(fields[1], event.getName());
+        jsonObj.put(fields[2], event.getCreatorName());
+        jsonObj.put(fields[3], event.getCreatorEmail());
+        jsonObj.put(fields[4], event.getSport());
+        jsonObj.put(fields[5], event.getAddress());
+        jsonObj.put(fields[6], event.getLatitude());
+        jsonObj.put(fields[7], event.getLongitude());
+        jsonObj.put(fields[8], event.getGender());
+        jsonObj.put(fields[9], event.getAgeMin());
+        jsonObj.put(fields[10], event.getAgeMax());
+        jsonObj.put(fields[11], event.getMinUserRating());
+        jsonObj.put(fields[12], event.getEventStartDate());
+        jsonObj.put(fields[13], event.getEventStartTime());
+        jsonObj.put(fields[14], event.getEventEndDate());
+        jsonObj.put(fields[15], event.getEventEndTime());
+        jsonObj.put(fields[16], event.getSkill());
+        jsonObj.put(fields[17], event.getSportSpecific());
+        jsonObj.put(fields[18], event.getPlayersPerTeam());
+        jsonObj.put(fields[19], event.getNumberOfTeams());
+        jsonObj.put(fields[20], event.getTerrain());
+        jsonObj.put(fields[21], event.getEnvironment());
+        jsonObj.put(fields[22], event.getCategory());
+
+        String json = jsonObj.toJSONString();
+
+        return makeHTTPPostRequest(url, json);
+
     }
 
     /**
-     *
-     * @param username
-     * @param password
-     * @return
+     * Gets a single event from server for the given EventID
+     * @param eventID
+     * @return Event - an Event object for the retrieved Event on server.
      * @throws IOException
      */
-    public String sendLogin(String username, String password) throws IOException  {
+    public Event sendGetEvent(int eventID) throws IOException
+    {
+        StringBuilder url = new StringBuilder("http://www.csulbpickup.com/getEvent_json.php");
 
-				/*url of route being requested*/
-        String url = "http://www.csulbpickup.com/login.php";
-        String urlParameters = "Username="+username+"&Password="+password;
-        return makeHTTPRequest(url,urlParameters);
+        url.append("?EventID="+eventID);
+        String response = makeHTTPGetRequest(url.toString());
+
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = (JSONObject)parser.parse(response.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Event event = new Event();
+        event.setID((int)jsonObject.get("_eventID"));
+        event.setName((String)jsonObject.get("_name"));
+        event.setCreatorName((String)jsonObject.get("_creatorName"));
+        event.setCreatorEmail((String)jsonObject.get("_creatorEmail"));
+        event.setSport((String)jsonObject.get("_sport"));
+        event.setLongitude(Double.parseDouble((String)jsonObject.get("_longitude")));
+        event.setLatitude(Double.parseDouble((String)jsonObject.get("_latitude")));
+        event.setGender((String)jsonObject.get("_gender"));
+        event.setAgeMax((int)jsonObject.get("_ageMax"));
+        event.setAgeMin((int)jsonObject.get("_ageMin"));
+        event.setMinUserRating((int)jsonObject.get("_minUserRating"));
+        event.setEventDate((String)jsonObject.get("_eventStartDate"));
+        event.setEventTime((String)jsonObject.get("_eventStartTime"));
+        event.setEventEndDate((String)jsonObject.get("_eventEndDate"));
+        event.setEventEndTime((String)jsonObject.get("_eventEndTime"));
+        event.setSkill((String)jsonObject.get("_skill"));
+        event.setSportSpecific((String)jsonObject.get("_sportSpecific"));
+        event.setPlayersPerTeam((int)jsonObject.get("_playersPerTeam"));
+        event.setNumberOfTeams((int)jsonObject.get("_numberOfTeams"));
+        event.setTerrain((String)jsonObject.get("_terrain"));
+        event.setEnvironment((String)jsonObject.get("_environment"));
+        event.setCategory((String)jsonObject.get("_category"));
+
+        System.out.println("\n" + event);
+        return event;
     }
 
+    /**
+     * Gets a single event from server for the given EventID
+     * @param
+     * @return Event - an Event object for the retrieved Event on server.
+     * @throws IOException
+     */
+    public ArrayList<Event> sendGetEventsFromDistance(String latitude, String longitude, String distance) throws IOException
+    {
+        StringBuilder url = new StringBuilder("http://www.csulbpickup.com/getEventsFromDistance.php");
+
+        url.append("?Latitude="+latitude);
+        url.append("&Longitude="+longitude);
+        url.append("&Distance="+distance);
+
+        // URL endpoint to get all events for a certain user from the server
+        String response = makeHTTPGetRequest(url.toString());
+
+        return extractEvents(response);
+    }
+
+    /**
+     * Gets a single event from server for the given EventID
+     * @param eventID
+     * @return Event - an Event object for the retrieved Event on server.
+     * @throws IOException
+     */
+    public ArrayList<Event> sendGetEventsForUser(String username) throws IOException
+    {
+        StringBuilder url = new StringBuilder("http://www.csulbpickup.com/getEventsFromDistance.php");
+
+        url.append("?Username="+username);
+
+        // URL endpoint to get all events for a certain user from the server
+        String response = makeHTTPGetRequest(url.toString());
+
+        return extractEvents(response);
+    }
+
+    /**
+     * Gets a single event from server for the given EventID
+     * @param
+     * @return Event - an Event object for the retrieved Event on server.
+     * @throws IOException
+     */
+    public ArrayList<Event> sendGetEvents() throws IOException
+    {
+        // URL endpoint to get all events from the server
+        String url = "http://www.csulbpickup.com/getEvents_json.php";
+
+        // once we call the get method we wait for a response, which will be a json of all events
+        String response = makeHTTPGetRequest(url);
+
+        return extractEvents(response);
+    }
+
+    private ArrayList<Event> extractEvents(String response)
+    {
+        // retrieve the data from the json
+        JSONParser parser = new JSONParser();
+        JSONArray jsonArray = null;
+        try {
+            jsonArray= (JSONArray)parser.parse(response.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<Event> eventList = null;
+
+        // if the list is empty there are no events
+        //
+        // get all events and put them into an arraylist
+        if(!jsonArray.isEmpty())
+        {
+            eventList = new ArrayList<Event>(jsonArray.size());
+            for(int i = 0; i < jsonArray.size(); i++)
+            {
+                JSONObject jsonObject = (JSONObject)jsonArray.get(i);
+                Event event = new Event();
+                event.setID((int)jsonObject.get("_eventID"));
+                event.setName((String)jsonObject.get("_name"));
+                event.setCreatorName((String)jsonObject.get("_creatorName"));
+                event.setCreatorEmail((String)jsonObject.get("_creatorEmail"));
+                event.setSport((String)jsonObject.get("_sport"));
+                event.setLongitude(Double.parseDouble((String)jsonObject.get("_longitude")));
+                event.setLatitude(Double.parseDouble((String)jsonObject.get("_latitude")));
+                event.setGender((String)jsonObject.get("_gender"));
+                event.setAgeMax((int)jsonObject.get("_ageMax"));
+                event.setAgeMin((int)jsonObject.get("_ageMin"));
+                event.setMinUserRating((int)jsonObject.get("_minUserRating"));
+                event.setEventDate((String)jsonObject.get("_eventDate"));
+                event.setEventTime((String)jsonObject.get("_eventTime"));
+                event.setEventEndDate((String)jsonObject.get("_eventEndDate"));
+                event.setEventEndTime((String)jsonObject.get("_eventEndTime"));
+                event.setSkill((String)jsonObject.get("_skill"));
+                event.setSportSpecific((String)jsonObject.get("_sportSpecific"));
+                event.setPlayersPerTeam((int)jsonObject.get("_playersPerTeam"));
+                event.setNumberOfTeams((int)jsonObject.get("_numberOfTeams"));
+                event.setTerrain((String)jsonObject.get("_terrain"));
+                event.setEnvironment((String)jsonObject.get("_environment"));
+                event.setCategory((String)jsonObject.get("_category"));
+
+                eventList.add(event);
+
+                //System.out.println(event);
+            }
+        }
+        else // empty list to avoid nullpointerexception
+        {
+            eventList = new ArrayList<Event>();
+        }
+
+        return eventList;
+    }
+
+    /**
+     * Gets all variable name's from an object
+     * @param obj
+     * @return
+     */
+    private String[] getFieldsForObject(Object obj)
+    {
+        String[] fields = null;
+        try
+        {
+            fields = new String[obj.getClass().getDeclaredFields().length];
+            int i = 0;
+            for(Field f : obj.getClass().getDeclaredFields())
+            {
+                f.setAccessible(true);
+                fields[i++] = f.getName();
+                f.setAccessible(false);
+            }
+        } catch (SecurityException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return fields;
+    }
+
+    //=============================================================================================================================================================================================================
+
     public ArrayList<Event> sendFilterEvents( String author, String eventName, String sport,
-                                    String location, String latitude, String longitude, String dateCreatedStart, String dateCreatedEnd, String eventTimeStart, String eventTimeEnd, String eventDateStart, String eventDateEnd, String ageMax, String ageMin,
-                                    String minUserRating, String onlyNotFull, String isPublic, String gender) throws IOException  {
+                                              String location, String latitude, String longitude, String dateCreatedStart, String dateCreatedEnd, String eventTimeStart, String eventTimeEnd, String eventDateStart, String eventDateEnd, String ageMax, String ageMin,
+                                              String minUserRating, String onlyNotFull, String isPublic, String gender) throws IOException  {
             /*url of route being requested*/
-            String url = "http://www.csulbpickup.com/filterEvents.php";
-            String urlParameters = "Author="+author+"&EventName="+eventName+"&Sport="+sport+"&Location="+location+"&Latitude="+latitude+
+        String url = "http://www.csulbpickup.com/filterEvents.php";
+        String urlParameters = "Author="+author+"&EventName="+eventName+"&Sport="+sport+"&Location="+location+"&Latitude="+latitude+
                 "&Longitude="+longitude+"&DateCreatedStart="+dateCreatedStart+"&DateCreatedEnd="+dateCreatedEnd+"&EventTimeStart="+eventTimeStart+
                 "&EventTimeEnd="+eventTimeEnd+"&EventDateStart="+eventDateStart+"&EventDateEnd="+eventDateEnd+"&AgeMax="+ageMax+"&AgeMin="+ageMin+
                 "&OnlyNotFull="+onlyNotFull+"&MinUserRating="+minUserRating+"&IsPublic="+isPublic+"&Gender="+gender;
         String response = makeHTTPRequest(url,urlParameters);
         String stringResponse = response.toString();
-        ArrayList<Event> list = convertEventList(stringResponse);
+        ArrayList<Event> list = null;// convertEventList(stringResponse);
 
         return list;
 
     }
+
     public String sendRSVP(String username, String eventID) throws IOException  {
 
 				/*url of route being requested*/
@@ -283,45 +621,6 @@ public class URLConnection
         return makeHTTPRequest(url,urlParameters);
 
     }
-    /**
-     * Sends event data to the server.
-     *
-     * @param authorName
-     * @param authorEmail
-     * @param eventName
-     * @param sport
-     * @param location
-     * @param latitude
-     * @param longitude
-     * @param eventDateTime
-     * @param ageMax
-     * @param ageMin
-     * @param minUserRating
-     * @param playerAmount
-     * @param isPrivate
-     * @param gender
-     * @return "true" if inserted to database, "false" if not.
-     * @throws IOException
-     */
-    public String sendCreateEvent(String authorName,String authorEmail, String eventName, String sport,
-                                  String location, String latitude, String longitude, String eventDateTime,
-                                  String eventEndDateTime, String ageMax, String ageMin, String minUserRating,
-                                  String playerAmount, String isPrivate, String gender, String skill, String sportSpecific,
-                                  String playersPerTeam, String numberOfTeams, String terrain, String environment,String category)
-                                  throws IOException  {
-
-				/*url of route being requested*/
-        String url = "http://www.csulbpickup.com/createEvent.php";
-
-        String urlParameters = "AuthorName="+authorName+"&Email="+authorEmail+"&EventName="+eventName+"&Sport="+sport+"&Location="+location+"&Latitude="+latitude+
-                "&Longitude="+longitude+"&EventDateTime="+eventDateTime+"&AgeMax="+ageMax+"&AgeMin="+ageMin+
-                "&PlayerAmount="+playerAmount+"&MinUserRating="+minUserRating+"&IsPrivate="+isPrivate+"&Gender="+gender+
-                "&Skill="+skill+"&SportSpecific="+sportSpecific+"&EventEndDateTime="+eventEndDateTime+"&PlayersPerTeam="+playersPerTeam+"&NumberOfTeams="+numberOfTeams+
-                "&Terrain="+terrain+"&Environment="+environment+"&Category="+category;
-
-        return makeHTTPRequest(url,urlParameters);
-
-    }
 
     /**
      * Deletes an event  from the server database
@@ -372,96 +671,6 @@ public class URLConnection
 
     }
 
-    /**
-     * gets a list of all events in database on server.
-     * @return ArrayList<Event> - an event object for each event in server
-     * @throws IOException
-     */
-    public ArrayList<Event> sendGetEvents() throws IOException  {
-
-
-				/*url of route being requested*/
-        String url = "http://www.csulbpickup.com/getEvents.php";
-
-        String urlParameters = "";
-        String response = makeHTTPRequest(url, urlParameters);
-
-        String stringResponse = response.toString();
-        ArrayList<Event> list = convertEventList(stringResponse);
-
-
-        return list;
-    }
-
-    /**
-     * gets a list of all events for a user in database on server.
-     * @return ArrayList<Event> - an event object for each event in server
-     * @throws IOException
-     */
-    public ArrayList<Event> sendGetEventsForUser(String username) throws IOException  {
-
-        System.out.println("GetEventsForUser");
-
-		/*url of route being requested*/
-        String url = "http://www.csulbpickup.com/getEventsForUser.php";
-
-        String urlParameters = "Username=" + username;
-
-
-        String response = makeHTTPRequest(url, urlParameters);
-
-        //print result
-        String stringResponse = response.toString();
-        System.out.println("Response: " + response);
-        ArrayList<Event> list = convertEventList(stringResponse);
-
-        return list;
-    }
-
-    /**
-     * gets a list of all events for a user in database on server.
-     * @return ArrayList<Event> - an event object for each event in server
-     * @throws IOException
-     */
-    public ArrayList<Event> sendGetEventsFromDistance(String latitude, String longitude, String distance) throws IOException  {
-
-        System.out.println("GetEventsFromDistance");
-
-		/*url of route being requested*/
-        String url = "http://www.csulbpickup.com/getEventsFromDistance.php";
-
-        String urlParameters = "Latitude=" + latitude + "&Longitude=" + longitude + "&Distance=" + distance;
-
-        String response = makeHTTPRequest(url, urlParameters);
-
-        //print result
-        String stringResponse = response.toString();
-        System.out.println("Response: " + response);
-        ArrayList<Event> list = convertEventList(stringResponse);
-
-        return list;
-    }
-
-    /**
-     * Gets a single event from server for the given EventID
-     * @param eventID
-     * @return Event - an Event object for the retrieved Event on server.
-     * @throws IOException
-     */
-    public Event sendGetEvent(int eventID) throws IOException  {
-
-        String url = "http://www.csulbpickup.com/getEvent.php";
-
-        String urlParameters = "EventID="+eventID;
-        String response = makeHTTPRequest(url,urlParameters);
-
-        //print result
-        String stringResponse = response.toString();
-        ArrayList<Event> list = convertEventList(stringResponse);
-        Event returnedEvent = list.get(0);
-        return returnedEvent;
-    }
-
 	    /*
 	    The functions below are all private and deal with manipulating the server response into objects
 	     */
@@ -477,6 +686,7 @@ public class URLConnection
         String day = dateTime.substring(8, 10);
         return day+"-"+month+"-"+year;
     }
+
     /**
      * function for converting Server datetime format to client time
      * @param dateTime
@@ -498,16 +708,16 @@ public class URLConnection
     {
         return distances;
     }
-
+/*
     private ArrayList<Event> convertEventList(String str) {
 
-		    	/*Divide string up into lines */
+		    	//Divide string up into lines
         String[] lines=str.split("#");
 
         ArrayList<Event> list = new ArrayList<Event>();
         distances = new ArrayList<java.lang.String>();
 
-        /*for each line parse key-value pairs */
+        //for each line parse key-value pairs
         for(String line : lines){
             if(!line.isEmpty()){
                 Map<String, String> map = new HashMap<>();
@@ -519,12 +729,12 @@ public class URLConnection
                         map.put(tokens[i++], tokens[i++]);
                     }
                 }
-			    		/*if map has valid data */
+			    		//if map has valid data
                 if(map.containsKey("Longitude")) {
 
-			    			/*Below line used for testing */
+			    			//Below line used for testing
 
-                    /* TODO: get date working */
+                    // TODO: get date working
                     Event newEvent = new Event(
                             map.get("EventID"),
                             map.get("EventName"),
@@ -571,7 +781,7 @@ public class URLConnection
 
         return list;
     }
-
+*/
 
     private User convertUser(String str) {
 

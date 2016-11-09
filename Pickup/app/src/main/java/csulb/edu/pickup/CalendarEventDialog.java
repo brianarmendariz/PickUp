@@ -52,7 +52,7 @@ public class CalendarEventDialog extends DialogFragment {
                     Bundle args = new Bundle();
                     Fragment fragment = new ViewEventFragment();
 
-                    args.putString("EventID", eventList.get(x).getEventID());
+                    args.putString("EventID", eventList.get(x).getEventID() + "");
 
                     fragment.setArguments(args);
                     System.out.println("Should be changing frames");

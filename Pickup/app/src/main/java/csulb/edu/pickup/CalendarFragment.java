@@ -106,7 +106,7 @@ public class CalendarFragment extends Fragment {
         for(Event event : eventsForUser)
         {
 //            String date = event.getDay() + "-" + event.getMonth() + "-" + event.getYear();
-            String date = event.getEventDate();
+            String date = event.getEventStartDate();
             if(userEventsMap.get(date) != null)
             {
                 userEventsMap.get(date).add(event);

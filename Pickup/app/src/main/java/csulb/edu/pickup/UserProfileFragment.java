@@ -418,7 +418,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             int rating = 0;
                             String rate;
                             //Calculate the viewUsername's userRating
-                            rating = Integer.parseInt(viewUsername.userRating) + 1;
+                            rating = Integer.parseInt(viewUsername.getUserRating()) + 1;
                             rate = rating + "";
 
                             //save to the server
@@ -442,7 +442,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             int rating = 0;
                             String rate;
                             //Calculate the viewUsername's userRating
-                            rating = Integer.parseInt(viewUsername.userRating) + 2;
+                            rating = Integer.parseInt(viewUsername.getUserRating()) + 2;
                             rate = rating + "";
 
                             //save to the server
@@ -469,7 +469,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             int rating = 0;
                             String rate;
                             //Calculate the viewUsername's userRating
-                            rating = Integer.parseInt(viewUsername.userRating) + 1;
+                            rating = Integer.parseInt(viewUsername.getUserRating()) + 1;
                             rate = rating + "";
 
                             //save to the server
@@ -497,7 +497,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             viewUsername = http2.sendGetUser(viewUsername.getEmail());
 
                             //Calculate the viewUsername's userRating
-                            rating = Integer.parseInt(viewUsername.userRating) - 1;
+                            rating = Integer.parseInt(viewUsername.getUserRating()) - 1;
                             rate = rating + "";
 
                             //save to the server
@@ -564,7 +564,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             int rating = 0;
                             String rate;
                             //Calculate the viewUsername's userRating
-                            rating = Integer.parseInt(viewUsername.userRating) - 1;
+                            rating = Integer.parseInt(viewUsername.getUserRating()) - 1;
                             rate = rating + "";
 
                             //save to the server
@@ -591,7 +591,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             int rating = 0;
                             String rate;
                             //Calculate the viewUsername's userRating
-                            rating = Integer.parseInt(viewUsername.userRating) - 2;
+                            rating = Integer.parseInt(viewUsername.getUserRating()) - 2;
                             rate = rating + "";
 
                             //save to the server
@@ -617,7 +617,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             int rating = 0;
                             String rate;
                             //Calculate the viewUsername's userRating
-                            rating = Integer.parseInt(viewUsername.userRating) - 1;
+                            rating = Integer.parseInt(viewUsername.getUserRating()) - 1;
                             rate = rating + "";
 
                             //save to the server
@@ -644,7 +644,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             viewUsername = http3.sendGetUser(viewUsername.getEmail());
 
                             //Calculate the viewUsername's userRating
-                            rating = Integer.parseInt(viewUsername.userRating) + 1;
+                            rating = Integer.parseInt(viewUsername.getUserRating()) + 1;
                             rate = rating + "";
 
                             //save to the server
@@ -832,7 +832,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle b = new Bundle();
                 b.putParcelable("USER", thisUser);
-                b.putString("EventID", events.get(position).getEventID());
+                b.putString("EventID", events.get(position).getEventID() + "");
                 Fragment fragment = new ViewEventFragment();
                 fragment.setArguments(b);
                 FragmentManager frgManager = getFragmentManager();

@@ -31,6 +31,8 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.json.JSONException;
+
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -289,6 +291,8 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                     }
                 } catch(IOException e)
                 {
+
+                } catch(JSONException ex) {
 
                 }
             } else {
