@@ -32,6 +32,7 @@ public class Event implements Parcelable
     private String _terrain;
     private String _environment;
     private String _category;
+    private double _distance;
 
     private int _totalHeadCount;
 
@@ -276,6 +277,11 @@ public class Event implements Parcelable
         }
         return _totalHeadCount;
     }
+    public double getDistance()
+    {
+        return _distance;
+    }
+
 
 
 
@@ -304,6 +310,10 @@ public class Event implements Parcelable
     public void setSport(String sport)
     {
         _sport = sport;
+    }
+    public void setAddress(String address)
+    {
+        _address = address;
     }
     public void setLatitude(double latitude)
     {
@@ -347,7 +357,7 @@ public class Event implements Parcelable
     }
     public void setSportSpecific(String sportSpecific)
     {
-        _sport = _sportSpecific;
+        _sportSpecific = sportSpecific;
     }
     public void setPlayersPerTeam(int playersPerTeam)
     {
@@ -373,7 +383,7 @@ public class Event implements Parcelable
     {
         _category = category;
     }
-
+    public void setDistance(double distance){ _distance = distance; }
     public void setTotalHeadCount()
     {
         _totalHeadCount = _playersPerTeam * _numberOfTeams == 0 ? _playersPerTeam : _playersPerTeam * _numberOfTeams;
@@ -416,8 +426,8 @@ public class Event implements Parcelable
                 "\nAge Min: " + _ageMin +
                 "\nAge Max: " + _ageMax +
                 "\nMin User Rating: " + _minUserRating +
-                "\nEvent Date: " + _eventStartDate +
-                "\nEvent Time: " + _eventStartTime +
+                "\nEvent Start Date: " + _eventStartDate +
+                "\nEvent Start Time: " + _eventStartTime +
                 "\nEvent End Date: " + _eventEndDate +
                 "\nEvent End Time: " + _eventEndTime +
                 "\nSkill: " + _skill +

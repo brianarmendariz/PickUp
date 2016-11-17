@@ -607,19 +607,17 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             Map<String, String> formMap = formToMap();
 
             System.out.println(formMap);
-            String authorName = thisUser.getFirstName()+" "+thisUser.getlastName();
-            String authorEmail = thisUser.getEmail();
+            String creatorName = thisUser.getFirstName()+" "+thisUser.getlastName();
+            String creatorEmail = thisUser.getEmail();
             String name = formMap.get("event name");
             String sport = formMap.get("sport");
-            String location = formMap.get("location");
-            String date = formMap.get("start date");
-            System.out.println("date = " + date);
-            String time = formMap.get("start time");
+            String address = formMap.get("location");
+            String eventStartDate = formMap.get("start date");
+            String eventStartTime = formMap.get("start time");
 
             //date yyyy-mm-dd  and the time hh:min:ss
-            String startDateTime = (convertDate(date) + " " + convertTime(time));
+            //String startDateTime = (convertDate(date) + " " + convertTime(time));
 
-            Log.d("DATE/TIME", startDateTime);
             String gender = formMap.get("gender");
             String ageMin = formMap.get("age min");
             String ageMax = formMap.get("age max");
@@ -627,9 +625,9 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             String minUserRating = formMap.get("min rating");
 
             /* TODO: get data from user */
-            String enddate = formMap.get("end date");
-            String endtime = formMap.get("end time");
-            String endDateTime = (convertDate(enddate) + " " + convertTime(endtime));
+            String eventEndDate = formMap.get("end date");
+            String eventEndTime = formMap.get("end time");
+            //String endDateTime = (convertDate(enddate) + " " + convertTime(endtime));
             String skill = formMap.get("skill level");
             String sportSpecific = formMap.get("sport specific");
             String playersPerTeam = formMap.get("players per team");
@@ -638,7 +636,7 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             String environment = formMap.get("environment");
             String category = formMap.get("category");
 
-            boolean createEventFlag = checkForm(name, location, date, time,
+            boolean createEventFlag = checkForm(name, address, eventStartDate, eventStartTime,
                     gender, ageMin, ageMax);
 
             if (createEventFlag)
@@ -646,7 +644,7 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
                 try {
                     Geocoder geocoder = new Geocoder(this.getActivity(), Locale.getDefault());
                     List<Address> addresses;
-                    addresses = geocoder.getFromLocationName(location, 1);
+                    addresses = geocoder.getFromLocationName(address, 1);
 
                     if (addresses.size() > 0) {
                         double latitude = addresses.get(0).getLatitude();
@@ -655,12 +653,11 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
                         //open connection
                         URLConnection http = new URLConnection();
 
-                        http.sendCreateEvent(authorName, authorEmail, name, sport, location,
-                                String.valueOf(latitude), String.valueOf(longitude), startDateTime,
-                                endDateTime, ageMax, ageMin, minUserRating,
-                                playerAmount, "P/NP", gender,
-                                skill, sportSpecific, playersPerTeam, numberOfTeams, terrain, environment,category
-                        );
+                        http.sendCreateEvent(name, creatorName, creatorEmail, sport, address,
+                                latitude + "", longitude + "", gender, ageMin, ageMax, minUserRating,
+                                eventStartDate, eventStartTime, eventEndDate, eventEndTime,
+                                skill, sportSpecific, playersPerTeam, numberOfTeams,
+                                terrain, environment, category);
 
 
                         //Return to the MainActivity
@@ -680,8 +677,10 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
                        System.out.println("invalid address");
                     }
                 } catch (IOException e) {
+                    e.printStackTrace();
                     Log.e(TAG, "Unable connect to Geocoder", e);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     Log.i(TAG, "ERROR");
                 }
             }

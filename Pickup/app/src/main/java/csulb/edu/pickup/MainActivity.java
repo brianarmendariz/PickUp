@@ -29,6 +29,8 @@ public class MainActivity extends ActionBarActivity {
     private CharSequence mTitle;
     CustomDrawerAdapter adapter;
 
+    private User thisUser;
+
     List<DrawerItem> dataList;
 
     @Override
@@ -180,6 +182,7 @@ public class MainActivity extends ActionBarActivity {
 
         }
     }
+
     @Override
     public void onBackPressed() {
 

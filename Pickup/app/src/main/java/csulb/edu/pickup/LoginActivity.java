@@ -314,6 +314,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 else{
                     Log.d("SARAH","login successful");
 
+                    /* TODO: FIX SendGetUser */
                     User thisUser = http.sendGetUser(username);
 
                     Bundle b = new Bundle();
@@ -328,10 +329,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             }
 
         }
-        else if (view == createAccountButton) {
+        else if (view == createAccountButton)
+        {
             Intent myIntent = new Intent(view.getContext(), CreateAccountActivity.class);
             startActivityForResult(myIntent, 0);
-
         }
     }
 

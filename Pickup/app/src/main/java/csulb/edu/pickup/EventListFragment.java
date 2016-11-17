@@ -74,8 +74,9 @@ public class EventListFragment extends Fragment
             String latitude = location.getLatitude() + "";
             String longitude = location.getLongitude() + "";
             eventList = http.sendGetEventsFromDistance(latitude, longitude, "50");
-            ArrayList<java.lang.String> distanceList = http.getEventDistances();
-            BaseAdapter adapter = new EventListAdapter<String>(getActivity(), R.layout.event_list, eventList, distanceList, getActivity());
+            BaseAdapter adapter = new EventListAdapter<String>(getActivity(), R.layout.event_list, eventList, getActivity());
+           // ArrayList<java.lang.String> distanceList = http.getEventDistances();
+           // BaseAdapter adapter = new EventListAdapter<String>(getActivity(), R.layout.event_list, eventList, distanceList, getActivity());
 
             listView = (ListView) rootView.findViewById(R.id.event_list);
             listView.setAdapter(adapter);

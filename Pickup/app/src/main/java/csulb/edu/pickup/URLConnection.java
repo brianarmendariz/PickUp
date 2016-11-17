@@ -207,35 +207,59 @@ public class URLConnection
         Event event = new Event(name, creatorName,  creatorEmail, sport, address, Double.parseDouble(latitude), Double.parseDouble(longitude),
                 gender, Integer.parseInt(ageMin), Integer.parseInt(ageMax), Integer.parseInt(minUserRating),
                 eventStartDate, eventStartTime,  eventEndDate, eventEndTime, skill, sportSpecific,
-                Integer.parseInt(playersPerTeam), Integer.parseInt(numberOfTeams),  terrain, environment, category);
+                Integer.parseInt(playersPerTeam), Integer.parseInt(numberOfTeams), terrain, environment, category);
 
         JSONObject jsonObj = new JSONObject();
 
        /* get all the field names for an object */
+        // alphabetical order
         String[] fields = getFieldsForObject(event);
 
-        jsonObj.put(fields[1], event.getName());
-        jsonObj.put(fields[2], event.getCreatorName());
-        jsonObj.put(fields[3], event.getCreatorEmail());
-        jsonObj.put(fields[4], event.getSport());
-        jsonObj.put(fields[5], event.getAddress());
-        jsonObj.put(fields[6], event.getLatitude());
-        jsonObj.put(fields[7], event.getLongitude());
-        jsonObj.put(fields[8], event.getGender());
-        jsonObj.put(fields[9], event.getAgeMin());
-        jsonObj.put(fields[10], event.getAgeMax());
-        jsonObj.put(fields[11], event.getMinUserRating());
-        jsonObj.put(fields[12], event.getEventStartDate());
-        jsonObj.put(fields[13], event.getEventStartTime());
-        jsonObj.put(fields[14], event.getEventEndDate());
-        jsonObj.put(fields[15], event.getEventEndTime());
-        jsonObj.put(fields[16], event.getSkill());
-        jsonObj.put(fields[17], event.getSportSpecific());
-        jsonObj.put(fields[18], event.getPlayersPerTeam());
-        jsonObj.put(fields[19], event.getNumberOfTeams());
-        jsonObj.put(fields[20], event.getTerrain());
-        jsonObj.put(fields[21], event.getEnvironment());
-        jsonObj.put(fields[22], event.getCategory());
+        jsonObj.put(fields[0], event.getAddress());
+        jsonObj.put(fields[1], event.getAgeMax());
+        jsonObj.put(fields[2], event.getAgeMin());
+        jsonObj.put(fields[3], event.getCategory());
+        jsonObj.put(fields[4], event.getCreatorEmail());
+        jsonObj.put(fields[5], event.getCreatorName());
+        jsonObj.put(fields[7], event.getEnvironment());
+        jsonObj.put(fields[8], event.getEventEndDate());
+        jsonObj.put(fields[9], event.getEventEndTime());
+        jsonObj.put(fields[11], event.getEventStartDate());
+        jsonObj.put(fields[12], event.getEventStartTime());
+        jsonObj.put(fields[13], event.getGender());
+        jsonObj.put(fields[14], event.getLatitude());
+        jsonObj.put(fields[15], event.getLongitude());
+        jsonObj.put(fields[16], event.getMinUserRating());
+        jsonObj.put(fields[17], event.getName());
+        jsonObj.put(fields[18], event.getNumberOfTeams());
+        jsonObj.put(fields[19], event.getPlayersPerTeam());
+        jsonObj.put(fields[20], event.getSkill());
+        jsonObj.put(fields[21], event.getSport());
+        jsonObj.put(fields[22], event.getSportSpecific());
+        jsonObj.put(fields[23], event.getTerrain());
+
+//        jsonObj.put(fields[1], event.getName());
+//        jsonObj.put(fields[2], event.getCreatorName());
+//        jsonObj.put(fields[3], event.getCreatorEmail());
+//        jsonObj.put(fields[4], event.getSport());
+//        jsonObj.put(fields[5], event.getAddress());
+//        jsonObj.put(fields[6], event.getLatitude());
+//        jsonObj.put(fields[7], event.getLongitude());
+//        jsonObj.put(fields[8], event.getGender());
+//        jsonObj.put(fields[9], event.getAgeMin());
+//        jsonObj.put(fields[10], event.getAgeMax());
+//        jsonObj.put(fields[11], event.getMinUserRating());
+//        jsonObj.put(fields[12], event.getEventStartDate());
+//        jsonObj.put(fields[13], event.getEventStartTime());
+//        jsonObj.put(fields[14], event.getEventEndDate());
+//        jsonObj.put(fields[15], event.getEventEndTime());
+//        jsonObj.put(fields[16], event.getSkill());
+//        jsonObj.put(fields[17], event.getSportSpecific());
+//        jsonObj.put(fields[18], event.getPlayersPerTeam());
+//        jsonObj.put(fields[19], event.getNumberOfTeams());
+//        jsonObj.put(fields[20], event.getTerrain());
+//        jsonObj.put(fields[21], event.getEnvironment());
+//        jsonObj.put(fields[22], event.getCategory());
 
         String json = jsonObj.toJSONString();
 
@@ -314,13 +338,13 @@ public class URLConnection
 
     /**
      * Gets a single event from server for the given EventID
-     * @param eventID
+     * @param
      * @return Event - an Event object for the retrieved Event on server.
      * @throws IOException
      */
     public ArrayList<Event> sendGetEventsForUser(String username) throws IOException
     {
-        StringBuilder url = new StringBuilder("http://www.csulbpickup.com/getEventsFromDistance.php");
+        StringBuilder url = new StringBuilder("http://www.csulbpickup.com/getEventsForUser.php");
 
         url.append("?Username="+username);
 
@@ -339,7 +363,7 @@ public class URLConnection
     public ArrayList<Event> sendGetEvents() throws IOException
     {
         // URL endpoint to get all events from the server
-        String url = "http://www.csulbpickup.com/getEvents_json.php";
+        String url = "http://www.csulbpickup.com/getEvents.php";
 
         // once we call the get method we wait for a response, which will be a json of all events
         String response = makeHTTPGetRequest(url);
@@ -353,7 +377,7 @@ public class URLConnection
         JSONParser parser = new JSONParser();
         JSONArray jsonArray = null;
         try {
-            jsonArray= (JSONArray)parser.parse(response.toString());
+            jsonArray = (JSONArray)parser.parse(response.toString());
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -370,28 +394,35 @@ public class URLConnection
             {
                 JSONObject jsonObject = (JSONObject)jsonArray.get(i);
                 Event event = new Event();
-                event.setID((int)jsonObject.get("_eventID"));
+                event.setID(Integer.parseInt((String)jsonObject.get("_eventID")));
                 event.setName((String)jsonObject.get("_name"));
                 event.setCreatorName((String)jsonObject.get("_creatorName"));
                 event.setCreatorEmail((String)jsonObject.get("_creatorEmail"));
+                event.setSkill((String)jsonObject.get("_skill"));
+                event.setSportSpecific((String)jsonObject.get("_sportSpecific"));
                 event.setSport((String)jsonObject.get("_sport"));
+                event.setAddress((String)jsonObject.get("_address"));
                 event.setLongitude(Double.parseDouble((String)jsonObject.get("_longitude")));
                 event.setLatitude(Double.parseDouble((String)jsonObject.get("_latitude")));
                 event.setGender((String)jsonObject.get("_gender"));
-                event.setAgeMax((int)jsonObject.get("_ageMax"));
-                event.setAgeMin((int)jsonObject.get("_ageMin"));
-                event.setMinUserRating((int)jsonObject.get("_minUserRating"));
-                event.setEventDate((String)jsonObject.get("_eventDate"));
-                event.setEventTime((String)jsonObject.get("_eventTime"));
+                event.setAgeMax(Integer.parseInt((String)jsonObject.get("_ageMax")));
+                event.setAgeMin(Integer.parseInt((String)jsonObject.get("_ageMin")));
+                event.setMinUserRating(Integer.parseInt((String)jsonObject.get("_minUserRating")));
+                event.setEventDate((String)jsonObject.get("_eventStartDate"));
+                event.setEventTime((String)jsonObject.get("_eventStartTime"));
                 event.setEventEndDate((String)jsonObject.get("_eventEndDate"));
                 event.setEventEndTime((String)jsonObject.get("_eventEndTime"));
-                event.setSkill((String)jsonObject.get("_skill"));
-                event.setSportSpecific((String)jsonObject.get("_sportSpecific"));
-                event.setPlayersPerTeam((int)jsonObject.get("_playersPerTeam"));
-                event.setNumberOfTeams((int)jsonObject.get("_numberOfTeams"));
+                event.setPlayersPerTeam(Integer.parseInt((String)jsonObject.get("_playersPerTeam")));
+                event.setNumberOfTeams(Integer.parseInt((String)jsonObject.get("_numberOfTeams")));
                 event.setTerrain((String)jsonObject.get("_terrain"));
                 event.setEnvironment((String)jsonObject.get("_environment"));
                 event.setCategory((String)jsonObject.get("_category"));
+
+
+                if((Double)jsonObject.get("_distance") != null)
+                {
+                    event.setDistance((Double)jsonObject.get("_distance"));
+                }
 
                 eventList.add(event);
 
@@ -573,16 +604,34 @@ public class URLConnection
      * @return
      * @throws IOException
      */
-    public User sendGetUser(String username)
-            throws IOException  {
+    public User sendGetUser(String username) throws IOException
+    {
+	    /*url of route being requested*/
+        StringBuilder url = new StringBuilder("http://www.csulbpickup.com/getUser.php");
 
-				/*url of route being requested*/
-        String url = "http://www.csulbpickup.com/getUser.php";
+        url.append("?Username="+username);
+        String response = makeHTTPGetRequest(url.toString());
 
-        String urlParameters = "Username="+username;
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = (JSONObject)parser.parse(response.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        return convertUser(makeHTTPRequest(url, urlParameters));
+        User user = new User();
+        user.setFirstName((String)jsonObject.get("_firstName"));
+        user.setlastName((String)jsonObject.get("_lastName"));
+        user.setEmail((String)jsonObject.get("_email"));
+        user.setPassword((String)jsonObject.get("_password"));
+        user.setBirthday((String)jsonObject.get("_birthday"));
+        user.setGender((String)jsonObject.get("_gender"));
+        user.setUserRating((String)jsonObject.get("_userRating"));
+
+        return user;
     }
+
 
 
     /**

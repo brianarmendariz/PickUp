@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/map"
+        android:id="@+id/menu_user_profile_map"
         android:orderInCategory="1"
         android:title="Map"
         />

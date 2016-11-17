@@ -8,6 +8,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -275,21 +276,21 @@ public class MapsFragment extends Fragment implements android.location.LocationL
                 map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                 map.animateCamera(CameraUpdateFactory.zoomTo(10));
             }
+            locationManager.requestLocationUpdates(bestProvider, 20000, 0, this);
         }
 
         //Get Location updates from server
-        //locationManager.requestLocationUpdates(bestProvider, 20000, 0, this);
         getPositionsFromServer();
 
-        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng point) {
-                // Drawing marker on the map
-                //drawMarker(point);
-                //Toast.makeText(getBaseContext(), "Longtitude: " + String.valueOf(point.longitude) + "\n" +
-                //        "Latitude: " + String.valueOf(point.latitude), Toast.LENGTH_LONG).show();
-            }
-        });
+//        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+//            @Override
+//            public void onMapClick(LatLng point) {
+//                // Drawing marker on the map
+//                //drawMarker(point);
+//                //Toast.makeText(getBaseContext(), "Longtitude: " + String.valueOf(point.longitude) + "\n" +
+//                //        "Latitude: " + String.valueOf(point.latitude), Toast.LENGTH_LONG).show();
+//            }
+//        });
 
         /*fragments require that a view is returned in OnCreateView*/
         return rootView;
@@ -366,7 +367,7 @@ public class MapsFragment extends Fragment implements android.location.LocationL
                         map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.baseball_geo)).snippet(creator)).setVisible(true);
                     }
                     else if (s.equals("Basketball")) {
-                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.basketball_geo)).snippet(creator)).setVisible(true);
+                        this.map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.basketball_geo)).snippet(creator)).setVisible(true);
                     }
                     else if (s.equals("Football")) {
                         map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.football_geo)).snippet(creator)).setVisible(true);
@@ -397,6 +398,11 @@ public class MapsFragment extends Fragment implements android.location.LocationL
                     }
                 }
             }
+
+//            latLng = new LatLng(33.7838, -118.1141);
+//            map.addMarker(new MarkerOptions()
+//                    .position(latLng)
+//                    .title("Tehhbst"));
         }
         catch (IOException e) {
             Log.e(ETag, "Unable connect to server", e);
@@ -420,9 +426,6 @@ public class MapsFragment extends Fragment implements android.location.LocationL
         super.onResume();
         //map = mapFrag.getMap();
     }
-
-
-
 
 
     private void setUpPlusButton() {
