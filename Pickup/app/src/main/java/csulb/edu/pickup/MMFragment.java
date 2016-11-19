@@ -71,7 +71,7 @@ public class MMFragment extends Fragment {
         String extra = args.getString("EventID");
 
         try {
-            arr1 = http.sendGetRSVPList(Integer.parseInt(extra));
+            arr1 = http.sendGetRSVPList(Integer.parseInt(extra) + "");
             for (int i = 0; i < arr1.length; i++) {
                 String name = arr1[i][0];
                 String username = arr1[i][1];

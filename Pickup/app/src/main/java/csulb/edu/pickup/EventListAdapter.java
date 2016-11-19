@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -59,11 +60,21 @@ public class EventListAdapter<String> extends BaseAdapter
         //Sarah changed in order to use with User Profile
         if(!eventList.isEmpty())
         {
+            ArrayList<User> userList = null;
+            // get number of people RSVP'd to event
+            URLConnection http = new URLConnection();
+            try {
+                userList = http.sendGetRSVPList(eventList.get(position).getEventID());
+            } catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+
             Double distanceAway = eventList.get(position).getDistance();
             textViewDistanceAway.setText(distanceAway + " mi");
             java.lang.String color1 = "#fea10f";
             java.lang.String color2 = "#696969";
-            java.lang.String text = "<font color=" + color1 + ">" + eventList.get(position).getTotalHeadCount()
+            java.lang.String text = "<font color=" + color1 + ">" + userList.size()
                     + "</font><font color=" + color2 + ">/" + eventList.get(position).getTotalHeadCount() + "</font>";
             textViewPlayerAmount.setText(Html.fromHtml(text));
         }

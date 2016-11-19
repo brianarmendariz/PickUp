@@ -132,6 +132,42 @@ public class URLConnection
         return response.toString();
     }
 
+    public String sendHttpDelete(String url, int urlParameters) throws IOException
+    {
+        //Combines into one string.
+        url += "?EventID=" + urlParameters;
+        java.net.URL urlObj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) urlObj.openConnection();
+
+        //Add request header.
+        con.setRequestMethod("DELETE");
+        con.setRequestProperty("User-Agent", USER_AGENT);
+        con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+        //Testing to send data to PhP file.
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeByte(urlParameters);
+        wr.flush();
+        wr.close();
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null)
+        {
+            response.append(inputLine);
+        }
+        in.close();
+
+        System.out.println(url);
+        System.out.println(con);
+        System.out.println(response.toString());
+
+        return response.toString();
+    }
+
     /**
      *
      * @param username
@@ -466,6 +502,31 @@ public class URLConnection
         return fields;
     }
 
+    public void deleteEvent(int num) throws IOException
+    {
+        String url = "http://www.csulbpickup.com/deleteEvent.php";
+        sendHttpDelete(url, num);
+    }
+
+    public void deleteFollow(int num) throws IOException
+    {
+        String url = "http://www.csulbpickup.com/deleteFollow.php";
+        sendHttpDelete(url, num);
+    }
+
+    public void deleteRSVP(int num) throws IOException
+    {
+        String url = "http://www.csulbpickup.com/deleteRSVP.php";
+        sendHttpDelete(url, num);
+    }
+
+    public String checkIfFriends(String name, String name2) throws IOException {
+        String url = "http://www.csulbpickup.com/CheckIfFriends.php";
+        String urlParameters = "Follower="+name+"&Followee="+name2;
+
+        return makeHTTPRequest(url, urlParameters);
+    }
+
     //=============================================================================================================================================================================================================
 
     public ArrayList<Event> sendFilterEvents( String author, String eventName, String sport,
@@ -499,13 +560,62 @@ public class URLConnection
         String urlParameters = "UnRSVPUser="+username+"&EventID="+eventID;
         return makeHTTPRequest(url,urlParameters);
     }
+
+    public ArrayList<User> sendGetRSVPList(int eventID) throws IOException
+    {
+	    /*url of route being requested*/
+        StringBuilder url = new StringBuilder("http://www.csulbpickup.com/getRSVPList.php");
+
+        url.append("?EventID="+eventID);
+        String response = makeHTTPGetRequest(url.toString());
+
+        // retrieve the data from the json
+        JSONParser parser = new JSONParser();
+        JSONArray jsonArray = null;
+        try {
+            jsonArray= (JSONArray)parser.parse(response.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<User> userList = null;
+
+        // if the list is empty there are no events
+        //
+        // get all events and put them into an arraylist
+        if(!jsonArray.isEmpty())
+        {
+            userList = new ArrayList<User>(jsonArray.size());
+            for(int i = 0; i < jsonArray.size(); i++)
+            {
+                JSONObject jsonObject = (JSONObject)jsonArray.get(i);
+                User user = new User();
+                user.setFirstName((String)jsonObject.get("_firstName"));
+                user.setlastName((String)jsonObject.get("_lastName"));
+                user.setEmail((String)jsonObject.get("_email"));
+                user.setPassword((String)jsonObject.get("_password"));
+                user.setBirthday((String)jsonObject.get("_birthday"));
+                user.setGender((String)jsonObject.get("_gender"));
+                user.setUserRating((String)jsonObject.get("_userRating"));
+
+                userList.add(user);
+            }
+        }
+        else
+        {
+            userList = new ArrayList<User>();
+        }
+
+        return userList;
+    }
+
     /**
      * Returns a list of the users who are on the RSVP list
      * @param eventID
      * @return 2d array [user's full name][username]
      * @throws IOException
      */
-    public String [][] sendGetRSVPList(int eventID) throws IOException  {
+    public String [][] sendGetRSVPList(String eventID) throws IOException  {
 
 			/*url of route being requested*/
         String url = "http://www.csulbpickup.com/getRSVPList.php";
@@ -517,6 +627,7 @@ public class URLConnection
         }
         return RSVPList;
     }
+
     public String sendCheckIfFriends(String myUsername, String thisUsername) throws IOException  {
 
 				/*url of route being requested*/

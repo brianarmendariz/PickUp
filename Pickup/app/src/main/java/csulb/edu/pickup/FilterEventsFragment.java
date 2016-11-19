@@ -88,8 +88,6 @@ public class FilterEventsFragment extends Fragment implements View.OnClickListen
     View rootView;
 
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -120,10 +118,6 @@ public class FilterEventsFragment extends Fragment implements View.OnClickListen
     }
 
 
-
-
-
-
     @Override
     public void onStart() {
         super.onStart();
@@ -132,22 +126,17 @@ public class FilterEventsFragment extends Fragment implements View.OnClickListen
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
     @Override
     public void onPause() {
         super.onPause();
-
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
     }
-
-
 
     @Override
     public void onDestroy() {
@@ -450,8 +439,6 @@ public class FilterEventsFragment extends Fragment implements View.OnClickListen
                     args.putDouble("filterLong", longitude);
                 }
                 args.putParcelableArrayList("EVENTS", eventList);
-
-
 
                 Fragment fragment = new MapsFragment();
 

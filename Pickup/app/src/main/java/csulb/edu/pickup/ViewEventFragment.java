@@ -91,7 +91,8 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
 
 
         LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.view_event_buttons);
-        if(thisUser.getEmail().equals(_event.getCreatorEmail())) {
+        if(thisUser.getEmail().equals(_event.getCreatorEmail()))
+        {
             Button editButton = new Button(getActivity());
             editButton.setText("Edit");
             editButton.setTag("event_edit_btn");
@@ -124,9 +125,10 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
         }
         URLConnection http = new URLConnection();
         try {
-            String[][] RSVPList = http.sendGetRSVPList(_event.getEventID());
+            String[][] RSVPList = http.sendGetRSVPList(_event.getEventID() + "");
             boolean hasRSVPd = false;
-            for (int i = 0; i < RSVPList.length; i++) {
+            for (int i = 0; i < RSVPList.length; i++)
+            {
                 Log.d("SARAH", "name"+RSVPList[i][0]);
                 if (RSVPList[i][1].equals(thisUser.getEmail())) {
                     hasRSVPd = true;
