@@ -43,13 +43,13 @@ public class MMFragment extends Fragment {
     private Button shuffleButton;
     private MMListViewAdapter adapter;
     private Event _event;
-    String[][] arr1;
 
     LinkedHashMap shuffledMap;
 
     User thisUser;
     View rootView;
 
+    ArrayList<User> RSVPList;
 
     final Context context = getActivity();
     @Override
@@ -71,10 +71,10 @@ public class MMFragment extends Fragment {
         String extra = args.getString("EventID");
 
         try {
-            arr1 = http.sendGetRSVPList(Integer.parseInt(extra) + "");
-            for (int i = 0; i < arr1.length; i++) {
-                String name = arr1[i][0];
-                String username = arr1[i][1];
+            RSVPList = http.sendGetRSVPList(Integer.parseInt(extra));
+            for (int i = 0; i < RSVPList.size(); i++) {
+                String name = RSVPList.get(i).getFirstName() + " " + RSVPList.get(i).getLastName();
+                String username = RSVPList.get(i).getEmail();
             }
         } catch (IOException e) {
             Log.e("ERROR", "RVSP ERROR");
@@ -140,7 +140,7 @@ public class MMFragment extends Fragment {
             public void onClick(View v) {
 
                 if (noOfTeams.getText().toString().equals("") || Integer.parseInt(noOfTeams.getText().toString()) <= 0
-                        || Integer.parseInt(noOfTeams.getText().toString()) > arr1.length) {
+                        || Integer.parseInt(noOfTeams.getText().toString()) > RSVPList.size()) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                             getActivity());
 
@@ -168,10 +168,10 @@ public class MMFragment extends Fragment {
                 else {
 
 
-                    LinkedHashMap<String, String> hm = new LinkedHashMap<String, String>(arr1.length);
+                    LinkedHashMap<String, String> hm = new LinkedHashMap<String, String>(RSVPList.size());
 
-                    for (String[] mapping : arr1) {
-                        hm.put(mapping[0], mapping[1]);
+                    for (User mapping : RSVPList) {
+                        hm.put(mapping.getFirstName(), mapping.getEmail());
                     }
                     // Get a set of the entries
                     Set set = hm.entrySet();

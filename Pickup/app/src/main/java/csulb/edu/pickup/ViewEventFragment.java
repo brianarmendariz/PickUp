@@ -27,6 +27,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -121,14 +123,14 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
             setupDeleteEventButton();
         }
         URLConnection http = new URLConnection();
-/*
+
         try {
-            String[][] RSVPList = http.sendGetRSVPList(_event.getEventID() + "");
+            ArrayList<User> RSVPList = http.sendGetRSVPList(_event.getEventID());
             boolean hasRSVPd = false;
-            for (int i = 0; i < RSVPList.length; i++)
+            for (int i = 0; i < RSVPList.size(); i++)
             {
-                Log.d("SARAH", "name"+RSVPList[i][0]);
-                if (RSVPList[i][1].equals(thisUser.getEmail())) {
+                Log.d("SARAH", "name"+RSVPList.get(i));
+                if (RSVPList.get(i).getEmail().equals(thisUser.getEmail())) {
                     hasRSVPd = true;
                 }
             }
@@ -151,7 +153,7 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
                     _UnRSVPEventButton.requestFocus();
                     setupUnRSVPButton();
                 }
-                else if (RSVPList.length < _event.getTotalHeadCount()) {
+                else if (RSVPList.size() < _event.getTotalHeadCount()) {
                     Button RSVPButton = new Button(this.getActivity());
                     RSVPButton.setText("RSVP");
                     RSVPButton.setTag("event_rsvp_btn");
@@ -170,7 +172,7 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
         }catch(IOException ie){
             ie.printStackTrace();
         }
-*/
+
 
         findViewsById();
         setUpShareOnFBButton();
