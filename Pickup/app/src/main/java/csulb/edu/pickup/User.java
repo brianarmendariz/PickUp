@@ -83,7 +83,7 @@ public class User implements Parcelable
         return _firstName;
     }
     public String getLastName(){
-        return _firstName;
+        return _lastName;
     }
     public String getBirthday(){
         return _birthday;

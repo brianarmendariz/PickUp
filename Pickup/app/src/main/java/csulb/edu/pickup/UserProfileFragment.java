@@ -820,10 +820,8 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
     }
 
     private void setupEvents(final ArrayList<Event> events) {
-        ArrayList<String> distanceList = new ArrayList<String>();
         ListView listView = (ListView) rootView.findViewById(R.id.profile_list_event);
 
-        //BaseAdapter adapter = new EventListAdapter<String>(getActivity(), R.layout.event_list, events, distanceList, getActivity());
         BaseAdapter adapter = new EventListAdapter<String>(getActivity(), R.layout.event_list, events, getActivity());
 
         listView.setAdapter(adapter);

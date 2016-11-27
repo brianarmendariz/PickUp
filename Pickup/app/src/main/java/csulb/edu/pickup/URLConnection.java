@@ -206,27 +206,27 @@ public class URLConnection
      * @return String
      * @throws IOException
      */
-    public String sendCreateUser(String username, String password, String firstName, String lastName,
-                                 String birthday, String gender, String userRating, String picturePath) throws IOException, JSONException
+    public String sendCreateUser(String firstName, String lastName, String username, String password,
+                                 String birthday, String gender, String userRating, String picturePath) throws IOException
     {
 	   /*url of route being requested*/
         String url = "http://www.csulbpickup.com/createUser.php";
 
-        User user = new User(username, password, firstName, lastName, birthday, gender, userRating, picturePath);
+        User user = new User(firstName, lastName, username, password, birthday, gender, userRating, picturePath);
         JSONObject jsonObj = new JSONObject();
 
         String[] fields = getFieldsForObject(user);
 
-        jsonObj.put(fields[0], user.getEmail());
-        jsonObj.put(fields[1], user.getPassword());
-        jsonObj.put(fields[2], user.getFirstName());
-        jsonObj.put(fields[3], user.getLastName());
-        jsonObj.put(fields[4], user.getBirthday());
-        jsonObj.put(fields[5], user.getGender());
-        jsonObj.put(fields[6], user.getUserRating());
+        jsonObj.put(fields[1], user.getBirthday());
+        jsonObj.put(fields[2], user.getEmail());
+        jsonObj.put(fields[3], user.getFirstName());
+        jsonObj.put(fields[4], user.getGender());
+        jsonObj.put(fields[5], user.getLastName());
+        jsonObj.put(fields[6], user.getPassword());
         jsonObj.put(fields[7], user.getPicturePath());
+        jsonObj.put(fields[8], user.getUserRating());
 
-        String json = jsonObj.toString();
+        String json = jsonObj.toJSONString();
         return makeHTTPPostRequest(url, json);
     }
 

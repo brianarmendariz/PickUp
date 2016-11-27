@@ -39,7 +39,7 @@
 
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_margin="10dp" >
@@ -47,15 +47,13 @@
                 <EditText
                     android:id="@+id/first_name"
                     android:layout_margin="10dp"
+                    android:gravity="center_horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="8"
-                    android:scrollHorizontally="true"
-                    android:fadeScrollbars="false"
+                    android:layout_gravity="center_horizontal"
                     android:textColor="@color/orange"
-                    android:scrollbars="horizontal"
                     android:inputType="text"
-                    android:textSize="25dp">
+                    android:textSize="16dp">
                     <requestFocus />
                 </EditText>
 
@@ -64,15 +62,13 @@
                 <EditText
                     android:id="@+id/last_name"
                     android:layout_margin="10dp"
+                    android:gravity="center_horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
+                    android:layout_gravity="center_horizontal"
                     android:textColor="@color/orange"
-                    android:scrollHorizontally="true"
-                    android:fadeScrollbars="false"
-                    android:scrollbars="horizontal"
                     android:inputType="text"
-                    android:textSize="25dp">
+                    android:textSize="16dp">
                     <requestFocus />
                 </EditText>
 
@@ -82,15 +78,13 @@
                 <EditText
                     android:id="@+id/email"
                     android:layout_margin="10dp"
+                    android:gravity="center_horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
+                    android:layout_gravity="center_horizontal"
                     android:textColor="@color/orange"
-                    android:scrollHorizontally="true"
-                    android:fadeScrollbars="false"
-                    android:scrollbars="horizontal"
                     android:inputType="text"
-                    android:textSize="25dp">
+                    android:textSize="16dp">
                     <requestFocus />
                 </EditText>
 
@@ -98,15 +92,13 @@
                 <EditText
                     android:id="@+id/userPassword"
                     android:layout_margin="10dp"
+                    android:gravity="center_horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="7"
+                    android:layout_gravity="center_horizontal"
                     android:textColor="@color/orange"
-                    android:scrollHorizontally="true"
-                    android:fadeScrollbars="false"
-                    android:scrollbars="horizontal"
-                    android:inputType="textPassword"
-                    android:textSize="25dp">
+                    android:inputType="text"
+                    android:textSize="16dp">
                     <requestFocus />
                 </EditText>
 
@@ -114,15 +106,13 @@
                 <EditText
                     android:id="@+id/retype_password"
                     android:layout_margin="10dp"
+                    android:gravity="center_horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
+                    android:layout_gravity="center_horizontal"
                     android:textColor="@color/orange"
-                    android:fadeScrollbars="false"
-                    android:scrollHorizontally="true"
-                    android:scrollbars="horizontal"
-                    android:inputType="textPassword"
-                    android:textSize="25dp">
+                    android:inputType="text"
+                    android:textSize="16dp">
                     <requestFocus />
                 </EditText>
                 </LinearLayout>
@@ -143,7 +133,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/create_acct_gender_text"
                     android:textColor="@color/orange"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:layout_column="0" />
 
                 <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
@@ -173,11 +162,12 @@
 
                 <TextView
                     android:id="@+id/createAccountTextView6"
+                    android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/orange"
                     android:text="@string/create_acct_bday_text"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                     />
 
                 <Spinner
                     android:id="@+id/bday_month_spinner"

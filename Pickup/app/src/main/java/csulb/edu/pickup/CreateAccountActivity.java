@@ -276,7 +276,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             else if(password.equals(passwordRetype)) {
                 URLConnection http = new URLConnection();
                 try {
-                    String userResult = http.sendCreateUser(email, password, firstName, lastName, bday, gender, "", "");
+                    String userResult = http.sendCreateUser(firstName, lastName, email, password, bday, gender, "", "");
                     if(userResult.equals("false")){
                         createAlert("Duplicate Email", "User exists. Please try a different one.");
 
@@ -291,8 +291,6 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                     }
                 } catch(IOException e)
                 {
-
-                } catch(JSONException ex) {
 
                 }
             } else {
