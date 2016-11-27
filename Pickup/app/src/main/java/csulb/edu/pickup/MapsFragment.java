@@ -569,9 +569,8 @@ public class MapsFragment extends Fragment implements android.location.LocationL
             }
             for (int i = 0; i < list.size(); i++) {
 
-                if (list.get(i).getName()!=null && marker.getTitle()!=null && list.get(i).getName().equals(marker.getTitle())) {
-
-
+                if (list.get(i).getName()!=null && marker.getTitle()!=null && list.get(i).getName().equals(marker.getTitle()))
+                {
                     Bundle args = new Bundle();
                     Fragment fragment = new ViewEventFragment();
                     args.putString("EventID", list.get(i).getEventID() + "");

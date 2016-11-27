@@ -89,7 +89,6 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
 
         rootView = inflater.inflate(R.layout.view_event, container, false);
 
-
         LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.view_event_buttons);
         if(thisUser.getEmail().equals(_event.getCreatorEmail()))
         {
@@ -107,7 +106,6 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
             _editEventButton.requestFocus();
             setupEditEventButton();
 
-
             Button deleteButton = new Button(this.getActivity());
             deleteButton.setText("Delete");
             deleteButton.setTag("event_delete_btn");
@@ -121,9 +119,9 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
             _deleteEventButton = (Button) ll.findViewWithTag("event_delete_btn");
             _deleteEventButton.requestFocus();
             setupDeleteEventButton();
-
         }
         URLConnection http = new URLConnection();
+/*
         try {
             String[][] RSVPList = http.sendGetRSVPList(_event.getEventID() + "");
             boolean hasRSVPd = false;
@@ -172,7 +170,7 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
         }catch(IOException ie){
             ie.printStackTrace();
         }
-
+*/
 
         findViewsById();
         setUpShareOnFBButton();
@@ -185,8 +183,6 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
         return rootView;
 
     }
-
-
 
     public Event getEventDetails(int eventID)
     {

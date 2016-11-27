@@ -309,9 +309,15 @@ public class URLConnection
      * @return Event - an Event object for the retrieved Event on server.
      * @throws IOException
      */
+    /**
+     * Gets a single event from server for the given EventID
+     * @param eventID
+     * @return Event - an Event object for the retrieved Event on server.
+     * @throws IOException
+     */
     public Event sendGetEvent(int eventID) throws IOException
     {
-        StringBuilder url = new StringBuilder("http://www.csulbpickup.com/getEvent_json.php");
+        StringBuilder url = new StringBuilder("http://www.csulbpickup.com/getEvent.php");
 
         url.append("?EventID="+eventID);
         String response = makeHTTPGetRequest(url.toString());
@@ -325,30 +331,31 @@ public class URLConnection
         }
 
         Event event = new Event();
-        event.setID((int)jsonObject.get("_eventID"));
+        event.setID(Integer.parseInt((String)jsonObject.get("_eventID")));
         event.setName((String)jsonObject.get("_name"));
         event.setCreatorName((String)jsonObject.get("_creatorName"));
         event.setCreatorEmail((String)jsonObject.get("_creatorEmail"));
         event.setSport((String)jsonObject.get("_sport"));
+        event.setAddress((String)jsonObject.get("_address"));
         event.setLongitude(Double.parseDouble((String)jsonObject.get("_longitude")));
         event.setLatitude(Double.parseDouble((String)jsonObject.get("_latitude")));
         event.setGender((String)jsonObject.get("_gender"));
-        event.setAgeMax((int)jsonObject.get("_ageMax"));
-        event.setAgeMin((int)jsonObject.get("_ageMin"));
-        event.setMinUserRating((int)jsonObject.get("_minUserRating"));
+        event.setAgeMax(Integer.parseInt((String)jsonObject.get("_ageMax")));
+        event.setAgeMin(Integer.parseInt((String)jsonObject.get("_ageMin")));
+        event.setMinUserRating(Integer.parseInt((String)jsonObject.get("_minUserRating")));
         event.setEventDate((String)jsonObject.get("_eventStartDate"));
         event.setEventTime((String)jsonObject.get("_eventStartTime"));
         event.setEventEndDate((String)jsonObject.get("_eventEndDate"));
         event.setEventEndTime((String)jsonObject.get("_eventEndTime"));
         event.setSkill((String)jsonObject.get("_skill"));
         event.setSportSpecific((String)jsonObject.get("_sportSpecific"));
-        event.setPlayersPerTeam((int)jsonObject.get("_playersPerTeam"));
-        event.setNumberOfTeams((int)jsonObject.get("_numberOfTeams"));
+        event.setPlayersPerTeam(Integer.parseInt((String)jsonObject.get("_playersPerTeam")));
+        event.setNumberOfTeams(Integer.parseInt((String)jsonObject.get("_numberOfTeams")));
         event.setTerrain((String)jsonObject.get("_terrain"));
         event.setEnvironment((String)jsonObject.get("_environment"));
         event.setCategory((String)jsonObject.get("_category"));
 
-        System.out.println("\n" + event);
+        //System.out.println("\n" + event);
         return event;
     }
 
