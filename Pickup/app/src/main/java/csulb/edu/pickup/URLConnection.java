@@ -185,8 +185,8 @@ public class URLConnection
 
         String[] fields = getFieldsForObject(userCredentials);
 
-        jsonObj.put(fields[0], userCredentials.getUsername());
-        jsonObj.put(fields[1], userCredentials.getPassword());
+        jsonObj.put(fields[0], userCredentials.getPassword());
+        jsonObj.put(fields[1], userCredentials.getUsername());
 
         String json = jsonObj.toJSONString();
         return makeHTTPPostRequest(url, json);

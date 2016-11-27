@@ -25,12 +25,7 @@
   <component name="ChangeListManager">
     <list default="true" id="846b56e1-b61c-4484-bf70-68650d6f3a99" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/CreateAccountActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/CreateAccountActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/EventListFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/EventListFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/URLConnection.java" afterPath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/URLConnection.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/User.java" afterPath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/User.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/UserProfileFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/UserProfileFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/create_account.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/create_account.xml" />
     </list>
     <ignored path="Pickup.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -74,31 +69,18 @@
       <file leaf-file-name="URLConnection.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/URLConnection.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5079646">
-              <caret line="233" column="26" selection-start-line="233" selection-start-column="26" selection-end-line="233" selection-end-column="26" />
+            <state vertical-scroll-proportion="0.23716815">
+              <caret line="175" column="26" selection-start-line="175" selection-start-column="26" selection-end-line="175" selection-end-column="26" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="User.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/User.java">
+      <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/LoginActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="85" column="22" selection-start-line="85" selection-start-column="22" selection-end-line="85" selection-end-column="22" />
-              <folding>
-                <element signature="e#2116#2117#0" expanded="true" />
-                <element signature="e#2148#2149#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CreateAccountActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/CreateAccountActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.793103">
-              <caret line="278" column="0" selection-start-line="278" selection-start-column="0" selection-end-line="278" selection-end-column="0" />
+              <caret line="306" column="0" selection-start-line="306" selection-start-column="0" selection-end-line="306" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -2156,9 +2138,9 @@
         <option value="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/UserProfileFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/EventListFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/create_account.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/URLConnection.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/CreateAccountActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/User.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/URLConnection.java" />
       </list>
     </option>
   </component>
@@ -2788,7 +2770,13 @@
       <option name="project" value="LOCAL" />
       <updated>1480214202746</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Integration updates - Create User working.">
+      <created>1480218661705</created>
+      <option name="number" value="00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1480218661705</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -2889,7 +2877,8 @@
     <MESSAGE value="Integration updates - Map now populating correctly&#10;                                   - Create Event working&#10;                                   - Event List working &#10;                                   - User Profile working" />
     <MESSAGE value="Integration updates - Updates to URLConnection for deletes" />
     <MESSAGE value="Integration updates - View Event now works without RSVPList" />
-    <option name="LAST_COMMIT_MESSAGE" value="Integration updates - View Event now works without RSVPList" />
+    <MESSAGE value="Integration updates - Create User working." />
+    <option name="LAST_COMMIT_MESSAGE" value="Integration updates - Create User working." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2973,13 +2962,13 @@
           <option name="timeStamp" value="47" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/URLConnection.java</url>
-          <line>217</line>
+          <url>file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/LoginActivity.java</url>
+          <line>306</line>
           <properties />
-          <option name="timeStamp" value="48" />
+          <option name="timeStamp" value="50" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="50" />
+      <option name="time" value="51" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -3083,13 +3072,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="6056" column="0" selection-start-line="6056" selection-start-column="0" selection-end-line="6056" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/LoginActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="317" column="0" selection-start-line="317" selection-start-column="0" selection-end-line="317" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -3393,10 +3375,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/LoginActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="306" column="0" selection-start-line="306" selection-start-column="0" selection-end-line="306" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/URLConnection.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5079646">
-          <caret line="233" column="26" selection-start-line="233" selection-start-column="26" selection-end-line="233" selection-end-column="26" />
+        <state vertical-scroll-proportion="0.23716815">
+          <caret line="175" column="26" selection-start-line="175" selection-start-column="26" selection-end-line="175" selection-end-column="26" />
           <folding />
         </state>
       </provider>
