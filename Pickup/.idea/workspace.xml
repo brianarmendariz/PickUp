@@ -25,10 +25,6 @@
   <component name="ChangeListManager">
     <list default="true" id="846b56e1-b61c-4484-bf70-68650d6f3a99" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/MapsFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/MapsFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/URLConnection.java" afterPath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/URLConnection.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/ViewEventFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/ViewEventFragment.java" />
     </list>
     <ignored path="Pickup.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -2728,7 +2724,13 @@
       <option name="project" value="LOCAL" />
       <updated>1479596533907</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Integration updates - View Event now works without RSVPList">
+      <created>1480214195062</created>
+      <option name="number" value="00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1480214195062</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -2828,7 +2830,8 @@
     <MESSAGE value="Current version including json data transfer in URLConnection. Updates to Event and Users. Updates to app variables. First update of a sequence that includes fixing a new build." />
     <MESSAGE value="Integration updates - Map now populating correctly&#10;                                   - Create Event working&#10;                                   - Event List working &#10;                                   - User Profile working" />
     <MESSAGE value="Integration updates - Updates to URLConnection for deletes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Integration updates - Updates to URLConnection for deletes" />
+    <MESSAGE value="Integration updates - View Event now works without RSVPList" />
+    <option name="LAST_COMMIT_MESSAGE" value="Integration updates - View Event now works without RSVPList" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
