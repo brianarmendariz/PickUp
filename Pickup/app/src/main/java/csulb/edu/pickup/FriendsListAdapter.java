@@ -24,7 +24,7 @@ public class FriendsListAdapter<String> extends BaseAdapter {
     public static final java.lang.String SECOND_COLUMN = "Second";
 
     public ArrayList<LinkedHashMap<java.lang.String, java.lang.String>> friendList;
-    public String [][] friendsList;
+    public ArrayList<User> friendsList;
     Activity activity;
     TextView txtFirst;
     TextView txtSecond;
@@ -33,7 +33,7 @@ public class FriendsListAdapter<String> extends BaseAdapter {
 
 
 
-    public FriendsListAdapter(Activity activity, int layout, String [][] friendList, Context context) {
+    public FriendsListAdapter(Activity activity, int layout, ArrayList<User> friendList, Context context) {
        super();
         this.activity=activity;
         this.layout=R.layout.friends_list;
@@ -54,8 +54,8 @@ public class FriendsListAdapter<String> extends BaseAdapter {
 
 
         //HashMap<java.lang.String, java.lang.String> map=friendList.get(position);
-        txtFirst.setText((CharSequence)friendsList[position][0]);
-        txtSecond.setText((CharSequence)friendsList[position][1]);
+        txtFirst.setText((CharSequence)friendsList.get(position).getFirstName());
+        txtSecond.setText((CharSequence)friendsList.get(position).getEmail());
 
 
 
@@ -71,13 +71,13 @@ public class FriendsListAdapter<String> extends BaseAdapter {
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return friendsList.length;
+        return friendsList.size();
     }
 
     @Override
     public Object getItem(int position) {
         // TODO Auto-generated method stub
-        return friendsList [position][1];
+        return friendsList.get(position);
     }
 
     @Override

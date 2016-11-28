@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -27,6 +28,8 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -34,6 +37,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.text.Html;
 import android.text.Layout;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -59,6 +63,8 @@ import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -72,8 +78,9 @@ import java.util.ArrayList;
 /*
     SHOW THE USER PROFILE NAME GENDER
  */
-public class UserProfileFragment extends Fragment implements SearchView.OnQueryTextListener {
-
+public class UserProfileFragment extends Fragment implements SearchView.OnQueryTextListener
+{
+    private static int RESULT_LOAD_IMAGE = 1;
     private static final int VIEW_MAP_EVENT = 2;
     private ImageView profileImage;
     private TextView name;
@@ -239,9 +246,11 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         profileImage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                Intent intent = new Intent(Intent.ACTION_PICK,
+                Intent i = new Intent(
+                        Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, 0);
+
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
             }
         });
 
@@ -268,6 +277,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             setupEvents(getEvents(thisUser.getEmail()));
             upvote.setVisibility(View.INVISIBLE);
             downvote.setVisibility(View.INVISIBLE);
+
         }
         else
         {
@@ -675,83 +685,52 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) throws RuntimeException {
-        InputStream stream = null;
-        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK)
+    public void onActivityResult(int requestCode, int resultCode, Intent data) throws RuntimeException
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            ImageView imageView = (ImageView) rootView.findViewById(R.id.profileImageView);
+
+            Bitmap bmp = null;
             try {
-                // recyle unused bitmaps
-                if (bitmap != null) {
-                    bitmap.recycle();
-                }
-                stream =  getActivity().getContentResolver().openInputStream(data.getData());
-                bitmap = BitmapFactory.decodeStream(stream);
-
-                profileImage.setImageBitmap(bitmap);
-            } catch (FileNotFoundException e) {
+                bmp = getBitmapFromUri(selectedImage);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
-            } finally {
-             {
-                if (stream != null)
-                    try {
-                        stream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
             }
+            imageView.setImageBitmap(bmp);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            byte[] bArray = baos.toByteArray();
+            System.out.println("bArray " + bArray);
+
+            String encodedImage = Base64.encodeToString(bArray, Base64.DEFAULT);
+            System.out.println("encodedImage " + encodedImage);
         }
-
-//        // TODO Auto-generated method stub
-//        super.onActivityResult(requestCode, resultCode, data);
-//        /*not sure what this is for - uncomment it later?*/
-//        //if (resultCode == RESULT_OK){
-//        Uri targetUri = data.getData();
-//        Bitmap bitmap;
-//
-//        Bitmap bm = BitmapFactory.decodeResource(getResources(),
-//                R.drawable.com_facebook_profile_picture_blank_portrait);
-//        Bitmap resized = Bitmap.createScaledBitmap(bm, 150, 150, true);
-//        Bitmap conv_bm = getRoundedRectBitmap(resized, 150);
-//        profileImage.setImageBitmap(conv_bm);
-////        try {
-////
-//////            bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
-////            bitmap = getBitmapFromReturnedImage(targetUri,200,200);
-////
-////        } catch (FileNotFoundException e) {
-////            // TODO Auto-generated catch block
-////            e.printStackTrace();
-////        }
-////        catch(IOException e) {
-////            e.printStackTrace();
-////        }
-////        catch(NullPointerException e) {
-////            e.printStackTrace();
-////        }
-//        //}
     }
 
-    public Bitmap getBitmapFromReturnedImage(Uri selectedImage, int reqWidth, int reqHeight) throws IOException {
-
-        InputStream inputStream = getActivity().getContentResolver().openInputStream(selectedImage);
-
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeStream(inputStream, null, options);
-
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-        // close the input stream
-        inputStream.close();
-
-        // reopen the input stream
-        inputStream = getActivity().getContentResolver().openInputStream(selectedImage);
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeStream(inputStream, null, options);
+    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
+        ParcelFileDescriptor parcelFileDescriptor =
+                getActivity().getContentResolver().openFileDescriptor(uri, "r");
+        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+        parcelFileDescriptor.close();
+        return image;
     }
+
 
     public static Bitmap getRoundedRectBitmap(Bitmap bitmap, int pixels) {
         Bitmap result = null;
@@ -843,7 +822,8 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
             }
         });
-
     }
+
+
 
 }

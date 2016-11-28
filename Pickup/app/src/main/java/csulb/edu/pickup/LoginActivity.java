@@ -301,33 +301,40 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             EditText passwordBox = (EditText) findViewById(R.id.password);
             String password = passwordBox.getText().toString();
 
-            URLConnection http = new URLConnection();
+            String EMAIL_PATTERN =
+                    "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-            try {
-                String loginResult = http.sendLogin(username, password);
-                if (loginResult.equals("false")) {
-                    Log.d("SARAH","login failed");
+//            if(!username.matches(EMAIL_PATTERN))
+//            {
+//                createAlert("Email Required", "Please Enter a Valid Email Address");
+//            }
+//            else {
 
-                    createAlert("Invalid Login", "Login Failed, Please try again");
+                URLConnection http = new URLConnection();
+
+                try {
+                    String loginResult = http.sendLogin(username, password);
+                    if (loginResult.equals("false")) {
+                        Log.d("SARAH", "login failed");
+
+                        createAlert("Invalid Login", "Login Failed, Please try again");
+
+                    } else {
+                        Log.d("SARAH", "login successful");
+
+                        User thisUser = http.sendGetUser(username);
+
+                        Bundle b = new Bundle();
+                        b.putParcelable("USER", thisUser);
+                        Intent myIntent = new Intent(view.getContext(), MainActivity.class);
+                        myIntent.putExtras(b);
+                        startActivityForResult(myIntent, 0);
+                    }
+                } catch (IOException | JSONException ex) {
 
                 }
-                else{
-                    Log.d("SARAH","login successful");
-
-                    /* TODO: FIX SendGetUser */
-                    User thisUser = http.sendGetUser(username);
-
-                    Bundle b = new Bundle();
-                    b.putParcelable("USER", thisUser);
-                    Intent myIntent = new Intent(view.getContext(), MainActivity.class);
-                    myIntent.putExtras(b);
-                    startActivityForResult(myIntent, 0);
-                }
-            } catch(IOException | JSONException ex)
-            {
-
-            }
-
+//            }
         }
         else if (view == createAccountButton)
         {

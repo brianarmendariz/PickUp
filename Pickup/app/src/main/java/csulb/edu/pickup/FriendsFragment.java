@@ -42,7 +42,7 @@ import java.util.Set;
 public class FriendsFragment extends Fragment{
 
 
-    String [] [] friendList;
+    ArrayList<User> friendList;
     User thisUser;
     View rootView;
 
@@ -65,51 +65,54 @@ public class FriendsFragment extends Fragment{
         URLConnection http = new URLConnection();
         // Intent intent = getActivity().getIntent();
         //Bundle args = getArguments();
+
         try {
-            friendList = http.sendGetFriendList(thisUser.getEmail());
-            for (int i = 0; i < friendList.length; i++) {
-                String name = friendList[i][0];
-                String username = friendList[i][1];
+            friendList = http.sendGetFriendsList(thisUser.getEmail());
+
+            if(friendList != null)
+            {
+                BaseAdapter adapter = new FriendsListAdapter<String>(getActivity(), R.layout.friends_list, friendList, getActivity());
+
+                listView = (ListView) rootView.findViewById(R.id.friend_list);
+                listView.setAdapter(adapter);
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        String email = friendList.get(position).getEmail();
+
+                        Bundle b = new Bundle();
+                        //add current user
+                        b.putParcelable("USER", thisUser);
+                        User user = viewUser(email);
+                        if (user != null && !thisUser.getEmail().equals(user.getEmail())) {
+                            System.out.println("putting the parceable");
+                            b.putParcelable("VIEWUSER", user);
+                        } else {
+                            System.out.println("not putting the parceable");
+                        }
+                        Fragment fragment = new UserProfileFragment();
+                        fragment.setArguments(b);
+                        FragmentManager frgManager = getFragmentManager();
+                        frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("FriendsFragment")
+                                .commit();
+
+                        Intent thisIntent = new Intent(getActivity().getBaseContext(), MainActivity.class);
+                        thisIntent.putExtras(b);
+
+                    }
+
+                });
             }
-        } catch (IOException e) {
-            Log.e("ERROR", "RVSP ERROR");
-        }
-        try {
-            friendList = http.sendGetFriendList(thisUser.getEmail());
-            for (int i = 0; i < friendList.length; i++) {
-                //dataList.add(new DrawerItem(friendList[i], R.drawable.profile_icon));
-
-                System.out.println(friendList[i]);
-
-            }
-            BaseAdapter adapter = new FriendsListAdapter<String>(getActivity(), R.layout.friends_list, friendList, getActivity());
-
-            listView = (ListView) rootView.findViewById(R.id.friend_list);
-            listView.setAdapter(adapter);
-        } catch (IOException e) {
-            Log.e("ERROR", "FriendList ERROR");
-        }
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String email = friendList[position][1];
-                System.out.println("friendList:"+position+","+friendList[position][1]);
-                //String email = "sarahshib@outlook.com";
-                //Toast.makeText(getActivity(), email, Toast.LENGTH_SHORT).show();
-                //Toast.makeText(MMActivity.this, , Toast.LENGTH_SHORT).show();
+            else
+            {
+                showAlert("User Has No Friends");
 
                 Bundle b = new Bundle();
                 //add current user
                 b.putParcelable("USER", thisUser);
-                User user = viewUser(email);
-                if (user != null && !thisUser.getEmail().equals(user.getEmail())) {
-                    System.out.println("putting the parceable");
-                    b.putParcelable("VIEWUSER", user);
-                } else {
-                    System.out.println("not putting the parceable");
-                }
-                Fragment fragment = new UserProfileFragment();
+
+                Fragment fragment = new MapsFragment();
                 fragment.setArguments(b);
                 FragmentManager frgManager = getFragmentManager();
                 frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("FriendsFragment")
@@ -117,12 +120,29 @@ public class FriendsFragment extends Fragment{
 
                 Intent thisIntent = new Intent(getActivity().getBaseContext(), MainActivity.class);
                 thisIntent.putExtras(b);
-
             }
 
-        });
+        } catch (IOException e) {
+            Log.e("ERROR", "FriendList ERROR");
+        }
+
+
 
         return rootView;
+    }
+
+    public void showAlert(String message)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(message);
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //TODO
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private User viewUser(String username)

@@ -255,6 +255,11 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             String bdayMonth = formMap.get("bdayMonth");
             String bdayYear = formMap.get("bdayYear");
             String bday = bdayYear+"-"+bdayMonth+"-"+bdayDay;
+
+            String EMAIL_PATTERN =
+                    "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
             if(firstName.equals("")){
                 createAlert("First Name Required", "Please Enter a First Name");
             }
@@ -263,6 +268,10 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             }
             else if(email.equals("")){
                 createAlert("Email Required", "Please Enter an Email");
+            }
+            else if(!email.matches(EMAIL_PATTERN))
+            {
+                createAlert("Email Required", "Please Enter a Valid Email Address");
             }
             else if(password.equals("")){
                 createAlert("Password Required", "Please Enter a Password" );

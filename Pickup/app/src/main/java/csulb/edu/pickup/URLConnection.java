@@ -105,6 +105,41 @@ public class URLConnection
         return response.toString();
     }
 
+    private String makeHTTPPutRequest(String url, String json) throws IOException
+    {
+        // instantiate URL object to connect to the internet
+        java.net.URL urlObj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) urlObj.openConnection();
+
+        // setup header to initiate http request
+        con.setRequestMethod("PUT");                                              // set the type of HTTP action we want to use
+        con.setRequestProperty("User-Agent", USER_AGENT);
+        con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+        con.setRequestProperty("Content-Type", "application/json; charset=UTF-8"); // set data transfer type to json
+
+        // Send post request
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());         // get the connection stream to send data through
+        wr.writeBytes(json);                                                       // send json byte representation
+
+        // flush & close server
+        wr.flush();
+        wr.close();
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        // read in the response
+        while ((inputLine = in.readLine()) != null)
+        {
+            response.append(inputLine);
+        }
+
+        in.close();                   // close input connection
+        return response.toString();
+    }
+
     private String makeHTTPGetRequest(String url) throws IOException
     {
         // instantiate URL object to connect to the internet
@@ -385,6 +420,59 @@ public class URLConnection
      * @return Event - an Event object for the retrieved Event on server.
      * @throws IOException
      */
+    public Event sendGetEventFromDistance(int eventID, String latitude, String longitude) throws IOException
+    {
+        StringBuilder url = new StringBuilder("http://www.csulbpickup.com/getEventFromDistance.php");
+        url.append("?EventID="+eventID);
+        url.append("&Latitude="+latitude);
+        url.append("&Longitude="+longitude);
+
+        String response = makeHTTPGetRequest(url.toString());
+
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = (JSONObject)parser.parse(response.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Event event = new Event();
+        event.setID(Integer.parseInt((String)jsonObject.get("_eventID")));
+        event.setName((String)jsonObject.get("_name"));
+        event.setCreatorName((String)jsonObject.get("_creatorName"));
+        event.setCreatorEmail((String)jsonObject.get("_creatorEmail"));
+        event.setSport((String)jsonObject.get("_sport"));
+        event.setAddress((String)jsonObject.get("_address"));
+        event.setLongitude(Double.parseDouble((String)jsonObject.get("_longitude")));
+        event.setLatitude(Double.parseDouble((String)jsonObject.get("_latitude")));
+        event.setGender((String)jsonObject.get("_gender"));
+        event.setAgeMax(Integer.parseInt((String)jsonObject.get("_ageMax")));
+        event.setAgeMin(Integer.parseInt((String)jsonObject.get("_ageMin")));
+        event.setMinUserRating(Integer.parseInt((String)jsonObject.get("_minUserRating")));
+        event.setEventDate((String)jsonObject.get("_eventStartDate"));
+        event.setEventTime((String)jsonObject.get("_eventStartTime"));
+        event.setEventEndDate((String)jsonObject.get("_eventEndDate"));
+        event.setEventEndTime((String)jsonObject.get("_eventEndTime"));
+        event.setSkill((String)jsonObject.get("_skill"));
+        event.setSportSpecific((String)jsonObject.get("_sportSpecific"));
+        event.setPlayersPerTeam(Integer.parseInt((String)jsonObject.get("_playersPerTeam")));
+        event.setNumberOfTeams(Integer.parseInt((String)jsonObject.get("_numberOfTeams")));
+        event.setTerrain((String)jsonObject.get("_terrain"));
+        event.setEnvironment((String)jsonObject.get("_environment"));
+        event.setCategory((String)jsonObject.get("_category"));
+        event.setDistance((Double)jsonObject.get("_distance"));
+
+        //System.out.println("\n" + event);
+        return event;
+    }
+
+    /**
+     * Gets a single event from server for the given EventID
+     * @param
+     * @return Event - an Event object for the retrieved Event on server.
+     * @throws IOException
+     */
     public ArrayList<Event> sendGetEventsForUser(String username) throws IOException
     {
         StringBuilder url = new StringBuilder("http://www.csulbpickup.com/getEventsForUser.php");
@@ -420,7 +508,14 @@ public class URLConnection
         JSONParser parser = new JSONParser();
         JSONArray jsonArray = null;
         try {
-            jsonArray = (JSONArray)parser.parse(response.toString());
+            if(response.toString().equals("false"))
+            {
+                jsonArray = new JSONArray();
+            }
+            else
+            {
+                jsonArray = (JSONArray) parser.parse(response.toString());
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -560,6 +655,7 @@ public class URLConnection
         String urlParameters = "RSVPUser="+username+"&EventID="+eventID;
         return makeHTTPRequest(url,urlParameters);
     }
+
     public String sendUnRSVP(String username, String eventID) throws IOException  {
 
 				/*url of route being requested*/
@@ -656,18 +752,64 @@ public class URLConnection
         String urlParameters = "Follower="+myUsername+"&Followee="+thisUsername;
         return makeHTTPRequest(url,urlParameters);
     }
-    public String [][] sendGetFriendList(String Username) throws IOException  {
 
-			/*url of route being requested*/
-        String url = "http://www.csulbpickup.com/getFollows.php";
-        String urlParameters = "Follower="+Username;
-        String response =  makeHTTPRequest(url,urlParameters);
-        String[][] FriendList =  convertRSVPList(response);
-        for(int i = 0;i<FriendList.length;i++){
-            System.out.println(i+" "+FriendList[i][0]+" "+FriendList[i][1]);
+    public ArrayList<User> sendGetFriendsList(String userStr) throws IOException
+    {
+	    /*url of route being requested*/
+        StringBuilder url = new StringBuilder("http://www.csulbpickup.com/getFollows.php");
+
+        url.append("?Follower="+userStr);
+        String response = makeHTTPGetRequest(url.toString());
+
+        // retrieve the data from the json
+        JSONParser parser = new JSONParser();
+        JSONArray jsonArray = null;
+        ArrayList<User> userList = null;
+
+        try {
+            if(response.toString().equals("\t"))
+            {
+                jsonArray = new JSONArray();
+            }
+            else
+            {
+                jsonArray = (JSONArray) parser.parse(response.toString());
+
+                // if the list is empty there are no events
+                //
+                // get all events and put them into an arraylist
+                if(!jsonArray.isEmpty())
+                {
+                    userList = new ArrayList<User>(jsonArray.size());
+                    for(int i = 0; i < jsonArray.size(); i++)
+                    {
+                        JSONObject jsonObject = (JSONObject)jsonArray.get(i);
+                        User user = new User();
+                        user.setFirstName((String)jsonObject.get("_firstName"));
+                        user.setlastName((String)jsonObject.get("_lastName"));
+                        user.setEmail((String)jsonObject.get("_email"));
+                        user.setPassword((String)jsonObject.get("_password"));
+                        user.setBirthday((String)jsonObject.get("_birthday"));
+                        user.setGender((String)jsonObject.get("_gender"));
+                        user.setUserRating((String)jsonObject.get("_userRating"));
+
+                        userList.add(user);
+                    }
+                }
+                else
+                {
+                    userList = new ArrayList<User>();
+                }
+            }
+        } catch (ParseException e)
+        {
+            e.printStackTrace();
         }
-        return FriendList;
+
+
+        return userList;
     }
+
     public String sendResetEmail(String username) throws IOException  {
 
 				/*url of route being requested*/

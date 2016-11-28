@@ -14,81 +14,126 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp">
 
-            <!-- Left column -->
+            <!-- Center banner -->
             <TextView
                 android:id="@+id/view_event_event_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@drawable/white"
-                android:text="event_name"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:padding="@dimen/small_margin"
                 android:paddingTop="25sp"
                 android:paddingLeft="16sp"
-                android:layout_alignParentLeft="true"/>
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"/>
+
+            <!-- Left column -->
             <TextView
                 android:id="@+id/view_event_sport"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@drawable/white"
-                android:text="sport"
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:padding="@dimen/small_margin"
-                android:layout_below="@id/view_event_event_name"/>
-
-            <!-- Right column-->
-            <TextView
-                android:id="@+id/view_event_player_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@drawable/white"
-                android:text="player_amount"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:padding="@dimen/small_margin"
-                android:paddingTop="25sp"
-                android:paddingRight="16sp"
-                android:layout_alignParentRight="true"/>
-            <TextView
-                android:id="@+id/view_event_distance_away"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@drawable/white"
-                android:text="distance"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:padding="@dimen/small_margin"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/view_event_player_amount" />
+                android:layout_below="@id/view_event_event_name"
+                android:layout_alignParentLeft="true"/>
 
             <TextView
                 android:id="@+id/view_event_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@drawable/white"
-                android:text="player_amount"
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:padding="@dimen/small_margin"
                 android:paddingTop="25sp"
                 android:paddingRight="16sp"
-                android:layout_below="@id/view_event_player_amount"
-                android:layout_centerHorizontal="true"/>
+                android:layout_below="@id/view_event_sport"
+                android:layout_alignParentLeft="true"/>
 
+            <!-- Right column-->
+            <TextView
+                android:id="@+id/view_event_distance_away"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@drawable/white"
+                android:padding="@dimen/small_margin"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/view_event_event_name" />
+
+            <TextView
+                android:id="@+id/view_event_player_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@drawable/white"
+                android:padding="@dimen/small_margin"
+                android:paddingTop="25sp"
+                android:paddingRight="16sp"
+                android:layout_below="@id/view_event_distance_away"
+                android:layout_alignParentRight="true"/>
+
+            <TextView
+                android:id="@+id/view_event_skill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@drawable/white"
+                android:padding="@dimen/small_margin"
+                android:layout_below="@id/view_event_player_amount"
+                android:layout_centerHorizontal="true" />
+            <TextView
+                android:id="@+id/view_event_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@drawable/white"
+                android:padding="@dimen/small_margin"
+                android:layout_below="@id/view_event_skill"
+                android:layout_centerHorizontal="true" />
+            <TextView
+                android:id="@+id/view_event_environment_terrain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@drawable/white"
+                android:padding="@dimen/small_margin"
+                android:layout_below="@id/view_event_category"
+                android:layout_centerHorizontal="true" />
+
+
+
+            <!-- Center Column -->
             <TextView
                 android:id="@+id/view_event_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@drawable/white"
-                android:text="l o c a t i o n"
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:padding="@dimen/small_margin"
-                android:layout_below="@id/view_event_age"
+                android:layout_below="@id/view_event_environment_terrain"
                 android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/view_event_start_date_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@drawable/white"
+                android:paddingTop="@dimen/small_margin"
+                android:paddingBottom="@dimen/small_margin"
+                android:layout_below="@id/view_event_location"
+                android:layout_centerHorizontal="true"/>
+            <TextView
+                android:id="@+id/view_event_end_date_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@drawable/white"
+                android:paddingTop="@dimen/small_margin"
+                android:paddingBottom="@dimen/small_margin"
+                android:layout_below="@id/view_event_start_date_time"
+                android:layout_centerHorizontal="true"/>
+
+
         </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-        </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/view_event_rl_profile_pics"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+        </RelativeLayout>
     </LinearLayout>
 </ScrollView>
 
