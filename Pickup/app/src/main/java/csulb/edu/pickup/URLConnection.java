@@ -649,19 +649,25 @@ public class URLConnection
     }
 
     public String sendRSVP(String username, String eventID) throws IOException  {
-
-				/*url of route being requested*/
+        	   /*url of route being requested*/
         String url = "http://www.csulbpickup.com/CreateRSVP.php";
-        String urlParameters = "RSVPUser="+username+"&EventID="+eventID;
-        return makeHTTPRequest(url,urlParameters);
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("_eventID", eventID);
+        jsonObj.put("_rsvpUser", username);
+
+        String json = jsonObj.toJSONString();
+        return makeHTTPPostRequest(url, json);
     }
 
     public String sendUnRSVP(String username, String eventID) throws IOException  {
-
 				/*url of route being requested*/
         String url = "http://www.csulbpickup.com/CreateUnRSVP.php";
-        String urlParameters = "UnRSVPUser="+username+"&EventID="+eventID;
-        return makeHTTPRequest(url,urlParameters);
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("_eventID", eventID);
+        jsonObj.put("_rsvpUser", username);
+
+        String json = jsonObj.toJSONString();
+        return makeHTTPPostRequest(url, json);
     }
 
     public ArrayList<User> sendGetRSVPList(int eventID) throws IOException

@@ -346,7 +346,7 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
 
             try {
                 URLConnection http = new URLConnection();
-                http.sendDeleteEvent(_event.getEventID());
+                http.deleteEvent(_event.getEventID());
             } catch(IOException e)
             {
                 e.printStackTrace();
