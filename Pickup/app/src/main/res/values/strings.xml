@@ -103,9 +103,9 @@
         <item>Badminton</item>
         <item>Baseball</item>
         <item>Basketball</item>
+        <item>Football</item>
         <item>Handball</item>
         <item>Ice Hockey</item>
-        <item>Football</item>
         <item>Racquetball</item>
         <item>Roller Hockey</item>
         <item>Running</item>
@@ -120,14 +120,16 @@
         <item>Badminton</item>
         <item>Baseball</item>
         <item>Basketball</item>
+        <item>Football</item>
         <item>Handball</item>
         <item>Ice Hockey</item>
-        <item>Football</item>
         <item>Racquetball</item>
         <item>Roller Hockey</item>
+        <item>Running</item>
         <item>Soccer</item>
         <item>Softball</item>
         <item>Tennis</item>
+        <item>Volleyball</item>
     </string-array>
     <string-array name="indoor_outdoor">
         <item>Indoor</item>

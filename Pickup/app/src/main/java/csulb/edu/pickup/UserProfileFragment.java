@@ -363,7 +363,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             follow.setImageResource(R.drawable.follow);
                         } else {
                             //String response = http.sendAddFriend(thisUser.getEmail(), viewUsername.getEmail());
-                            http.sendAddFriend(thisUser.getEmail(), viewUsername.getEmail());
+                            http.sendFollow(thisUser.getEmail(), viewUsername.getEmail());
                             //System.out.println("add result" + response);
 
                             areFriends = true;

@@ -646,6 +646,8 @@ public class URLConnection
                 "&Longitude="+longitude+"&DateCreatedStart="+dateCreatedStart+"&DateCreatedEnd="+dateCreatedEnd+"&EventTimeStart="+eventTimeStart+
                 "&EventTimeEnd="+eventTimeEnd+"&EventDateStart="+eventDateStart+"&EventDateEnd="+eventDateEnd+"&AgeMax="+ageMax+"&AgeMin="+ageMin+
                 "&OnlyNotFull="+onlyNotFull+"&MinUserRating="+minUserRating+"&IsPublic="+isPublic+"&Gender="+gender;
+
+
         String response = makeHTTPRequest(url,urlParameters);
         String stringResponse = response.toString();
         ArrayList<Event> list = null;// convertEventList(stringResponse);
@@ -749,6 +751,15 @@ public class URLConnection
         String url = "http://www.csulbpickup.com/CheckIfFriends.php";
         String urlParameters = "myUsername="+myUsername+"&thisUsername="+thisUsername;
         return makeHTTPRequest(url,urlParameters);
+    }
+    public String sendFollow(String myUsername, String thisUsername) throws IOException
+    {
+        String url = "http://www.csulbpickup.com/CreateFollow.php";
+        JSONObject obj = new JSONObject();
+        obj.put("Follower",myUsername);
+        obj.put("Followee",thisUsername);
+        String json = obj.toJSONString();
+        return makeHTTPPostRequest(url,json);
     }
     public String sendAddFriend(String myUsername, String thisUsername) throws IOException  {
 
@@ -1239,8 +1250,13 @@ public class URLConnection
 
         /*url of route being requested*/
         String url = "http://www.csulbpickup.com/createRatings.php";
-        String urlParameters = "RaterUsername="+RaterUsername+"&RatedUsername="+RatedUsername+"&Vote="+Vote;
-        return makeHTTPRequest(url,urlParameters);
+        //String urlParameters = "RaterUsername="+RaterUsername+"&RatedUsername="+RatedUsername+"&Vote="+Vote;
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("RaterUsername",RaterUsername);
+        jsonObj.put("RatedUsername",RatedUsername);
+        jsonObj.put("Vote",Vote);
+        String urlParameters = jsonObj.toJSONString();
+        return makeHTTPPostRequest(url,urlParameters);
     }
 
     //Edit user who already rated another person and update value
