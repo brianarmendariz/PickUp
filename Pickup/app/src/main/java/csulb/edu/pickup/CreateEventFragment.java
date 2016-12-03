@@ -97,7 +97,6 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-
         // Bundle from MainActivity
         Bundle mainArgs = getActivity().getIntent().getExtras();
         thisUser = (User) mainArgs.getParcelable("USER");
@@ -127,7 +126,6 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
         setUpCreateEventButton();
 
         return rootView;
-
     }
 
     @Override
@@ -165,9 +163,6 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
         super.onSaveInstanceState(outState);
 
     }
-
-
-
 
     private void initSpinners()
     {

@@ -3,6 +3,7 @@ package csulb.edu.pickup;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.Fragment;
@@ -103,38 +104,50 @@ public class MainActivity extends ActionBarActivity {
         switch (possition) {
             case 0:
                 fragment = new MapsFragment();
+                fragmentSetUp(fragment);
 
                 break;
             case 1:
                 fragment = new CreateEventFragment();
+                fragmentSetUp(fragment);
 
                 break;
             case 2:
                 fragment = new UserProfileFragment();
+                fragmentSetUp(fragment);
+
                 break;
             case 3:
                 fragment = new CalendarFragment();
+                fragmentSetUp(fragment);
 
                 break;
             case 4://friends
                 fragment = new FriendsFragment();
+                fragmentSetUp(fragment);
 
                 break;
             case 5:
                 fragment = new EditSettingsFragment();
+                fragmentSetUp(fragment);
 
                 break;
             case 6://logout
+                Bundle b = new Bundle();
+                b.putParcelable("USER", thisUser);
+                Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
+                myIntent.putExtras(b);
+                startActivityForResult(myIntent, 0);
 
                 break;
 
         }
 
-        fragment.setArguments(args);
-        FragmentManager frgManager = getFragmentManager();
-        frgManager.beginTransaction().replace(R.id.content_frame, fragment)
-                .addToBackStack( "tag" )
-                .commit();
+//        fragment.setArguments(args);
+//        FragmentManager frgManager = getFragmentManager();
+//        frgManager.beginTransaction().replace(R.id.content_frame, fragment)
+//                .addToBackStack( "tag" )
+//                .commit();
 
         mDrawerList.setItemChecked(possition, true);
         setTitle(dataList.get(possition).getItemName());
@@ -194,7 +207,19 @@ public class MainActivity extends ActionBarActivity {
         } else {
             getFragmentManager().popBackStack();
         }
+    }
 
+    /**
+     * Erwin added this for the Case 0 through 5 to call because Case 6 doesn't need this inorder to logout.
+     * @param fragment
+     */
+    public void fragmentSetUp(Fragment fragment) {
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        FragmentManager frgManager = getFragmentManager();
+        frgManager.beginTransaction().replace(R.id.content_frame, fragment)
+                .addToBackStack( "tag" )
+                .commit();
     }
 
 }

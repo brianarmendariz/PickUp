@@ -260,10 +260,6 @@ public class MMFragment extends Fragment {
 
         return rootView;
 
-
-
-
-
     }
 
     private User viewUser(String username)
