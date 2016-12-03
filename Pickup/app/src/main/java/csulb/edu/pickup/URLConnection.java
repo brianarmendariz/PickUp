@@ -1,6 +1,7 @@
 package csulb.edu.pickup;
 
 import org.json.JSONException;
+import org.json.JSONStringer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -753,10 +754,13 @@ public class URLConnection
 
 				/*url of route being requested*/
         String url = "http://www.csulbpickup.com/CreateFollow.php";
+
+
         String urlParameters = "Follower="+myUsername+"&Followee="+thisUsername;
         return makeHTTPRequest(url,urlParameters);
     }
-    public String sendDeleteFriend(String myUsername, String thisUsername) throws IOException  {
+    public String sendDeleteFriend(String myUsername, String thisUsername) throws IOException
+    {
 
 				/*url of route being requested*/
         String url = "http://www.csulbpickup.com/deleteFollow.php";
@@ -862,9 +866,19 @@ public class URLConnection
 				/*url of route being requested*/
         String url = "http://www.csulbpickup.com/editUser.php";
 
-        String urlParameters = "Username="+username+"&FirstName="+firstName+"&LastName="+lastName+"&Birthday="+birthday+
-                "&Gender="+gender+"&UserRating="+userRating+"&PicturePath="+picturePath;
-        return makeHTTPRequest(url,urlParameters);
+
+        User user = new User(firstName,lastName,username,null,birthday,gender,userRating,picturePath);
+        JSONObject jsonObject = new JSONObject();
+        String[] fields = getFieldsForObject(user);
+        jsonObject.put(fields[1],user.getBirthday());
+        jsonObject.put(fields[2],user.getEmail());
+        jsonObject.put(fields[3],user.getFirstName());
+        jsonObject.put(fields[4],user.getGender());
+        jsonObject.put(fields[5],user.getLastName());
+        jsonObject.put(fields[7],user.getPicturePath());
+        String json = jsonObject.toJSONString();
+        System.out.println(json);
+        return makeHTTPPutRequest(url,json);
     }
 
 
@@ -977,33 +991,66 @@ public class URLConnection
      * @param eventID
      * @param eventName
      * @param sport
-     * @param location
+     * @param address
      * @param latitude
      * @param longitude
-     * @param eventDateTime
      * @param ageMax
      * @param ageMin
      * @param minUserRating
-     * @param playerAmount
-     * @param isPrivate
      * @param gender
      * @return "true" if successful, "false" if not.
      * @throws IOException
      */
-    public String sendEditEvent( int eventID, String eventName, String sport,
-                                 String location, String latitude, String longitude, String eventDateTime, String ageMax, String ageMin,
-                                 String minUserRating, String playerAmount, String isPrivate, String gender) throws IOException  {
+    public String sendEditEvent(int eventID, String eventName, String creatorName,
+                                String creatorEmail, String sport, String address, double longitude,
+                                double latitude, String gender, int ageMin, int ageMax,
+                                int minUserRating, String eventStartDate, String eventStartTime,
+                                String eventEndDate, String eventEndTime, String skill,
+                                String sportSpecific, int playersPerTeam, int numberOfTeams,
+                                String terrain, String environment, String category) throws IOException
+    {
+        String url = "http://www.csulbpickup.com/edit_test.php";
 
-				/*url of route being requested*/
-        String url = "http://www.csulbpickup.com/editEvent.php";
+        /*int id, String name, String creatorName, String creatorEmail, String sport, String address, double longitude, double latitude,
+    		String gender, int ageMin, int ageMax, int minUserRating, String eventStartDate, String eventStartTime, String eventEndDate,
+    		String eventEndTime, String skill, String sportSpecific, int playersPerTeam, int numberOfTeams, String terrain,
+    		String environment, String category */
+        Event event = new Event(eventID, eventName, creatorName, creatorEmail,sport,address, longitude,
+                latitude,gender,ageMin,ageMax,minUserRating,eventStartDate,eventStartTime,
+                eventEndDate,eventEndTime,skill, sportSpecific,playersPerTeam,numberOfTeams,
+                terrain,environment,category);
 
-        String urlParameters = "EventID="+eventID+"&EventName="+eventName+"&Sport="+sport+"&Location="+location+"&Latitude="+latitude+
-                "&Longitude="+longitude+"&EventDateTime="+eventDateTime+"&AgeMax="+ageMax+"&AgeMin="+ageMin+
-                "&PlayerAmount="+playerAmount+"&MinUserRating="+minUserRating+"&IsPrivate="+isPrivate+"&Gender="+gender;
+        JSONObject jsonObj = new JSONObject();
+        String[] fields = getFieldsForObject(event);
+        jsonObj.put(fields[0], event.getAddress());
+        jsonObj.put(fields[1], event.getAgeMax());
+        jsonObj.put(fields[2], event.getAgeMin());
+        jsonObj.put(fields[3], event.getCategory());
+        jsonObj.put(fields[4], event.getCreatorEmail());
+        jsonObj.put(fields[5], event.getCreatorName());
+        jsonObj.put(fields[7], event.getEnvironment());
+        jsonObj.put(fields[8], event.getEventEndDate());
+        jsonObj.put(fields[9], event.getEventEndTime());
+        jsonObj.put(fields[11], event.getEventStartDate());
+        jsonObj.put(fields[12], event.getEventStartTime());
+        jsonObj.put(fields[13], event.getGender());
+        jsonObj.put(fields[14], event.getLatitude());
+        jsonObj.put(fields[15], event.getLongitude());
+        jsonObj.put(fields[16], event.getMinUserRating());
+        jsonObj.put(fields[17], event.getName());
+        jsonObj.put(fields[18], event.getNumberOfTeams());
+        jsonObj.put(fields[19], event.getPlayersPerTeam());
+        jsonObj.put(fields[20], event.getSkill());
+        jsonObj.put(fields[21], event.getSport());
+        jsonObj.put(fields[22], event.getSportSpecific());
+        jsonObj.put(fields[23], event.getTerrain());
 
-        return makeHTTPRequest(url,urlParameters);
 
+        String json = jsonObj.toJSONString();
+        System.out.println(json);
+        return makeHTTPPutRequest(url, json);
     }
+
 
 	    /*
 	    The functions below are all private and deal with manipulating the server response into objects
@@ -1196,25 +1243,48 @@ public class URLConnection
         return makeHTTPRequest(url,urlParameters);
     }
 
-    //Edit user who already rated another person and uppdate value
-    public String sendEditUserRatings(String RaterUsername, String RatedUsername, int Vote) throws IOException {
+    //Edit user who already rated another person and update value
+    public String sendEditUserRatings(String RaterUsername, String RatedUsername, int Vote) throws IOException
+    {
         String url = "http://www.csulbpickup.com/editUserRatings.php";
-        String urlParameters = "RaterUsername="+RaterUsername+"&RatedUsername="+RatedUsername+"&Vote="+Vote;
-        return makeHTTPRequest(url, urlParameters);
+
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("RaterUsername",RaterUsername);
+        jsonObj.put("RatedUsername",RatedUsername);
+        jsonObj.put("Vote",Vote);
+        String json = jsonObj.toJSONString();
+
+        return makeHTTPPutRequest(url, json);
     }
 
-    public String[][] sendGetUserRatingsList(String RaterUsername) throws IOException  {
+    public int sendGetUserRatingsList(String RaterUsername,String RatedUsername) throws IOException  {
 
 			/*url of route being requested*/
-        String url = "http://www.csulbpickup.com/getUserRatingsList.php";
+        StringBuilder url = new StringBuilder();
+        url.append("http://www.csulbpickup.com/getUserRatingsList.php");
         String urlParameters = "RaterUsername="+RaterUsername;
-        String response =  makeHTTPRequest(url,urlParameters);
-        String[][] RatingList =  convertRatingList(response);
-        for(int i = 0;i<RatingList.length;i++){
-            System.out.println(i+" "+RatingList[i][0]+" "+RatingList[i][1]);
-        }
+        url.append("?RaterUsername="+RaterUsername);
+        url.append("&RatedUsername="+RatedUsername);
 
-        return RatingList;
+        String response =  makeHTTPGetRequest(url.toString());
+
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = (JSONObject)parser.parse(response.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        int Rating;
+        if (response.isEmpty())
+        {
+            Rating = 0;
+        }
+        else
+        {
+            Rating = Integer.parseInt(response);
+        }
+        return Rating;
 
     }
 

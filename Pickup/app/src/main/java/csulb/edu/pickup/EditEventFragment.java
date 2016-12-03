@@ -11,12 +11,9 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -28,8 +25,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-import com.facebook.login.LoginManager;
 
 import java.io.IOException;
 
@@ -50,16 +45,33 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
 
     User thisUser;
 
+    int arr_images_default[] = {R.drawable.badminton_icon,
+            R.drawable.baseball_icon, R.drawable.basketball_icon, R.drawable.football_icon,
+            R.drawable.handball_icon, R.drawable.icehockey_icon, R.drawable.racquetball_icon,
+            R.drawable.rollerhockey_icon,  R.drawable.running_icon,R.drawable.soccer_icon, R.drawable.softball_icon, R.drawable.tennis_icon,
+            R.drawable.volleyball_icon, R.drawable.weightlifting_icon, R.drawable.yoga_icon};
+    int arr_images_exclusion[] ={R.drawable.badminton_icon,
+            R.drawable.baseball_icon, R.drawable.basketball_icon, R.drawable.football_icon,
+            R.drawable.handball_icon, R.drawable.icehockey_icon, R.drawable.racquetball_icon,
+            R.drawable.rollerhockey_icon, R.drawable.soccer_icon, R.drawable.softball_icon, R.drawable.tennis_icon,
+            R.drawable.volleyball_icon
+
+    };
+
     private Button cancelEventButton;
     private Button saveChangesButton;
 
     Calendar newDate = Calendar.getInstance(); // local object to couple date and time
 
-    private EditText createDateEditText;
-    private EditText createTimeEditText;
+  //  private EditText createStartDateEditText;
+   // private EditText createStartTimeEditText;
+    private EditText createEndDateEditText;
+    private EditText createEndTimeEditText;
 
-    private DatePickerDialog datePickerDialog;
-    private TimePickerDialog timePickerDialog;
+    //private DatePickerDialog startDatePickerDialog;
+    //private TimePickerDialog startTimePickerDialog;
+    private DatePickerDialog endDatePickerDialog;
+    private TimePickerDialog endTimePickerDialog;
 
     private SimpleDateFormat dateFormatter;
 
@@ -218,35 +230,50 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
         saveChangesButton = (Button) rootView.findViewById(R.id.edit_save_changes_btn);
         saveChangesButton.requestFocus();
 
-        createDateEditText = (EditText) rootView.findViewById(R.id.edit_event_date);
-        createDateEditText.setInputType(InputType.TYPE_NULL);
-        createDateEditText.requestFocus();
+        createEndDateEditText = (EditText) rootView.findViewById(R.id.edit_event_date);
+        createEndDateEditText.setInputType(InputType.TYPE_NULL);
+        createEndDateEditText.requestFocus();
 
-        createTimeEditText = (EditText) rootView.findViewById(R.id.edit_event_time);
-        createTimeEditText.setInputType(InputType.TYPE_NULL);
-        createTimeEditText.requestFocus();
+        createEndTimeEditText = (EditText) rootView.findViewById(R.id.edit_event_time);
+        createEndTimeEditText.setInputType(InputType.TYPE_NULL);
+        createEndTimeEditText.requestFocus();
     }
 
     private void setDateField() {
-        createDateEditText.setOnClickListener(this);
-
+        createEndDateEditText.setOnClickListener(this);
+    //    createStartDateEditText.setOnClickListener(this);
         Calendar newCalendar = Calendar.getInstance();
-        datePickerDialog = new DatePickerDialog(this.getActivity(), new DatePickerDialog.OnDateSetListener() {
+//
+//        startDatePickerDialog = new DatePickerDialog(this.getActivity(), new DatePickerDialog.OnDateSetListener() {
+//
+//            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+//                newDate = Calendar.getInstance();
+//                newDate.set(year, monthOfYear, dayOfMonth);
+//                dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+//                createStartDateEditText.setText(dateFormatter.format(newDate.getTime()));
+//            }
+//
+//        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+        endDatePickerDialog = new DatePickerDialog(this.getActivity(), new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
                 dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-                createDateEditText.setText(dateFormatter.format(newDate.getTime()));
+                createEndDateEditText.setText(dateFormatter.format(newDate.getTime()));
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+
     }
 
     private void setTimeField() {
-        createTimeEditText.setOnClickListener(this);
+   //     createStartTimeEditText.setOnClickListener(this);
+        createEndTimeEditText.setOnClickListener(this);
 
-        timePickerDialog =
+        endTimePickerDialog =
                 new TimePickerDialog(this.getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     public void onTimeSet(TimePicker view, int selectedHour,
                                           int selectedMinute) {
@@ -256,9 +283,23 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                         newDate.set(Calendar.MINUTE, minute);
                         newDate.set(Calendar.SECOND, 0);
                         dateFormatter = new SimpleDateFormat("h:mm a", Locale.US);
-                        createTimeEditText.setText(dateFormatter.format(newDate.getTime()));
+                        createEndTimeEditText.setText(dateFormatter.format(newDate.getTime()));
                     }
                 }, hour, minute, false);
+//        startTimePickerDialog =
+//                new TimePickerDialog(this.getActivity(), new TimePickerDialog.OnTimeSetListener() {
+//                    public void onTimeSet(TimePicker view, int selectedHour,
+//                                          int selectedMinute) {
+//                        hour = selectedHour;
+//                        minute = selectedMinute;
+//                        newDate.set(Calendar.HOUR_OF_DAY, hour);
+//                        newDate.set(Calendar.MINUTE, minute);
+//                        newDate.set(Calendar.SECOND, 0);
+//                        dateFormatter = new SimpleDateFormat("h:mm a", Locale.US);
+//                        createStartTimeEditText.setText(dateFormatter.format(newDate.getTime()));
+//                    }
+//                }, hour, minute, false);
+
     }
 
     private void setUpSaveChangesEventButton()
@@ -273,13 +314,21 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public void onClick(View view) {
-        if(view == createDateEditText)
+        if(view == createEndDateEditText)
         {
-            datePickerDialog.show();
+            endDatePickerDialog.show();
         }
-        else if(view == createTimeEditText)
+//        else if(view == createStartDateEditText)
+//        {
+//            startDatePickerDialog.show();
+//        }
+//        else if(view == createStartTimeEditText)
+//        {
+//            startTimePickerDialog.show();
+//        }
+        else if(view == createEndTimeEditText)
         {
-            timePickerDialog.show();
+            endTimePickerDialog.show();
         }
         else if(view == cancelEventButton)
         {
@@ -331,11 +380,19 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                         //open connection
                         URLConnection http = new URLConnection();
 
-                        http.sendEditEvent(_event.getEventID(), name, sport, location,
-                                String.valueOf(latitude), String.valueOf(longitude), dateTime,
-                                ageMax, ageMin, minUserRating,
+                        /*int eventID, String eventName, String creatorName,
+                                String creatorEmail, String sport, String address, double longitude,
+                                double latitude, String gender, int ageMin, int ageMax,
+                                int minUserRating, String eventStartDate, String eventStartTime,
+                                String eventEndDate, String eventEndTime, String skill,
+                                String sportSpecific, int playersPerTeam, int numberOfTeams,
+                                String terrain, String environment, String category
+                                */
+                     /*   http.sendEditEvent(_event.getEventID(), name, thisUser.getEmail(), sport, location,
+                                latitude, longitude, gender, ageMax, ageMin,
+                                minUserRating, eventStartDate
                                 playerAmount, "P/NP", gender
-                        );
+                        );*/
 
 
                         //Retrieve data from server
@@ -617,13 +674,22 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
         formMap.put("location", eventLocationStr);
 
         EditText editTextBox5 = (EditText) rootView.findViewById(R.id.edit_event_date);
-        String eventDateStr = editTextBox5.getText().toString();
-        System.out.println("date: " + eventDateStr);
-        formMap.put("date", eventDateStr);
+        String eventStartDateStr = editTextBox5.getText().toString();
+        System.out.println("date: " + eventStartDateStr);
+        formMap.put("startDate", eventStartDateStr);
 
         EditText editTextBox6 = (EditText) rootView.findViewById(R.id.edit_event_time);
+        String eventStartTimeStr = editTextBox6.getText().toString();
+        formMap.put("startTime", eventStartTimeStr);
+
+       // EditText editTextBox7 = (EditText) rootView.findViewById(R.id.edit_event_date);
+        String eventEndDateStr = editTextBox5.getText().toString();
+        System.out.println("endDate: " + eventEndDateStr);
+        formMap.put("endDate", eventEndDateStr);
+
+       // EditText editTextBox8 = (EditText) rootView.findViewById(R.id.edit_event_time);
         String eventTimeStr = editTextBox6.getText().toString();
-        formMap.put("time", eventTimeStr);
+        formMap.put("endTime", eventTimeStr);
 
         Spinner genderSpinner = (Spinner)rootView.findViewById(R.id.edit_gender_spinner);
         String eventGenderStr = genderSpinner.getSelectedItem().toString();
@@ -735,7 +801,8 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
 
     public class MyEAdapter extends ArrayAdapter<String> {
 
-        int arr_images[] = {R.drawable.badminton_icon,
+
+        int arr_images_default[] = {R.drawable.badminton_icon,
                 R.drawable.baseball_icon, R.drawable.basketball_icon, R.drawable.football_icon,
                 R.drawable.handball_icon, R.drawable.icehockey_icon, R.drawable.racquetball_icon,
                 R.drawable.rollerhockey_icon, R.drawable.soccer_icon, R.drawable.softball_icon, R.drawable.tennis_icon,
@@ -763,7 +830,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
             label.setText(sportStringArray[position]);
 
             ImageView icon = (ImageView) row.findViewById(R.id.image);
-            icon.setImageResource(arr_images[position]);
+            icon.setImageResource(arr_images_default[position]);
 
             return row;
         }

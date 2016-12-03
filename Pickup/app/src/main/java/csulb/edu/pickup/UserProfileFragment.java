@@ -75,6 +75,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Nessa on 3/19/16.
+ * Edited by Sarah
  */
 
 /*
@@ -266,7 +267,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
 
         Bundle fragBundle = this.getArguments();
-        User viewUser = (User) fragBundle.getParcelable("VIEWUSER");
+        final User viewUser = (User) fragBundle.getParcelable("VIEWUSER");
         viewUsername = viewUser;
 
         //If the user views his/her own profile
@@ -306,30 +307,10 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
             try {
                 //get the list
-                String[][] RatingList = http.sendGetUserRatingsList(thisUser.getEmail());
-                for (int i = 0; i < RatingList.length; i++) {
-
-                    //already down rated this other user
-                    if (RatingList[i][0].equals(thisUser.getEmail()) && RatingList[i][1].equals(viewUsername.getEmail())
-                            && RatingList[i][2].equals("-1")) {
-                        rated = -1;
-
-                    }
-                    //already up rated this other user
-                    if (RatingList[i][0].equals(thisUser.getEmail()) && RatingList[i][1].equals(viewUsername.getEmail())
-                            && RatingList[i][2].equals("1")) {
-                        rated = 1;
-
-                    }
-
-                    //already unrated this other user
-                    if (RatingList[i][0].equals(thisUser.getEmail()) && RatingList[i][1].equals(viewUsername.getEmail())
-                            && RatingList[i][2].equals("0")) {
-                        voted = true;
-                        rated = 0;
-                    }
-
-                } // end checking for loop
+              //  String[][] RatingList = http.sendGetUserRatingsList(thisUser.getEmail());
+                int rating = http.sendGetUserRatingsList(thisUser.getEmail(),viewUser.getEmail());
+                rated = rating;
+//
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -399,30 +380,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                     try {
                         URLConnection http = new URLConnection();
                         //get the list
-                        String[][] RatingList = http.sendGetUserRatingsList(thisUser.getEmail());
-                        for (int i = 0; i < RatingList.length; i++) {
-
-                            //already down rated this other user
-                            if (RatingList[i][0].equals(thisUser.getEmail()) && RatingList[i][1].equals(viewUsername.getEmail())
-                                    && RatingList[i][2].equals("-1")) {
-                                rated = -1;
-
-                            }
-                            //already up rated this other user
-                            if (RatingList[i][0].equals(thisUser.getEmail()) && RatingList[i][1].equals(viewUsername.getEmail())
-                                    && RatingList[i][2].equals("1")) {
-                                rated = 1;
-
-                            }
-
-                            //already unrated this other user
-                            if (RatingList[i][0].equals(thisUser.getEmail()) && RatingList[i][1].equals(viewUsername.getEmail())
-                                    && RatingList[i][2].equals("0")) {
-                                voted = true;
-                            }
-
-                        } // end checking for loop
-
+                        rated = http.sendGetUserRatingsList(thisUser.getEmail(), viewUser.getEmail());
                         URLConnection http2 = new URLConnection();
 
                         //if they didn't vote to the viewUser at all, create a user in the database
@@ -533,7 +491,6 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                     } finally {
 
                         //set the text to the updated user rating
-                        userRating.setText(updatedUser.getUserRating());
 
                     }
                 }
@@ -544,30 +501,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
                     try {
                         URLConnection http = new URLConnection();
-                        String[][] RatingList = http.sendGetUserRatingsList(thisUser.getEmail());
-                        for (int i = 0; i < RatingList.length; i++) {
-
-                            //already down rated this other user
-                            if (RatingList[i][0].equals(thisUser.getEmail()) && RatingList[i][1].equals(viewUsername.getEmail())
-                                    && RatingList[i][2].equals("-1")) {
-                                rated = -1;
-                            }
-                            //already up rated this other user
-                            if (RatingList[i][0].equals(thisUser.getEmail()) && RatingList[i][1].equals(viewUsername.getEmail())
-                                    && RatingList[i][2].equals("1")) {
-                                rated = 1;
-
-
-                            }
-
-                            //already unrated this other user
-                            if (RatingList[i][0].equals(thisUser.getEmail()) && RatingList[i][1].equals(viewUsername.getEmail())
-                                    && RatingList[i][2].equals("0")) {
-                                voted = true;
-                            }
-
-
-                        }
+                       rated = http.sendGetUserRatingsList(thisUser.getEmail(),viewUser.getEmail());
 
                         URLConnection http3 = new URLConnection();
 
@@ -679,7 +613,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                     } finally {
 
                         //update the text
-                        userRating.setText(updatedUser.getUserRating());
+                        //userRating.setText(updatedUser.getUserRating());
 
                     }
                 }

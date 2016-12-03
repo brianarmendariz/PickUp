@@ -4,6 +4,7 @@ package csulb.edu.pickup;
  * Created by Sarah on 3/19/2016.
  */
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
@@ -272,15 +273,18 @@ public class EditSettingsFragment extends Fragment implements View.OnClickListen
                     thisUser.setlastName(lastName);
                     thisUser.setGender(gender);
 
+                    System.out.println(thisUser);
 
                     Bundle args = new Bundle();
                     args.putParcelable("USER", thisUser);
                     Intent myIntent = new Intent(view.getContext(), MainActivity.class);
+                 //   Intent myIntent = new Intent();
                     myIntent.putExtras(args);
+
 
                     Fragment fragment = new MapsFragment();
 
-
+                    getActivity().setIntent(myIntent);
                     fragment.setArguments(args);
                     FragmentManager frgManager = getFragmentManager();
                     frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack( "Edit Settings" )

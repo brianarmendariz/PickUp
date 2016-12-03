@@ -33,6 +33,7 @@ public class User implements Parcelable
         _birthday = null;
         _gender = null;
         _userRating = null;
+     //   _age = getAge();
     }
 
     public User(String fn, String ln, String em,String pw,String bday,String gend, String useRate){
@@ -43,6 +44,7 @@ public class User implements Parcelable
         _birthday = bday;
         _gender = gend;
         _userRating = useRate;
+        _age = getAge();
     }
     public User(String fn, String ln, String em,String pw,String bday,String gend, String useRate, String picture){
         _firstName = fn;
@@ -53,6 +55,7 @@ public class User implements Parcelable
         _gender = gend;
         _userRating = useRate;
         _picturePath = picture;
+        _age = getAge();
     }
     public User(Parcel in){
         String[] data = new String[7];
@@ -90,16 +93,26 @@ public class User implements Parcelable
     }
     public String getAge()
     {
+
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
         Date birth = new Date();
         try {
             birth =  dateFormat.parse(_birthday);
         } catch(ParseException e) { }
-        long ageInMillis = (new GregorianCalendar().getInstance().getTimeInMillis() - birth.getTime());
-        Date age = new Date(ageInMillis);
-        Calendar can = new GregorianCalendar().getInstance();
-        can.setTime(age);
-        return ""+can.YEAR;
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dob.setTime(birth);
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+            age--;
+        }
+
+        Integer ageInt = new Integer(age);
+        String ageS = ageInt.toString();
+        return ageS;
     }
     public String getGender(){
         return _gender;
@@ -124,6 +137,7 @@ public class User implements Parcelable
     }
     public void setBirthday(String bday){
         _birthday = bday;
+        _age = getAge();
     }
     public void setGender(String gend){
         _gender = gend;
