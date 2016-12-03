@@ -295,7 +295,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
             URLConnection http = new URLConnection();
             try {
-                if (http.sendCheckIfFriends(thisUser.getEmail(), viewUser.getEmail()).equals("true")) {
+                if (http.checkIfFriends(thisUser.getEmail(), viewUser.getEmail()).equals("true")) {
                     areFriends = true;
                 }
             } catch (IOException e) {
@@ -370,13 +370,18 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                     try {
 
                         if (areFriends) {
-                            String response = http.sendDeleteFriend(thisUser.getEmail(), viewUsername.getEmail());
-                            System.out.println("delete result" + response);
+                            /**
+                             * Erwin making changes to get rid of the string response and system.out
+                             */
+                            //String response = http.deleteFollow(thisUser.getEmail(), viewUsername.getEmail());
+                            http.deleteFollow(thisUser.getEmail(), viewUsername.getEmail());
+                            //System.out.println("delete result" + response);
                             areFriends = false;
                             follow.setImageResource(R.drawable.follow);
                         } else {
-                            String response = http.sendAddFriend(thisUser.getEmail(), viewUsername.getEmail());
-                            System.out.println("add result" + response);
+                            //String response = http.sendAddFriend(thisUser.getEmail(), viewUsername.getEmail());
+                            http.sendAddFriend(thisUser.getEmail(), viewUsername.getEmail());
+                            //System.out.println("add result" + response);
 
                             areFriends = true;
                             follow.setImageResource(R.drawable.following);

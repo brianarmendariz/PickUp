@@ -610,10 +610,15 @@ public class URLConnection
         sendHttpDelete(url, num);
     }
 
-    public void deleteFollow(int num) throws IOException
+    public void deleteFollow(String myUsername, String thisUsername) throws IOException
     {
         String url = "http://www.csulbpickup.com/deleteFollow.php";
-        sendHttpDelete(url, num);
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("_myUsername", myUsername);
+        jsonObj.put("_thisUsername", thisUsername);
+
+        String json = jsonObj.toJSONString();
+        makeHTTPPostRequest(url, json);
     }
 
     public void deleteRSVP(int num) throws IOException

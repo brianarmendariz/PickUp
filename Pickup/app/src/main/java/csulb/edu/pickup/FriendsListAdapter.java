@@ -60,7 +60,7 @@ public class FriendsListAdapter<String> extends BaseAdapter {
 
 
         if (position % 2 == 0) {
-            convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.orange));
+            //convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.orange));
         } else {
             // view.setBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.dark_grey));
         }
