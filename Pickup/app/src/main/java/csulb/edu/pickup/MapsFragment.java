@@ -128,7 +128,7 @@ public class MapsFragment extends Fragment implements android.location.LocationL
         } else {
             System.out.println("not putting the event string");
         }
-        Fragment fragment = new ViewEventFragment();
+        Fragment fragment = new ViewEventFragment1();
         fragment.setArguments(b);
         FragmentManager frgManager = getFragmentManager();
         frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("Map")
@@ -338,8 +338,6 @@ public class MapsFragment extends Fragment implements android.location.LocationL
                 eventList = data.getParcelableArrayList("EVENTS");
                 ArrayList<Event> preEventList = data.getParcelableArrayList("EVENTS");
                 int listSize = preEventList.size();
-
-
             }
             /*if not coming from FilterEventsFragment, send request to server */
             else {
@@ -572,7 +570,7 @@ public class MapsFragment extends Fragment implements android.location.LocationL
                 if (list.get(i).getName()!=null && marker.getTitle()!=null && list.get(i).getName().equals(marker.getTitle()))
                 {
                     Bundle args = new Bundle();
-                    Fragment fragment = new ViewEventFragment();
+                    Fragment fragment = new ViewEventFragment1();
                     args.putString("EventID", list.get(i).getEventID() + "");
 
                     //args.putString("MapURL",map.toUrlValue());

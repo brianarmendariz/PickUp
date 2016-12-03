@@ -74,7 +74,7 @@ public class EventListFragment extends Fragment
             String latitude = location.getLatitude() + "";
             String longitude = location.getLongitude() + "";
             eventList = http.sendGetEventsFromDistance(latitude, longitude, "50");
-            BaseAdapter adapter = new EventListAdapter<String>(getActivity(), R.layout.event_list, eventList, getActivity());
+            BaseAdapter adapter = new EventListAdapter<String>(getActivity(), R.layout.event_list, eventList, getActivity(), "list");
 
             listView = (ListView) rootView.findViewById(R.id.event_list);
             listView.setAdapter(adapter);
@@ -89,23 +89,25 @@ public class EventListFragment extends Fragment
 
     private void setOnClickListeners(ListView listView)
     {
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                Bundle b = new Bundle();
-                b.putParcelable("USER", thisUser);
-                b.putString("EventID", eventList.get(position).getEventID() + "");
-                Fragment fragment = new ViewEventFragment();
-                fragment.setArguments(b);
-                FragmentManager frgManager = getFragmentManager();
-                frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("EventListFragment")
-                        .commit();
+        if(listView != null)
+        {
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Bundle b = new Bundle();
+                    b.putParcelable("USER", thisUser);
+                    b.putString("EventID", eventList.get(position).getEventID() + "");
+                    Fragment fragment = new ViewEventFragment();
+                    fragment.setArguments(b);
+                    FragmentManager frgManager = getFragmentManager();
+                    frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("EventListFragment")
+                            .commit();
 
-                Intent thisIntent = new Intent(getActivity().getBaseContext(), MainActivity.class);
-                thisIntent.putExtras(b);
+                    Intent thisIntent = new Intent(getActivity().getBaseContext(), MainActivity.class);
+                    thisIntent.putExtras(b);
 
-            }
-        });
+                }
+            });
+        }
     }
 }

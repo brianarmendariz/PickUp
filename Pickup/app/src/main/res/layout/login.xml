@@ -9,17 +9,32 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp">
 
+        <RelativeLayout
+            android:id="@+id/logo_rl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:background="@drawable/background_circle"
+                android:layout_gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="15dp"/>
             <ImageView
                 android:layout_margin="20dp"
-                android:layout_width="@dimen/login_image_width"
-                android:layout_height="@dimen/login_image_height"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
                 android:scaleType="fitXY"
                 android:layout_gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
                 android:id="@+id/create_event_image_view1"
-                android:src="@drawable/circle_logo"/>
-
+                android:src="@drawable/logo_transparent"/>
+        </RelativeLayout>
 
         <TableLayout
             android:layout_width="match_parent"

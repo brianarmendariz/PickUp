@@ -30,14 +30,16 @@ public class EventListAdapter<String> extends BaseAdapter
     ImageView imageViewSportImage;
     int layout;
     private final Context context;
+    private String fragment;
 
-    public EventListAdapter(Activity activity, int layout, ArrayList<Event> eventList, Context context) {
+    public EventListAdapter(Activity activity, int layout, ArrayList<Event> eventList, Context context, String fragment) {
         super();
         this.activity = activity;
         this.layout = R.layout.friends_list;
         this.eventList = eventList;
         //this.distanceList = distanceList;
         this.context = context;
+        this.fragment = fragment;
     }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -70,8 +72,15 @@ public class EventListAdapter<String> extends BaseAdapter
                 e.printStackTrace();
             }
 
-            Double distanceAway = eventList.get(position).getDistance();
-            textViewDistanceAway.setText(distanceAway + " mi");
+            if(fragment.equals("profile"))
+            {
+
+            }
+            else if(fragment.equals("list"))
+            {
+                Double distanceAway = eventList.get(position).getDistance();
+                textViewDistanceAway.setText(distanceAway + " mi");
+            }
             java.lang.String color1 = "#fea10f";
             java.lang.String color2 = "#696969";
             java.lang.String text = "<font color=" + color1 + ">" + userList.size()

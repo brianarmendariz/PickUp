@@ -839,6 +839,20 @@ public class URLConnection
         return makeHTTPRequest(url, urlParameters);
     }
 
+    public String sendEditProfilePic(String username, String image) throws IOException, JSONException
+    {
+        	   /*url of route being requested*/
+        String url = "http://www.csulbpickup.com/editPicturePath.php";
+
+        JSONObject jsonObj = new JSONObject();
+
+        jsonObj.put("_username", username);
+        jsonObj.put("_picturePath", image);
+
+        String json = jsonObj.toJSONString();
+        return makeHTTPPutRequest(url, json);
+    }
+
 
     public String sendEditUser(String username,  String firstName,
                                String lastName, String birthday, String gender,

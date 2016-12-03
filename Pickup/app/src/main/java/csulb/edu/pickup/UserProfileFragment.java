@@ -63,6 +63,8 @@ import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 
+import org.json.JSONException;
+
 import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
@@ -720,10 +722,30 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bmp.compress(Bitmap.CompressFormat.PNG, 100, baos);
             byte[] bArray = baos.toByteArray();
-            System.out.println("bArray " + bArray);
+            //System.out.println("bArray " + bArray);
 
             String encodedImage = Base64.encodeToString(bArray, Base64.DEFAULT);
-            System.out.println("encodedImage " + encodedImage);
+            //System.out.println("encodedImage " + encodedImage);
+
+            URLConnection url = new URLConnection();
+            try
+            {
+                String response = url.sendEditProfilePic(thisUser.getEmail(), encodedImage);
+
+                if(response.equals("true"))
+                {
+                    Toast.makeText(getActivity(), "Profile Pic Updated",
+                            Toast.LENGTH_LONG).show();
+                }
+                else if(response.equals("false"))
+                {
+                    Toast.makeText(getActivity(), "Profile Pic NOT Update",
+                            Toast.LENGTH_LONG).show();
+                }
+            } catch(IOException | JSONException e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -806,7 +828,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
     private void setupEvents(final ArrayList<Event> events) {
         ListView listView = (ListView) rootView.findViewById(R.id.profile_list_event);
 
-        BaseAdapter adapter = new EventListAdapter<String>(getActivity(), R.layout.event_list, events, getActivity());
+        BaseAdapter adapter = new EventListAdapter<String>(getActivity(), R.layout.event_list, events, getActivity(), "profile");
 
         listView.setAdapter(adapter);
 

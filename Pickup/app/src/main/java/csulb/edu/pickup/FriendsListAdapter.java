@@ -31,33 +31,28 @@ public class FriendsListAdapter<String> extends BaseAdapter {
     int layout;
     private final Context context;
 
-
-
-    public FriendsListAdapter(Activity activity, int layout, ArrayList<User> friendList, Context context) {
-       super();
+    public FriendsListAdapter(Activity activity, int layout, ArrayList<User> friendList, Context context)
+    {
+        super();
         this.activity=activity;
         this.layout=R.layout.friends_list;
         this.friendsList = friendList;
         this.context = context;
     }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater=activity.getLayoutInflater();
-
 
         convertView=inflater.inflate(R.layout.friends_list, null);
 
         txtFirst=(TextView) convertView.findViewById(R.id.name_label);
         txtSecond=(TextView) convertView.findViewById(R.id.email_label);
 
-
-
         //HashMap<java.lang.String, java.lang.String> map=friendList.get(position);
         txtFirst.setText((CharSequence)friendsList.get(position).getFirstName());
         txtSecond.setText((CharSequence)friendsList.get(position).getEmail());
-
-
 
         if (position % 2 == 0) {
             //convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.orange));
@@ -85,9 +80,4 @@ public class FriendsListAdapter<String> extends BaseAdapter {
         // TODO Auto-generated method stub
         return 0;
     }
-
-
-
-
-
 }
