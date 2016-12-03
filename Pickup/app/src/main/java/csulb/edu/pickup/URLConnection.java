@@ -642,13 +642,37 @@ public class URLConnection
                                               String minUserRating, String onlyNotFull, String isPublic, String gender) throws IOException  {
             /*url of route being requested*/
         String url = "http://www.csulbpickup.com/filterEvents.php";
-        String urlParameters = "Author="+author+"&EventName="+eventName+"&Sport="+sport+"&Location="+location+"&Latitude="+latitude+
-                "&Longitude="+longitude+"&DateCreatedStart="+dateCreatedStart+"&DateCreatedEnd="+dateCreatedEnd+"&EventTimeStart="+eventTimeStart+
-                "&EventTimeEnd="+eventTimeEnd+"&EventDateStart="+eventDateStart+"&EventDateEnd="+eventDateEnd+"&AgeMax="+ageMax+"&AgeMin="+ageMin+
-                "&OnlyNotFull="+onlyNotFull+"&MinUserRating="+minUserRating+"&IsPublic="+isPublic+"&Gender="+gender;
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("Author",author);
+        jsonObj.put("EventName",eventName);
+        jsonObj.put("Sport",sport);
+        jsonObj.put("Location",location);
+        jsonObj.put("Latitude",latitude);
+        jsonObj.put("Longitude",longitude);
+        jsonObj.put("DateCreatedStart",dateCreatedStart);
+        jsonObj.put("DateCreateEnd",dateCreatedEnd);
+        jsonObj.put("EventTimeStart",eventTimeStart);
+        jsonObj.put("EventTimeEnd",eventTimeEnd);
+        jsonObj.put("EventDateStart",eventDateStart);
+        jsonObj.put("EventDateEnd",eventDateEnd);
+        jsonObj.put("AgeMax",ageMax);
+        jsonObj.put("AgeMin",ageMin);
+        jsonObj.put("OnlyNotFull",onlyNotFull);
+        jsonObj.put("MinUserRating",minUserRating);
+        jsonObj.put("IsPublic",isPublic);
+        jsonObj.put("Gender",gender);
+        String urlParameters = jsonObj.toJSONString();
+//        String urlParameters = "Author="+author+"&EventName="+eventName+"&Sport="+sport+
+//                "&Location="+location+"&Latitude="+latitude+
+//                "&Longitude="+longitude+"&DateCreatedStart="+dateCreatedStart+
+//                "&DateCreatedEnd="+dateCreatedEnd+"&EventTimeStart="+eventTimeStart+
+//                "&EventTimeEnd="+eventTimeEnd+"&EventDateStart="+eventDateStart+
+//                "&EventDateEnd="+eventDateEnd+"&AgeMax="+ageMax+"&AgeMin="+ageMin+
+//                "&OnlyNotFull="+onlyNotFull+"&MinUserRating="+minUserRating+
+//                "&IsPublic="+isPublic+"&Gender="+gender;
 
 
-        String response = makeHTTPRequest(url,urlParameters);
+        String response = makeHTTPPostRequest(url,urlParameters);
         String stringResponse = response.toString();
         ArrayList<Event> list = null;// convertEventList(stringResponse);
 
@@ -849,9 +873,14 @@ public class URLConnection
 
 				/*url of route being requested*/
         String url = "http://www.csulbpickup.com/changePassword.php";
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("Username",username);
+        jsonObj.put("Password",oldPassword);
+        jsonObj.put("NewPassword",newPassword);
 
+        String json =  jsonObj.toJSONString();
         String urlParameters = "Username="+username+"&Password="+oldPassword+"&NewPassword="+newPassword;
-        return makeHTTPRequest(url, urlParameters);
+        return makeHTTPPostRequest(url, json);
     }
 
     public String sendEditProfilePic(String username, String image) throws IOException, JSONException
