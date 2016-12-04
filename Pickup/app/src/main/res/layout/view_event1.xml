@@ -157,21 +157,32 @@
                 android:layout_centerHorizontal="true"/>
 
             <Button
+                android:id="@+id/view_event_map_center_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_margin"
+                android:textColor="@drawable/black"
+                android:background="@color/transparentWhite"
+                android:text="Map"
+                android:layout_centerHorizontal="true"
+                android:visibility="invisible"/>
+
+            <Button
                 android:id="@+id/view_event_rsvp_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/small_margin"
-                android:textColor="@drawable/green"
+                android:textColor="@drawable/black"
                 android:background="@color/transparentWhite"
                 android:text="RSVP"
                 android:layout_toLeftOf="@+id/view_event_space"
-                android:visibility="visible"/>
+                android:visibility="invisible"/>
             <Button
                 android:id="@+id/view_event_unrsvp_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/small_margin"
-                android:textColor="@drawable/green"
+                android:textColor="@drawable/black"
                 android:background="@color/transparentWhite"
                 android:text="un-RSVP"
                 android:layout_toLeftOf="@id/view_event_space"
@@ -182,10 +193,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/small_margin"
-                android:textColor="@drawable/green"
+                android:textColor="@drawable/black"
                 android:background="@color/transparentWhite"
                 android:text="Map"
-                android:layout_toRightOf="@id/view_event_space"/>
+                android:layout_toRightOf="@id/view_event_space"
+                android:visibility="invisible"/>
 
             <!-- second row buttons -->
             <TextView
@@ -200,7 +212,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/small_margin"
-                android:textColor="@drawable/green"
+                android:textColor="@drawable/black"
                 android:background="@color/transparentWhite"
                 android:text="Edit"
                 android:layout_toLeftOf="@+id/view_event_space2"
@@ -211,7 +223,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/small_margin"
-                android:textColor="@drawable/green"
+                android:textColor="@drawable/black"
                 android:background="@color/transparentWhite"
                 android:text="Delete"
                 android:layout_toRightOf="@+id/view_event_space2"

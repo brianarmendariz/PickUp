@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -49,7 +50,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 public class LoginActivity extends Activity implements View.OnClickListener {
 
@@ -64,6 +69,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private AccessTokenTracker mTokenTracker;
     private ProfileTracker mProfileTracker;
 
+    public static final String PREFS_NAME = "MyPrefsFile";
 
     private FacebookCallback<LoginResult> mFacebookCallback = new FacebookCallback<LoginResult>() {
         @Override
@@ -314,7 +320,50 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 URLConnection http = new URLConnection();
 
                 try {
+                    // Login
                     String loginResult = http.sendLogin(username, password);
+
+                    // Profile Pic
+                    String lastUpdate = http.sendGetLastestProfileUpdateDate(username);
+
+                    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+
+                    String settingsLastUpdate = settings.getString("lastUpdate", "DEFAULT");
+
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date lastUpdateDate = new Date();
+                    if(lastUpdate != null)
+                    {
+                        lastUpdateDate = dateFormat.parse(lastUpdate);
+                    }
+                    Date settingsLastUpdateDate = new Date();
+
+                    String profilePic = "";
+
+                    // if DEAFULT then settings are not set
+                    if(settingsLastUpdate.equals("DEFAULT"))
+                    {
+                        // call the web service and get the pic
+                        profilePic = http.sendGetProfilePicture(username);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("PROFILEPICTURE", profilePic);
+                        editor.commit();
+                    }
+                    else // use the profile pic from settings
+                    {
+                        settingsLastUpdateDate = dateFormat.parse(settingsLastUpdate);
+                    }
+
+                    // check to see if the picture in settings is the latest version
+                    if(settingsLastUpdateDate.before(lastUpdateDate))
+                    {
+                        // call the web service and get the pic
+                        profilePic = http.sendGetProfilePicture(username);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("PROFILEPICTURE", profilePic);
+                        editor.commit();
+                    }
+
                     if (loginResult.equals("false")) {
                         Log.d("SARAH", "login failed");
 
@@ -325,13 +374,15 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
                         User thisUser = http.sendGetUser(username);
 
+                        thisUser.setPicturePath(profilePic);
+
                         Bundle b = new Bundle();
                         b.putParcelable("USER", thisUser);
                         Intent myIntent = new Intent(view.getContext(), MainActivity.class);
                         myIntent.putExtras(b);
                         startActivityForResult(myIntent, 0);
                     }
-                } catch (IOException | JSONException ex) {
+                } catch (IOException | JSONException | ParseException ex) {
 
                 }
 //            }
@@ -342,7 +393,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             startActivityForResult(myIntent, 0);
         }
     }
-
 
     private void findViewsById() {
         loginBasicButton = (Button) findViewById(R.id.login_btn);
@@ -356,6 +406,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         forgotPasswdButton.requestFocus();
 
     }
+
     public void createAlert(String title, String message){
         new AlertDialog.Builder(this)
                 .setTitle(title)
@@ -404,7 +455,4 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
-
-
-
 }

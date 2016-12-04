@@ -54,12 +54,6 @@ public class FriendsListAdapter<String> extends BaseAdapter {
         txtFirst.setText((CharSequence)friendsList.get(position).getFirstName());
         txtSecond.setText((CharSequence)friendsList.get(position).getEmail());
 
-        if (position % 2 == 0) {
-            //convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.orange));
-        } else {
-            // view.setBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.dark_grey));
-        }
-
         return convertView;
     }
 
