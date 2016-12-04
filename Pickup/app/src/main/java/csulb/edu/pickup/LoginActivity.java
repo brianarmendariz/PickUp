@@ -374,8 +374,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
                         User thisUser = http.sendGetUser(username);
 
-                        thisUser.setPicturePath(profilePic);
-
                         Bundle b = new Bundle();
                         b.putParcelable("USER", thisUser);
                         Intent myIntent = new Intent(view.getContext(), MainActivity.class);

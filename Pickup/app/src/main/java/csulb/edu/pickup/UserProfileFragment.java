@@ -243,8 +243,6 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
         super.onCreate(savedInstanceState);
 
-        setupProfilePicture();
-
         name = (TextView) rootView.findViewById(R.id.NameEditText);
         birthday = (TextView) rootView.findViewById(R.id.BirthdayEditText);
         gender = (TextView) rootView.findViewById(R.id.GenderEditText);
@@ -268,7 +266,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             setupEvents(getEvents(thisUser.getEmail()));
             upvote.setVisibility(View.INVISIBLE);
             downvote.setVisibility(View.INVISIBLE);
-
+            setupThisUserProfilePicture();
         }
         else
         {
@@ -278,6 +276,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             gender.setText(viewUser.getGender());
             setupEvents(getEvents(viewUser.getEmail()));
 
+            viewUserProfilePicture(viewUser.getPicturePath());
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
                     LayoutParams.WRAP_CONTENT);
@@ -710,28 +709,6 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         return result;
     }
 
-    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-
-        return inSampleSize;
-    }
-
     private User getUser(String username) {
         User user = null;
         URLConnection http = new URLConnection();
@@ -766,7 +743,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                 Bundle b = new Bundle();
                 b.putParcelable("USER", thisUser);
                 b.putString("EventID", events.get(position).getEventID() + "");
-                Fragment fragment = new ViewEventFragment();
+                Fragment fragment = new ViewEventFragment1();
                 fragment.setArguments(b);
                 FragmentManager frgManager = getFragmentManager();
                 frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("EventListFragment")
@@ -779,7 +756,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         });
     }
 
-    public void setupProfilePicture()
+    public void setupThisUserProfilePicture()
     {
         profileImage = (ImageView) rootView.findViewById(R.id.profileImageView);
 
@@ -821,6 +798,35 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
             }
         });
+    }
+
+    public void viewUserProfilePicture(String profilePic)
+    {
+        profileImage = (ImageView) rootView.findViewById(R.id.profileImageView);
+
+        // set picture to default pic
+        if(profilePic.equals("") || profilePic == null)
+        {
+            Bitmap bm = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.com_facebook_profile_picture_blank_portrait);
+            Bitmap resized = Bitmap.createScaledBitmap(bm, 150, 150, true);
+            Bitmap conv_bm = getRoundedRectBitmap(resized, 150);
+            profileImage.setImageBitmap(conv_bm);
+        }
+        else // set picture to local pic
+        {
+            byte[] byteArray = Base64.decode(profilePic, Base64.DEFAULT);
+            Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+
+            // set the picture
+            profileImage.setImageBitmap(bmp);
+
+            DisplayMetrics dm = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+            profileImage.setMinimumHeight(dm.heightPixels);
+            profileImage.setMinimumWidth(dm.widthPixels);
+        }
     }
 
 }
