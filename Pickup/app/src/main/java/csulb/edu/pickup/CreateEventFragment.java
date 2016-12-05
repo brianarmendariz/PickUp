@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 
 import java.io.IOException;
@@ -652,25 +653,33 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
                         //open connection
                         URLConnection http = new URLConnection();
 
-                        http.sendCreateEvent(name, creatorName, creatorEmail, sport, address,
+                        String response = http.sendCreateEvent(name, creatorName, creatorEmail, sport, address,
                                 latitude + "", longitude + "", gender, ageMin, ageMax, minUserRating,
                                 eventStartDate, eventStartTime, eventEndDate, eventEndTime,
                                 skill, sportSpecific, playersPerTeam, numberOfTeams,
                                 terrain, environment, category);
 
+                        if(response.equals("true"))
+                        {
+                            Toast.makeText(getActivity(), name + " created.",
+                                    Toast.LENGTH_LONG).show();
 
-                        //Return to the MainActivity
-                        Bundle args = new Bundle();
-                        Fragment fragment = new MapsFragment();
-                        Intent returnIntent = new Intent();
-                        getActivity().setResult(MainActivity.RESULT_OK, returnIntent);
+                            //Return to the MainActivity
+                            Bundle args = new Bundle();
+                            Fragment fragment = new MapsFragment();
+                            Intent returnIntent = new Intent();
+                            getActivity().setResult(MainActivity.RESULT_OK, returnIntent);
 
-                        fragment.setArguments(args);
-                        FragmentManager frgManager = getFragmentManager();
-                        frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack( "Create Event" )
-                                .commit();
-
-
+                            fragment.setArguments(args);
+                            FragmentManager frgManager = getFragmentManager();
+                            frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack( "Create Event" )
+                                    .commit();
+                        }
+                        else
+                        {
+                            Toast.makeText(getActivity(), "Event could not be created.",
+                                    Toast.LENGTH_LONG).show();
+                        }
 
                     } else {
                        System.out.println("invalid address");

@@ -310,29 +310,6 @@ public class URLConnection
         jsonObj.put(fields[22], event.getSportSpecific());
         jsonObj.put(fields[23], event.getTerrain());
 
-//        jsonObj.put(fields[1], event.getName());
-//        jsonObj.put(fields[2], event.getCreatorName());
-//        jsonObj.put(fields[3], event.getCreatorEmail());
-//        jsonObj.put(fields[4], event.getSport());
-//        jsonObj.put(fields[5], event.getAddress());
-//        jsonObj.put(fields[6], event.getLatitude());
-//        jsonObj.put(fields[7], event.getLongitude());
-//        jsonObj.put(fields[8], event.getGender());
-//        jsonObj.put(fields[9], event.getAgeMin());
-//        jsonObj.put(fields[10], event.getAgeMax());
-//        jsonObj.put(fields[11], event.getMinUserRating());
-//        jsonObj.put(fields[12], event.getEventStartDate());
-//        jsonObj.put(fields[13], event.getEventStartTime());
-//        jsonObj.put(fields[14], event.getEventEndDate());
-//        jsonObj.put(fields[15], event.getEventEndTime());
-//        jsonObj.put(fields[16], event.getSkill());
-//        jsonObj.put(fields[17], event.getSportSpecific());
-//        jsonObj.put(fields[18], event.getPlayersPerTeam());
-//        jsonObj.put(fields[19], event.getNumberOfTeams());
-//        jsonObj.put(fields[20], event.getTerrain());
-//        jsonObj.put(fields[21], event.getEnvironment());
-//        jsonObj.put(fields[22], event.getCategory());
-
         String json = jsonObj.toJSONString();
 
         return makeHTTPPostRequest(url, json);
