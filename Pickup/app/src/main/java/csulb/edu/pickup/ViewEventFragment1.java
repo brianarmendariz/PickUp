@@ -15,6 +15,8 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -30,7 +32,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+
 import java.io.IOException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -195,18 +200,50 @@ public class ViewEventFragment1 extends Fragment implements View.OnClickListener
 
     public void addCreatorPicture()
     {
-        //RelativeLayout Setup
-        RelativeLayout relativeLayout = (RelativeLayout) rootView.findViewById(R.id.view_event_rl_profile_pics);
+        String creatorPicture = getUserPicturePath(_event.getCreatorEmail());
 
         //ImageView Setup
-        ImageView imageView = (ImageView)rootView.findViewById(R.id.view_event_profile_pic);
+        ImageView creatorPicImageView = (ImageView)rootView.findViewById(R.id.view_event_profile_pic);
 
-        //setting image resource
-        Bitmap bm = BitmapFactory.decodeResource(getResources(),
-                R.drawable.com_facebook_profile_picture_blank_portrait);
-        Bitmap resized = Bitmap.createScaledBitmap(bm, 150, 150, true);
-        Bitmap conv_bm = UserProfileFragment.getRoundedRectBitmap(resized, 150);
-        imageView.setImageBitmap(conv_bm);
+        // use default if empty
+        if(creatorPicture.equals("") || creatorPicture == null)
+        {
+            //setting image resource
+            Bitmap bm = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.com_facebook_profile_picture_blank_portrait);
+            Bitmap resized = Bitmap.createScaledBitmap(bm, 150, 150, true);
+            Bitmap conv_bm = BitmapHelper.getRoundedRectBitmap(resized, 150);
+            creatorPicImageView.setImageBitmap(conv_bm);
+        }
+        else // use User's profile picture
+        {
+            byte[] byteArray = Base64.decode(creatorPicture, Base64.DEFAULT);
+            Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+
+            // set the picture
+            creatorPicImageView.setImageBitmap(bmp);
+
+            DisplayMetrics dm = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+            creatorPicImageView.setMinimumHeight(dm.heightPixels);
+            creatorPicImageView.setMinimumWidth(dm.widthPixels);
+        }
+    }
+
+    private String getUserPicturePath(String creatorEmail)
+    {
+        URLConnection http = new URLConnection();
+
+        String creatorPicture = "";
+        try
+        {
+            creatorPicture = http.sendGetProfilePicture(creatorEmail);
+        } catch(IOException e)
+        {
+
+        }
+        return creatorPicture;
     }
 
     public void setupButtons()
@@ -240,7 +277,16 @@ public class ViewEventFragment1 extends Fragment implements View.OnClickListener
             viewEventUNRSVPButton.setOnClickListener(this);
             viewEventMapButton.setOnClickListener(this);
 
-            viewEventRSVPButton.setVisibility(View.VISIBLE);
+            String rsvpStr = checkRSVP(thisUser.getEmail());
+
+            if(rsvpStr.equals("true"))
+            {
+                viewEventUNRSVPButton.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                viewEventRSVPButton.setVisibility(View.VISIBLE);
+            }
             viewEventMapButton.setVisibility(View.VISIBLE);
         }
     }
@@ -350,4 +396,21 @@ public class ViewEventFragment1 extends Fragment implements View.OnClickListener
             }
         }
     }
+
+    private String checkRSVP(String username)
+    {
+        URLConnection http = new URLConnection();
+
+        String response = "";
+        try
+        {
+            response = http.sendCheckRSVP(_event.getEventID(), username);
+        } catch(IOException e)
+        {
+
+        }
+
+        return response;
+    }
 }
+

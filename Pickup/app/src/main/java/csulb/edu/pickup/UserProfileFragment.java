@@ -686,29 +686,6 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
     }
 
 
-    public static Bitmap getRoundedRectBitmap(Bitmap bitmap, int pixels) {
-        Bitmap result = null;
-        try {
-            result = Bitmap.createBitmap(150, 150, Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(result);
-
-            int color = 0xff424242;
-            Paint paint = new Paint();
-            Rect rect = new Rect(0, 0, 200, 200);
-
-            paint.setAntiAlias(true);
-            canvas.drawARGB(0, 0, 0, 0);
-            paint.setColor(color);
-            canvas.drawCircle(75, 75, 75, paint);
-            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-            canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        } catch (NullPointerException e) {
-        } catch (OutOfMemoryError o) {
-        }
-        return result;
-    }
-
     private User getUser(String username) {
         User user = null;
         URLConnection http = new URLConnection();
@@ -769,7 +746,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             Bitmap bm = BitmapFactory.decodeResource(getResources(),
                     R.drawable.com_facebook_profile_picture_blank_portrait);
             Bitmap resized = Bitmap.createScaledBitmap(bm, 150, 150, true);
-            Bitmap conv_bm = getRoundedRectBitmap(resized, 150);
+            Bitmap conv_bm = BitmapHelper.getRoundedRectBitmap(resized, 150);
             profileImage.setImageBitmap(conv_bm);
         }
         else // set picture to local pic
@@ -810,7 +787,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             Bitmap bm = BitmapFactory.decodeResource(getResources(),
                     R.drawable.com_facebook_profile_picture_blank_portrait);
             Bitmap resized = Bitmap.createScaledBitmap(bm, 150, 150, true);
-            Bitmap conv_bm = getRoundedRectBitmap(resized, 150);
+            Bitmap conv_bm = BitmapHelper.getRoundedRectBitmap(resized, 150);
             profileImage.setImageBitmap(conv_bm);
         }
         else // set picture to local pic

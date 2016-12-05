@@ -1423,4 +1423,22 @@ public class URLConnection
     }
 
 
+    public String sendCheckRSVP(int eventID, String username) throws IOException
+    {
+        StringBuilder url = new StringBuilder("http://www.csulbpickup.com/checkRSVP.php");
+
+        url.append("?EventID="+eventID + "&RSVPUser="+username);
+        String response = makeHTTPGetRequest(url.toString());
+
+//        JSONParser parser = new JSONParser();
+//        String response = null;
+//        try {
+//            response = (JSONObject)parser.parse(response.toString());
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+
+
+        return response;
+    }
 }
