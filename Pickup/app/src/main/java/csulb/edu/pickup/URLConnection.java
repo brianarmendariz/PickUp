@@ -651,7 +651,7 @@ public class URLConnection
 
         String response = makeHTTPPostRequest(url,urlParameters);
         String stringResponse = response.toString();
-        ArrayList<Event> list = null;// convertEventList(stringResponse);
+        ArrayList<Event> list = extractEvents(stringResponse);
 
         return list;
 
