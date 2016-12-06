@@ -24,12 +24,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="846b56e1-b61c-4484-bf70-68650d6f3a99" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/CreateEventFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/CreateEventFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/FriendsListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/FriendsListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/MMFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/MMFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/MapsFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/MapsFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Pickup.iws" />
@@ -85,45 +80,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/MainActivity.java">
+      <file leaf-file-name="SportPickerFragment.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/SportPickerFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="6.5393257">
-              <caret line="212" column="78" selection-start-line="212" selection-start-column="78" selection-end-line="212" selection-end-column="78" />
+            <state vertical-scroll-proportion="-40.555557">
+              <caret line="87" column="9" selection-start-line="87" selection-start-column="9" selection-end-line="87" selection-end-column="9" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/LoginActivity.java">
+      <file leaf-file-name="MapsFragment.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/MapsFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.148148">
-              <caret line="329" column="57" selection-start-line="329" selection-start-column="53" selection-end-line="329" selection-end-column="57" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="friends_list.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/friends_list.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-15.5172415">
-              <caret line="34" column="25" selection-start-line="34" selection-start-column="25" selection-end-line="34" selection-end-column="41" />
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UserProfileFragment.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/UserProfileFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.148148">
-              <caret line="243" column="61" selection-start-line="243" selection-start-column="49" selection-end-line="243" selection-end-column="61" />
-              <folding />
+            <state vertical-scroll-proportion="0.35885167">
+              <caret line="449" column="21" selection-start-line="449" selection-start-column="21" selection-end-line="449" selection-end-column="21" />
+              <folding>
+                <element signature="e#6562#6563#0" expanded="true" />
+                <element signature="e#6590#6591#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -2140,7 +2115,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/URLConnection.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/UserProfileFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/EventListAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/MapsFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/view_profile.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/ViewEventFragment1.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/view_event1.xml" />
@@ -2152,6 +2126,7 @@
         <option value="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/MMFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/FriendsListAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/MapsFragment.java" />
       </list>
     </option>
   </component>
@@ -2720,7 +2695,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33002833" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33002833" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3435859" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32896176" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3300866" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -2807,12 +2782,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/MapsFragment.java</url>
-          <line>399</line>
-          <properties />
-          <option name="timeStamp" value="35" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/CreateEventFragment.java</url>
           <line>635</line>
           <properties />
@@ -2872,18 +2841,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/URLConnection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="631" column="59" selection-start-line="631" selection-start-column="59" selection-end-line="631" selection-end-column="59" />
-          <folding>
-            <element signature="e#45270#45271#0" expanded="true" />
-            <element signature="e#45302#45303#0" expanded="true" />
-            <element signature="e#49270#49278#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/ViewEventFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -3012,21 +2969,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/EditEventFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="421" column="0" selection-start-line="421" selection-start-column="0" selection-end-line="421" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/Event.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="233" column="0" selection-start-line="233" selection-start-column="0" selection-end-line="233" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6584507">
@@ -3091,14 +3033,6 @@
       </provider>
       <provider editor-type-id="android-designer">
         <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/ViewEventFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="141" column="67" selection-start-line="141" selection-start-column="67" selection-end-line="141" selection-end-column="67" />
-          <folding />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/view_profile.xml">
@@ -3206,64 +3140,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/MapsFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3325359">
-          <caret line="198" column="34" selection-start-line="198" selection-start-column="28" selection-end-line="198" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/CreateEventFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.1985645">
-          <caret line="0" column="19" selection-start-line="0" selection-start-column="18" selection-end-line="0" selection-end-column="19" />
-          <folding>
-            <element signature="e#4413#4414#0" expanded="true" />
-            <element signature="e#4444#4445#0" expanded="true" />
-            <element signature="e#4716#4717#0" expanded="true" />
-            <element signature="e#4749#4750#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/SportPickerFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.7191011">
-          <caret line="87" column="9" selection-start-line="87" selection-start-column="9" selection-end-line="87" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/URLConnection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="677" column="0" selection-start-line="677" selection-start-column="0" selection-end-line="677" selection-end-column="0" />
-          <folding>
-            <element signature="e#45270#45271#0" expanded="true" />
-            <element signature="e#45302#45303#0" expanded="true" />
-            <element signature="e#49270#49278#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/MMFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.60674155">
           <caret line="261" column="8" selection-start-line="261" selection-start-column="8" selection-end-line="261" selection-end-column="8" />
           <folding />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/friends_list.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.5172415">
-          <caret line="34" column="25" selection-start-line="34" selection-start-column="25" selection-end-line="34" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/friends_container.xml">
@@ -3282,7 +3164,7 @@
         <state vertical-scroll-proportion="0.40449437">
           <caret line="60" column="11" selection-start-line="60" selection-start-column="11" selection-end-line="60" selection-end-column="11" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3305,25 +3187,110 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/LoginActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.148148">
-          <caret line="329" column="57" selection-start-line="329" selection-start-column="53" selection-end-line="329" selection-end-column="57" />
+        <state vertical-scroll-proportion="0.3325359">
+          <caret line="358" column="26" selection-start-line="358" selection-start-column="24" selection-end-line="358" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/UserProfileFragment.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/CreateEventFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.148148">
-          <caret line="243" column="61" selection-start-line="243" selection-start-column="49" selection-end-line="243" selection-end-column="61" />
+        <state vertical-scroll-proportion="0.3325359">
+          <caret line="105" column="76" selection-start-line="105" selection-start-column="74" selection-end-line="105" selection-end-column="76" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="6.5393257">
-          <caret line="212" column="78" selection-start-line="212" selection-start-column="78" selection-end-line="212" selection-end-column="78" />
+        <state vertical-scroll-proportion="0.3325359">
+          <caret line="94" column="47" selection-start-line="94" selection-start-column="45" selection-end-line="94" selection-end-column="47" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/friends_list.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.0817307">
+          <caret line="34" column="25" selection-start-line="34" selection-start-column="25" selection-end-line="34" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/UserProfileFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3325359">
+          <caret line="356" column="36" selection-start-line="356" selection-start-column="31" selection-end-line="356" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/Event.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="7.3205743">
+          <caret line="271" column="20" selection-start-line="271" selection-start-column="18" selection-end-line="271" selection-end-column="20" />
+          <folding>
+            <element signature="e#6279#6280#0" expanded="true" />
+            <element signature="e#6317#6318#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/EditEventFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3325359">
+          <caret line="108" column="24" selection-start-line="108" selection-start-column="22" selection-end-line="108" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/ViewEventFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.028708134">
+          <caret line="141" column="67" selection-start-line="141" selection-start-column="67" selection-end-line="141" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/ViewEventFragment1.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22248805">
+          <caret line="38" column="13" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/URLConnection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="677" column="0" selection-start-line="677" selection-start-column="0" selection-end-line="677" selection-end-column="0" />
+          <folding>
+            <element signature="e#45270#45271#0" expanded="true" />
+            <element signature="e#45302#45303#0" expanded="true" />
+            <element signature="e#49270#49278#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/SportPickerFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-40.555557">
+          <caret line="87" column="9" selection-start-line="87" selection-start-column="9" selection-end-line="87" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/csulb/edu/pickup/MapsFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.35885167">
+          <caret line="449" column="21" selection-start-line="449" selection-start-column="21" selection-end-line="449" selection-end-column="21" />
+          <folding>
+            <element signature="e#6562#6563#0" expanded="true" />
+            <element signature="e#6590#6591#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -355,45 +355,179 @@ public class MapsFragment extends Fragment implements android.location.LocationL
                     Log.d("SARAH", "eventName" + eventList.get(i).getName());
                     //map.addMarker(new MarkerOptions().position(latLng).title(eventName).snippet(creator)).setVisible(true);
                     /**
-                     * Erwin's Changes. To fix delete comment at top and delete the bottom code.
+                     * Erwin's changes added the three types of categories.
                      */
                     String s = eventList.get(i).getSport();
-                    if (s.equals("Badminton")) {
-                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.badminton_geo)).snippet(creator)).setVisible(true);
+                    String t = eventList.get(i).getCategory();
+
+                    if (t.equals("Tournament")) {
+                        if (s.equals("Badminton")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_tournament_badminton)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Baseball")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_tournament_baseball)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Basketball")) {
+                            this.map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_tournament_basketball)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Football")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_tournament_football)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Handball")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_tournament_handball)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Ice Hockey")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_tournament_icehockey)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Racquetball")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_tournament_racquetball)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Roller Hockey")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_tournament_rollerhockey)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Softball")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_tournament_softball)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Tennis")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_tournament_tennis)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Volleyball")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_tournament_volleyball)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Weightlifting")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_tournament_weightlifting)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Yoga")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_tournament_yoga)).snippet(creator)).setVisible(true);
+                        }
+                        else {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).snippet(creator)).setVisible(true);
+                        }
                     }
-                    else if (s.equals("Baseball")) {
-                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.baseball_geo)).snippet(creator)).setVisible(true);
+                    if (t.equals("Pick Up")) {
+                        if (s.equals("Badminton")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_pickup_badminton)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Baseball")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_pickup_baseball)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Basketball")) {
+                            this.map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_pickup_basketball)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Football")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_pickup_football)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Handball")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_pickup_handball)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Ice Hockey")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_pickup_icehockey)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Racquetball")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_pickup_racquetball)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Roller Hockey")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_pickup_rollerhockey)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Softball")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_pickup_softball)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Tennis")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_pickup_tennis)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Volleyball")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_pickup_volleyball)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Weightlifting")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_pickup_weightlifting)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Yoga")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_pickup_yoga)).snippet(creator)).setVisible(true);
+                        }
+                        else {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).snippet(creator)).setVisible(true);
+                        }
                     }
-                    else if (s.equals("Basketball")) {
-                        this.map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.basketball_geo)).snippet(creator)).setVisible(true);
+                    if (t.equals("Training")) {
+                        if (s.equals("Badminton")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_training_badminton)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Baseball")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_training_baseball)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Basketball")) {
+                            this.map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_training_basketball)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Football")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_training_football)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Handball")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_training_handball)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Ice Hockey")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_training_icehockey)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Racquetball")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_training_racquetball)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Roller Hockey")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_training_rollerhockey)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Softball")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_training_softball)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Tennis")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_training_tennis)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Volleyball")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_training_volleyball)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Weightlifting")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_training_weightlifting)).snippet(creator)).setVisible(true);
+                        }
+                        else if (s.equals("Yoga")) {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.geo_training_yoga)).snippet(creator)).setVisible(true);
+                        }
+                        else {
+                            map.addMarker(new MarkerOptions().position(latLng).title(eventName).snippet(creator)).setVisible(true);
+                        }
                     }
-                    else if (s.equals("Football")) {
-                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.football_geo)).snippet(creator)).setVisible(true);
-                    }
-                    else if (s.equals("Handball")) {
-                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.handball_geo)).snippet(creator)).setVisible(true);
-                    }
-                    else if (s.equals("Ice Hockey")) {
-                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.hockey_geo)).snippet(creator)).setVisible(true);
-                    }
-                    else if (s.equals("Racquetball")) {
-                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.racquetball_geo)).snippet(creator)).setVisible(true);
-                    }
-                    else if (s.equals("Roller Hockey")) {
-                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.hockey_geo)).snippet(creator)).setVisible(true);
-                    }
-                    else if (s.equals("Softball")) {
-                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.softball_geo)).snippet(creator)).setVisible(true);
-                    }
-                    else if (s.equals("Tennis")) {
-                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.tennis_geo)).snippet(creator)).setVisible(true);
-                    }
-                    else if (s.equals("Volleyball")) {
-                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.volleyball_geo)).snippet(creator)).setVisible(true);
-                    }
-                    else {
-                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).snippet(creator)).setVisible(true);
-                    }
+//                    if (s.equals("Badminton")) {
+//                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.badminton_geo)).snippet(creator)).setVisible(true);
+//                    }
+//                    else if (s.equals("Baseball")) {
+//                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.baseball_geo)).snippet(creator)).setVisible(true);
+//                    }
+//                    else if (s.equals("Basketball")) {
+//                        this.map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.basketball_geo)).snippet(creator)).setVisible(true);
+//                    }
+//                    else if (s.equals("Football")) {
+//                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.football_geo)).snippet(creator)).setVisible(true);
+//                    }
+//                    else if (s.equals("Handball")) {
+//                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.handball_geo)).snippet(creator)).setVisible(true);
+//                    }
+//                    else if (s.equals("Ice Hockey")) {
+//                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.hockey_geo)).snippet(creator)).setVisible(true);
+//                    }
+//                    else if (s.equals("Racquetball")) {
+//                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.racquetball_geo)).snippet(creator)).setVisible(true);
+//                    }
+//                    else if (s.equals("Roller Hockey")) {
+//                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.hockey_geo)).snippet(creator)).setVisible(true);
+//                    }
+//                    else if (s.equals("Softball")) {
+//                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.softball_geo)).snippet(creator)).setVisible(true);
+//                    }
+//                    else if (s.equals("Tennis")) {
+//                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.tennis_geo)).snippet(creator)).setVisible(true);
+//                    }
+//                    else if (s.equals("Volleyball")) {
+//                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).icon(BitmapDescriptorFactory.fromResource(R.drawable.volleyball_geo)).snippet(creator)).setVisible(true);
+//                    }
+//                    else {
+//                        map.addMarker(new MarkerOptions().position(latLng).title(eventName).snippet(creator)).setVisible(true);
+//                    }
                 }
             }
 
