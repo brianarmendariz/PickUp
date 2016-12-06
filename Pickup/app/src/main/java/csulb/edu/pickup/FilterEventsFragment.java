@@ -78,11 +78,9 @@ public class FilterEventsFragment extends Fragment implements View.OnClickListen
     private int hour;
     private int minute;
 
-    String[] sportStringArray = {"","Badminton", "Baseball", "Basketball", "Football",
-            "Handball", "Ice Hockey", "Racquetball", "Roller Hockey",
-            "Softball", "Tennis", "Volleyball"};
+    String[] sportStringArray;
 
-    String[] genderArray = {"", "Any", "Female", "Male"};
+    String[] genderArray = {"", "COED", "Female", "Male"};
     User thisUser;
 
     View rootView;
@@ -92,6 +90,7 @@ public class FilterEventsFragment extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        sportStringArray = getActivity().getResources().getStringArray(R.array.sport_array_default);
         Bundle data = getActivity().getIntent().getExtras();
         thisUser = (User) data.getParcelable("USER");
         //thisUser = new User("Sarah", "Shibley", "sarahshib@hotmail.com","abcd","1994-10-12","female", "");
@@ -527,7 +526,9 @@ public class FilterEventsFragment extends Fragment implements View.OnClickListen
         formMap.put("authorName", authorNameStr);
 
         Spinner sportSpinner = (Spinner)rootView.findViewById(R.id.sport_spinner);
+
         String eventSportStr = sportSpinner.getSelectedItem().toString();
+        System.out.println(eventSportStr);
         formMap.put("sport", eventSportStr);
 
 
@@ -645,11 +646,13 @@ public class FilterEventsFragment extends Fragment implements View.OnClickListen
 
     public class MyCAdapter extends ArrayAdapter<String> {
 
-        int arr_images[] = {0, R.drawable.badminton_icon,
+        int arr_images[] = {
+                R.drawable.badminton_icon,
                 R.drawable.baseball_icon, R.drawable.basketball_icon, R.drawable.football_icon,
                 R.drawable.handball_icon, R.drawable.icehockey_icon, R.drawable.racquetball_icon,
-                R.drawable.rollerhockey_icon, R.drawable.softball_icon, R.drawable.tennis_icon,
-                R.drawable.volleyball_icon};
+                R.drawable.rollerhockey_icon,  R.drawable.running_icon,R.drawable.soccer_icon,
+                R.drawable.softball_icon, R.drawable.tennis_icon,R.drawable.volleyball_icon,
+                R.drawable.weightlifting_icon, R.drawable.yoga_icon};
 
         public MyCAdapter(Context context, int textViewResourceId, String[] objects) {
             super(context, textViewResourceId, objects);

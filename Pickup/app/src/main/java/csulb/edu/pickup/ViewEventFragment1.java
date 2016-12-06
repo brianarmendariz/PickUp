@@ -1,22 +1,30 @@
 package csulb.edu.pickup;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,7 +32,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+
 import java.io.IOException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +47,7 @@ import java.util.GregorianCalendar;
 /**
  * Created by Brian on 11/26/2016.
  */
-public class ViewEventFragment1 extends Fragment {
+public class ViewEventFragment1 extends Fragment implements View.OnClickListener {
 
     private Event _event;
     private Context context;
@@ -48,6 +59,13 @@ public class ViewEventFragment1 extends Fragment {
     Animation animAlpha;
 
     ArrayList<User> rsvpList;
+
+    Button viewEventRSVPButton;
+    Button viewEventUNRSVPButton;
+    Button viewEventMapButton;
+    Button viewEventMapCenterButton;
+    Button viewEventEditButton;
+    Button viewEventDeleteButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -182,36 +200,217 @@ public class ViewEventFragment1 extends Fragment {
 
     public void addCreatorPicture()
     {
-        //RelativeLayout Setup
-        RelativeLayout relativeLayout = (RelativeLayout) rootView.findViewById(R.id.view_event_rl_profile_pics);
+        String creatorPicture = getUserPicturePath(_event.getCreatorEmail());
 
         //ImageView Setup
-        ImageView imageView = (ImageView)rootView.findViewById(R.id.view_event_profile_pic);
+        ImageView creatorPicImageView = (ImageView)rootView.findViewById(R.id.view_event_profile_pic);
 
-        //setting image resource
-        Bitmap bm = BitmapFactory.decodeResource(getResources(),
-                R.drawable.com_facebook_profile_picture_blank_portrait);
-        Bitmap resized = Bitmap.createScaledBitmap(bm, 150, 150, true);
-        Bitmap conv_bm = UserProfileFragment.getRoundedRectBitmap(resized, 150);
-        imageView.setImageBitmap(conv_bm);
+        // use default if empty
+        if(creatorPicture.equals("") || creatorPicture == null)
+        {
+            //setting image resource
+            Bitmap bm = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.com_facebook_profile_picture_blank_portrait);
+            Bitmap resized = Bitmap.createScaledBitmap(bm, 150, 150, true);
+            Bitmap conv_bm = BitmapHelper.getRoundedRectBitmap(resized, 150);
+            creatorPicImageView.setImageBitmap(conv_bm);
+        }
+        else // use User's profile picture
+        {
+            byte[] byteArray = Base64.decode(creatorPicture, Base64.DEFAULT);
+            Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 
-        //setting image position
-//        imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-//                ViewGroup.LayoutParams.MATCH_PARENT));
+            // set the picture
+            creatorPicImageView.setImageBitmap(bmp);
 
-        //adding view to layout
-       // relativeLayout.addView(imageView);
+            DisplayMetrics dm = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+            creatorPicImageView.setMinimumHeight(dm.heightPixels);
+            creatorPicImageView.setMinimumWidth(dm.widthPixels);
+        }
+    }
+
+    private String getUserPicturePath(String creatorEmail)
+    {
+        URLConnection http = new URLConnection();
+
+        String creatorPicture = "";
+        try
+        {
+            creatorPicture = http.sendGetProfilePicture(creatorEmail);
+        } catch(IOException e)
+        {
+
+        }
+        return creatorPicture;
     }
 
     public void setupButtons()
     {
-        if(thisUser.equals(_event.getCreatorEmail()))
+        // edit and delete buttons should only be shown to the creator of the event
+        if(thisUser.getEmail().equals(_event.getCreatorEmail()))
         {
-            Button viewEventEditButton = (Button)rootView.findViewById(R.id.view_event_edit_btn);
-            Button viewEventDeleteButton = (Button)rootView.findViewById(R.id.view_event_delete_btn);
+            // find the buttons
+            viewEventMapCenterButton = (Button)rootView.findViewById(R.id.view_event_map_center_btn);
+            viewEventEditButton = (Button)rootView.findViewById(R.id.view_event_edit_btn);
+            viewEventDeleteButton = (Button)rootView.findViewById(R.id.view_event_delete_btn);
 
+            // add onclicklisteners to each button
+            viewEventMapCenterButton.setOnClickListener(this);
+            viewEventEditButton.setOnClickListener(this);
+            viewEventDeleteButton.setOnClickListener(this);
+
+            viewEventMapCenterButton.setVisibility(View.VISIBLE);
             viewEventEditButton.setVisibility(View.VISIBLE);
             viewEventDeleteButton.setVisibility(View.VISIBLE);
         }
+        else
+        {
+            // find the buttons
+            viewEventRSVPButton = (Button)rootView.findViewById(R.id.view_event_rsvp_btn);
+            viewEventUNRSVPButton = (Button)rootView.findViewById(R.id.view_event_unrsvp_btn);
+            viewEventMapButton = (Button)rootView.findViewById(R.id.view_event_map_btn);
+
+            // add onclicklisteners to each button
+            viewEventRSVPButton.setOnClickListener(this);
+            viewEventUNRSVPButton.setOnClickListener(this);
+            viewEventMapButton.setOnClickListener(this);
+
+            String rsvpStr = checkRSVP(thisUser.getEmail());
+
+            if(rsvpStr.equals("true"))
+            {
+                viewEventUNRSVPButton.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                viewEventRSVPButton.setVisibility(View.VISIBLE);
+            }
+            viewEventMapButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onClick(View view)
+    {
+        if(view == viewEventMapButton || view == viewEventMapCenterButton)
+        {
+            Bundle args = new Bundle();
+            Fragment fragment = new MapsFragment();
+            fragment.setArguments(args);
+            FragmentManager frgManager = getFragmentManager();
+            frgManager.beginTransaction().replace(R.id.content_frame, fragment)
+                    .addToBackStack( "ViewEventFragment1" )
+                    .commit();
+        }
+        else if(view == viewEventRSVPButton){
+            URLConnection http = new URLConnection();
+            try {
+                http.sendRSVP(thisUser.getEmail(), _event.getEventID() + "");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //_event is the event that was clicked
+            if(Integer.parseInt(thisUser.getUserRating()) >= _event.getMinUserRating())
+            {
+                viewEventRSVPButton.setVisibility(View.INVISIBLE);
+                viewEventUNRSVPButton.setVisibility(View.VISIBLE);
+            }
+            else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("You cannot RSVP to this event because your user rating " +
+                        "is lower than the event's minimum user rating.");
+                builder.setCancelable(true);
+
+                builder.setPositiveButton(
+                        "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+
+        }
+        else if(view == viewEventUNRSVPButton){
+            URLConnection http = new URLConnection();
+            try {
+                http.sendUnRSVP(thisUser.getEmail(), _event.getEventID() + "");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            viewEventUNRSVPButton.setVisibility(View.INVISIBLE);
+            viewEventRSVPButton.setVisibility(View.VISIBLE);
+        }
+        if(view == viewEventEditButton)
+        {
+            //Go to edit activity
+            Bundle args = new Bundle();
+            Fragment fragment = new EditEventFragment();
+
+            args.putString("EventID", _event.getEventID() + "");
+            fragment.setArguments(args);
+            FragmentManager frgManager = getFragmentManager();
+            frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack( "View Event" )
+                    .commit();
+        }
+        else if(view == viewEventDeleteButton)
+        {
+//            Toast.makeText(getApplicationContext(), "delete", Toast.LENGTH_SHORT).show();
+            String response = "";
+            try {
+                URLConnection http = new URLConnection();
+                response = http.sendDeleteEvent(_event.getEventID());
+            } catch(IOException e)
+            {
+                e.printStackTrace();
+            } finally
+            {
+                if(response.equals("true"))
+                {
+                    String message = _event.getName() + " has been deleted.";
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+
+                    Bundle args = new Bundle();
+                    Fragment fragment = new MapsFragment();
+
+                    args.putString("result", "delete");
+
+                    args.putString("EventID", _event.getEventID() + "");
+                    fragment.setArguments(args);
+                    FragmentManager frgManager = getFragmentManager();
+                    frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("Map")
+                            .commit();
+                }
+                else
+                {
+                    String message = _event.getName() + " could not be deleted.";
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+    private String checkRSVP(String username)
+    {
+        URLConnection http = new URLConnection();
+
+        String response = "";
+        try
+        {
+            response = http.sendCheckRSVP(_event.getEventID(), username);
+        } catch(IOException e)
+        {
+
+        }
+
+        return response;
     }
 }
+

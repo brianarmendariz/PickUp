@@ -11,6 +11,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -38,6 +39,7 @@ import android.support.v7.widget.SearchView;
 import android.text.Html;
 import android.text.Layout;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -83,6 +85,7 @@ import java.util.ArrayList;
  */
 public class UserProfileFragment extends Fragment implements SearchView.OnQueryTextListener
 {
+    public static final String PREFS_NAME = "MyPrefsFile";
     private static int RESULT_LOAD_IMAGE = 1;
     private static final int VIEW_MAP_EVENT = 2;
     private ImageView profileImage;
@@ -240,23 +243,6 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
         super.onCreate(savedInstanceState);
 
-        profileImage = (ImageView) rootView.findViewById(R.id.profileImageView);
-        Bitmap bm = BitmapFactory.decodeResource(getResources(),
-                R.drawable.com_facebook_profile_picture_blank_portrait);
-        Bitmap resized = Bitmap.createScaledBitmap(bm, 150, 150, true);
-        Bitmap conv_bm = getRoundedRectBitmap(resized, 150);
-        profileImage.setImageBitmap(conv_bm);
-        profileImage.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                Intent i = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
-            }
-        });
-
         name = (TextView) rootView.findViewById(R.id.NameEditText);
         birthday = (TextView) rootView.findViewById(R.id.BirthdayEditText);
         gender = (TextView) rootView.findViewById(R.id.GenderEditText);
@@ -280,7 +266,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             setupEvents(getEvents(thisUser.getEmail()));
             upvote.setVisibility(View.INVISIBLE);
             downvote.setVisibility(View.INVISIBLE);
-
+            setupThisUserProfilePicture();
         }
         else
         {
@@ -290,6 +276,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
             gender.setText(viewUser.getGender());
             setupEvents(getEvents(viewUser.getEmail()));
 
+            viewUserProfilePicture(viewUser.getPicturePath());
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
                     LayoutParams.WRAP_CONTENT);
@@ -660,16 +647,22 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
             String encodedImage = Base64.encodeToString(bArray, Base64.DEFAULT);
             //System.out.println("encodedImage " + encodedImage);
+            System.out.println(encodedImage.length());
 
             URLConnection url = new URLConnection();
             try
             {
                 String response = url.sendEditProfilePic(thisUser.getEmail(), encodedImage);
 
-                if(response.equals("true"))
+                if(response.equals("true") || response.equals("true\t"))
                 {
                     Toast.makeText(getActivity(), "Profile Pic Updated",
                             Toast.LENGTH_LONG).show();
+
+                    SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("PROFILEPICTURE", encodedImage);
+                    editor.commit();
                 }
                 else if(response.equals("false"))
                 {
@@ -692,51 +685,6 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         return image;
     }
 
-
-    public static Bitmap getRoundedRectBitmap(Bitmap bitmap, int pixels) {
-        Bitmap result = null;
-        try {
-            result = Bitmap.createBitmap(150, 150, Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(result);
-
-            int color = 0xff424242;
-            Paint paint = new Paint();
-            Rect rect = new Rect(0, 0, 200, 200);
-
-            paint.setAntiAlias(true);
-            canvas.drawARGB(0, 0, 0, 0);
-            paint.setColor(color);
-            canvas.drawCircle(75, 75, 75, paint);
-            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-            canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        } catch (NullPointerException e) {
-        } catch (OutOfMemoryError o) {
-        }
-        return result;
-    }
-
-    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-
-        return inSampleSize;
-    }
 
     private User getUser(String username) {
         User user = null;
@@ -772,7 +720,7 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                 Bundle b = new Bundle();
                 b.putParcelable("USER", thisUser);
                 b.putString("EventID", events.get(position).getEventID() + "");
-                Fragment fragment = new ViewEventFragment();
+                Fragment fragment = new ViewEventFragment1();
                 fragment.setArguments(b);
                 FragmentManager frgManager = getFragmentManager();
                 frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("EventListFragment")
@@ -785,6 +733,77 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
         });
     }
 
+    public void setupThisUserProfilePicture()
+    {
+        profileImage = (ImageView) rootView.findViewById(R.id.profileImageView);
 
+        SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
+        String settingsLastUpdate = settings.getString("PROFILEPICTURE", "DEFAULT");
+
+        // set picture to default pic
+        if(settingsLastUpdate.equals("DEFAULT"))
+        {
+            Bitmap bm = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.com_facebook_profile_picture_blank_portrait);
+            Bitmap resized = Bitmap.createScaledBitmap(bm, 150, 150, true);
+            Bitmap conv_bm = BitmapHelper.getRoundedRectBitmap(resized, 150);
+            profileImage.setImageBitmap(conv_bm);
+        }
+        else // set picture to local pic
+        {
+            byte[] byteArray = Base64.decode(settingsLastUpdate, Base64.DEFAULT);
+            Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+
+            // set the picture
+            profileImage.setImageBitmap(bmp);
+
+            DisplayMetrics dm = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+            profileImage.setMinimumHeight(dm.heightPixels);
+            profileImage.setMinimumWidth(dm.widthPixels);
+        }
+
+        // on click listener to be able to set the picture
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                Intent i = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
+            }
+        });
+    }
+
+    public void viewUserProfilePicture(String profilePic)
+    {
+        profileImage = (ImageView) rootView.findViewById(R.id.profileImageView);
+
+        // set picture to default pic
+        if(profilePic.equals("") || profilePic == null)
+        {
+            Bitmap bm = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.com_facebook_profile_picture_blank_portrait);
+            Bitmap resized = Bitmap.createScaledBitmap(bm, 150, 150, true);
+            Bitmap conv_bm = BitmapHelper.getRoundedRectBitmap(resized, 150);
+            profileImage.setImageBitmap(conv_bm);
+        }
+        else // set picture to local pic
+        {
+            byte[] byteArray = Base64.decode(profilePic, Base64.DEFAULT);
+            Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+
+            // set the picture
+            profileImage.setImageBitmap(bmp);
+
+            DisplayMetrics dm = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+            profileImage.setMinimumHeight(dm.heightPixels);
+            profileImage.setMinimumWidth(dm.widthPixels);
+        }
+    }
 
 }

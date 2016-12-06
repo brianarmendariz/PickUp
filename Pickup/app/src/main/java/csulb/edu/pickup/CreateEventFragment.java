@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 
 import java.io.IOException;
@@ -647,25 +648,33 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
                         //open connection
                         URLConnection http = new URLConnection();
 
-                        http.sendCreateEvent(name, creatorName, creatorEmail, sport, address,
+                        String response = http.sendCreateEvent(name, creatorName, creatorEmail, sport, address,
                                 latitude + "", longitude + "", gender, ageMin, ageMax, minUserRating,
                                 eventStartDate, eventStartTime, eventEndDate, eventEndTime,
                                 skill, sportSpecific, playersPerTeam, numberOfTeams,
                                 terrain, environment, category);
 
+                        if(response.equals("true"))
+                        {
+                            Toast.makeText(getActivity(), name + " created.",
+                                    Toast.LENGTH_LONG).show();
 
-                        //Return to the MainActivity
-                        Bundle args = new Bundle();
-                        Fragment fragment = new MapsFragment();
-                        Intent returnIntent = new Intent();
-                        getActivity().setResult(MainActivity.RESULT_OK, returnIntent);
+                            //Return to the MainActivity
+                            Bundle args = new Bundle();
+                            Fragment fragment = new MapsFragment();
+                            Intent returnIntent = new Intent();
+                            getActivity().setResult(MainActivity.RESULT_OK, returnIntent);
 
-                        fragment.setArguments(args);
-                        FragmentManager frgManager = getFragmentManager();
-                        frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack( "Create Event" )
-                                .commit();
-
-
+                            fragment.setArguments(args);
+                            FragmentManager frgManager = getFragmentManager();
+                            frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack( "Create Event" )
+                                    .commit();
+                        }
+                        else
+                        {
+                            Toast.makeText(getActivity(), "Event could not be created.",
+                                    Toast.LENGTH_LONG).show();
+                        }
 
                     } else {
                        System.out.println("invalid address");
@@ -741,6 +750,8 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
         {
             Spinner maxNumPplSpinner = (Spinner)rootView.findViewById(R.id.create_event_max_num_ppl_spinner);
             String eventMaxNumPplStr = maxNumPplSpinner.getSelectedItem().toString();
+            formMap.put("players per team", "0");
+            formMap.put("number of teams", "0");
             formMap.put("max num ppl", eventMaxNumPplStr);
         }
         else
@@ -749,6 +760,7 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             String eventPlayersPerTeamStr = playersPerTeamSpinner.getSelectedItem().toString();
             formMap.put("players per team", eventPlayersPerTeamStr);
 
+            formMap.put("max num ppl", "0");
             Spinner numberOfTeamsSpinner = (Spinner) rootView.findViewById(R.id.create_event_number_of_teams);
             String eventNumOfTeams = numberOfTeamsSpinner.getSelectedItem().toString();
             formMap.put("number of teams", eventNumOfTeams);
@@ -769,6 +781,10 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             Spinner SportSpecificSpinner = (Spinner)rootView.findViewById(R.id.create_event_sport_specific_spinner);
             String SportSpecificStr = SportSpecificSpinner.getSelectedItem().toString();
             formMap.put("sport specific",SportSpecificStr);
+        }
+        else
+        {
+            formMap.put("sport specific","");
         }
 
         Spinner terrainSpinner = (Spinner)rootView.findViewById(R.id.create_event_terrain);

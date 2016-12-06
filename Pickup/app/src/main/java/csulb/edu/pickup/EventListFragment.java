@@ -97,7 +97,7 @@ public class EventListFragment extends Fragment
                     Bundle b = new Bundle();
                     b.putParcelable("USER", thisUser);
                     b.putString("EventID", eventList.get(position).getEventID() + "");
-                    Fragment fragment = new ViewEventFragment();
+                    Fragment fragment = new ViewEventFragment1();
                     fragment.setArguments(b);
                     FragmentManager frgManager = getFragmentManager();
                     frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("EventListFragment")

@@ -50,7 +50,7 @@ public class CalendarEventDialog extends DialogFragment {
                 @Override
                 public void onClick(View v) {
                     Bundle args = new Bundle();
-                    Fragment fragment = new ViewEventFragment();
+                    Fragment fragment = new ViewEventFragment1();
 
                     args.putString("EventID", eventList.get(x).getEventID() + "");
 

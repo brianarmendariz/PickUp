@@ -337,8 +337,6 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
             FragmentManager frgManager = getFragmentManager();
             frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack( "View Event" )
                     .commit();
-
-
         }
         else if(view == _deleteEventButton)
         {
@@ -364,7 +362,6 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
                 FragmentManager frgManager = getFragmentManager();
                 frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack( "Map" )
                         .commit();
-
             }
         }
         else if(view == _cancelEventButton)

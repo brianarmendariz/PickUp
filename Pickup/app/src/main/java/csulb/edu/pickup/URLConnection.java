@@ -310,29 +310,6 @@ public class URLConnection
         jsonObj.put(fields[22], event.getSportSpecific());
         jsonObj.put(fields[23], event.getTerrain());
 
-//        jsonObj.put(fields[1], event.getName());
-//        jsonObj.put(fields[2], event.getCreatorName());
-//        jsonObj.put(fields[3], event.getCreatorEmail());
-//        jsonObj.put(fields[4], event.getSport());
-//        jsonObj.put(fields[5], event.getAddress());
-//        jsonObj.put(fields[6], event.getLatitude());
-//        jsonObj.put(fields[7], event.getLongitude());
-//        jsonObj.put(fields[8], event.getGender());
-//        jsonObj.put(fields[9], event.getAgeMin());
-//        jsonObj.put(fields[10], event.getAgeMax());
-//        jsonObj.put(fields[11], event.getMinUserRating());
-//        jsonObj.put(fields[12], event.getEventStartDate());
-//        jsonObj.put(fields[13], event.getEventStartTime());
-//        jsonObj.put(fields[14], event.getEventEndDate());
-//        jsonObj.put(fields[15], event.getEventEndTime());
-//        jsonObj.put(fields[16], event.getSkill());
-//        jsonObj.put(fields[17], event.getSportSpecific());
-//        jsonObj.put(fields[18], event.getPlayersPerTeam());
-//        jsonObj.put(fields[19], event.getNumberOfTeams());
-//        jsonObj.put(fields[20], event.getTerrain());
-//        jsonObj.put(fields[21], event.getEnvironment());
-//        jsonObj.put(fields[22], event.getCategory());
-
         String json = jsonObj.toJSONString();
 
         return makeHTTPPostRequest(url, json);
@@ -674,7 +651,7 @@ public class URLConnection
 
         String response = makeHTTPPostRequest(url,urlParameters);
         String stringResponse = response.toString();
-        ArrayList<Event> list = null;// convertEventList(stringResponse);
+        ArrayList<Event> list = extractEvents(stringResponse);
 
         return list;
 
@@ -886,14 +863,21 @@ public class URLConnection
     public String sendEditProfilePic(String username, String image) throws IOException, JSONException
     {
         	   /*url of route being requested*/
-        String url = "http://www.csulbpickup.com/editPicturePath.php";
+        String url = "http://www.csulbpickup.com/editProfilePicture.php";
 
         JSONObject jsonObj = new JSONObject();
 
         jsonObj.put("_username", username);
         jsonObj.put("_picturePath", image);
 
-        String json = jsonObj.toJSONString();
+        String json = "";
+        try {
+            json = jsonObj.toJSONString();
+            System.out.println(json.length());
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+        }
         return makeHTTPPutRequest(url, json);
     }
 
@@ -967,10 +951,60 @@ public class URLConnection
         user.setBirthday((String)jsonObject.get("_birthday"));
         user.setGender((String)jsonObject.get("_gender"));
         user.setUserRating((String)jsonObject.get("_userRating"));
+        user.setPicturePath((String)jsonObject.get("_picturePath"));
 
         return user;
     }
 
+    /**
+     *
+     * @param username
+     * @return
+     * @throws IOException
+     */
+    public String sendGetLastestProfileUpdateDate(String username) throws IOException
+    {
+	    /*url of route being requested*/
+        StringBuilder url = new StringBuilder("http://www.csulbpickup.com/getLatestProfileUpdateDate.php");
+
+        url.append("?Username="+username);
+        String response = makeHTTPGetRequest(url.toString());
+
+        JSONParser parser = new JSONParser();
+        String lastUpdate = "";
+        try {
+            lastUpdate = (String)parser.parse(response.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return lastUpdate;
+    }
+
+    /**
+     *
+     * @param username
+     * @return
+     * @throws IOException
+     */
+    public String sendGetProfilePicture(String username) throws IOException
+    {
+	    /*url of route being requested*/
+        StringBuilder url = new StringBuilder("http://www.csulbpickup.com/getProfilePicture.php");
+
+        url.append("?Username="+username);
+        String response = makeHTTPGetRequest(url.toString());
+
+        JSONParser parser = new JSONParser();
+        String profilePicture = "";
+        try {
+            profilePicture = (String)parser.parse(response.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return profilePicture;
+    }
 
 
     /**
@@ -1016,16 +1050,16 @@ public class URLConnection
      * @return "true" if deleted, "false" if not
      * @throws IOException
      */
-    public String sendDeleteEvent( int eventID) throws IOException  {
+    public String sendDeleteEvent(int eventID) throws IOException  {
 
 				/*url of route being requested*/
         String url = "http://www.csulbpickup.com/deleteEvent.php";
 
-        String urlParameters = "EventID="+eventID;
+        String urlParameters = "?EventID="+eventID;
 
         return makeHTTPRequest(url,urlParameters);
-
     }
+
     /**
      * Edits an event by changing values to the values passed in. Any empty values should be set to "".
      * @param eventID
@@ -1366,4 +1400,22 @@ public class URLConnection
     }
 
 
+    public String sendCheckRSVP(int eventID, String username) throws IOException
+    {
+        StringBuilder url = new StringBuilder("http://www.csulbpickup.com/checkRSVP.php");
+
+        url.append("?EventID="+eventID + "&RSVPUser="+username);
+        String response = makeHTTPGetRequest(url.toString());
+
+//        JSONParser parser = new JSONParser();
+//        String response = null;
+//        try {
+//            response = (JSONObject)parser.parse(response.toString());
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+
+
+        return response;
+    }
 }

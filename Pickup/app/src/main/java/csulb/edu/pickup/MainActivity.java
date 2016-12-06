@@ -133,16 +133,22 @@ public class MainActivity extends ActionBarActivity {
 
                 break;
             case 6://logout
+<<<<<<< HEAD
                 Bundle b = new Bundle();
                 b.putParcelable("USER", thisUser);
                 Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
                 myIntent.putExtras(b);
+=======
+                // DO NOT SEND BUNDLE WITH USER SINCE LOGGING OUT
+                Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
+>>>>>>> origin/master
                 startActivityForResult(myIntent, 0);
 
                 break;
 
         }
 
+<<<<<<< HEAD
 //        fragment.setArguments(args);
 //        FragmentManager frgManager = getFragmentManager();
 //        frgManager.beginTransaction().replace(R.id.content_frame, fragment)
@@ -153,6 +159,24 @@ public class MainActivity extends ActionBarActivity {
         setTitle(dataList.get(possition).getItemName());
         mDrawerLayout.closeDrawer(mDrawerList);
 
+=======
+        mDrawerList.setItemChecked(possition, true);
+        setTitle(dataList.get(possition).getItemName());
+        mDrawerLayout.closeDrawer(mDrawerList);
+    }
+
+    /**
+     * Erwin added this for the Case 0 through 5 to call because Case 6 doesn't need this inorder to logout.
+     * @param fragment
+     */
+    public void fragmentSetUp(Fragment fragment) {
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        FragmentManager frgManager = getFragmentManager();
+        frgManager.beginTransaction().replace(R.id.content_frame, fragment)
+                .addToBackStack( "tag" )
+                .commit();
+>>>>>>> origin/master
     }
 
     @Override
