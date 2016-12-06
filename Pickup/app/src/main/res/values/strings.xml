@@ -226,7 +226,11 @@
 
     <string-array name="Create_Event_Categories">
         <item>Tournament</item>
-        <item>Match</item>
+        <item>Training</item>
+        <item>Pick Up</item>
+    </string-array>
+
+    <string-array name="Create_Event_Categories_Exclusion">
         <item>Pick Up</item>
     </string-array>
     // end of create event arrays sb
