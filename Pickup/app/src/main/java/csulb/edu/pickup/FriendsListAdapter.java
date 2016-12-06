@@ -58,7 +58,6 @@ public class FriendsListAdapter<String> extends BaseAdapter {
         txtFirst.setText((CharSequence)friendsList.get(position).getFirstName());
         txtSecond.setText((CharSequence)friendsList.get(position).getEmail());
 
-<<<<<<< HEAD
         /**
          * Erwin added this for profile picture.
          */
@@ -75,8 +74,6 @@ public class FriendsListAdapter<String> extends BaseAdapter {
             // view.setBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.dark_grey));
         }
 
-=======
->>>>>>> origin/master
         return convertView;
     }
 

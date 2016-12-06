@@ -97,11 +97,11 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
 
-    public void SelectItem(int possition) {
-
+    public void SelectItem(int position)
+    {
         Fragment fragment = null;
         Bundle args = new Bundle();
-        switch (possition) {
+        switch (position) {
             case 0:
                 fragment = new MapsFragment();
                 fragmentSetUp(fragment);
@@ -133,35 +133,16 @@ public class MainActivity extends ActionBarActivity {
 
                 break;
             case 6://logout
-<<<<<<< HEAD
-                Bundle b = new Bundle();
-                b.putParcelable("USER", thisUser);
-                Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
-                myIntent.putExtras(b);
-=======
                 // DO NOT SEND BUNDLE WITH USER SINCE LOGGING OUT
                 Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
->>>>>>> origin/master
                 startActivityForResult(myIntent, 0);
 
                 break;
 
         }
 
-<<<<<<< HEAD
-//        fragment.setArguments(args);
-//        FragmentManager frgManager = getFragmentManager();
-//        frgManager.beginTransaction().replace(R.id.content_frame, fragment)
-//                .addToBackStack( "tag" )
-//                .commit();
-
-        mDrawerList.setItemChecked(possition, true);
-        setTitle(dataList.get(possition).getItemName());
-        mDrawerLayout.closeDrawer(mDrawerList);
-
-=======
-        mDrawerList.setItemChecked(possition, true);
-        setTitle(dataList.get(possition).getItemName());
+        mDrawerList.setItemChecked(position, true);
+        setTitle(dataList.get(position).getItemName());
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
@@ -176,7 +157,6 @@ public class MainActivity extends ActionBarActivity {
         frgManager.beginTransaction().replace(R.id.content_frame, fragment)
                 .addToBackStack( "tag" )
                 .commit();
->>>>>>> origin/master
     }
 
     @Override
@@ -231,19 +211,7 @@ public class MainActivity extends ActionBarActivity {
         } else {
             getFragmentManager().popBackStack();
         }
-    }
 
-    /**
-     * Erwin added this for the Case 0 through 5 to call because Case 6 doesn't need this inorder to logout.
-     * @param fragment
-     */
-    public void fragmentSetUp(Fragment fragment) {
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        FragmentManager frgManager = getFragmentManager();
-        frgManager.beginTransaction().replace(R.id.content_frame, fragment)
-                .addToBackStack( "tag" )
-                .commit();
     }
 
 }
