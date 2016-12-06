@@ -61,12 +61,13 @@ public class CalendarFragment extends Fragment {
         getEvents();
 
         setupCalendar();
-/*
-        int[] colorArray = { getResources().getColor(R.color.orange) , getResources().getColor(R.color.lite_grey) };
-        LinearLayout linearLayout = (LinearLayout)findViewById(R.id.CalendarLinearLayout);
+
+        int[] colorArray = { getResources().getColor(R.color.orange) , getResources().getColor(R.color.lite_grey) ,
+                getResources().getColor(R.color.white) , getResources().getColor(R.color.white) , };
+        LinearLayout linearLayout = (LinearLayout)rootView.findViewById(R.id.CalendarLinearLayout);
         for(int i = 0; i < 2; i++)
         {
-            TextView textView1 = new TextView(this);
+            TextView textView1 = new TextView(getActivity());
 //            textView1.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
 //                    LayoutParams.WRAP_CONTENT));
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -80,13 +81,14 @@ public class CalendarFragment extends Fragment {
             }
             else if(i == 1)
             {
-                textView1.setText("RSVP'd Event");
+                textView1.setText("RSVP'd  Event");
             }
-            textView1.setBackgroundColor(colorArray[i]);
+            textView1.setTextColor(colorArray[i]);
+            textView1.setBackgroundColor(colorArray[i+2]);
             textView1.setPadding(20, 20, 20, 20);// in pixels (left, top, right, bottom)
             linearLayout.addView(textView1);
         }
-*/
+
         return rootView;
     }
 
@@ -95,7 +97,7 @@ public class CalendarFragment extends Fragment {
         URLConnection http = new URLConnection();
         try
         {
-            eventsForUser = http.sendGetEventsForUser(thisUser.getEmail()); // FIX to thisUser.email
+            eventsForUser = http.sendGetEventsForUser(thisUser.getEmail());
         } catch(IOException e)
         {
             Toast.makeText(getActivity().getApplicationContext(), "No Events for User",
@@ -105,8 +107,12 @@ public class CalendarFragment extends Fragment {
         userEventsMap = new HashMap<String, ArrayList<Event>>();
         for(Event event : eventsForUser)
         {
-//            String date = event.getDay() + "-" + event.getMonth() + "-" + event.getYear();
-            String date = event.getEventStartDate();
+//           String date = event.getDay() + "-" + event.getMonth() + "-" + event.getYear();
+//            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+//            String date = df.format(event.getEventStartDate());
+            String date = getDate(event.getEventStartDate());
+
+            System.out.println("date " + date);
             if(userEventsMap.get(date) != null)
             {
                 userEventsMap.get(date).add(event);
@@ -118,7 +124,26 @@ public class CalendarFragment extends Fragment {
                 userEventsMap.put(date, list);
             }
         }
-//        return userEventsMap;
+////        return userEventsMap;
+    }
+
+    private String getDate(String bkwdsDate)
+    {
+        String[] dateSplit = bkwdsDate.split("-");
+        String year = dateSplit[0];
+        String month = dateSplit[1];
+        String day = dateSplit[2];
+
+        if(month.length() == 1)
+        {
+            month = "0" + month;
+        }
+        if(day.length() == 1)
+        {
+            day = "0" + month;
+        }
+
+        return day + "-" + month + "-" + year;
     }
 
     public void setupCalendar()
@@ -138,7 +163,8 @@ public class CalendarFragment extends Fragment {
             @Override
             public void onDateSelected(Date date) {
                 SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-                //Toast.makeText(CalendarActivity.this, df.format(date), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), df.format(date), Toast.LENGTH_SHORT).show();
+                System.out.println("onDateSel " + df.format(date));
 
                 if(userEventsMap.get(df.format(date)) != null) {
                     //send the list of events to the dialog
@@ -189,7 +215,7 @@ public class CalendarFragment extends Fragment {
                     }
                     else if(flag)
                     {
-                        dayView.setBackgroundColor(getResources().getColor(R.color.white));
+                        dayView.setBackgroundColor(getResources().getColor(R.color.lite_grey));
                     }
                 }
             }
