@@ -755,6 +755,8 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
         {
             Spinner maxNumPplSpinner = (Spinner)rootView.findViewById(R.id.create_event_max_num_ppl_spinner);
             String eventMaxNumPplStr = maxNumPplSpinner.getSelectedItem().toString();
+            formMap.put("players per team", "0");
+            formMap.put("number of teams", "0");
             formMap.put("max num ppl", eventMaxNumPplStr);
         }
         else
@@ -763,6 +765,7 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             String eventPlayersPerTeamStr = playersPerTeamSpinner.getSelectedItem().toString();
             formMap.put("players per team", eventPlayersPerTeamStr);
 
+            formMap.put("max num ppl", "0");
             Spinner numberOfTeamsSpinner = (Spinner) rootView.findViewById(R.id.create_event_number_of_teams);
             String eventNumOfTeams = numberOfTeamsSpinner.getSelectedItem().toString();
             formMap.put("number of teams", eventNumOfTeams);
@@ -783,6 +786,10 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             Spinner SportSpecificSpinner = (Spinner)rootView.findViewById(R.id.create_event_sport_specific_spinner);
             String SportSpecificStr = SportSpecificSpinner.getSelectedItem().toString();
             formMap.put("sport specific",SportSpecificStr);
+        }
+        else
+        {
+            formMap.put("sport specific","");
         }
 
         Spinner terrainSpinner = (Spinner)rootView.findViewById(R.id.create_event_terrain);
