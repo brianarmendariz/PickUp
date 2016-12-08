@@ -17,4 +17,10 @@
         <!--<item name="colorAccent">@color/color_accent</item>-->
         <!--<item name="android:statusBarColor">@color/color_primary</item>-->
     <!--</style>-->
+
+    <style name="Picker" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:background">@color/orange</item>
+        <item name="android:windowActionBar">@color/sky_blue</item>
+    </style>
+
 </resources>

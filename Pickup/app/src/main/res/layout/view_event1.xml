@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/field" >
+    android:background="@drawable/orange1" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
                 android:id="@+id/view_event_event_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@drawable/white"
+                android:textColor="@drawable/black"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:padding="@dimen/small_margin"
                 android:paddingTop="25sp"
@@ -32,7 +32,7 @@
                 android:id="@+id/view_event_sport"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@drawable/white"
+                android:textColor="@drawable/black"
                 android:padding="@dimen/small_margin"
                 android:layout_below="@id/view_event_event_name"
                 android:layout_alignParentLeft="true"/>
@@ -41,7 +41,7 @@
                 android:id="@+id/view_event_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@drawable/white"
+                android:textColor="@drawable/black"
                 android:padding="@dimen/small_margin"
                 android:paddingTop="25sp"
                 android:paddingRight="16sp"
@@ -53,7 +53,7 @@
                 android:id="@+id/view_event_distance_away"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@drawable/white"
+                android:textColor="@drawable/black"
                 android:padding="@dimen/small_margin"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/view_event_event_name" />
@@ -62,7 +62,7 @@
                 android:id="@+id/view_event_player_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@drawable/white"
+                android:textColor="@drawable/black"
                 android:padding="@dimen/small_margin"
                 android:paddingTop="25sp"
                 android:paddingRight="16sp"
@@ -73,7 +73,7 @@
                 android:id="@+id/view_event_skill"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@drawable/white"
+                android:textColor="@drawable/black"
                 android:padding="@dimen/small_margin"
                 android:layout_below="@id/view_event_player_amount"
                 android:layout_centerHorizontal="true" />
@@ -81,7 +81,7 @@
                 android:id="@+id/view_event_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@drawable/white"
+                android:textColor="@drawable/black"
                 android:padding="@dimen/small_margin"
                 android:layout_below="@id/view_event_skill"
                 android:layout_centerHorizontal="true" />
@@ -89,7 +89,7 @@
                 android:id="@+id/view_event_environment_terrain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@drawable/white"
+                android:textColor="@drawable/black"
                 android:padding="@dimen/small_margin"
                 android:layout_below="@id/view_event_category"
                 android:layout_centerHorizontal="true" />
@@ -101,7 +101,7 @@
                 android:id="@+id/view_event_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@drawable/white"
+                android:textColor="@drawable/black"
                 android:padding="@dimen/small_margin"
                 android:layout_below="@id/view_event_environment_terrain"
                 android:layout_centerHorizontal="true" />
@@ -110,7 +110,7 @@
                 android:id="@+id/view_event_start_date_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@drawable/white"
+                android:textColor="@drawable/black"
                 android:paddingTop="@dimen/small_margin"
                 android:paddingBottom="@dimen/small_margin"
                 android:layout_below="@id/view_event_location"
@@ -119,7 +119,7 @@
                 android:id="@+id/view_event_end_date_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@drawable/white"
+                android:textColor="@drawable/black"
                 android:paddingTop="@dimen/small_margin"
                 android:paddingBottom="@dimen/small_margin"
                 android:layout_below="@id/view_event_start_date_time"
@@ -132,6 +132,13 @@
             android:id="@+id/view_event_rl_profile_pics"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/view_event_creator_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey"
+                android:layout_centerHorizontal="true"/>
 
             <ImageView
                 android:id="@+id/view_event_profile_pic"

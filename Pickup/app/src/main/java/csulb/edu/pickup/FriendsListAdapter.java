@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -31,6 +34,7 @@ public class FriendsListAdapter<String> extends BaseAdapter {
     Activity activity;
     TextView txtFirst;
     TextView txtSecond;
+    TextView txtAge;
     private ImageView profileImage;
     View rootView;
     int layout;
@@ -54,27 +58,67 @@ public class FriendsListAdapter<String> extends BaseAdapter {
 
         txtFirst=(TextView) convertView.findViewById(R.id.name_label);
         txtSecond=(TextView) convertView.findViewById(R.id.email_label);
-        //HashMap<java.lang.String, java.lang.String> map=friendList.get(position);
-        txtFirst.setText((CharSequence)friendsList.get(position).getFirstName());
-        txtSecond.setText((CharSequence)friendsList.get(position).getEmail());
+        java.lang.String firstName = friendsList.get(position).getFirstName();
+        txtFirst.setText((CharSequence)firstName);
+        java.lang.String email = friendsList.get(position).getEmail();
+        txtSecond.setText((CharSequence)email);
 
-        /**
-         * Erwin added this for profile picture.
-         */
-//        profileImage = (ImageView) rootView.findViewById(R.id.profileImageView);
-//        Bitmap bm = BitmapFactory.decodeResource(getActivity().getResource(),
-//                R.drawable.com_facebook_profile_picture_blank_portrait);
-//        Bitmap resized = Bitmap.createScaledBitmap(bm, 150, 150, true);
-//        Bitmap conv_bm = getRoundedRectBitmap(resized, 150);
-//        profileImage.setImageBitmap(conv_bm);
 
-        if (position % 2 == 0) {
-            //convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.orange));
-        } else {
-            // view.setBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.dark_grey));
-        }
+        txtAge = (TextView) convertView.findViewById(R.id.age_label);
+        java.lang.String age = friendsList.get(position).getAge();
+        txtAge.setText((CharSequence)age);
+
+        addCreatorPicture(email, convertView);
 
         return convertView;
+    }
+
+    public void addCreatorPicture(java.lang.String email, View view)
+    {
+        java.lang.String creatorPicture = getUserPicturePath(email);
+
+        //ImageView Setup
+        ImageView creatorPicImageView = (ImageView)view.findViewById(R.id.friend_profile_pic);
+
+        // use default if empty
+        if(creatorPicture.equals("") || creatorPicture == null)
+        {
+            //setting image resource
+            Bitmap bm = BitmapFactory.decodeResource(context.getResources(),
+                    R.drawable.com_facebook_profile_picture_blank_portrait);
+            Bitmap resized = Bitmap.createScaledBitmap(bm, 150, 150, true);
+            Bitmap conv_bm = BitmapHelper.getRoundedRectBitmap(resized, 150);
+            creatorPicImageView.setImageBitmap(conv_bm);
+        }
+        else // use User's profile picture
+        {
+            byte[] byteArray = Base64.decode(creatorPicture, Base64.DEFAULT);
+            Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+
+            // set the picture
+            creatorPicImageView.setImageBitmap(bmp);
+
+//            DisplayMetrics dm = new DisplayMetrics();
+//            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+//
+//            creatorPicImageView.setMinimumHeight(dm.heightPixels);
+//            creatorPicImageView.setMinimumWidth(dm.widthPixels);
+        }
+    }
+
+    private java.lang.String getUserPicturePath(java.lang.String creatorEmail)
+    {
+        URLConnection http = new URLConnection();
+
+        java.lang.String creatorPicture = "";
+        try
+        {
+            creatorPicture = http.sendGetProfilePicture(creatorEmail);
+        } catch(IOException e)
+        {
+
+        }
+        return creatorPicture;
     }
 
     @Override

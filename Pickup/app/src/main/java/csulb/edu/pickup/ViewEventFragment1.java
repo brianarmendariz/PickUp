@@ -161,6 +161,9 @@ public class ViewEventFragment1 extends Fragment implements View.OnClickListener
         TextView textView_endDate = (TextView)rootView.findViewById(R.id.view_event_end_date_time);
         String fEndDate = getFormattedDate(event.getEventEndDate(), event.getEventEndTime());
         textView_endDate.setText(fEndDate);
+
+        TextView textView_creatorName = (TextView)rootView.findViewById(R.id.view_event_creator_name);
+        textView_creatorName.setText(event.getCreatorEmail());
     }
 
     public int getPlayerAmountForEvent(int eventID)

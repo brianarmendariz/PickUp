@@ -389,7 +389,9 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
 
                             updatedUser = http2.sendGetUser(viewUsername.getEmail());
                             upvote.setEnabled(true);
+                            upvote.setImageResource(R.drawable.thumbsup);
                             downvote.setEnabled(true);
+                            downvote.setImageResource(R.drawable.thumbsdown);
                         }
 
                         //if the user downvoted the viewUser before, change the vote to 1
@@ -414,7 +416,9 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             //update the user
                             updatedUser = http2.sendGetUser(viewUsername.getEmail());
                             upvote.setEnabled(false);
+                            upvote.setImageResource(R.drawable.thumbsup_clicked);
                             downvote.setEnabled(true);
+                            downvote.setImageResource(R.drawable.thumbsdown);
                         }
 
                         //if the user vote the unrated viewUser, rate = 1
@@ -441,8 +445,9 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             //update the user
                             updatedUser = http2.sendGetUser(viewUsername.getEmail());
                             upvote.setEnabled(false);
+                            upvote.setImageResource(R.drawable.thumbsup_clicked);
                             downvote.setEnabled(true);
-
+                            downvote.setImageResource(R.drawable.thumbsdown);
                         }
 
                         //if the user upvoted the viewUser before, change the vote to 0
@@ -469,8 +474,9 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             //update the user
                             updatedUser = http2.sendGetUser(viewUsername.getEmail());
                             upvote.setEnabled(true);
+                            upvote.setImageResource(R.drawable.thumbsup);
                             downvote.setEnabled(true);
-
+                            downvote.setImageResource(R.drawable.thumbsdown);
                         }
 
                     } catch (IOException e) {
@@ -512,9 +518,9 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             updatedUser = http3.sendGetUser(viewUsername.getEmail());
 
                             upvote.setEnabled(true);
+                            upvote.setImageResource(R.drawable.thumbsup);
                             downvote.setEnabled(false);
-
-
+                            downvote.setImageResource(R.drawable.thumbsdown_clicked);
                         }
 
                         //if the user upvoted before
@@ -539,8 +545,9 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             //update the user
                             updatedUser = http3.sendGetUser(viewUsername.getEmail());
                             upvote.setEnabled(true);
+                            upvote.setImageResource(R.drawable.thumbsup);
                             downvote.setEnabled(false);
-
+                            downvote.setImageResource(R.drawable.thumbsdown_clicked);
                         }
 
                         //if the user downvote the viewUser
@@ -565,8 +572,9 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             //update the user
                             updatedUser = http3.sendGetUser(viewUsername.getEmail());
                             upvote.setEnabled(true);
+                            upvote.setImageResource(R.drawable.thumbsup);
                             downvote.setEnabled(false);
-
+                            downvote.setImageResource(R.drawable.thumbsdown_clicked);
                         }
 
                         //if the user downvoted viewUser before
@@ -592,7 +600,9 @@ public class UserProfileFragment extends Fragment implements SearchView.OnQueryT
                             //update the user
                             updatedUser = http3.sendGetUser(viewUsername.getEmail());
                             upvote.setEnabled(true);
+                            upvote.setImageResource(R.drawable.thumbsup);
                             downvote.setEnabled(true);
+                            downvote.setImageResource(R.drawable.thumbsup);
                         }
                         //userRating.setText("10");
                     } catch (IOException e) {

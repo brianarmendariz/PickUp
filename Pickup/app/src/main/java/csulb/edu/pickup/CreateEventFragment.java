@@ -385,7 +385,7 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
         createStartDateEditText.setOnClickListener(this);
         createEndDateEditText.setOnClickListener(this);
         Calendar newCalendar = Calendar.getInstance();
-        startDatePickerDialog = new DatePickerDialog(this.getActivity(), new DatePickerDialog.OnDateSetListener() {
+        startDatePickerDialog = new DatePickerDialog(this.getActivity(), R.style.Picker, new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 newDate = Calendar.getInstance();
@@ -395,7 +395,7 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-        endDatePickerDialog = new DatePickerDialog(this.getActivity(), new DatePickerDialog.OnDateSetListener() {
+        endDatePickerDialog = new DatePickerDialog(this.getActivity(), R.style.Picker, new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 newDate = Calendar.getInstance();
@@ -412,7 +412,7 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
         createStartTimeEditText.setOnClickListener(this);
         createEndTimeEditText.setOnClickListener(this);
         startTimePickerDialog =
-                new TimePickerDialog(this.getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                new TimePickerDialog(this.getActivity(), R.style.Picker, new TimePickerDialog.OnTimeSetListener() {
                     public void onTimeSet(TimePicker view, int selectedHour,
                                           int selectedMinute) {
                         hour = selectedHour;
@@ -425,7 +425,7 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
 
                     }
                 }, hour, minute, false);
-        endTimePickerDialog =  new TimePickerDialog(this.getActivity(), new TimePickerDialog.OnTimeSetListener() {
+        endTimePickerDialog =  new TimePickerDialog(this.getActivity(), R.style.Picker, new TimePickerDialog.OnTimeSetListener() {
             public void onTimeSet(TimePicker view, int selectedHour,
                                   int selectedMinute) {
                 hour = selectedHour;

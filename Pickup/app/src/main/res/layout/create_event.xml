@@ -21,7 +21,7 @@
             android:scaleType="fitXY"
             android:layout_gravity="center"
             android:id="@+id/create_event_image_view1"
-            android:src="@drawable/logo"/>
+            android:src="@drawable/logo_transparent"/>
 
         <EditText
             android:id="@+id/create_event_name"
@@ -118,78 +118,89 @@
             android:prompt="@string/sport_terrain_prompt"
             />
 
-        <TableLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
 
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/view_event_buttons_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/create_event_space"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"/>
 
         <EditText
             android:id="@+id/create_event_start_date"
             android:layout_column="0"
-            android:layout_gravity="left|center_horizontal|fill"
-            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/event_table_margin"
             android:layout_marginTop="@dimen/event_table_margin"
             android:layout_marginBottom="@dimen/event_table_margin"
             android:gravity="center_horizontal"
-            android:ems="10"
             android:textColor="@color/orange"
             android:textSize="@dimen/edittext_text"
-            android:hint="@string/event_start_date_text" />
+            android:layout_toLeftOf="@id/create_event_space"
+            android:hint="Choose a Start Date" />
 
         <EditText
             android:id="@+id/create_event_start_time"
             android:layout_column="1"
-            android:layout_gravity="right|center_horizontal|fill"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/event_table_margin"
-            android:layout_marginTop="@dimen/event_table_margin"
-            android:layout_marginBottom="@dimen/event_table_margin"
-            android:gravity="center_horizontal"
-            android:ems="10"
-            android:textColor="@color/orange"
-            android:textSize="@dimen/edittext_text"
-            android:hint="@string/event_start_time_text" />
-
-    </TableRow>
-
-    <TableRow>
-
-        <EditText
-            android:id="@+id/create_event_end_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_gravity="left|center_horizontal|fill"
-            android:layout_marginRight="@dimen/event_table_margin"
-            android:layout_marginTop="@dimen/event_table_margin"
-            android:layout_marginBottom="@dimen/event_table_margin"
-            android:ems="10"
-            android:textColor="@color/orange"
-            android:textSize="@dimen/edittext_text"
-            android:hint="@string/event_end_date_text" />
-
-        <EditText
-            android:id="@+id/create_event_end_time"
-            android:gravity="center_horizontal"
-            android:layout_gravity="right|center_horizontal|fill"
+            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/event_table_margin"
             android:layout_marginTop="@dimen/event_table_margin"
             android:layout_marginBottom="@dimen/event_table_margin"
-            android:ems="10"
+            android:gravity="center_horizontal"
             android:textColor="@color/orange"
             android:textSize="@dimen/edittext_text"
+            android:layout_toRightOf="@id/create_event_space"
+            android:hint="Pick a Start Time" />
+
+        <TextView
+            android:id="@+id/create_event_space2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/create_event_space"/>
+
+        <EditText
+            android:id="@+id/create_event_end_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/event_table_margin"
+            android:layout_marginTop="@dimen/event_table_margin"
+            android:layout_marginBottom="@dimen/event_table_margin"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/edittext_text"
+            android:layout_toLeftOf="@id/create_event_space2"
+            android:layout_below="@id/create_event_start_date"
+            android:hint="@string/event_end_date_text" />
+
+        <EditText
+            android:id="@+id/create_event_end_time"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/event_table_margin"
+            android:layout_marginTop="@dimen/event_table_margin"
+            android:layout_marginBottom="@dimen/event_table_margin"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/edittext_text"
+            android:layout_toRightOf="@id/create_event_space2"
+            android:layout_below="@id/create_event_start_time"
             android:hint="@string/event_end_time_text" />
-    </TableRow>
-</TableLayout>
+
+        </RelativeLayout>
+
+
         <csulb.edu.pickup.NoDefaultSpinner
             android:id="@+id/create_event_gender_spinner"
             android:gravity="center"
