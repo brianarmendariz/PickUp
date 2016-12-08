@@ -108,11 +108,11 @@
         <item>Ice Hockey</item>
         <item>Racquetball</item>
         <item>Roller Hockey</item>
-        <item>Running</item>
         <item>Soccer</item>
         <item>Softball</item>
         <item>Tennis</item>
         <item>Volleyball</item>
+        <item>Running</item>
         <item>Weightlifting</item>
         <item>Yoga</item>
     </string-array>
@@ -125,7 +125,6 @@
         <item>Ice Hockey</item>
         <item>Racquetball</item>
         <item>Roller Hockey</item>
-        <item>Running</item>
         <item>Soccer</item>
         <item>Softball</item>
         <item>Tennis</item>
@@ -162,11 +161,11 @@
         <item>Turf</item>
     </string-array>
     <string-array name="Terrain_Basketball">
-    <item>Hardwood</item>
-    <item>Cement</item>
-    <item>Multi-Purpose</item>
-    <item>Advanced Multi-Purpose</item>
-</string-array>
+        <item>Hardwood</item>
+        <item>Cement</item>
+        <item>Multi-Purpose</item>
+        <item>Advanced Multi-Purpose</item>
+    </string-array>
     <string-array name="Terrain_Football">
         <item>Grass</item>
         <item>Turf</item>
@@ -213,7 +212,7 @@
         <item>Push</item>
         <item>Pull</item>
     </string-array>
-    
+
     <string-array name="Sport_Specific_Hockey">
         <item>Ball</item>
         <item>Puck</item>
@@ -236,7 +235,6 @@
     // end of create event arrays sb
 
 
-
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>
 
@@ -251,6 +249,8 @@
     <string name="and">and </string>
     <string name="search">Search</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
