@@ -76,8 +76,8 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
     int arr_images_default[] = {R.drawable.badminton_icon,
             R.drawable.baseball_icon, R.drawable.basketball_icon, R.drawable.football_icon,
             R.drawable.handball_icon, R.drawable.icehockey_icon, R.drawable.racquetball_icon,
-            R.drawable.rollerhockey_icon,  R.drawable.running_icon,R.drawable.soccer_icon,
-            R.drawable.softball_icon, R.drawable.tennis_icon,R.drawable.volleyball_icon,
+            R.drawable.rollerhockey_icon,  R.drawable.soccer_icon,
+            R.drawable.softball_icon, R.drawable.tennis_icon,R.drawable.volleyball_icon,R.drawable.running_icon,
             R.drawable.weightlifting_icon, R.drawable.yoga_icon};
     int arr_images_exclusion[] =
             {R.drawable.badminton_icon,
@@ -92,8 +92,13 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
 
     View rootView;
 
-    private int current_sport;
-   // private int current_category;
+
+    private int current_sport_position;
+    private String current_sport_string;
+    private String current_category_string = "Pick Up";
+    private int current_category_position = 2;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -104,7 +109,7 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
 
         // Bundle from SportFragment
         Bundle fragArgs = this.getArguments();
-        current_sport = (int) fragArgs.getInt("SPORT"); // R.id.[sport_button_pressed]
+        current_sport_position = (int) fragArgs.getInt("SPORT"); // R.id.[sport_button_pressed]
         //thisUser = new User("ln", "em", "pw", "bday", "gend", "useRate", "a");
 
         super.onCreate(savedInstanceState);
@@ -191,6 +196,10 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
         int idSkillLevel = R.id.create_event_skill_level;
         int idSkillArray = R.array.Event_Skill_Level;
 
+
+        // attach values to sport spinner
+
+        initSpinner(idSportSpinner,idSportArray);
         //attach value to Categories Spinner
         initSpinner(idCategorySpinner,idCategoryArray);
         //attach value to IndoorOutdoorSpinner
@@ -199,9 +208,7 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
 
         // attach values to Skill Level spinner
         initSpinner(idSkillLevel,idSkillArray);
-        // attach values to sport spinner
 
-        initSpinner(idSportSpinner,idSportArray);
         // attach values to gender spinner
         initSpinner(idGenderSpinner, idGenderArray);
 
@@ -221,14 +228,23 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
 
         if(spinnerId == R.id.create_event_sport_category)
         {
+
             ArrayAdapter<CharSequence> spinnnerAdapter = ArrayAdapter.createFromResource(this.getActivity(),
                     arrayId, android.R.layout.simple_spinner_item);
             // Specify the layout
             spinnnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             // Apply the adapter to the spinner
             spinner.setAdapter(spinnnerAdapter);
-         //   spinner.setSelection(current_category);
-            spinner.setOnItemSelectedListener(CategoryListener);
+            if(arrayId == R.array.Create_Event_Categories_Exclusion)
+            {
+                spinner.setSelection(0);
+            }
+            else
+            {
+                spinner.setSelection(current_category_position);
+                spinner.setOnItemSelectedListener(CategoryListener);
+            }
+
 
         }
         else if(spinnerId == R.id.create_event_sport_spinner)
@@ -242,8 +258,14 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             {
                 spinner.setAdapter(new MyCAdapter(this.getActivity(), R.layout.row, arrayId,arr_images_exclusion));
                 spinner.setOnItemSelectedListener(SportListener);
+                if(current_sport_string.equalsIgnoreCase("Running") ||
+                        current_sport_string.equalsIgnoreCase("Yoga") ||
+                        current_sport_string.equalsIgnoreCase("Weightlifting"))
+                {
+                    current_sport_position = 0;
+                }
             }
-            spinner.setSelection(current_sport);
+            spinner.setSelection(current_sport_position);
         }
         else if(spinnerId == R.id.create_event_gender_spinner)
         {
@@ -432,19 +454,17 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
         {
+            Spinner s = (Spinner) rootView.findViewById(R.id.create_event_sport_spinner);
+
+            current_sport_position = s.getSelectedItemPosition();
+            current_sport_string = (String) s.getSelectedItem();
                 if (position == 2)
                 {
-                    Spinner s = (Spinner) rootView.findViewById(R.id.create_event_sport_spinner);
-                    current_sport = s.getSelectedItemPosition();
                     initSpinner(R.id.create_event_sport_spinner, R.array.sport_array_default);
-
                 }
-                else
+                else if(position == 0 || position == 1)
                 {
-                    Spinner s = (Spinner) rootView.findViewById(R.id.create_event_sport_spinner);
-                    current_sport = s.getSelectedItemPosition();
                     initSpinner(R.id.create_event_sport_spinner, R.array.sport_array_exclusion);
-
                 }
         }
 
@@ -464,8 +484,6 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             int idSportSpecificSpinner = R.id.create_event_sport_specific_spinner;
             int idSportSpecificArray;
             int idTerrainArray;
-            int idCategorySpinner = R.id.create_event_sport_category;
-            int idCategoryArray;
 
             Spinner spin = (Spinner)rootView.findViewById(idSportSpecificSpinner);
             spin.setVisibility(View.GONE);
@@ -482,17 +500,14 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
                     //Badminton
                     case 0:
                         idTerrainArray = R.array.Terrain_Default;
-                        idCategoryArray = R.array.Create_Event_Categories;
                         break;
                     //Baseball
                     case 1:
                         idTerrainArray = R.array.Terrain_Baseball_Softball;
-                        idCategoryArray = R.array.Create_Event_Categories;
                         break;
                     //Basketball
                     case 2:
                         idTerrainArray = R.array.Terrain_Basketball;
-                        idCategoryArray = R.array.Create_Event_Categories;
                         break;
                     //Football
                     case 3:
@@ -501,12 +516,11 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
                         initSpinner(idSportSpecificSpinner,idSportSpecificArray);
                         spin.setPrompt("Choose Football Game Type");
                         spin.setVisibility(View.VISIBLE);
-                        idCategoryArray = R.array.Create_Event_Categories;
                         break;
                     //Handball
                     case 4:
                         idTerrainArray = R.array.Terrain_Default;
-                        idCategoryArray = R.array.Create_Event_Categories;
+
                         break;
                     //Ice Hockey
                     case 5:
@@ -515,12 +529,10 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
                         initSpinner(idSportSpecificSpinner,idSportSpecificArray);
                         spin.setPrompt("Choose Hockey Type");
                         spin.setVisibility(View.VISIBLE);
-                        idCategoryArray = R.array.Create_Event_Categories;
                         break;
                     //Racquetball
                     case 6:
                         idTerrainArray = R.array.Terrain_Default;
-                        idCategoryArray = R.array.Create_Event_Categories;
                         break;
                     //Roller Hockey
                     case 7:
@@ -529,7 +541,6 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
                         initSpinner(idSportSpecificSpinner,idSportSpecificArray);
                         spin.setPrompt("Choose Hockey Type");
                         spin.setVisibility(View.VISIBLE);
-                        idCategoryArray = R.array.Create_Event_Categories;
                         break;
                     //Running
                     case 8:
@@ -539,27 +550,22 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
                         numofplayers.setVisibility(View.VISIBLE);
                         numofplayersperteam.setVisibility(View.GONE);
                         numofteams.setVisibility(View.GONE);
-                        idCategoryArray = R.array.Create_Event_Categories_Exclusion;
                         break;
                     //Soccer
                     case 9:
                         idTerrainArray = R.array.Terrain_Soccer;
-                        idCategoryArray = R.array.Create_Event_Categories;
                         break;
                     //Softball
                     case 10:
                         idTerrainArray = R.array.Terrain_Baseball_Softball;
-                        idCategoryArray = R.array.Create_Event_Categories;
                         break;
                     //Tennis
                     case 11:
                         idTerrainArray = R.array.Terrain_Tennis;
-                        idCategoryArray = R.array.Create_Event_Categories;
                         break;
                     //Volleyball
                     case 12:
                         idTerrainArray = R.array.Terrain_Volleyball;
-                        idCategoryArray = R.array.Create_Event_Categories;
                         break;
                     //weightlifting
                     case 13:
@@ -571,7 +577,6 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
                         numofplayers.setVisibility(View.VISIBLE);
                         numofplayersperteam.setVisibility(View.GONE);
                         numofteams.setVisibility(View.GONE);
-                        idCategoryArray = R.array.Create_Event_Categories_Exclusion;
                         break;
                     //yoga
                     case 14:
@@ -579,17 +584,27 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
                         numofplayers.setVisibility(View.VISIBLE);
                         numofplayersperteam.setVisibility(View.GONE);
                         numofteams.setVisibility(View.GONE);
-                        idCategoryArray = R.array.Create_Event_Categories_Exclusion;
                         break;
                     default:
                         idTerrainArray = R.array.Terrain_Default;
-                        idCategoryArray = R.array.Create_Event_Categories;
                         break;
                 }
 
-        //    Spinner s = (Spinner) rootView.findViewById(R.id.create_event_sport_category);
-       //     current_category = s.getSelectedItemPosition();
-            initSpinner(idCategorySpinner,idCategoryArray);
+
+            Spinner s = (Spinner) rootView.findViewById(R.id.create_event_sport_category);
+
+            current_category_string = (String) s.getSelectedItem();
+            current_category_position = s.getSelectedItemPosition();
+
+            if(current_category_string == null)
+            {
+                current_category_string = "Pick Up";
+            }
+            if(current_category_position > 3 || current_category_position < 0)
+            {
+                current_category_position = 2;
+            }
+            //initSpinner(idCategorySpinner,idCategoryArray);
             initSpinner(idTerrainSpinner,idTerrainArray);
         }
 
