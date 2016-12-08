@@ -370,33 +370,35 @@ public class ViewEventFragment1 extends Fragment implements View.OnClickListener
             String response = "";
             try {
                 URLConnection http = new URLConnection();
-                response = http.sendDeleteEvent(_event.getEventID());
+                response = http.deleteEvent(_event.getEventID());
+                String message = _event.getName() + " has been deleted.";
+                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
             } catch(IOException e)
             {
                 e.printStackTrace();
             } finally
             {
-                if(response.equals("true"))
-                {
-                    String message = _event.getName() + " has been deleted.";
-                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-
-                    Bundle args = new Bundle();
-                    Fragment fragment = new MapsFragment();
-
-                    args.putString("result", "delete");
-
-                    args.putString("EventID", _event.getEventID() + "");
-                    fragment.setArguments(args);
-                    FragmentManager frgManager = getFragmentManager();
-                    frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("Map")
-                            .commit();
-                }
-                else
-                {
-                    String message = _event.getName() + " could not be deleted.";
-                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                }
+//                if(response.equals("true") || response.equals("true\t"))
+//                {
+//                    String message = _event.getName() + " has been deleted.";
+//                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+//
+//                    Bundle args = new Bundle();
+//                    Fragment fragment = new MapsFragment();
+//
+//                    args.putString("result", "delete");
+//
+//                    args.putString("EventID", _event.getEventID() + "");
+//                    fragment.setArguments(args);
+//                    FragmentManager frgManager = getFragmentManager();
+//                    frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("Map")
+//                            .commit();
+//                }
+//                else
+//                {
+//                    String message = _event.getName() + " could not be deleted.";
+//                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+//                }
             }
         }
     }

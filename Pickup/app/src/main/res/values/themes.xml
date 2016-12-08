@@ -19,8 +19,7 @@
     <!--</style>-->
 
     <style name="Picker" parent="Theme.AppCompat.Light.Dialog">
-        <item name="android:background">@color/orange</item>
-        <item name="android:windowActionBar">@color/sky_blue</item>
+        <item name="android:colorAccent">@color/orange</item>
     </style>
 
 </resources>

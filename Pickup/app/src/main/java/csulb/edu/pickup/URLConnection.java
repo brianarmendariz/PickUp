@@ -582,10 +582,10 @@ public class URLConnection
         return fields;
     }
 
-    public void deleteEvent(int num) throws IOException
+    public String deleteEvent(int num) throws IOException
     {
         String url = "http://www.csulbpickup.com/deleteEvent.php";
-        sendHttpDelete(url, num);
+        return sendHttpDelete(url, num);
     }
 
     public void deleteFollow(String myUsername, String thisUsername) throws IOException
