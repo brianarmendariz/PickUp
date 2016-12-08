@@ -542,30 +542,30 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
                         spin.setPrompt("Choose Hockey Type");
                         spin.setVisibility(View.VISIBLE);
                         break;
-                    //Running
+                    //Soccer
                     case 8:
+                        idTerrainArray = R.array.Terrain_Soccer;
+                        break;
+                    //Softball
+                    case 9:
+                        idTerrainArray = R.array.Terrain_Baseball_Softball;
+                        break;
+                    //Tennis
+                    case 10:
+                        idTerrainArray = R.array.Terrain_Tennis;
+                        break;
+                    //Volleyball
+                    case 11:
+                        idTerrainArray = R.array.Terrain_Volleyball;
+                        break;
+                    //Running
+                    case 12:
                         idTerrainArray = R.array.Terrain_Default;
                         running.setVisibility(View.VISIBLE);
                         running.setHint("Distance in miles");
                         numofplayers.setVisibility(View.VISIBLE);
                         numofplayersperteam.setVisibility(View.GONE);
                         numofteams.setVisibility(View.GONE);
-                        break;
-                    //Soccer
-                    case 9:
-                        idTerrainArray = R.array.Terrain_Soccer;
-                        break;
-                    //Softball
-                    case 10:
-                        idTerrainArray = R.array.Terrain_Baseball_Softball;
-                        break;
-                    //Tennis
-                    case 11:
-                        idTerrainArray = R.array.Terrain_Tennis;
-                        break;
-                    //Volleyball
-                    case 12:
-                        idTerrainArray = R.array.Terrain_Volleyball;
                         break;
                     //weightlifting
                     case 13:
