@@ -806,10 +806,13 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             String eventPlayersPerTeamStr = playersPerTeamSpinner.getSelectedItem().toString();
             formMap.put("players per team", eventPlayersPerTeamStr);
 
-            formMap.put("max num ppl", "0");
             Spinner numberOfTeamsSpinner = (Spinner) rootView.findViewById(R.id.create_event_number_of_teams);
             String eventNumOfTeams = numberOfTeamsSpinner.getSelectedItem().toString();
             formMap.put("number of teams", eventNumOfTeams);
+
+            int maxnumppl = Integer.parseInt(eventPlayersPerTeamStr) *
+                    Integer.parseInt(eventNumOfTeams);
+            formMap.put("max num ppl", maxnumppl+"");
         }
         Spinner skillSpinner = (Spinner)rootView.findViewById(R.id.create_event_skill_level);
         String eventSkillStr = skillSpinner.getSelectedItem().toString();

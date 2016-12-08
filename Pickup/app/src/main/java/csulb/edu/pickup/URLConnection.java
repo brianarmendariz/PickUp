@@ -1083,7 +1083,7 @@ public class URLConnection
                                 String sportSpecific, int playersPerTeam, int numberOfTeams,
                                 String terrain, String environment, String category) throws IOException
     {
-        String url = "http://www.csulbpickup.com/edit_test.php";
+        String url = "http://www.csulbpickup.com/editEvent.php";
 
         /*int id, String name, String creatorName, String creatorEmail, String sport, String address, double longitude, double latitude,
     		String gender, int ageMin, int ageMax, int minUserRating, String eventStartDate, String eventStartTime, String eventEndDate,
@@ -1095,16 +1095,21 @@ public class URLConnection
                 terrain,environment,category);
 
         JSONObject jsonObj = new JSONObject();
+
         String[] fields = getFieldsForObject(event);
+
+        System.out.println(fields[6]);
         jsonObj.put(fields[0], event.getAddress());
         jsonObj.put(fields[1], event.getAgeMax());
         jsonObj.put(fields[2], event.getAgeMin());
         jsonObj.put(fields[3], event.getCategory());
         jsonObj.put(fields[4], event.getCreatorEmail());
         jsonObj.put(fields[5], event.getCreatorName());
+//        jsonObj.put(fields[6], event.getEventID());
         jsonObj.put(fields[7], event.getEnvironment());
         jsonObj.put(fields[8], event.getEventEndDate());
         jsonObj.put(fields[9], event.getEventEndTime());
+        jsonObj.put(fields[10], event.getEventID());
         jsonObj.put(fields[11], event.getEventStartDate());
         jsonObj.put(fields[12], event.getEventStartTime());
         jsonObj.put(fields[13], event.getGender());

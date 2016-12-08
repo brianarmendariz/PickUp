@@ -330,7 +330,7 @@ public class ViewEventFragment extends Fragment implements View.OnClickListener 
         {
             //Go to edit activity
             Bundle args = new Bundle();
-            Fragment fragment = new EditEventFragment();
+            Fragment fragment = new EditEventFragment1();
 
             args.putString("EventID", _event.getEventID() + "");
             fragment.setArguments(args);

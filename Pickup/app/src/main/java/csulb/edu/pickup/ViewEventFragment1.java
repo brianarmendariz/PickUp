@@ -352,13 +352,14 @@ public class ViewEventFragment1 extends Fragment implements View.OnClickListener
         {
             //Go to edit activity
             Bundle args = new Bundle();
-            Fragment fragment = new EditEventFragment();
+            Fragment fragment = new EditEventFragment1();
 
             args.putString("EventID", _event.getEventID() + "");
             fragment.setArguments(args);
             FragmentManager frgManager = getFragmentManager();
             frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack( "View Event" )
                     .commit();
+
         }
         else if(view == viewEventDeleteButton)
         {
