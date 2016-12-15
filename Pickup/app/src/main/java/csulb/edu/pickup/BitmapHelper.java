@@ -12,6 +12,12 @@ import android.graphics.Rect;
  */
 public class BitmapHelper {
 
+    /**
+     * Method to get a rounded rectange bitmap
+     * @param bitmap
+     * @param pixels
+     * @return
+     */
     public static Bitmap getRoundedRectBitmap(Bitmap bitmap, int pixels)
     {
         Bitmap result = null;

@@ -41,7 +41,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-
+/**
+ *
+ */
 public class CreateEventFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "brainsMessages";
@@ -65,13 +67,6 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
 
     private int hour;
     private int minute;
-
-//    String[] sportStringArray = {"Badminton", "Baseball", "Basketball", "Football",
-//            "Handball", "Ice Hockey", "Racquetball", "Roller Hockey", "Running", "Soccer",
-//            "Softball", "Tennis", "Volleyball", "Weightlifting", "Yoga"};
-//
-
-//    String[] sportStringArray;
 
     int arr_images_default[] = {R.drawable.badminton_icon,
             R.drawable.baseball_icon, R.drawable.basketball_icon, R.drawable.football_icon,

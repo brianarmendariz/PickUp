@@ -82,23 +82,23 @@ public class FriendsFragment extends Fragment{
 
         rootView = inflater.inflate(R.layout.view_profile, container, false);
 
-        System.out.println("UserProfileFragment: " + thisUser.getEmail());
-        profileImage = (ImageView) rootView.findViewById(R.id.profileImageView);
-        Bitmap bm = BitmapFactory.decodeResource(getResources(),
-                R.drawable.com_facebook_profile_picture_blank_portrait);
-        Bitmap resized = Bitmap.createScaledBitmap(bm, 40, 40, true);
-        Bitmap conv_bm = getRoundedRectBitmap(resized, 40);
-        profileImage.setImageBitmap(conv_bm);
-        profileImage.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                Intent i = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
-            }
-        });
+//        System.out.println("UserProfileFragment: " + thisUser.getEmail());
+//        profileImage = (ImageView) rootView.findViewById(R.id.profileImageView);
+//        Bitmap bm = BitmapFactory.decodeResource(getResources(),
+//                R.drawable.com_facebook_profile_picture_blank_portrait);
+//        Bitmap resized = Bitmap.createScaledBitmap(bm, 40, 40, true);
+//        Bitmap conv_bm = getRoundedRectBitmap(resized, 40);
+//        profileImage.setImageBitmap(conv_bm);
+//        profileImage.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//
+//                Intent i = new Intent(
+//                        Intent.ACTION_PICK,
+//                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//
+//                startActivityForResult(i, RESULT_LOAD_IMAGE);
+//            }
+//        });
 
 
 

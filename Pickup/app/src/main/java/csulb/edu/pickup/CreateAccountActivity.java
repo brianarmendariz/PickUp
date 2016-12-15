@@ -44,6 +44,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class gets all the values on the form and puts them into a map.
+ * It then uses the map to access variables on the form to create an account.
+ */
 public class CreateAccountActivity extends AppCompatActivity implements View.OnClickListener{
     Button btpic, btnup;
     private Uri fileUri;
@@ -74,10 +78,6 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         setUpUploadPhotoButton();
         setUpCreateAccountButton();
     }
-
-
-
-
 
     @Override
     protected void onStart() {
@@ -195,12 +195,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
         uploadPhotoButton = (Button) findViewById(R.id.upload_photo_btn);
         uploadPhotoButton.requestFocus();
-
-
     }
-
-
-
 
 
     private void setUpCreateAccountButton() {
@@ -218,32 +213,24 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View view) {
 
-
         if (view == cancelButton) {
             Intent myIntent = new Intent(view.getContext(), LoginActivity.class);
             startActivityForResult(myIntent, 0);
         }
+        /*
+        not working
+         */
         else if(view == uploadPhotoButton){
 
             Intent intent = new Intent(Intent.ACTION_PICK,
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(intent, 0);
-
-            /*URLConnection conn = new URLConnection();
-            conn.sendUploadPhoto("YODA.jpg","myusername" );
-*/
         }
         else if (view == createAccountButton) {
 
-        /*
-             Bitmap bm = BitmapFactory.decodeFile(picturePath);
-             ByteArrayOutputStream bao = new ByteArrayOutputStream();
-             bm.compress(Bitmap.CompressFormat.JPEG, 90, bao);
-             byte[] ba = bao.toByteArray();
-             //ba1 = Base64.encodeBytes(ba);
-        */
             Map<String, String> formMap = formToMap();
 
+            /* get events from form map */
             System.out.println(formMap);
             String firstName = formMap.get("firstName");
             String lastName = formMap.get("lastName");
@@ -256,10 +243,13 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             String bdayYear = formMap.get("bdayYear");
             String bday = bdayYear+"-"+bdayMonth+"-"+bdayDay;
 
+
             String EMAIL_PATTERN =
                     "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+
+            /* show alert to user if data is input incorrectly */
             if(firstName.equals("")){
                 createAlert("First Name Required", "Please Enter a First Name");
             }
@@ -285,6 +275,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             else if(password.equals(passwordRetype)) {
                 URLConnection http = new URLConnection();
                 try {
+                    /* send create user to server */
                     String userResult = http.sendCreateUser(firstName, lastName, email, password, bday, gender, "", "");
                     if(userResult.equals("false")){
                         createAlert("Duplicate Email", "User exists. Please try a different one.");
@@ -308,7 +299,10 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-
+    /**
+     * Put all data from form into a map for later access
+     * @return
+     */
     public Map<String, String> formToMap()
     {
         Map<String, String> formMap = new HashMap<>();

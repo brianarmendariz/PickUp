@@ -46,6 +46,14 @@ public class CalendarFragment extends Fragment {
     View rootView;
     CustomCalendarView calendarView;
 
+    /**
+     * Creates the calendar. Days with events are seen in a different color. The decorator
+     * day pattern was used to accomplish this task.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,8 +76,6 @@ public class CalendarFragment extends Fragment {
         for(int i = 0; i < 2; i++)
         {
             TextView textView1 = new TextView(getActivity());
-//            textView1.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-//                    LayoutParams.WRAP_CONTENT));
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             lp.gravity = Gravity.CENTER;
             textView1.setLayoutParams(lp);
@@ -92,6 +98,9 @@ public class CalendarFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * get events from server and add them to hashmap
+     */
     private void getEvents()
     {
         URLConnection http = new URLConnection();
@@ -107,9 +116,6 @@ public class CalendarFragment extends Fragment {
         userEventsMap = new HashMap<String, ArrayList<Event>>();
         for(Event event : eventsForUser)
         {
-//           String date = event.getDay() + "-" + event.getMonth() + "-" + event.getYear();
-//            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-//            String date = df.format(event.getEventStartDate());
             String date = getDate(event.getEventStartDate());
 
             System.out.println("date " + date);
@@ -124,7 +130,6 @@ public class CalendarFragment extends Fragment {
                 userEventsMap.put(date, list);
             }
         }
-////        return userEventsMap;
     }
 
     private String getDate(String bkwdsDate)
@@ -163,9 +168,8 @@ public class CalendarFragment extends Fragment {
             @Override
             public void onDateSelected(Date date) {
                 SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-                Toast.makeText(getActivity(), df.format(date), Toast.LENGTH_SHORT).show();
-                System.out.println("onDateSel " + df.format(date));
 
+                // use hashmap so that the key can be the actual date
                 if(userEventsMap.get(df.format(date)) != null) {
                     //send the list of events to the dialog
                     Bundle b = new Bundle();

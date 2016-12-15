@@ -23,6 +23,14 @@ public class CalendarEventDialog extends DialogFragment {
     User thisUser;
     private static final int VIEW_MAP_EVENT = 2;
 
+    /**
+     * This method here is the dialog message that pops up when a calendar day with an event is
+     * selected. It creates a text view with the name of the event on it which is clickable.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle data = this.getArguments();

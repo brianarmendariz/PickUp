@@ -380,7 +380,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                         myIntent.putExtras(b);
                         startActivityForResult(myIntent, 0);
                     }
-                } catch (IOException | JSONException | ParseException ex) {
+                }
+                catch (IOException | JSONException | ParseException ex) {
 
                 }
             }
